@@ -1,0 +1,47 @@
+.sidenav-container {
+    position: relative;
+    height: calc(100vh - 60px) !important;
+    border: none !important;
+}
+
+.toolbar {
+    height: 60px;
+    display: block;
+    padding: 10px;
+    // border-bottom: 1px solid rgba(0, 0, 0, 0.15);
+}
+
+.product-title {
+    // font-family: 'Product Sans';
+    color: #ffffff;
+    font-size: 20px;
+    margin-left: 10px;
+    margin-top: 20px;
+}
+
+.optionbutton {
+    color: #c2e4fa;
+    margin-left: 5px;
+    margin-right: 5px;
+    ;
+}
+
+.user-image {
+    height: 28px;
+    width: 28px;
+    border-radius: 20px;
+    border: 2px solid rgba(0, 0, 0, 0.54)
+}
+
+.menu-items {
+    color: rgba(0, 0, 0, 0.75) !important;
+    font-size: 14px;
+}
+
+.icon-size {
+    margin-right: 15px;
+}
+
+.menu-3 {
+    color: #c2e4fa;
+}

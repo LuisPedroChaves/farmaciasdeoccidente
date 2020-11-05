@@ -1,0 +1,64 @@
+:host {
+    // display: block;
+    height: calc(100%);
+}
+
+.background {
+    min-height: calc(100%);
+    background-color: rgb(252, 252, 252);
+    background-attachment: fixed;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.header {
+    padding: 10px;
+}
+
+.cellarcontent {
+    padding: 15px;
+}
+
+.card {
+    background-color: white;
+    cursor: pointer;
+}
+
+.cellar {
+    padding: 5px;
+}
+
+.cellar-image {
+    background: rgb(86, 0, 161);
+}
+
+.cardwidget {
+    background-color: white;
+    border-radius: 5px;
+    padding: 10px;
+    max-height: 250px;
+    cursor: pointer;
+}
+
+.widgeticon {
+    background-color: #b4de32 !important;
+    color: white !important;
+}
+
+.widgetTitle {
+    font-size: 18px;
+    font-weight: 600;
+}
+
+.shadow-none {
+    box-shadow: none !important;
+    margin-right: 10px;
+}
+
+.fab {
+    position: fixed;
+    right: 30px;
+    bottom: 30px;
+    z-index: 5;
+}

@@ -1,0 +1,17 @@
+@import '~@angular/material/theming';
+@import '../../../styles';
+@include mat-core();
+$md-mcfarmaciaprimary: ( 50: #e2e3eb, 100: #b6bacd, 200: #858cac, 300: #545e8a, 400: #2f3c71, 500: #0a1958, 600: #091650, 700: #071247, 800: #050e3d, 900: #03082d, A100: #6670ff, A200: #3341ff, A400: #0011ff, A700: #000fe6, contrast: ( 50: #000000, 100: #000000, 200: #000000, 300: #ffffff, 400: #ffffff, 500: #ffffff, 600: #ffffff, 700: #ffffff, 800: #ffffff, 900: #ffffff, A100: #ffffff, A200: #ffffff, A400: #ffffff, A700: #ffffff, ));
+$md-mcfarmaciasecondary: ( 50: #e1eaf2, 100: #b4cbdf, 200: #82a8ca, 300: #4f85b5, 400: #2a6ba5, 500: #045195, 600: #034a8d, 700: #034082, 800: #023778, 900: #012767, A100: #96b4ff, A200: #6390ff, A400: #306cff, A700: #175aff, contrast: ( 50: #000000, 100: #000000, 200: #000000, 300: #ffffff, 400: #ffffff, 500: #ffffff, 600: #ffffff, 700: #ffffff, 800: #ffffff, 900: #ffffff, A100: #000000, A200: #000000, A400: #ffffff, A700: #ffffff, ));
+
+/* For use in src/lib/core/theming/_palette.scss */
+
+$md-mcfarmaciawarn: ( 50: #f6fbe6, 100: #e9f5c2, 200: #daef99, 300: #cbe870, 400: #bfe351, 500: #b4de32, 600: #adda2d, 700: #a4d526, 800: #9cd11f, 900: #8cc813, A100: #fdfff8, A200: #eaffc5, A400: #d8ff92, A700: #cfff79, contrast: ( 50: #000000, 100: #000000, 200: #000000, 300: #000000, 400: #000000, 500: #000000, 600: #000000, 700: #000000, 800: #000000, 900: #000000, A100: #000000, A200: #000000, A400: #000000, A700: #000000, ));
+$farmacia-primary: mat-palette($md-mcfarmaciaprimary);
+$farmacia-accent: mat-palette($md-mcfarmaciasecondary);
+$farmacia-warn: mat-palette($md-mcfarmaciawarn);
+$farmacia-theme: mat-light-theme(( color: ( primary: $farmacia-primary, accent: $farmacia-accent, warn: $farmacia-warn, )));
+.farmacia {
+    @include theme-color-grabber($farmacia-theme);
+    @include angular-material-theme($farmacia-theme);
+}

@@ -17,17 +17,18 @@ const routes: Routes = [
   //     },
   //   ]
   // },
-  // {
-  //   path: 'admin',
-  //   component: AdminLayoutComponent,
-  //   // canActivate: [AuthAdminGuard],
-  //   children: [
-  //     {
-  //       // path: '', pathMatch: 'full', loadChildren: () => import('./pages/modules/dashboard/dashboard.module').then(m => m.DashboardModule),
-  //       // canActivate: [CheckTokenGuard]
-  //     },
-  //   ]
-  // },
+  {
+    path: 'admin',
+    component: AdminLayoutComponent,
+    // canActivate: [AuthAdminGuard],
+    children: [
+      {
+        // tslint:disable-next-line: max-line-length
+        path: '', pathMatch: 'full', loadChildren: () => import('./pages/modules/dashboard/dashboard.module').then(m => m.DashboardModule),
+        // canActivate: [CheckTokenGuard]
+      },
+    ]
+  },
   {
     path: '',
     component: AuthLayoutComponent,

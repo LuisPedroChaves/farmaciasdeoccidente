@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+declare var particlesJS: any;
 
 @Component({
   selector: 'app-auth-layout',
@@ -10,6 +11,7 @@ export class AuthLayoutComponent implements OnInit {
   constructor() { }
 
   ngOnInit(): void {
+    particlesJS.load('particles-js','assets/data/particles.json');
   }
 
 }

@@ -10,6 +10,10 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatListModule } from '@angular/material/list';
+import {MatCheckboxModule} from '@angular/material/checkbox';
+
+/* FLEX ----------------------*/
+import { FlexLayoutModule, CoreModule } from '@angular/flex-layout';
 
 
 @NgModule({
@@ -17,6 +21,10 @@ import { MatListModule } from '@angular/material/list';
   imports: [
     CommonModule,
 
+    // visibilty
+    FlexLayoutModule,
+    CoreModule,
+
     // material
     MatTableModule,
     MatButtonModule,
@@ -26,8 +34,13 @@ import { MatListModule } from '@angular/material/list';
     MatMenuModule,
     MatSidenavModule,
     MatListModule,
+    MatCheckboxModule,
   ],
   exports: [
+    // visibilty
+    FlexLayoutModule,
+    CoreModule,
+
     // material
     MatTableModule,
     MatButtonModule,
@@ -37,6 +50,8 @@ import { MatListModule } from '@angular/material/list';
     MatMenuModule,
     MatSidenavModule,
     MatListModule,
+    MatCheckboxModule,
+
   ]
 })
 export class SharedComponentsModule { }

@@ -1,0 +1,166 @@
+// @import "animations/animations";
+// @import "components/components";
+.app {
+    height: 100vh;
+}
+
+.app-sm {
+    height: calc(100vh - 50px);
+}
+
+
+/* General */
+
+.ma-0 {
+    margin: 0 !important;
+}
+
+.cursor-pointer {
+    cursor: pointer;
+}
+
+.svg-24 {
+    width: 24px;
+    height: 24px
+}
+
+.svg-12 {
+    width: 12px;
+    height: 12px
+}
+
+.svg-in-button {
+    margin-top: -4px;
+}
+
+.text-muted {
+    color: rgba(0, 0, 0, 0.54);
+}
+
+.text-muted-2 {
+    color: rgba(0, 0, 0, 0.34);
+}
+
+.center-text {
+    text-align: center !important;
+}
+
+.input-all {
+    width: 100%;
+}
+
+.input-80 {
+    width: 80%;
+}
+
+
+/* APP LAYOUT */
+
+.relative {
+    position: relative;
+}
+
+.ellipsis-text {
+    flex: 1;
+    &,
+    &>* {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+}
+
+.ellipsis-block {
+    display: block;
+    display: -webkit-box;
+    max-width: 100%;
+    -webkit-line-clamp: 4;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.no-select {
+    -webkit-touch-callout: none;
+    /* iOS Safari */
+    -webkit-user-select: none;
+    /* Safari */
+    -khtml-user-select: none;
+    /* Konqueror HTML */
+    -moz-user-select: none;
+    /* Old versions of Firefox */
+    -ms-user-select: none;
+    /* Internet Explorer/Edge */
+    user-select: none;
+    /* Non-prefixed version, currently
+                                    supported by Chrome, Edge, Opera and Firefox */
+}
+
+.display-container {
+    position: relative;
+    width: 100%;
+}
+
+.display-topleft {
+    position: absolute;
+    left: 0;
+    top: 0
+}
+
+.display-topright {
+    position: absolute;
+    right: 0;
+    top: 0
+}
+
+.display-bottomleft {
+    position: absolute;
+    left: 0;
+    bottom: 0
+}
+
+.display-bottomright {
+    position: absolute;
+    right: 0;
+    bottom: 0
+}
+
+.display-middle {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    -ms-transform: translate(-50%, -50%)
+}
+
+.display-left {
+    position: absolute;
+    top: 50%;
+    left: 0%;
+    transform: translate(0%, -50%);
+    -ms-transform: translate(-0%, -50%)
+}
+
+.display-right {
+    position: absolute;
+    top: 50%;
+    right: 0%;
+    transform: translate(0%, -50%);
+    -ms-transform: translate(0%, -50%)
+}
+
+.display-topmiddle {
+    position: absolute;
+    left: 50%;
+    top: 0;
+    transform: translate(-50%, 0%);
+    -ms-transform: translate(-50%, 0%)
+}
+
+.display-bottommiddle {
+    position: absolute;
+    left: 50%;
+    bottom: 0;
+    transform: translate(-50%, 0%);
+    -ms-transform: translate(-50%, 0%)
+}
