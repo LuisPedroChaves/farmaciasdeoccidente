@@ -1,5 +1,6 @@
 /* You can add global styles to this file, and also import other style files */
 
+@import '@angular/material/prebuilt-themes/deeppurple-amber.css';
 @import '~@angular/material/theming';
 // Define a custom mixin that takes in the current theme
 @mixin theme-color-grabber($theme) {

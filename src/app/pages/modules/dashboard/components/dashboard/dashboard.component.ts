@@ -13,7 +13,7 @@ export class DashboardComponent implements OnInit {
   public mediaMatcher: MediaQueryList = window.matchMedia(`(max-width: ${SMALL_WIDTH_BREAKPOINT}px)`);
 
 
-  constructor(zone: NgZone, public dialog: MatDialog) { 
+  constructor(zone: NgZone, public dialog: MatDialog) {
     this.mediaMatcher.addListener(mql => zone.run(() => {
       this.mediaMatcher = matchMedia(`(max-width: ${SMALL_WIDTH_BREAKPOINT}px)`);
     }));
@@ -23,9 +23,8 @@ export class DashboardComponent implements OnInit {
   }
 
   newCellar() {
-    let dialogRef = this.dialog.open(NewCellarComponent, {
-      height: '400px',
-      width: '600px',
+    const dialogRef = this.dialog.open(NewCellarComponent, {
+      panelClass: 'iea-dialog'
     });
 
     dialogRef.afterClosed().subscribe(result => {
