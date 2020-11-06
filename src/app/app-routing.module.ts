@@ -5,18 +5,18 @@ import { AuthLayoutComponent } from './pages/layouts/auth-layout/auth-layout.com
 import { AppLayoutComponent } from './pages/layouts/app-layout/app-layout.component';
 
 const routes: Routes = [
-  // {
-  //   path: '',
-  //   component: AppLayoutComponent,
-  //   // canActivate: [AuthGuard],
-  //   children: [
-  //     // tslint:disable-next-line: max-line-length
-  //     {
-  //       // path: '', loadChildren: () => import('./pages/modules/dashboard/dashboard.module').then(m => m.DashboardModule),
-  //       // canActivate: [CheckTokenGuard]
-  //     },
-  //   ]
-  // },
+  {
+    path: '',
+    component: AppLayoutComponent,
+    // canActivate: [AuthGuard],
+    children: [
+      // tslint:disable-next-line: max-line-length
+      {
+        path: '', loadChildren: () => import('./pages/modules/dashboard/dashboard.module').then(m => m.DashboardModule),
+        // canActivate: [CheckTokenGuard]
+      },
+    ]
+  },
   {
     path: 'admin',
     component: AdminLayoutComponent,

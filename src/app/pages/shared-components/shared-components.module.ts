@@ -11,13 +11,15 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatListModule } from '@angular/material/list';
 import {MatCheckboxModule} from '@angular/material/checkbox';
+import {MatDialogModule} from '@angular/material/dialog';
 
 /* FLEX ----------------------*/
 import { FlexLayoutModule, CoreModule } from '@angular/flex-layout';
+import { NewCellarComponent } from './new-cellar/new-cellar.component';
 
 
 @NgModule({
-  declarations: [],
+  declarations: [NewCellarComponent],
   imports: [
     CommonModule,
 
@@ -35,6 +37,7 @@ import { FlexLayoutModule, CoreModule } from '@angular/flex-layout';
     MatSidenavModule,
     MatListModule,
     MatCheckboxModule,
+    MatDialogModule,
   ],
   exports: [
     // visibilty
@@ -51,6 +54,7 @@ import { FlexLayoutModule, CoreModule } from '@angular/flex-layout';
     MatSidenavModule,
     MatListModule,
     MatCheckboxModule,
+    MatDialogModule,
 
   ]
 })
