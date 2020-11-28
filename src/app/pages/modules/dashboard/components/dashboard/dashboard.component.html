@@ -2,7 +2,7 @@
     <button (click)="newCellar()" mat-fab color="primary" class="fab mat-elevation-z10">
         <mat-icon>add</mat-icon>
       </button>
-    <div id="cellarscontent" class="cellarcontent" fxFlex="100" fxLayout="row wrap">
+    <div id="cellarscontent" class="cellarcontent" fxFlex="100" fxLayout="row wrap" fxLayout.fxFlex.gt-xs="column">
         <div fxFlex.gt-sm="25" fxFlex.gt-xs="50" fxFlex="100" class="cellar">
             <mat-card fxLayout="row" fxLayoutAlign="start center" matRipple class="cardwidget mat-elevation-z2">
                 <button mat-mini-fab mat-card-icon class="shadow-none widgeticon">

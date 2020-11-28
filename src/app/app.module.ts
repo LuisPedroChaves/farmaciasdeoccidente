@@ -9,12 +9,13 @@ import { AuthLayoutComponent } from './pages/layouts/auth-layout/auth-layout.com
 import { AdminLayoutComponent } from './pages/layouts/admin-layout/admin-layout.component';
 import { AppLayoutComponent } from './pages/layouts/app-layout/app-layout.component';
 
+
 @NgModule({
   declarations: [
     AppComponent,
     AuthLayoutComponent,
     AdminLayoutComponent,
-    AppLayoutComponent
+    AppLayoutComponent,
   ],
   imports: [
     BrowserModule,

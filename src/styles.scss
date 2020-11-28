@@ -18,6 +18,14 @@
     .warnBG {
         background-color: mat-color($warn);
     }
+    .mat-button-toggle {
+        background-color: mat-color($warn);
+        color: mat-color($primary);
+    }
+    .mat-button-toggle-checked {
+        background-color: mat-color($primary);
+        color: mat-color($primary, default-contrast);
+    }
 }
 
 html,

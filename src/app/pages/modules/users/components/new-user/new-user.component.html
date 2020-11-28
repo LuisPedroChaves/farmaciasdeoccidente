@@ -1,0 +1,85 @@
+<header fxLayoutAlign="start center" fxLayout="row wrap" class="header">
+    <h2 style="margin: 0">
+        <mat-icon color="accent">person_add</mat-icon> Nuevo Usuario</h2>
+    <span fxFlex></span>
+    <button mat-icon-button>
+        <mat-icon>close</mat-icon>
+    </button>
+</header>
+<form>
+    <div fxLayoutAlign="start center" data-simplebar fxLayout="row wrap" class="rolespace">
+        <div fxFlex="100" fxLayout="row wrap" fxLayoutAlign="start center" class="input">
+            <div fxFlex="50px" fxLayoutAlign="center center">
+                <mat-icon class="material-icons-outlined" color="accent">person</mat-icon>
+            </div>
+            <div fxFlex>
+                <mat-form-field appearance="standard" class="input-all" color="primary">
+                    <mat-label>Nombre del usuario</mat-label>
+                    <input matInput placeholder="Nombre del usuario" formControlName="name">
+                    <mat-hint>Es el nombre de la persona a la que pertenece el usuario</mat-hint>
+                </mat-form-field>
+            </div>
+        </div>
+        <div fxFlex="100" fxLayout="row wrap" fxLayoutAlign="start center" class="input">
+            <div fxFlex="50px" fxLayoutAlign="center center">
+                <mat-icon class="material-icons-outlined" color="accent">account_circle</mat-icon>
+            </div>
+            <div fxFlex>
+                <mat-form-field appearance="standard" class="input-all" color="primary">
+                    <mat-label>ID del usuario</mat-label>
+                    <input matInput placeholder="Nombre del usuario" formControlName="userName">
+                    <mat-hint>Es el ID que el usuario utiliza para iniciar sesión</mat-hint>
+                </mat-form-field>
+            </div>
+        </div>
+        <div fxFlex="100" fxLayout="row wrap" fxLayoutAlign="start center" class="input">
+            <div fxFlex="50px" fxLayoutAlign="center center">
+                <mat-icon class="material-icons-outlined" color="accent">lock</mat-icon>
+            </div>
+            <div fxFlex>
+                <mat-form-field appearance="standard" class="input-all" color="primary">
+                    <mat-label>Contraseña</mat-label>
+                    <input matInput type="password" placeholder="Nombre del usuario" formControlName="password">
+                    <mat-hint>Es la clave del usuario para iniciar sesión</mat-hint>
+                </mat-form-field>
+            </div>
+        </div>
+        <div fxFlex="100" fxLayout="row wrap" fxLayoutAlign="start center" class="input">
+            <div fxFlex="50px" fxLayoutAlign="center center">
+                <mat-icon class="material-icons-outlined" color="accent">store</mat-icon>
+            </div>
+            <div fxFlex>
+                <mat-form-field appearance="standard" class="input-all" color="primary">
+                    <mat-label>Sucursales</mat-label>
+                    <mat-select placeholder="Seleccione el Rol" formControlName="_cellar">
+                        <mat-option> c.name }}</mat-option>
+                    </mat-select>
+                    <mat-hint>Son las sucursales a las que el usuario tiene acceso. (Vácio para tener acceso a todas)</mat-hint>
+                </mat-form-field>
+            </div>
+        </div>
+        <div fxFlex="100" fxLayout="row wrap" fxLayoutAlign="start center" class="input">
+            <div fxFlex="50px" fxLayoutAlign="center center">
+                <mat-icon class="material-icons-outlined" color="accent">assignment</mat-icon>
+            </div>
+            <div fxFlex>
+                <mat-form-field appearance="standard" class="input-all" color="primary">
+                    <mat-label>Rol</mat-label>
+                    <mat-select placeholder="Seleccione el Rol" formControlName="_role">
+                        <mat-option> r.roleName }}</mat-option>
+                    </mat-select>
+                    <mat-hint>Asigna los permisos del usuario</mat-hint>
+                </mat-form-field>
+            </div>
+        </div>
+        <br>
+        <mat-divider></mat-divider>
+        <br>
+        <div fxFlex="100" fxLayout="row wrap">
+            <span fxFlex></span>
+            <button mat-flat-button color="accent">
+            GUARDAR
+        </button>
+        </div>
+    </div>
+</form>

@@ -52,10 +52,12 @@
                         "styles": [
                             "src/styles.scss",
                             "src/assets/styles/themes/theme.scss",
-                            "src/assets/styles/app.scss"
+                            "src/assets/styles/app.scss",
+                            "node_modules/simplebar/dist/simplebar.css"
                         ],
                         "scripts": [
-                            "src/assets/js/particles.js/particles.min.js"
+                            "src/assets/js/particles.js/particles.min.js",
+                            "node_modules/simplebar/dist/simplebar.js"
                         ]
                     },
                     "configurations": {

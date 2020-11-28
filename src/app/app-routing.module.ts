@@ -27,6 +27,16 @@ const routes: Routes = [
         path: '', pathMatch: 'full', loadChildren: () => import('./pages/modules/dashboard/dashboard.module').then(m => m.DashboardModule),
         // canActivate: [CheckTokenGuard]
       },
+      {
+        // tslint:disable-next-line: max-line-length
+        path: 'users', pathMatch: 'full', loadChildren: () => import('./pages/modules/users/users.module').then(m => m.UsersModule),
+        // canActivate: [CheckTokenGuard]
+      },
+      {
+        // tslint:disable-next-line: max-line-length
+        path: 'employees', pathMatch: 'full', loadChildren: () => import('./pages/modules/employees/employees.module').then(m => m.EmployeesModule),
+        // canActivate: [CheckTokenGuard]
+      },
     ]
   },
   {

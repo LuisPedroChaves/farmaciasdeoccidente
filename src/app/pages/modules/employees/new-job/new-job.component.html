@@ -1,0 +1,62 @@
+<div class="farmacia">
+
+    <header fxLayout="row wrap" fxLayoutAlign="start center" class="header">
+        <h2 style="margin: 0;" class="h2"> Nuevo Puesto</h2>
+        <span fxFlex></span>
+        <button mat-icon-button>
+            <mat-icon>close</mat-icon>
+        </button>
+    </header>
+    <mat-divider></mat-divider>
+    <div class="clientspace" data-simplebar>
+        <div fxLayout="row wrap" fxLayoutAlign="start center" style="margin-top: 8px;">
+            <div fxFlex="50px" fxLayoutAlign="center center" fxHide.xs></div>
+            <div fxFlex fxLayout="row wrap">
+                <mat-form-field color="primary" class="width-all" appearance="standard">
+                    <mat-label>Nombre del Puesto</mat-label>
+                    <input type="text" matInput placeholder="Ingrese el nombre del empleado">
+                </mat-form-field>
+            </div>
+            <div fxFlex="50px" fxLayoutAlign="center center" fxHide.xs></div>
+        </div>
+        <div fxLayout="row wrap" fxLayoutAlign="start center" style="margin-top: 8px;">
+            <div fxFlex="50px" fxLayoutAlign="center center" fxHide.xs></div>
+            <div fxFlex fxLayout="row wrap">
+                <mat-form-field color="primary" class="width-all" appearance="standard">
+                    <mat-label>Tipo de salario</mat-label>
+                    <mat-select>
+                        <mat-option value="HORAS">Por Hora</mat-option>
+                        <mat-option value="MES">Mensual</mat-option>
+                        <mat-option value="QUINCENA">Por Quincena</mat-option>
+                        <mat-option value="DIA">Por Día</mat-option>
+                        <mat-option value="SEMANA">Semanal</mat-option>
+                        <mat-option value="TRABAJO">Por Trabajo</mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+            <div fxFlex="50px" fxLayoutAlign="center center" fxHide.xs></div>
+        </div>
+        <div fxLayout="row wrap" fxLayoutAlign="start center" style="margin-top: 8px;">
+            <div fxFlex="50px" fxLayoutAlign="center center" fxHide.xs></div>
+            <div fxFlex fxLayout="row wrap">
+                <mat-form-field color="primary" class="width-all" appearance="standard">
+                    <mat-label>Salario Base</mat-label>
+                    <span matPrefix><b>Q. </b></span>
+                    <input type="text" matInput placeholder="Ingrese el nombre del empleado">
+                </mat-form-field>
+            </div>
+            <div fxFlex="50px" fxLayoutAlign="center center" fxHide.xs></div>
+        </div>
+
+    </div>
+    <mat-divider></mat-divider>
+    <div fxLayout="row wrap" class="header">
+        <button mat-button class="info-row">
+            CANCELAR
+        </button>
+        <span fxFlex></span>
+        <button mat-button color="primary">
+            GUARDAR 
+        </button>
+    </div>
+</div>

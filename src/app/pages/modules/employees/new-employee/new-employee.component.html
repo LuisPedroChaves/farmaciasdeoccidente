@@ -1,0 +1,146 @@
+<div class="farmacia">
+
+    <header fxLayout="row wrap" fxLayoutAlign="center center" class="header">
+        <h2 style="margin: 0;" class="h2">Nuevo Empleado</h2>
+        <span fxFlex></span>
+        <button mat-icon-button>
+            <mat-icon>close</mat-icon>
+        </button>
+    </header>
+    <mat-divider></mat-divider>
+    <div class="clientspace" data-simplebar>
+        <div fxLayout="row wrap" fxLayoutAlign="start center" style="margin-top: 8px;">
+            <div fxFlex="100px" fxHide.xs>
+                <mat-icon color="accent" class="material-icons-outlined grayicon">person</mat-icon>
+            </div>
+            <div fxFlex fxLayout="row wrap">
+                <div fxFlex="100" class="inputpadding">
+                    <mat-form-field color="primary" class="width-all">
+                        <mat-label>Nombre</mat-label>
+                        <input type="text" matInput placeholder="Ingrese el nombre del empleado">
+                    </mat-form-field>
+                </div>
+                <div fxFlex="100" class="inputpadding">
+
+                    <mat-radio-group aria-label="Select an option" color="warn">
+                        <mat-radio-button class="radio" value="Masculino">Masculino</mat-radio-button>
+                        <mat-radio-button class="radio" value="Femenino">Femenino</mat-radio-button>
+                    </mat-radio-group>
+                </div>
+
+            </div>
+            <div fxFlex="100px"></div>
+        </div>
+        <div fxLayout="row wrap" fxLayoutAlign="start center" style="margin-top: 8px;">
+            <div fxFlex="100px" fxHide.xs>
+                <mat-icon color="accent" class="material-icons-outlined grayicon">payment
+                </mat-icon>
+            </div>
+            <div fxFlex fxLayout="row wrap">
+                <div fxFlex="50%" fxFlex.xs="100%" class="inputpadding">
+                    <mat-form-field color="primary" class="width-all">
+                        <mat-label>DPI</mat-label>
+                        <input type="text" matInput placeholder="Ingrese el número de DPI">
+                    </mat-form-field>
+                </div>
+                <div fxFlex="50%" fxFlex.xs="100%" class="inputpadding">
+                    <mat-form-field color="primary" class="width-all">
+                        <mat-label color="primary">Fecha de Nacimiento</mat-label>
+                        <input matInput [matDatepicker]="picker">
+                        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                        <mat-datepicker #picker></mat-datepicker>
+                    </mat-form-field>
+                </div>
+
+            </div>
+            <div fxFlex="100px"></div>
+        </div>
+        <div fxLayout="row wrap" style="margin-top: 8px;">
+            <div fxFlex="100px" fxHide.xs>
+                <mat-icon color="accent" class="material-icons-outlined grayicon">
+                    phone
+                </mat-icon>
+            </div>
+            <div fxFlex fxLayout="row wrap">
+                <div fxFlex="50%" fxFlex.xs="100%" class="inputpadding">
+                    <mat-form-field color="primary" class="width-all">
+                        <mat-label>Teléfono</mat-label>
+                        <input type="text" matInput placeholder="Ingrese el número de teléfono">
+                    </mat-form-field>
+                </div>
+                <div fxFlex="50%" fxFlex.xs="100%" class="inputpadding">
+                    <mat-form-field color="primary" class="width-all">
+                        <mat-label>Dirección</mat-label>
+                        <input type="text" matInput placeholder="Ingrese la Dirección">
+                    </mat-form-field>
+                </div>
+
+            </div>
+            <div fxFlex="100px"></div>
+        </div>
+        <div fxLayout="row wrap" style="margin-top: 8px;">
+            <div fxFlex="100px" fxHide.xs>
+                <mat-icon color="accent" class="material-icons-outlined grayicon">
+                    work_outline
+                </mat-icon>
+            </div>
+            <div fxFlex fxLayout="row wrap">
+                <div fxFlex="50%" fxFlex.xs="100%" class="inputpadding">
+                    <mat-form-field color="primary" class="width-all">
+                        <mat-label>Puesto de Trabajo</mat-label>
+                        <mat-select>
+                            <mat-option>
+                                No hay ningún puesto agregado
+                            </mat-option>
+                            <div>
+                                <mat-option>
+                                    j.name }}
+                                </mat-option>
+                            </div>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+                <div fxFlex="50%" fxFlex.xs="100%" class="inputpadding">
+                    <mat-form-field color="primary" class="width-all">
+                        <mat-label>Salario</mat-label>
+                        <span matPrefix><b>Q.</b></span>
+                        <input type="text" matInput placeholder="Ingrese el salario">
+                    </mat-form-field>
+                </div>
+
+            </div>
+            <div fxFlex="100px"></div>
+        </div>
+        <div fxLayout="row wrap">
+            <div fxFlex="100px" fxHide.xs>
+                <mat-icon color="accent" class="material-icons-outlined grayicon">
+                    store
+                </mat-icon>
+            </div>
+            <div fxFlex fxLayout="row wrap">
+                <div fxFlex="100">
+                    <mat-form-field color="primary" class="width-all">
+                        <mat-label>Almacén</mat-label>
+                        <mat-select>
+
+                            <mat-option>
+                                j.name }}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+            </div>
+            <div fxFlex="100px" fxHide.xs></div>
+        </div>
+    </div>
+    <mat-divider></mat-divider>
+    <div fxLayout="row" class="header">
+        <button mat-button class="info-row">
+            CANCELAR
+        </button>
+        <span fxFlex></span>
+        <button mat-button color="primary">
+            GUARDAR
+        </button>
+    </div>
+</div>

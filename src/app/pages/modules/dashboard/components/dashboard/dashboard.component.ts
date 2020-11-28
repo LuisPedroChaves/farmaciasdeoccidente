@@ -24,6 +24,7 @@ export class DashboardComponent implements OnInit {
 
   newCellar() {
     const dialogRef = this.dialog.open(NewCellarComponent, {
+      width: '600px',
       panelClass: 'iea-dialog'
     });
 

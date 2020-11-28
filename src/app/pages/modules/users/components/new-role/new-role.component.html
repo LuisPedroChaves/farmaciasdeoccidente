@@ -1,0 +1,89 @@
+<header fxLayoutAlign="start center" fxLayout="row wrap" class="header">
+    <h2 style="margin: 0">
+        <mat-icon color="accent">add_circle</mat-icon> Nuevo Rol</h2>
+    <span fxFlex></span>
+    <button mat-icon-button>
+        <mat-icon>close</mat-icon>
+    </button>
+</header>
+<div fxLayoutAlign="start center" data-simplebar fxLayout="row wrap" class="rolespace">
+    <div fxFlex="100" fxLayout="row wrap" fxLayoutAlign="start center">
+        <mat-form-field fxFlex color="primary" style="font-size: 16px;">
+            <mat-label>Nombre del Rol</mat-label>
+            <input matInput type="text" placeholder="Ingrese el nombre del rol">
+        </mat-form-field>
+        <mat-button-toggle-group appearance="legacy" name="roltype" style="margin-left: 8px;">
+            <mat-button-toggle value="FACTORY"><b>bodega</b></mat-button-toggle>
+            <mat-button-toggle value="SHOP"><b>Farmacia</b></mat-button-toggle>
+            <mat-button-toggle value="ADMIN"><b>Administrativo</b></mat-button-toggle>
+        </mat-button-toggle-group>
+    </div>
+    <mat-divider></mat-divider>
+    <br>
+    <div fxFlex="100">
+        <mat-expansion-panel *ngFor="let module of newRole.modules; let m = index" id="epn{{ m }}" [expanded]="allExpandState" style="margin-bottom: 15px !important">
+            <mat-expansion-panel-header>
+                <mat-panel-title>
+                    <mat-checkbox name="t-us-nr-lg-001{{m}}" color="warn" (click)="$event.stopPropagation();">
+                        <b style="font-size: 16px; margin-left: 10px"> {{ module.label }}</b>
+                    </mat-checkbox>
+
+                </mat-panel-title>
+            </mat-expansion-panel-header>
+            <div id="r{{m}}" class="submodules">
+                <div *ngIf="module.subModules">
+                    <div *ngFor="let sb of module.subModules; let in = index">
+                        <div class="sbSquare">
+                            <mat-checkbox color="warn">{{ sb.label }}</mat-checkbox>
+                        </div>
+                        <div *ngIf="sb.features">
+                            <div *ngFor="let feature of sb.features;" style="margin-bottom: 3px;" fxLayout="row" fxLayoutWrap="wrap" fxLayoutAlign="start center">
+                                <div fxFlex="30">
+                                    {{ feature.label }}
+                                </div>
+                                <div fxFlex style="padding-left: 10px">
+                                    <!-- [disabled]="verifyDependencies(feature)" -->
+                                    <mat-select class="input-all feature-select" required="true">
+                                        <mat-option *ngFor="let o of feature.options; let i = index" [value]="o">
+                                            <span *ngIf="o===0">Desactivado</span>
+                                            <span *ngIf="o===1">Leer/Ver</span>
+                                            <span *ngIf="o===2">Modificar</span>
+                                            <span *ngIf="o===3">Crear/Eliminar</span>
+                                            <span *ngIf="o===4">Activado</span>
+                                        </mat-option>
+                                    </mat-select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div *ngIf="module.features">
+                    <div *ngFor="let feature of module.features;" style="margin-bottom: 3px;" fxLayout="row" fxLayoutWrap="wrap" fxLayoutAlign="start center">
+                        <div fxFlex="30">
+                            {{ feature.label }}
+                        </div>
+                        <div fxFlex="70" style="padding-left: 10px">
+                            <mat-select class="input-all feature-select" required="true">
+                                <mat-option *ngFor="let o of feature.options; let i = index" [value]="o">
+                                    <span *ngIf="i===0">Desactivado</span>
+                                    <span *ngIf="i===1">Leer/Ver</span>
+                                    <span *ngIf="i===2">Modificar</span>
+                                    <span *ngIf="i===3">Crear/Eliminar</span>
+                                </mat-option>
+                            </mat-select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </mat-expansion-panel>
+    </div>
+    <mat-divider></mat-divider>
+    <br>
+    <div fxFlex="100" fxLayout="row wrap">
+        <span fxFlex></span>
+        <button mat-flat-button color="accent">
+        GUARDAR
+      </button>
+    </div>
+</div>
