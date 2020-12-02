@@ -1,78 +1,42 @@
-<div id="wrapper" class="background" style="height: 100%">
-    <mat-sidenav-container [ngClass]="{'component-sidebar-lg': !mediaMatcher.matches, 'component-sidebar-sm': mediaMatcher.matches}">
-        <mat-sidenav opened="true" mode="side" style="border-right: 1px solid rgba(0,0,0,0.1);">
-            <mat-tab-group color="primary">
-                <mat-tab>
-                    <ng-template matTabLabel>
-                        <mat-icon class="material-icons-outlined" color="primary" style="margin-left: 10px;">people</mat-icon><span>Usuarios</span> </ng-template>
-                    <div class="options-header" fxLayout="row wrap" fxLayoutAlign="start center">
-                        <mat-form-field fxFlex="60" appearance="outline" class="findinput" style="font-size: 12px;">
-                            <mat-label>Buscar</mat-label>
-                            <input matInput placeholder="Búsqueda rápida" autocomplete="off">
-                            <mat-icon matSuffix>search</mat-icon>
-                        </mat-form-field>
-                        <button (click)="openPanel('newUser')" fxFlex mat-button mat-flat-button color="primary" style="margin-left: 5px;">
-                            NUEVO
-                        </button>
-                    </div>
-                    <div class="content-users" data-simplebar>
-                        <mat-nav-list style="padding-top: 0">
-                            <mat-list-item (click)="editUser()">
-                                <mat-icon class="grayicon material-icons-outlined" color="accent" mat-list-icon>person</mat-icon>
-                                <h4 mat-line><b>Punto de Venta</b></h4>
-                                <p mat-line class="mat-text-muted text-md">Store</p>
+<div [ngClass]="{ 'app': !smallScreen, 'app-sm': smallScreen } ">
+    <div class="section-content">
+        <div>
+            <header class="module-header" [ngClass]="{'padding-25': !smallScreen, 'padding-15': smallScreen }" fxLayoutAlign="start center" fxLayout="row wrap">
+                <h1 class="product-font ma-0 module-title">Usuarios y Permisos</h1>
+                <span fxFlex></span>
+                <button mat-icon-button (click)="sidenavusers.toggle()" *ngIf="smallScreen"><mat-icon>menu</mat-icon></button>
+            </header>
+            <mat-divider></mat-divider>
+
+            <div fxLayout="row wrap">
+                <mat-sidenav-container fxFill class="module-container">
+                    <mat-sidenav disableClose="true" #sidenavusers [mode]="smallScreen ? 'over' : 'side'" [opened]="!smallScreen" class="module-sidebar module-list-sidebar">
+                        <mat-nav-list class="navigation navlist submenu-list">
+                            <mat-list-item class="module-link component-link">
+                                <mat-icon mat-list-icon class="material-icons-outlined">people</mat-icon>
+                                <span mat-line>Usuarios del sistema</span>
+                            </mat-list-item>
+                            <mat-list-item class="module-link component-link">
+                                <mat-icon mat-list-icon class="material-icons-outlined">vpn_key</mat-icon>
+                                <span mat-line>Roles y Permisos</span>
+                            </mat-list-item>
+                            <mat-list-item class="module-link component-link">
+                                <mat-icon mat-list-icon class="material-icons-outlined">business</mat-icon>
+                                <span mat-line>Empresas</span>
                             </mat-list-item>
                         </mat-nav-list>
-                        <!-- <div fxFlex="100" fxLayout="column" class="content-users" fxLayoutAlign="center center">
-                            <mat-icon class="grayicon material-icons-outlined" mat-list-icon>person</mat-icon>
-                            <span class="grayicon">No hay usuarios agregados</span>
-                        </div> -->
-                    </div>
-                </mat-tab>
-                <mat-tab>
-                    <ng-template matTabLabel>
-                        <mat-icon class="material-icons-outlined" color="primary" style="margin-left: 10px;">assignment</mat-icon><span>Roles</span> </ng-template>
-                    <div class="options-header" fxLayoutAlign="start center">
-                        <mat-form-field fxFlex="70" appearance="outline" class="findinput" style="font-size: 12px;">
-                            <mat-label>Buscar</mat-label>
-                            <input matInput placeholder="Búsqueda rápida" autocomplete="off">
-                            <mat-icon matSuffix>search</mat-icon>
-                        </mat-form-field>
-                        <button (click)="openPanel('newRole')" fxFlex mat-button mat-flat-button color="primary" style="margin-left: 5px;">
-                            NUEVO
-                        </button>
-                    </div>
-                    <div class="content-users" data-simplebar>
-                        <mat-nav-list style="padding-top: 0">
-                            <mat-list-item (click)="editRole()">
-                                <mat-icon class="grayicon material-icons-outlined" color="accent" mat-list-icon>assignment</mat-icon>
-                                <h4 mat-line><b>Farmacia</b></h4>
-                                <p mat-line class="mat-text-muted">
-                                    Punto de Venta
-                                </p>
-                            </mat-list-item>
-                        </mat-nav-list>
-                        <!-- <div fxFlex="100" fxLayout="column" class="content-users" fxLayoutAlign="center center">
-                            <mat-icon class="grayicon material-icons-outlined" mat-list-icon>assignment_late</mat-icon>
-                            <span class="grayicon">No hay roles agregados</span>
-                        </div> -->
-                    </div>
-                </mat-tab>
-            </mat-tab-group>
-        </mat-sidenav>
-        <div class="example-sidenav-content">
-            <div *ngIf="newRoleVisible" class="example-sidenav-content whitebg">
-                <app-new-role [deviceXs]="devicesXs"></app-new-role>
-            </div>
-            <div *ngIf="roleDetailsVisible" class="example-sidenav-content whitebg">
-                <app-edit-role [deviceXs]="devicesXs"></app-edit-role>
-            </div>
-            <div *ngIf="newUserVisible" class="example-sidenav-content whitebg">
-                <app-new-user [deviceXs]="devicesXs"></app-new-user>
-            </div>
-            <div *ngIf="userDetailsVisible" class="example-sidenav-content whitebg">
-                <app-user-details [deviceXs]="devicesXs"></app-user-details>
+                    </mat-sidenav>
+                    <mat-sidenav-content>
+                        <div class="module-container" data-simplebar>
+                            <app-user-details *ngIf="tab === 'userlist'" [smallScreen]="smallScreen"></app-user-details>
+                            <app-new-user *ngIf="tab === 'new-user' && roles !== undefined" [roles]="roles" [smallScreen]="smallScreen"></app-new-user>
+                            <app-user-details *ngIf="tab === 'user-details' && currentUser !== undefined && roles !== undefined" [roles]="roles" [currentUser]="currentUser" [smallScreen]="smallScreen"></app-user-details>
+                            <app-edit-role *ngIf="tab === 'edit-role' && currentRole !== undefined" [currentRole]="currentRole" [smallScreen]="smallScreen" [currentPermissions]="'CPO'"></app-edit-role>
+                            <app-new-role *ngIf="tab === 'new-role' && companies !== undefined" [companies]="companies" [smallScreen]="smallScreen"></app-new-role>
+                        </div>
+                    </mat-sidenav-content>
+                </mat-sidenav-container>
             </div>
         </div>
-    </mat-sidenav-container>
+    </div>
 </div>

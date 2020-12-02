@@ -1,139 +1,79 @@
-<header fxLayoutAlign="start center" fxLayout="row wrap" class="header">
-    <h2 style="margin: 0">
-        <mat-icon class="iconHeader" color="accent">assignment</mat-icon>Editar Usuario</h2>
-    <span fxFlex></span>
-    <button mat-icon-button>
+<div class="new-header" fxLayout="row wrap" fxLayoutAlign="start center">
+    <button mat-icon-button class="close-button">
         <mat-icon>close</mat-icon>
     </button>
-</header>
-<form>
-    <div fxLayoutAlign="start center" data-simplebar fxLayout="row wrap" class="rolespace">
-        <div fxFlex="100" fxLayout="row wrap" fxLayoutAlign="start center" class="input">
-            <div fxFlex="50px" fxLayoutAlign="center center">
-                <mat-icon color="accent" class="material-icons-outlined">person</mat-icon>
+    <h2 class="ma-0">Detalles de Usuario</h2>
+    <span fxFlex></span>
+
+</div>
+<div class="container-form">
+
+    <div fxLayout="row wrap">
+        <div [fxFlex]="smallScreen ? 100 : '200px'" fxLayoutAlign="center start" class="text-center form-paddin">
+            <div class="image-edit input-section">
+                <div class="avatarimageStep">
+                    <img [src]="cu ? avatars[cu].image : avatars[0].image" alt="" class="iconimage">
+                </div>
+                <a [matMenuTriggerFor]="menu" mat-icon-button mat-raised-button color="accent" class="display-bottom-right">
+                    <mat-icon>create</mat-icon>
+                </a>
             </div>
-            <div fxFlex>
-                <mat-form-field appearance="standard" class="input-all" color="primary">
-                    <mat-label>Nombre del usuario</mat-label>
-                    <input matInput placeholder="Nombre del usuario" formControlName="name">
-                    <mat-hint>Es el nombre de la persona a la que pertenece el usuario</mat-hint>
-                </mat-form-field>
-            </div>
+            <mat-menu #menu="matMenu" class="avatarmenu">
+                <div fxLayout="row wrap" class="menu-images">
+                    <div class="avataroption" *ngFor="let a of avatars">
+                        <img [src]="a.image" class="avatar" (click)="cu = a.index">
+                    </div>
+                </div>
+            </mat-menu>
         </div>
-        <div fxFlex="100" fxLayout="row wrap" fxLayoutAlign="start center" class="input">
-            <div fxFlex="50px" fxLayoutAlign="center center">
-                <mat-icon color="accent" class="material-icons-outlined">account_circle</mat-icon>
-            </div>
-            <div fxFlex>
-                <mat-form-field appearance="standard" class="input-all" color="primary">
-                    <mat-label>ID del usuario</mat-label>
-                    <input matInput placeholder="Nombre del usuario" formControlName="userName">
-                    <mat-hint>Es el ID que el usuario utiliza para iniciar sesión</mat-hint>
-                </mat-form-field>
-            </div>
-        </div>
-        <div fxFlex="100" fxLayout="row wrap" fxLayoutAlign="start center" class="input">
-            <div fxFlex="50px" fxLayoutAlign="center center">
-                <mat-icon color="accent" class="material-icons-outlined">lock</mat-icon>
-            </div>
-            <div fxFlex>
-                <mat-form-field appearance="standard" class="input-all" color="primary">
-                    <mat-label>Contraseña</mat-label>
-                    <input matInput type="password" placeholder="Nombre del usuario" formControlName="password">
-                    <mat-hint>Es la clave del usuario para iniciar sesión</mat-hint>
-                </mat-form-field>
-            </div>
-        </div>
-        <div fxFlex="100" fxLayout="row wrap" fxLayoutAlign="start center" class="input">
-            <div fxFlex="50px" fxLayoutAlign="center center">
-                <mat-icon color="accent" class="material-icons-outlined">store</mat-icon>
-            </div>
-            <div fxFlex>
-                <mat-form-field appearance="standard" class="input-all" color="primary">
-                    <mat-label>Sucursales</mat-label>
-                    <mat-select placeholder="Seleccione el Rol" formControlName="_cellar">
-                        <mat-option>c.name }}</mat-option>
-                    </mat-select>
-                    <mat-hint>Es la sucursal a la que el usuario tiene acceso. (Vácio para tener acceso a todas)</mat-hint>
-                </mat-form-field>
-            </div>
-        </div>
-        <div fxFlex="100" fxLayout="row wrap" fxLayoutAlign="start center" class="input">
-            <div fxFlex="50px" fxLayoutAlign="center center">
-                <mat-icon color="accent" class="material-icons-outlined">assignment</mat-icon>
-            </div>
-            <div fxFlex>
-                <mat-form-field appearance="standard" class="input-all" color="primary">
-                    <mat-label>Rol</mat-label>
-                    <mat-select placeholder="Seleccione el Rol" formControlName="_role">
-                        <mat-option>r.roleName }}</mat-option>
-                    </mat-select>
-                    <mat-hint>Asigna los permisos del usuario</mat-hint>
-                </mat-form-field>
-            </div>
-        </div>
-        <br>
-        <mat-divider></mat-divider>
-        <br>
-        <div fxFlex="100" fxLayout="row wrap">
-            <button mat-flat-button class="danger">
-              ELIMINAR
-          </button>
-            <span fxFlex></span>
-            <button mat-flat-button class="option-button-2">
-            CANCELAR
-        </button>
-            <button mat-flat-button color="accent">
-            GUARDAR
-        </button>
+        <div fxFlex class="form-paddin">
+            <form autocomplete="off">
+                <div class="input-section">
+                    <mat-form-field appearance="outline" class="input-all" color="primary">
+                        <mat-label>Nombre y Apellido</mat-label>
+                        <input matInput type="text" placeholder="Ingrese la información de la persona" formControlName="name" class="text-md">
+                        <mat-error *ngIf="form.controls.name.invalid">Debe Ingresar un nombre y apellido válido</mat-error>
+                        <mat-hint>Ingrese el nombre y apellido de la persona a la que pertenece el usuario</mat-hint>
+                    </mat-form-field>
+                </div>
+                <div class="input-section">
+                    <mat-form-field appearance="outline" class="input-all" color="primary">
+                        <mat-label>Usuario</mat-label>
+                        <input matInput type="text" placeholder="Ingrese el nombre del usuario" formControlName="username" class="text-md">
+                        <mat-error *ngIf="form.controls.username.invalid">Debe Ingresar un nombre de usuario válido</mat-error>
+                        <mat-hint>El usuario no puede contener espacios ni caracteres especiales</mat-hint>
+                    </mat-form-field>
+                </div>
+                <div class="input-section">
+                    <mat-form-field appearance="outline" class="input-all" color="primary">
+                        <mat-label>E-Mail</mat-label>
+                        <input matInput type="text" placeholder="Ingrese el nombre Correo Electrónico del usuario" formControlName="email" class="text-md">
+                        <mat-error>Debe ingresar un correo electrónico válido</mat-error>
+                        <mat-hint>El correo es necesario para recuperar la contraseña.</mat-hint>
+                    </mat-form-field>
+                </div>
+                <div class="input-section">
+                    <mat-form-field appearance="outline" class="input-all" color="primary">
+                        <mat-label>Rol Asignado</mat-label>
+                        <mat-select placeholder="Seleccione el Rol" class="text-md" formControlName="role">
+                            <mat-option *ngFor="let r of roles" [value]="r._id">{{r.name}}</mat-option>
+                        </mat-select>
+                        <mat-error *ngIf="form.controls.name.invalid">Debe Seleccionar un rol</mat-error>
+                        <mat-hint>Seleccione un rol creado para asignar los permisos y accesos al usuario</mat-hint>
+                    </mat-form-field>
+                </div>
+                <br><br>
+                <div class="input-section" fxLayout="row wrap">
+                    <button mat-stroked-button color="primary" class="product-font">Cancelar</button> &nbsp;
+                    <button mat-flat-button [disabled]="this.form.invalid" color="primary" class="product-font">Guardar Cambios</button>
+                    <span fxFlex></span>
+                    <button mat-stroked-button color="warn" class="product-font">
+                        <mat-icon class="material-icons-outlined svg-in-button">delete</mat-icon>
+                        {{ smallScreen ? '':'Eliminar Usuario'}}
+                    </button>
+                </div>
+            </form>
+
         </div>
     </div>
-</form>
-<div>
-    <div fxLayoutAlign="start center" data-simplebar fxLayout="row wrap" class="rolespace">
-        <div fxFlex="100" fxLayout="row wrap" fxLayoutAlign="start center" class="input">
-            <div fxFlex="60px" fxLayoutAlign="center center">
-                <mat-icon color="accent" class="material-icons-outlined">person</mat-icon>
-            </div>
-            <div fxFlex>
-                <h1 style="margin: 0"><b>originalUser.name }}</b></h1>
-            </div>
-            <button mat-icon-button class="option-button-2">
-                  <mat-icon color="accent" class="material-icons-outlained">create</mat-icon>
-              </button>
-        </div>
-        <div fxFlex="100" fxLayout="row wrap" fxLayoutAlign="start center" class="input">
-            <div fxFlex="60px" fxLayoutAlign="center center">
-                <mat-icon color="accent" class="material-icons-outlined">account_circle</mat-icon>
-            </div>
-            <div fxFlex class="option-button-1">
-                <h2 style="margin: 0">originalUser.userName }}</h2>
-            </div>
-        </div>
-        <div fxFlex="100" fxLayout="row wrap" fxLayoutAlign="start center" class="input">
-            <div fxFlex="60px" fxLayoutAlign="center center">
-                <mat-icon color="accent" class="material-icons-outlined">lock</mat-icon>
-            </div>
-            <div fxFlex class="option-button-1">
-                <h2 style="margin: 0">*********</h2>
-            </div>
-        </div>
-        <div fxFlex="100" fxLayout="row wrap" fxLayoutAlign="start center" class="input">
-            <div fxFlex="60px" fxLayoutAlign="center center">
-                <mat-icon color="accent" class="material-icons-outlined">store</mat-icon>
-            </div>
-            <div fxFlex class="option-button-1">
-                <h2 style="margin: 0"> originalUser._cellar.name }}</h2>
-            </div>
-        </div>
-        <div fxFlex="100" fxLayout="row wrap" fxLayoutAlign="start center" class="input">
-            <div fxFlex="60px" fxLayoutAlign="center center">
-                <mat-icon color="accent" class="material-icons-outlined">assignment</mat-icon>
-            </div>
-            <div fxFlex class="option-button-1">
-                <h2 style="margin: 0">originalUser._role.roleName }}</h2>
-            </div>
-        </div>
-    </div>
-    <mat-divider></mat-divider>
 </div>

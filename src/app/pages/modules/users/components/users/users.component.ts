@@ -1,84 +1,61 @@
-import { Component, NgZone, OnDestroy, OnInit } from '@angular/core';
-import { MediaChange, MediaObserver } from '@angular/flex-layout';
+import { Component, OnInit, NgZone, ViewChild, OnDestroy, AfterContentInit } from '@angular/core';
+import { MatSidenav } from '@angular/material/sidenav';
 import { Subscription } from 'rxjs';
-const SMALL_WIDTH_BREAKPOINT = 200;
-
+import { filter } from 'rxjs/operators';
+const SMALL_WIDTH_BREAKPOINT = 960;
 @Component({
   selector: 'app-users',
   templateUrl: './users.component.html',
-  styleUrls: ['./users.component.scss'],
+  styleUrls: ['./users.component.scss']
 })
 export class UsersComponent implements OnInit, OnDestroy {
-  public mediaMatcher: MediaQueryList = window.matchMedia(
-    `(max-width: ${SMALL_WIDTH_BREAKPOINT}px)`
-  );
-  newRoleVisible = false;
-  roleDetailsVisible = false;
-  newUserVisible = false;
-  userDetailsVisible = false;
-  mediaSub: Subscription;
-  devicesXs: boolean;
-  constructor(zone: NgZone, public mediaObserver: MediaObserver) {
-    // tslint:disable-next-line: deprecation
-    this.mediaMatcher.addListener((mql) =>
-      zone.run(() => {
-        this.mediaMatcher = matchMedia(
-          `(max-width: ${SMALL_WIDTH_BREAKPOINT}px)`
-        );
-      })
-    );
+  // screen--------------------------------------------------------------------------------------------
+  // subscriptions ------------------
+configSubscription: Subscription;
+  smallScreen = window.innerWidth < 960 ? true : false;
+  tab = 'userlist';
+
+
+  companySubscription: Subscription;
+  @ViewChild('sidenavusers') sidenavusers: MatSidenav;
+
+  rolesSubscription: Subscription;
+  store: any;
+  rolesService: any;
+  roles: any;
+  companiesService: any;
+  companies: any;
+  config: any;
+  currentUser: string;
+  currentRole: string;
+  // HOOK FUNCTIONS //////////////////////////////////////////////////////////////////////////////////////////
+  // tslint:disable-next-line: max-line-length
+  constructor() {
+
   }
 
   ngOnInit(): void {
-    this.mediaSub = this.mediaObserver.media$.subscribe(
-      (result: MediaChange) => {
-        this.devicesXs = result.mqAlias === 'xs' ? true : false;
-      }
-    );
+
   }
 
-  ngOnDestroy(): void {
-    this.mediaSub.unsubscribe();
+  // tslint:disable-next-line: typedef
+
+  // tslint:disable-next-line: typedef
+  ngOnDestroy() {
+    this.rolesSubscription?.unsubscribe();
+    this.companySubscription?.unsubscribe();
+    this.configSubscription?.unsubscribe();
   }
 
-  editUser(): void {
-    this.openPanel('editUser');
+
+
+
+  // EVENT FUNCTIONS ////////////////////////////////////////////////////////////////////////////////////////
+  // tslint:disable-next-line: typedef
+  handleEvent() {
   }
 
-  editRole(): void {
-    this.openPanel('editRole');
+  // tslint:disable-next-line: typedef
+    // tslint:disable-next-line: align
   }
 
-  openPanel(panel: string): void {
-    this.newRoleVisible = false;
-    this.roleDetailsVisible = false;
-    this.newUserVisible = false;
-    this.userDetailsVisible = false;
-
-    switch (panel) {
-      case 'newRole':
-        this.newRoleVisible = true;
-        break;
-      case 'editRole':
-        this.roleDetailsVisible = true;
-        break;
-      case 'newUser':
-        this.newUserVisible = true;
-        break;
-      case 'editUser':
-        this.userDetailsVisible = true;
-        break;
-    }
-  }
-
-  // handleEvent(e: ControlEvent) {
-  //   switch (e.Event) {
-  //     case this.config.EVENT_CLOSE_WINDOWS:
-  //       this.newRoleVisible = false;
-  //       this.roleDetailsVisible = false;
-  //       this.newUserVisible = false;
-  //       this.userDetailsVisible = false;
-  //       break;
-  //   }
-  // }
-}

@@ -1,5 +1,7 @@
-import { Input } from '@angular/core';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
+
+
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-edit-role',
@@ -7,226 +9,70 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./edit-role.component.scss']
 })
 export class EditRoleComponent implements OnInit {
-  @Input() deviceXs: boolean;
+
+   // screen ------
+  @Input() smallScreen: boolean;
   allExpandState = true;
+
+  // permissions
+  allPermissions: any[];
+  @Input() currentPermissions: string;
+  @Input() currentRole: any;
+  currentForm: any[];
+
   newRole: any = {
-    _id: '',
-    roleName: '',
-    roleType: 'FACTORY',
-    modules: []
+    name: null,
+    _company: null,
+    permissions: []
   };
 
-  private configSucces: any = {
-    panelClass: ['style-succes'],
-    duration: 3000,
-    verticalPosition: 'top',
-  };
 
-  private configError: any = {
-    panelClass: ['style-error'],
-    duration: 3000,
-    verticalPosition: 'top',
-  };
-
-  factoryModules: any[] = [
-    { module: 'production', label: 'Producción', active: true,
-      subModules: [
-        { name: 'manufacturing', label: 'Manufactura', active: true,
-          features: [
-            { name: 'productions', label: 'Producciones', accessLevel: 0, options: [0, 1, 2, 3] },
-            { name: 'productStock', label: 'Inventario de Productos', accessLevel: 0, options: [0, 1, 4] }
-          ]
-        },
-        { name: 'products', label: 'Productos', active: true,
-          features: [
-            { name: 'products', label: 'Productos', accessLevel: 0, options: [0, 1, 2, 3] },
-            { name: 'categories', label: 'Categorías', accessLevel: 1, options: [1, 3] }
-          ]
-        },
-        { name: 'inventory', label: 'Inventario', active: true,
-          features: [
-            { name: 'inventory', label: 'Existencias', accessLevel: 0, options: [0, 1] },
-            { name: 'rawMaterial', label: 'Materia Prima', accessLevel: 0, options: [0, 1, 2, 3] },
-            { name: 'categories', label: 'Categorías', accessLevel: 0, options: [0, 1, 2, 3] },
-            { name: 'units', label: 'Unidades', accessLevel: 0, options: [0, 1, 2, 3] },
-            { name: 'services', label: 'Servicios', accessLevel: 0, options: [0, 1, 2, 3] },
-            { name: 'transfers', label: 'Transferencias', accessLevel: 0, options: [0, 3] },
-          ]
-        }
-      ]
-    },
-    { module: 'purchases', label: 'Compras', active: true,
-      features: [
-        { name: 'purchases', label: 'Compras', accessLevel: 0, options: [0, 1, 2, 3] },
-        { name: 'balance', label: 'Balance', accessLevel: 0, options: [0, 1, 2, 3] },
-      ]
-    },
-    { module: 'sales', label: 'Ventas', active: true,
-      subModules: [
-        { name: 'billing', label: 'Facturación', active: true,
-          features: [
-            { name: 'sale', label: 'Ventas', accessLevel: 0, options: [0, 1, 2, 3] },
-            { name: 'bill', label: 'Facturación', accessLevel: 0, options: [0, 1, 4] }
-          ]
-        },
-        { name: 'clients', label: 'Clientes', active: true,
-          features: [
-            { name: 'client', label: 'Clientes', accessLevel: 0, options: [0, 1, 2, 3] },
-          ]
-        },
-      ]
-    },
-    { module: 'transferences', label: 'Transferencias', active: true,
-      features: [
-        { name: 'transferences', label: 'Transferencias', accessLevel: 0, options: [0, 1, 2, 3] },
-      ]
-    },
-    { module: 'employees', label: 'Empleados', active: true,
-      features: [
-        { name: 'employees', label: 'Empleados', accessLevel: 0, options: [0, 1, 2, 3] },
-        { name: 'jobs', label: 'Puestos', accessLevel: 1, options: [1, 2, 3] },
-      ]
-    },
-    { module: 'reports', label: 'Reportes', active: true,
-      features: [
-        { name: 'reports', label: 'Reportes Generados', accessLevel: 0, options: [0, 1, 2, 3] },
-      ]
-    },
-    { module: 'providers', label: 'Proveedores', active: true,
-      features: [
-        { name: 'providers', label: 'Proveedores', accessLevel: 0, options: [0, 1, 2, 3] },
-      ]
-    },
-  ];
-
-  shopModules: any[] = [
-    { module: 'production', label: 'Producción', active: true,
-      subModules: [
-        { name: 'productinventory', label: 'Inventario de Productos', active: true,
-          features: [
-            { name: 'inventory', label: 'Existencias', accessLevel: 0, options: [0, 1] },
-          ]
-        }
-      ]
-    },
-    { module: 'sales', label: 'Ventas', active: true,
-      subModules: [
-        { name: 'billing', label: 'Facturación', active: true,
-          features: [
-            { name: 'sale', label: 'Ventas', accessLevel: 0, options: [0, 1, 2, 3] },
-            { name: 'bill', label: 'Facturación', accessLevel: 0, options: [0, 1, 4] }
-          ]
-        },
-        { name: 'clients', label: 'Clientes', active: true,
-          features: [
-            { name: 'client', label: 'Clientes', accessLevel: 0, options: [0, 1, 2, 3] },
-          ]
-        },
-      ]
-    },
-    { module: 'transferences', label: 'Transferencias', active: true,
-      features: [
-        { name: 'transferences', label: 'Transferencias', accessLevel: 0, options: [0, 1, 2, 3] },
-      ]
-    },
-    { module: 'employees', label: 'Empleados', active: true,
-      features: [
-        { name: 'employees', label: 'Empleados', accessLevel: 0, options: [0, 1, 2, 3] },
-        { name: 'jobs', label: 'Puestos', accessLevel: 1, options: [1, 2, 3] },
-      ]
-    },
-    { module: 'reports', label: 'Reportes', active: true,
-      features: [
-        { name: 'reports', label: 'Reportes Generados', accessLevel: 0, options: [0, 1, 2, 3] },
-      ]
-    },
-  ];
-
-  adminModules: any[] = [
-    { module: 'cellars', label: 'Sucursales', active: true,
-      features: [
-        { name: 'cellars', label: 'Sucursales y Almacenes', accessLevel: 0, options: [0, 1, 2, 3] },
-      ]
-    },
-    { module: 'production', label: 'Producción', active: true,
-      subModules: [
-        { name: 'manufacturing', label: 'Manufactura', active: true,
-          features: [
-            { name: 'productions', label: 'Producciones', accessLevel: 0, options: [0, 1, 2, 3] },
-            { name: 'productStock', label: 'Inventario de Productos', accessLevel: 0, options: [0, 1, 4] }
-          ]
-        },
-        { name: 'products', label: 'Productos', active: true,
-          features: [
-            { name: 'products', label: 'Productos', accessLevel: 0, options: [0, 1, 2, 3] },
-            { name: 'categories', label: 'Categorías', accessLevel: 1, options: [1, 3] }
-          ]
-        },
-        { name: 'inventory', label: 'Inventario', active: true,
-          features: [
-            { name: 'inventory', label: 'Existencias', accessLevel: 0, options: [0, 1] },
-            { name: 'rawMaterial', label: 'Materia Prima', accessLevel: 0, options: [0, 1, 2, 3] },
-            { name: 'categories', label: 'Categorías', accessLevel: 0, options: [0, 1, 2, 3] },
-            { name: 'units', label: 'Unidades', accessLevel: 0, options: [0, 1, 2, 3] },
-            { name: 'services', label: 'Servicios', accessLevel: 0, options: [0, 1, 2, 3] },
-            { name: 'transfers', label: 'Transferencias', accessLevel: 0, options: [0, 3] },
-          ]
-        }
-      ]
-    },
-    { module: 'purchases', label: 'Compras', active: true,
-      features: [
-        { name: 'purchases', label: 'Compras', accessLevel: 0, options: [0, 1, 2, 3] },
-        { name: 'balance', label: 'Balance', accessLevel: 0, options: [0, 1, 2, 3] },
-      ]
-    },
-    { module: 'sales', label: 'Ventas', active: true,
-      subModules: [
-        { name: 'billing', label: 'Facturación', active: true,
-          features: [
-            { name: 'sale', label: 'Ventas', accessLevel: 0, options: [0, 1, 2, 3] },
-            { name: 'bill', label: 'Facturación', accessLevel: 0, options: [0, 1, 4] }
-          ]
-        },
-        { name: 'clients', label: 'Clientes', active: true,
-          features: [
-            { name: 'client', label: 'Clientes', accessLevel: 0, options: [0, 1, 2, 3] },
-          ]
-        },
-      ]
-    },
-    { module: 'transferences', label: 'Transferencias', active: true,
-      features: [
-        { name: 'transferences', label: 'Transferencias', accessLevel: 0, options: [0, 1, 2, 3] },
-      ]
-    },
-    { module: 'employees', label: 'Empleados', active: true,
-      features: [
-        { name: 'employees', label: 'Empleados', accessLevel: 0, options: [0, 1, 2, 3] },
-        { name: 'jobs', label: 'Puestos', accessLevel: 1, options: [1, 2, 3] },
-      ]
-    },
-    { module: 'reports', label: 'Reportes', active: true,
-      features: [
-        { name: 'reports', label: 'Reportes Generados', accessLevel: 0, options: [0, 1, 2, 3] },
-      ]
-    },
-    { module: 'providers', label: 'Proveedores', active: true,
-      features: [
-        { name: 'providers', label: 'Proveedores', accessLevel: 0, options: [0, 1, 2, 3] },
-      ]
-    },
-    { module: 'users', label: 'Usuarios y Permisos', active: true,
-      features: [
-        { name: 'users', label: 'Usuarios', accessLevel: 0, options: [0, 1, 2, 3] },
-        { name: 'roles', label: 'Roles', accessLevel: 0, options: [0, 1, 2, 3] },
-      ]
-    },
-  ];
-  constructor() { }
+  // tslint:disable-next-line: max-line-length
+  constructor( ) { }
 
   ngOnInit(): void {
-    this.newRole.modules = this.factoryModules;
+    this.newRole = {...this.currentRole, permissions: []};
+
   }
 
+
+  // tslint:disable-next-line: typedef
+  parsePermission() {
+    this.allPermissions.forEach(p => {
+      const index = this.currentRole.permissions.findIndex(cp => cp.name === p.name);
+      if (index > -1) {
+        p.selected = true;
+        p.options = this.currentRole.permissions[index].options;
+      }
+    });
+  }
+
+
+  getPermissions(parent: string): any[] {
+    return this.allPermissions.filter(p => p.parent === parent);
+  }
+
+  // tslint:disable-next-line: typedef
+  saveRole() {
+    const permissions = this.allPermissions.filter(p => p.selected === true);
+
+    this.newRole.permissions = permissions;
+  
+  }
+
+
+  // tslint:disable-next-line: typedef
+  getCompany(name: string) {
+    switch (name) {
+      case 'cpo': return 'CPO';
+      case 'icb': return 'ICB';
+      case 'seo': return 'SEO';
+      default: return 'ADMIN';
+    }
+  }
+
+  // tslint:disable-next-line: typedef
+  delete() {
+
+  }
 }
