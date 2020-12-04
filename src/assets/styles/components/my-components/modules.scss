@@ -1,37 +1,79 @@
+.module-title {
+    font-size: 62px;
+    font-weight: 700 !important;
+}
 
-.module-title { font-size: 62px; font-weight: 700 !important; }
-.module-container { width: 100%; height: calc(100vh - 134px) !important; }
-.module-container2 { width: 100%; height: calc(100vh - 124px) !important; }
+.module-container {
+    width: 100%;
+    height: calc(100vh - 134px) !important;
+}
 
-@media (min-width: 576px) { 
-    .module-title { font-size: 30px !important; }
-    .module-container { height: calc(100vh - 134px) !important; }
-    .module-container2 { height: calc(100vh - 124px) !important; }
+.module-container2 {
+    width: 100%;
+    height: calc(100vh - 124px) !important;
 }
-@media (min-width: 768px) { 
-    .module-title { font-size: 36px !important; }
-    .module-container { height: calc(100vh - 134px) !important; }
-    .module-container2 { height: calc(100vh - 124px) !important; }
+
+@media (min-width: 576px) {
+    .module-title {
+        font-size: 10px !important;
+    }
+    .module-container {
+        height: calc(100vh - 134px) !important;
+    }
+    .module-container2 {
+        height: calc(100vh - 124px) !important;
+    }
 }
-@media (min-width: 960px) { 
-    .module-container2 { height: calc(100vh - 72px) !important; }
-    .module-title { font-size: 42px !important; }
-    .module-container { height: calc(100vh - 84px) !important; }
+
+@media (min-width: 768px) {
+    .module-title {
+        font-size: 36px !important;
+    }
+    .module-container {
+        height: calc(100vh - 134px) !important;
+    }
+    .module-container2 {
+        height: calc(100vh - 124px) !important;
+    }
 }
+
+@media (min-width: 960px) {
+    .module-container2 {
+        height: calc(100vh - 72px) !important;
+    }
+    .module-title {
+        font-size: 30px !important;
+        color: #0a1958;
+    }
+    .module-container {
+        height: calc(100vh - 84px) !important;
+    }
+}
+
 @media (min-width: 1600px) {
-    .module-container { height: calc(100vh - 84px) !important; }
-    .module-container2 { height: calc(100vh - 72px) !important; }
-    .module-title { font-size: 42px !important; }
+    .module-container {
+        height: calc(100vh - 84px) !important;
+    }
+    .module-container2 {
+        height: calc(100vh - 72px) !important;
+    }
+    .module-title {
+        font-size: 22px !important;
+    }
 }
-
-
 
 .module-sidebar {
-    background-color: rgba(0,0,0,0.01);
+    background-color: #0a1958(0, 0, 0, 0.01);
     width: 250px;
     border: none;
 }
 
-.component-link { mat-icon { color: rgba(0,0,0,0.54); } }
-.module-list-sidebar { padding: 0px 5px; }
+.component-link {
+    mat-icon {
+        color: #0a1958(0, 0, 0, 0.54);
+    }
+}
 
+.module-list-sidebar {
+    padding: 0px 5px;
+}

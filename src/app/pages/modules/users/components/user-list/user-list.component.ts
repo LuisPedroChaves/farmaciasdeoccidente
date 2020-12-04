@@ -33,5 +33,15 @@ export class UserListComponent implements OnInit {
     e.Payload = payload;
     this.eventBus.setData(e);
   }
-
+  getImage(index: number) {
+    switch (index) {
+      case 0: return '/assets/images/avatars/01.png';
+      case 1: return '/assets/images/avatars/02.png';
+      case 2: return '/assets/images/avatars/03.png';
+      case 3: return '/assets/images/avatars/04.png';
+      case 4: return '/assets/images/avatars/05.png';
+      case 5: return '/assets/images/avatars/00M.jpg';
+      case 6: return '/assets/images/avatars/00F.jpg';
+    }
+  }
 }

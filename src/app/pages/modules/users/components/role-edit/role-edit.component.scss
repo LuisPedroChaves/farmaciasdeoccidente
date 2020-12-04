@@ -1,0 +1,87 @@
+.new-header {
+    padding: 10px;
+}
+
+$blue: #0a1958;
+.close-button {
+    margin-right: 10px;
+}
+
+.avatarimage {
+    width: 125px;
+    height: 125px;
+    border-radius: 100%;
+    border: 3px solid $blue;
+}
+
+.image-section {
+    width: 135px;
+    height: 135px;
+}
+
+.text-center {
+    text-align: center !important;
+}
+
+.form-paddin {
+    padding: 0px 25px;
+}
+
+.input-section {
+    padding: 10px 0px;
+    width: 100%;
+}
+
+.bold {
+    font-weight: bold;
+}
+
+.expanded-section {
+    margin-bottom: 15px !important;
+    width: 100%;
+}
+
+.role-module-title {
+    font-size: 20px;
+    margin-left: 10px;
+}
+
+.submodules {
+    padding-left: 30px;
+}
+
+.sbSquare {
+    padding: 8px;
+    padding-left: 0px;
+    mat-checkbox {
+        font-size: 16px;
+    }
+}
+
+.sbFeature {
+    margin-bottom: 3px;
+}
+
+.feturespace {
+    padding-left: 30px;
+}
+
+.featureoptions {
+    padding-left: 10px;
+}
+
+.feature-select {
+    min-width: 150px !important;
+    max-width: 150px !important;
+    border-radius: 3px;
+    border: 1px solid #0a1958(0, 0, 0, 0.1);
+    padding: 3px;
+}
+
+.form-padding {
+    padding: 0px 15px;
+}
+
+.colorTitulo {
+    color: #0a1958
+}

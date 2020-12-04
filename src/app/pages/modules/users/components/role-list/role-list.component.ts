@@ -1,8 +1,9 @@
-import { Component, Input, OnInit } from '@angular/core';
-import { ControlEvent } from 'src/app/core/models/ControlEvent';
-import { RoleItem } from 'src/app/core/models/Role';
-import { ConfigService } from 'src/app/core/services/config/config.service';
-import { EventBusService } from 'src/app/core/services/internal/event-bus.service';
+import { Component, OnInit, Input, OnDestroy, AfterContentInit } from '@angular/core';
+import { ControlEvent } from '../../../../../core/models/ControlEvent';
+import { ConfigService } from '../../../../../core/services/config/config.service';
+import { EventBusService } from '../../../../../core/services/internal/event-bus.service';
+import { Subscription } from 'rxjs';
+
 
 @Component({
   selector: 'app-role-list',
@@ -10,12 +11,16 @@ import { EventBusService } from 'src/app/core/services/internal/event-bus.servic
   styleUrls: ['./role-list.component.scss']
 })
 export class RoleListComponent implements OnInit {
+  @Input() roles: any[];
+  @Input() companies: any[];
 
-  @Input() roles: RoleItem;
+  allPermissions: any[];
+  permissionSubscription: Subscription;
 
-  constructor(public eventBus: EventBusService, public config: ConfigService) { }
+  constructor(public eventBus: EventBusService, public config: ConfigService,) { }
 
   ngOnInit(): void {
+
   }
 
   emitEvent(event: string, payload?: any) {
@@ -24,5 +29,4 @@ export class RoleListComponent implements OnInit {
     e.Payload = payload;
     this.eventBus.setData(e);
   }
-
 }

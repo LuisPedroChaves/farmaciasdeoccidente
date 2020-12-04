@@ -1,1 +1,80 @@
-<p>new-user works!</p>
+<div class="new-header" fxLayout="row wrap" fxLayoutAlign="start center">
+    <button mat-icon-button class="close-button">
+        <mat-icon>close</mat-icon>
+    </button>
+    <h2 class="ma-0 colorTitulo ">Nuevo Usuario</h2>
+</div>
+<div class="container-form">
+
+    <div fxLayout="row wrap">
+        <div [fxFlex]="smallScreen ? 100 : '200px'" fxLayoutAlign="center start" class="text-center form-paddin">
+            <div class="image-edit input-section">
+                <div class="avatarimageStep">
+                    <img [src]="avatars[cu].image" alt="" class="iconimage">
+                </div>
+                <a [matMenuTriggerFor]="menu" mat-icon-button mat-raised-button color="accent" class="display-bottom-right">
+                    <mat-icon>create</mat-icon>
+                </a>
+            </div>
+            <mat-menu #menu="matMenu" class="avatarmenu">
+                <div fxLayout="row wrap" class="menu-images">
+                    <div class="avataroption" *ngFor="let a of avatars">
+                        <img [src]="a.image" class="avatar" (click)="cu = a.index">
+                    </div>
+                </div>
+            </mat-menu>
+        </div>
+        <div fxFlex class="form-paddin">
+            <form autocomplete="off">
+                <div class="input-section">
+                    <mat-form-field appearance="outline" class="input-all" color="primary">
+                        <mat-label>Nombre y Apellido</mat-label>
+                        <input matInput type="text" placeholder="Ingrese la información de la persona" formControlName="name" class="text-md">
+                        <mat-error *ngIf="form.controls.name.invalid">Debe Ingresar un nombre y apellido válido</mat-error>
+                        <mat-hint>Ingrese el nombre y apellido de la persona a la que pertenece el usuario</mat-hint>
+                    </mat-form-field>
+                </div>
+                <div class="input-section">
+                    <mat-form-field appearance="outline" class="input-all" color="primary">
+                        <mat-label>Usuario</mat-label>
+                        <input matInput type="text" placeholder="Ingrese el nombre del usuario" formControlName="username" class="text-md">
+                        <mat-error *ngIf="form.controls.username.invalid">Debe Ingresar un nombre de usuario válido</mat-error>
+                        <mat-hint>El usuario no puede contener espacios ni caracteres especiales</mat-hint>
+                    </mat-form-field>
+                </div>
+                <div class="input-section">
+                    <mat-form-field appearance="outline" class="input-all" color="primary">
+                        <mat-label>Contraseña</mat-label>
+                        <input matInput [type]="visible === false ? 'password':'text'" formControlName="password" placeholder="Ingrese la contraseña del usuario" class="text-md">
+                        <mat-icon matSuffix class="material-icons-outlined cursor-pointer" [ngClass]="{'text-muted': visible === false}" (click)="visible = !visible">{{ visible ? 'visibility': 'visibility_off'}}</mat-icon>
+                        <mat-error *ngIf="form.controls.password.invalid">Debe Ingresar una contraseña válida</mat-error>
+                        <mat-hint>La contraseña no puede incluir espacios ni caracteres especiales</mat-hint>
+                    </mat-form-field>
+                </div>
+                <div class="input-section">
+                    <mat-form-field appearance="outline" class="input-all" color="primary">
+                        <mat-label>E-Mail</mat-label>
+                        <input matInput type="text" placeholder="Ingrese el nombre Correo Electrónico del usuario" formControlName="email" class="text-md">
+                        <mat-error>Debe ingresar un correo electrónico válido</mat-error>
+                        <mat-hint>El correo es necesario para recuperar la contraseña.</mat-hint>
+                    </mat-form-field>
+                </div>
+                <div class="input-section">
+                    <mat-form-field appearance="outline" class="input-all" color="primary">
+                        <mat-label>Rol Asignado</mat-label>
+                        <mat-select placeholder="Seleccione el Rol" class="text-md" formControlName="_role">
+                            <mat-option *ngFor="let r of roles" [value]="r._id">{{r.name}}</mat-option>
+                        </mat-select>
+                        <mat-error *ngIf="form.controls.name.invalid">Debe Seleccionar un rol</mat-error>
+                        <mat-hint>Seleccione un rol creado para asignar los permisos y accesos al usuario</mat-hint>
+                    </mat-form-field>
+                </div>
+                <br><br>
+                <div class="input-section">
+                    <button mat-stroked-button color="primary" class="product-font">Cancelar</button> &nbsp;
+                    <button mat-flat-button [disabled]="this.form.invalid" color="primary" class="product-font">Crear Usuario</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

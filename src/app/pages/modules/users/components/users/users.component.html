@@ -13,11 +13,11 @@
                     <mat-sidenav disableClose="true" #sidenavusers [mode]="smallScreen ? 'over' : 'side'" [opened]="!smallScreen" class="module-sidebar module-list-sidebar">
                         <mat-nav-list class="navigation navlist submenu-list">
                             <mat-list-item class="module-link component-link" (click)="emitEvent(config.EVENT_USERS_CHANGE_COMPONENT, 'userlist')">
-                                <mat-icon mat-list-icon class="material-icons-outlined">people</mat-icon>
+                                <mat-icon mat-list-icon class="material-icons-outlined" color="primary">people</mat-icon>
                                 <span mat-line>Usuarios del sistema</span>
                             </mat-list-item>
                             <mat-list-item class="module-link component-link" (click)="emitEvent(config.EVENT_USERS_CHANGE_COMPONENT, 'rolelist')">
-                                <mat-icon mat-list-icon class="material-icons-outlined">vpn_key</mat-icon>
+                                <mat-icon mat-list-icon class="material-icons-outlined" color="primary">vpn_key</mat-icon>
                                 <span mat-line>Roles y Permisos</span>
                             </mat-list-item>
                         </mat-nav-list>
@@ -25,7 +25,7 @@
                     <mat-sidenav-content>
                         <div class="module-container" data-simplebar>
                             <app-user-list *ngIf="tab === 'userlist'"></app-user-list>
-                            <app-new-user *ngIf="tab === 'new-user' && roles !== undefined"  [roles]="roles" [smallScreen]="smallScreen"></app-new-user>
+                            <app-new-user *ngIf="tab === 'new-user' && roles !== undefined" [roles]="roles" [smallScreen]="smallScreen"></app-new-user>
                             <app-user-details *ngIf="tab === 'user-details' && currentUser !== undefined && roles !== undefined" [roles]="roles" [currentUser]="currentUser" [smallScreen]="smallScreen"></app-user-details>
                             <app-role-list *ngIf="tab === 'rolelist'" [roles]="roles"></app-role-list>
                             <app-role-edit *ngIf="tab === 'edit-role' && currentRole !== undefined" [currentRole]="currentRole" [smallScreen]="smallScreen"></app-role-edit>
