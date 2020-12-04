@@ -20,8 +20,8 @@ export class AdminLayoutComponent implements OnInit {
   @ViewChild('sidemenu', { static: false }) sidemenu;
   menuItems = [
     { state: '/', name: 'Empresas', type: 'link', icon: 'store', order: 1 },
-    { state: '/users', name: 'Usuarios', type: 'link', icon: 'people', order: 2 },
-    { state: '/users', name: 'Empleados', type: 'link', icon: 'groups', order: 3 },
+    { state: 'users', name: 'Usuarios', type: 'link', icon: 'people', order: 2 },
+    { state: 'employees', name: 'Empleados', type: 'link', icon: 'groups', order: 3 },
   ];
   constructor(zone: NgZone) {
     // tslint:disable-next-line: deprecation

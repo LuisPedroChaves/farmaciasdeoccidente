@@ -15,6 +15,10 @@ const routes: Routes = [
         path: '', loadChildren: () => import('./pages/modules/dashboard/dashboard.module').then(m => m.DashboardModule),
         // canActivate: [CheckTokenGuard]
       },
+      {
+        path: 'customers', pathMatch: 'full',  loadChildren: () => import('./pages/modules/customers/customers.module').then(m => m.CustomersModule),
+        // canActivate: [CheckTokenGuard]
+      },
     ]
   },
   {
@@ -39,13 +43,13 @@ const routes: Routes = [
       },
     ]
   },
-  {
-    path: '',
-    component: AuthLayoutComponent,
-    children: [
-      { path: 'session', loadChildren: () => import('./pages/modules/session/session.module').then(m => m.SessionModule) }
-    ]
-  },
+  // {
+  //   path: '',
+  //   component: AuthLayoutComponent,
+  //   children: [
+  //     { path: 'session', loadChildren: () => import('./pages/modules/session/session.module').then(m => m.SessionModule) }
+  //   ]
+  // },
   {
     path: '**',
     redirectTo: 'session/not-found'
