@@ -1,1 +1,74 @@
-<p>edit-customer works!</p>
+<header class="header">
+    <h1 class="ma-0 product-font">Detalles del cliente</h1>
+    <span fxFlex></span>
+    <button mat-icon-button (click)="dialogRef.close()"><mat-icon>close</mat-icon></button>
+</header>
+<div *ngIf="editMode === false">
+    <div fxLayout="row wrap" class="content">
+        <div fxFlex="100" fxLayoutAlign="start center" fxLayout="row wrap">
+            <div fxFlex="50px">
+                <mat-icon class="text-muted material-icons-outlined">person</mat-icon>
+            </div>
+            <div fxFlex class="input-padding">
+                <h2>{{ data.client.name }}</h2>
+                <span fxFlex></span>
+                <button mat-icon-button *ngIf="data.customersp.includes('update')" (click)="editMode = true">
+                    <mat-icon class="material-icons-outlined">create</mat-icon>
+                </button>
+            </div>
+        </div>
+        <div fxFlex="100" fxLayoutAlign="start center" fxLayout="row wrap" class="lastsection">
+            <div fxFlex="50px">
+                <mat-icon class="text-muted material-icons-outlined">info</mat-icon>
+            </div>
+            <div fxFlex fxLayout="row wrap">
+                <div fxFlex="100" class=" text-muted input-padding">
+                    {{ data.client.nit }}
+                </div>
+                <div fxFlex="100" class=" text-muted input-padding">
+                    {{ data.client.address }}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div *ngIf="editMode === true">
+    <form fxLayout="row wrap" class="content">
+        <div fxFlex="100" fxLayoutAlign="start center" fxLayout="row wrap">
+            <div fxFlex="50px">
+                <mat-icon class="text-muted material-icons-outlined">person</mat-icon>
+            </div>
+            <div fxFlex class="input-padding">
+                <mat-form-field color="primary" appearance="standard" class="input-all">
+                    <mat-label>Nombre del cliente</mat-label>
+                    <input type="text" formControlName="name" matInput placeholder="Ingrese el nombre del cliente">
+                </mat-form-field>
+            </div>
+        </div>
+        <div fxFlex="100" fxLayoutAlign="start center" fxLayout="row wrap">
+            <div fxFlex="50px">
+                <mat-icon class="text-muted material-icons-outlined">info</mat-icon>
+            </div>
+            <div fxFlex fxLayout="row wrap">
+                <div fxFlex="50" class="input-padding">
+                    <mat-form-field color="primary" appearance="standard" class="input-all">
+                        <mat-label>Nit</mat-label>
+                        <input type="text" formControlName="nit" matInput placeholder="Ingrese el número de Nit del cliente">
+                    </mat-form-field>
+                </div>
+                <div fxFlex="50" class="input-padding">
+                    <mat-form-field color="primary" appearance="standard" class="input-all">
+                        <mat-label>Ciudad</mat-label>
+                        <input type="text" formControlName="address" matInput placeholder="Ingrese la ciudad del cliente">
+                    </mat-form-field>
+                </div>
+            </div>
+        </div>
+    </form>
+    <div class="header">
+        <button mat-stroked-button color="warn" *ngIf="data.customersp.includes('delete')"><mat-icon class="material-icons-outlined">delete</mat-icon> Eliminar</button>
+        <span fxFlex></span>
+        <button mat-button (click)="editMode = false">Cancelar</button>
+        <button mat-button color="primary" *ngIf="data.customersp.includes('update')">Guardar</button>
+    </div>
+</div>

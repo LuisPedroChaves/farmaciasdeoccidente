@@ -1,1 +1,42 @@
-<p>new-customers works!</p>
+<header class="header">
+    <h1 class="ma-0 product-font">Nuevo cliente</h1>
+    <span fxFlex></span>
+    <button mat-icon-button (click)="dialogRef.close()"><mat-icon>close</mat-icon></button>
+</header>
+<form fxLayout="row wrap" class="content">
+    <div fxFlex="100" fxLayoutAlign="start center" fxLayout="row wrap">
+        <div fxFlex="50px">
+            <mat-icon class="text-muted material-icons-outlined">person</mat-icon>
+        </div>
+        <div fxFlex class="input-padding">
+            <mat-form-field color="primary" appearance="standard" class="input-all">
+                <mat-label>Nombre del cliente</mat-label>
+                <input type="text" formControlName="name" matInput placeholder="Ingrese el nombre del cliente">
+            </mat-form-field>
+        </div>
+    </div>
+    <div fxFlex="100" fxLayoutAlign="start center" fxLayout="row wrap">
+        <div fxFlex="50px">
+            <mat-icon class="text-muted material-icons-outlined">info</mat-icon>
+        </div>
+        <div fxFlex fxLayout="row wrap">
+            <div fxFlex="50" class="input-padding">
+                <mat-form-field color="primary" appearance="standard" class="input-all">
+                    <mat-label>Nit</mat-label>
+                    <input type="text" formControlName="nit" matInput placeholder="Ingrese el número de Nit del cliente">
+                </mat-form-field>
+            </div>
+            <div fxFlex="50" class="input-padding">
+                <mat-form-field color="primary" appearance="standard" class="input-all">
+                    <mat-label>Ciudad</mat-label>
+                    <input type="text" formControlName="address" matInput placeholder="Ingrese la ciudad del cliente">
+                </mat-form-field>
+            </div>
+        </div>
+    </div>
+</form>
+<div class="header">
+    <span fxFlex></span>
+    <button mat-button (click)="dialogRef.close()">Cancelar</button>
+    <button mat-button color="primary">Guardar</button>
+</div>
