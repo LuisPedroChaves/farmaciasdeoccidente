@@ -31,7 +31,8 @@ export class AppLayoutComponent implements OnInit {
       ]
     },
     { state: '/factory/employees', name: 'Empleados', type: 'link', icon: 'work_outlined' },
-    { state: '/customers', name: 'Clientes', type: 'link', order: 4, icon: 'supervised_user_circle' },
+    { state: '/customers', name: 'Catálogo de clientes', type: 'link', order: 4, icon: 'supervised_user_circle' },
+    { state: '/customersRoutes', name: 'Catálogo de clientes', type: 'link', order: 4, icon: 'person_pin_circle' },
     { state: '/factory/providers', name: 'Cuentas por Cobrar', type: 'link', icon: 'request_quote', order: 2 },
   ];
 
