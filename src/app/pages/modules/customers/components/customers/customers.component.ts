@@ -27,14 +27,11 @@ export class CustomersComponent implements OnInit {
   costumersSubscription: Subscription;
   customers: any[] = [
     // tslint:disable-next-line: max-line-length
-    { nit: '730613-k', name: 'Luis', address: '|Ciudad', phone: '2535345354', area: '3', town: 'almolonga', department: 'quetzaltenago', company: 'jjhkjh', transport: 'ngkugj', limitCredit:'100', limitDaysCredits:'8'},
-    { nit: '730613-k', name: 'Luis', address: '|Ciudad'},
-    { nit: '730613-k', name: 'Luis', address: '|Ciudad'},
-    { nit: '730613-k', name: 'Luis', address: '|Ciudad'},
+    { nit: '730613-k', name: 'Luis', address: '|Ciudad', phone: '2535354', area: '3', town: 'almolonga', department: 'quetzaltenago', company: 'jjhkjh', transport: 'ngkugj', limitCredit: '100', limitDaysCredits: '5'},
   ];
   dataSource = new MatTableDataSource();
-  columnsToDisplay = ['name', 'nit', 'address', 'phone'];
-  columnsToDisplay2 = ['image', 'name', 'nit', 'address'];
+  columnsToDisplay = ['name', 'nit', 'address', 'phone', 'area', 'town', 'department', 'company', 'transport', 'limitCredit', 'limitDaysCredit'];
+  columnsToDisplay2 = ['image', 'name', 'nit', 'address', 'phone', 'area', 'town', 'department', 'company', 'transport', 'limitCredit', 'limitDaysCredit'];
   expandedElement: any | null;
   // HOOK FUNCTIONS //////////////////////////////////////////////////////////////////////////////////////////
   constructor(public eventBus: EventBusService, public config: ConfigService, public dialog: MatDialog

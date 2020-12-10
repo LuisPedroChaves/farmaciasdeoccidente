@@ -7,19 +7,19 @@
     <div fxLayout="row wrap" class="content">
         <div fxFlex="100" fxLayoutAlign="start center" fxLayout="row wrap">
             <div fxFlex="50px">
-                <mat-icon class="text-muted material-icons-outlined">person</mat-icon>
+                <mat-icon class="text-muted material-icons-outlined colorTitulo">person</mat-icon>
             </div>
             <div fxFlex class="input-padding">
                 <h2>{{ data.client.name }}</h2>
                 <span fxFlex></span>
-                <button mat-icon-button *ngIf="data.customersp.includes('update')" (click)="editMode = true">
-                    <mat-icon class="material-icons-outlined">create</mat-icon>
+                <button mat-icon-button (click)="editMode = true">
+                    <mat-icon class="material-icons-outlined colorTitulo" >create</mat-icon>
                 </button>
             </div>
         </div>
         <div fxFlex="100" fxLayoutAlign="start center" fxLayout="row wrap" class="lastsection">
             <div fxFlex="50px">
-                <mat-icon class="text-muted material-icons-outlined">info</mat-icon>
+                <mat-icon class="text-muted material-icons-outlined colorTitulo">info</mat-icon>
             </div>
             <div fxFlex fxLayout="row wrap">
                 <div fxFlex="100" class=" text-muted input-padding">
@@ -27,6 +27,30 @@
                 </div>
                 <div fxFlex="100" class=" text-muted input-padding">
                     {{ data.client.address }}
+                </div>
+                <div fxFlex="100" class=" text-muted input-padding">
+                    {{ data.client.phone }}
+                </div>
+                <div fxFlex="100" class=" text-muted input-padding">
+                    {{ data.client.area }}
+                </div>
+                <div fxFlex="100" class=" text-muted input-padding">
+                    {{ data.client.town }}
+                </div>
+                <div fxFlex="100" class=" text-muted input-padding">
+                    {{ data.client.department }}
+                </div>
+                <div fxFlex="100" class=" text-muted input-padding">
+                    {{ data.client.company }}
+                </div>
+                <div fxFlex="100" class=" text-muted input-padding">
+                    {{ data.client.transport }}
+                </div>
+                <div fxFlex="100" class=" text-muted input-padding">
+                    {{ data.client.limitCredit }}
+                </div>
+                <div fxFlex="100" class=" text-muted input-padding">
+                    {{ data.client.limitDaysCredits }}
                 </div>
             </div>
         </div>
@@ -36,10 +60,10 @@
     <form fxLayout="row wrap" class="content">
         <div fxFlex="100" fxLayoutAlign="start center" fxLayout="row wrap">
             <div fxFlex="50px">
-                <mat-icon class="text-muted material-icons-outlined">person</mat-icon>
+                <mat-icon class="text-muted material-icons-outlined colorTitulo">person</mat-icon>
             </div>
             <div fxFlex class="input-padding">
-                <mat-form-field color="primary" appearance="standard" class="input-all">
+                <mat-form-field appearance="standard" class="input-all colorTitulo">
                     <mat-label>Nombre del cliente</mat-label>
                     <input type="text" formControlName="name" matInput placeholder="Ingrese el nombre del cliente">
                 </mat-form-field>
@@ -47,17 +71,17 @@
         </div>
         <div fxFlex="100" fxLayoutAlign="start center" fxLayout="row wrap">
             <div fxFlex="50px">
-                <mat-icon class="text-muted material-icons-outlined">info</mat-icon>
+                <mat-icon class="text-muted material-icons-outlined colorTitulo">info</mat-icon>
             </div>
             <div fxFlex fxLayout="row wrap">
                 <div fxFlex="50" class="input-padding">
-                    <mat-form-field color="primary" appearance="standard" class="input-all">
+                    <mat-form-field appearance="standard" class="input-all colorTitulo">
                         <mat-label>Nit</mat-label>
                         <input type="text" formControlName="nit" matInput placeholder="Ingrese el número de Nit del cliente">
                     </mat-form-field>
                 </div>
                 <div fxFlex="50" class="input-padding">
-                    <mat-form-field color="primary" appearance="standard" class="input-all">
+                    <mat-form-field appearance="standard" class="input-all colorTitulo">
                         <mat-label>Ciudad</mat-label>
                         <input type="text" formControlName="address" matInput placeholder="Ingrese la ciudad del cliente">
                     </mat-form-field>
@@ -66,7 +90,7 @@
         </div>
     </form>
     <div class="header">
-        <button mat-stroked-button color="warn" *ngIf="data.customersp.includes('delete')"><mat-icon class="material-icons-outlined">delete</mat-icon> Eliminar</button>
+        <button mat-stroked-button color="warn" *ngIf="data.customersp.includes('delete')"><mat-icon class="material-icons-outlined colorTitulo">delete</mat-icon> Eliminar</button>
         <span fxFlex></span>
         <button mat-button (click)="editMode = false">Cancelar</button>
         <button mat-button color="primary" *ngIf="data.customersp.includes('update')">Guardar</button>
