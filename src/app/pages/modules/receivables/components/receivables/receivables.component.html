@@ -1,1 +1,131 @@
-<p>receivables works!</p>
+<div [ngClass]="{ 'app': !smallScreen, 'app-sm': smallScreen } ">
+    <div class="section-content">
+        <div>
+            <header class="module-header padding-15" fxLayoutAlign="start center" fxLayout="row wrap">
+                <h1 class="product-font ma-0 module-title">Cuentas por cobrar</h1>
+            </header>
+            <mat-divider></mat-divider>
+
+            <!-- class="module-container" -->
+            <mat-sidenav-container fxLayout="row wrap" [ngClass]="{'bankcontainer': !smallScreen, 'bankcontainer-sm': smallScreen}">
+                <mat-sidenav-content fxFlex fxLayout="row wrap">
+                    <div fxLayout="row wrap" fxFlex="100">
+                        <div fxFlex="100" fxLayout="row wrap" fxLayoutAlign="start center" class="stockheader">
+                            <button *ngIf="!smallScreen" mat-fab color="primary" class="fab mat-elevation-z10">
+                                <mat-icon>add</mat-icon><span class="extended-fab-button__text">Cliente</span>
+                              </button>
+                            <span fxFlex></span>
+                            <mat-form-field *ngIf="!smallScreen" appearance="outline" class="findinput" floatLabel="always" color="primary">
+                                <mat-icon matPrefix>search</mat-icon>
+                                <mat-label>Buscar Cuenta</mat-label>
+                                <input matInput placeholder="Búsqueda rápida" (keyup)="applyFilter2($event)">
+                            </mat-form-field>
+
+                        </div>
+                    </div>
+                    <div class="inventorytable" fxFlex="100" fxLayout="row wrap">
+
+
+
+
+                        <div fxFlex="100" fxLayout="row wrap" class="allspace" data-simplebar>
+
+
+                            <table mat-table [dataSource]="dataSource">
+
+                                <!-- Category Column -->
+                                <ng-container matColumnDef="customer">
+                                    <th mat-header-cell *matHeaderCellDef> cliente </th>
+                                    <td mat-cell *matCellDef="let element"><img [src]="element._bank.logo" alt="" class="banklogo"> {{element.customer}} </td>
+                                </ng-container>
+
+                                <!-- Code Column -->
+
+                                <ng-container matColumnDef="employee">
+                                    <th mat-header-cell *matHeaderCellDef> Tipo </th>
+                                    <td mat-cell *matCellDef="let element"> {{element.type}} </td>
+                                </ng-container>
+
+                                <!-- Name Column -->
+                                <ng-container matColumnDef="name">
+                                    <th mat-header-cell *matHeaderCellDef> Nombre </th>
+                                    <td mat-cell *matCellDef="let element"> {{element.name}} </td>
+                                </ng-container>
+
+
+
+                                <!-- Cost Column -->
+                                <ng-container matColumnDef="no.invoice">
+                                    <th mat-header-cell *matHeaderCellDef> No. Cuenta </th>
+                                    <td mat-cell *matCellDef="let element"> {{element.account_number}} </td>
+                                </ng-container>
+
+                                <!-- Min Stock Column -->
+                                <ng-container matColumnDef="date">
+                                    <th mat-header-cell *matHeaderCellDef> Fecha </th>
+                                    <td mat-cell *matCellDef="let element"> {{element.createDate | date : 'dd/MM/yyyy'}} </td>
+                                </ng-container>
+
+                                <!-- Stock Column -->
+                                <ng-container matColumnDef="balance">
+                                    <th mat-header-cell *matHeaderCellDef> Saldo </th>
+                                    <td mat-cell *matCellDef="let element">Q. {{element.balance | number: '.2'}} </td>
+                                </ng-container>
+
+                                <ng-container matColumnDef="state">
+                                    <th mat-header-cell *matHeaderCellDef></th>
+                                    <td mat-cell *matCellDef="let element">
+                                        <button mat-icon-button [matMenuTriggerFor]="menu"><mat-icon class="material-icons-outlined">more_vert</mat-icon></button>
+                                        <mat-menu #menu="matMenu">
+                                            <button mat-menu-item (click)="bankbar.opened = true; title = 'Editar Cuenta'; selectedAccount = element"><mat-icon class="material-icons-outlined">info</mat-icon> Ver detalles</button>
+                                            <button mat-menu-item (click)="bankbar.opened = true; title = 'Estado de Cuenta'; selectedAccount = element"><mat-icon class="material-icons-outlined">chrome_reader_mode</mat-icon> Ver estado de cuenta</button>
+                                        </mat-menu>
+                                    </td>
+                                </ng-container>
+                                <ng-container matColumnDef="credit">
+                                    <th mat-header-cell *matHeaderCellDef> crédito </th>
+                                    <td mat-cell *matCellDef="let element">Q. {{element.balance | number: '.2'}} </td>
+                                </ng-container>
+                                <ng-container matColumnDef="creditDays">
+                                    <th mat-header-cell *matHeaderCellDef>Dias de Crédito </th>
+                                    <td mat-cell *matCellDef="let element">Q. {{element.balance | number: '.2'}} </td>
+                                </ng-container>
+
+                                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                                <tr mat-row class="table-hover-row" *matRowDef="let row; columns: displayedColumns;">
+                                </tr>
+                            </table>
+                        </div>
+                        <!-- 
+                        <div fxFlex="100" fxLayout="row wrap">
+                            <div fxFlex="100" fxLayout="column" fxLayoutAlign="center center" class="allspace">
+                                <mat-icon>add_shopping_cart</mat-icon>
+                                <span>No hay cuentas bancarias creadas</span>
+                            </div>
+                        </div> -->
+
+                    </div>
+                    <!-- <div fxFlex="100" fxLayout="row wrap">
+                        <div fxFlex="100" fxLayout="column" fxLayoutAlign="center center" class="allspace">
+                        </div>
+                    </div> -->
+                </mat-sidenav-content>
+
+                <mat-sidenav #bankbar position="end" mode="over" opened="false" [ngClass]="{'smallbar': title === 'Bancos' && !smallScreen, 'bigbar': title !== 'Bancos', 'smallbigbar': smallScreen}">
+                    <header class="header" fxLayoutAlign="start center" fxLayout="row wrap">
+                        <button mat-icon-button (click)="bankbar.toggle()">
+                            <mat-icon>close</mat-icon>
+                        </button>
+                        <h2 class="ma-0">{{ title }}</h2>
+                    </header>
+                    <div>
+                        <!-- <app-bank-list [smallScreen]="smallScreen" [banks]="banks" *ngIf="title === 'Bancos' && banks !== undefined"></app-bank-list> -->
+                        <!-- <app-new-account [smallScreen]="smallScreen" [banks]="banks" *ngIf="title === 'Nueva Cuenta Bancaria' && banks !== undefined"></app-new-account> -->
+                        <!-- <app-edit-account [smallScreen]="smallScreen" [banks]="banks" [currentAccount]="selectedAccount" *ngIf="title === 'Editar Cuenta' && selectedAccount !== undefined"></app-edit-account> -->
+                        <!-- <app-account-status [smallScreen]="smallScreen" [currentAccount]="selectedAccount" *ngIf="title === 'Estado de Cuenta' && selectedAccount !== undefined"></app-account-status> -->
+                    </div>
+                </mat-sidenav>
+            </mat-sidenav-container>
+        </div>
+    </div>
+</div>

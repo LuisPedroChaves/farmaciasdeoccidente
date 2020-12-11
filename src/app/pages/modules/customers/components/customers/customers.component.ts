@@ -1,4 +1,4 @@
-import { Component, OnInit, NgZone, AfterContentInit, OnDestroy } from '@angular/core';
+import { Component, OnInit} from '@angular/core';
 import { Subscription } from 'rxjs';
 import { EventBusService } from '../../../../../core/services/internal/event-bus.service';
 import { ConfigService } from '../../../../../core/services/config/config.service';
