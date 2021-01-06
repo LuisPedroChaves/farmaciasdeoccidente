@@ -27,6 +27,10 @@ const routes: Routes = [
         path: 'receivables', pathMatch: 'full',  loadChildren: () => import('./pages/modules/receivables/receivables.module').then(m => m.ReceivablesModule),
         // canActivate: [CheckTokenGuard]
       },
+      {
+        path: 'statements', pathMatch: 'full',  loadChildren: () => import('./pages/modules/statements/statements.module').then(m => m.StatementsModule),
+        // canActivate: [CheckTokenGuard]
+      },
     ]
   },
   {
