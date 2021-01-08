@@ -19,11 +19,16 @@ import {MatButtonToggleModule} from '@angular/material/button-toggle';
 import {MatExpansionModule} from '@angular/material/expansion';
 import {MatDatepickerModule} from '@angular/material/datepicker';
 import { MatNativeDateModule, MAT_DATE_LOCALE } from '@angular/material/core';
+import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
+import {MatProgressBarModule} from '@angular/material/progress-bar';
 
 /* FLEX ----------------------*/
 import { FlexLayoutModule, CoreModule } from '@angular/flex-layout';
 import { NewCellarComponent } from './new-cellar/new-cellar.component';
 
+
+/* STYLE ----------------------*/
+import { ToastaModule } from 'ngx-toasta';
 
 @NgModule({
   declarations: [NewCellarComponent],
@@ -33,6 +38,7 @@ import { NewCellarComponent } from './new-cellar/new-cellar.component';
     // visibilty
     FlexLayoutModule,
     CoreModule,
+    ToastaModule.forRoot(),
 
     // material
     MatTableModule,
@@ -52,13 +58,14 @@ import { NewCellarComponent } from './new-cellar/new-cellar.component';
     MatExpansionModule,
     MatDatepickerModule,
     MatNativeDateModule,
-  
- 
+    MatProgressSpinnerModule,
+    MatProgressBarModule,
   ],
   exports: [
     // visibilty
     FlexLayoutModule,
     CoreModule,
+    ToastaModule,
 
     // material
     MatTableModule,
@@ -78,8 +85,8 @@ import { NewCellarComponent } from './new-cellar/new-cellar.component';
     MatExpansionModule,
     MatDatepickerModule,
     MatNativeDateModule,
-  
-
+    MatProgressSpinnerModule,
+    MatProgressBarModule,
 
   ]
   ,providers: [

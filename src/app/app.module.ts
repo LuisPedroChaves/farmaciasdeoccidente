@@ -8,6 +8,12 @@ import { AppComponent } from './app.component';
 import { AuthLayoutComponent } from './pages/layouts/auth-layout/auth-layout.component';
 import { AdminLayoutComponent } from './pages/layouts/admin-layout/admin-layout.component';
 import { AppLayoutComponent } from './pages/layouts/app-layout/app-layout.component';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { CoreModule } from './core/core.module';
+import { APP_BASE_HREF } from '@angular/common';
+import { environment } from 'src/environments/environment';
+import { AuthInterceptor } from './core/services/interceptors/auth.interceptor';
+import { CheckTokenGuard } from './core/auth/check-token.guard';
 
 
 @NgModule({
@@ -21,10 +27,24 @@ import { AppLayoutComponent } from './pages/layouts/app-layout/app-layout.compon
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
-    SharedComponentsModule
+    HttpClientModule,
 
+    // ngrx
+    // StoreModule.forRoot(appReducers),
+    // EffectsModule.forRoot(effectsArray),
+    // StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: environment.production}),
+
+    // app modules
+    CoreModule,
+    SharedComponentsModule
   ],
-  providers: [],
+  providers: [
+    { provide: APP_BASE_HREF, useValue: environment.baseurl },
+    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
+    // AuthGuard,
+    // AuthAdminGuard,
+    CheckTokenGuard
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

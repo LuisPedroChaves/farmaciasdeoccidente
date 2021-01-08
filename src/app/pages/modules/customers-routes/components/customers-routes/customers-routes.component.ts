@@ -50,7 +50,7 @@ export class CustomersRoutesComponent implements OnInit {
   // OPERATIONAL FUNCTIONS //////////////////////////////////////////////////////////////////////////////
   newCostumer() {
     const dialogRef = this.dialog.open(NewCustomerRoutesComponent, {
-      width: this.smallScreen ? '100%' : '500px',
+      width: this.smallScreen ? '100%' : '800px',
       data: { title: 'Nuevo Cliente'},
       disableClose: true,
       panelClass: ['iea-dialog' ],

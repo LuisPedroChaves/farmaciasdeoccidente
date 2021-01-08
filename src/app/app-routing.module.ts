@@ -16,6 +16,10 @@ const routes: Routes = [
         // canActivate: [CheckTokenGuard]
       },
       {
+        path: 'orders', pathMatch: 'full',  loadChildren: () => import('./pages/modules/orders/orders.module').then(m => m.OrdersModule),
+        // canActivate: [CheckTokenGuard]
+      },
+      {
         path: 'customers', pathMatch: 'full',  loadChildren: () => import('./pages/modules/customers/customers.module').then(m => m.CustomersModule),
         // canActivate: [CheckTokenGuard]
       },

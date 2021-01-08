@@ -53,7 +53,8 @@
                             "src/styles.scss",
                             "src/assets/styles/themes/theme.scss",
                             "src/assets/styles/app.scss",
-                            "node_modules/simplebar/dist/simplebar.css"
+                            "node_modules/simplebar/dist/simplebar.css",
+                            "node_modules/ngx-toasta/styles/style-material.css"
                         ],
                         "scripts": [
                             "src/assets/js/particles.js/particles.min.js",

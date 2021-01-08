@@ -5,7 +5,7 @@ export const environment = {
   mobile: false,
 
   /* API Services Config */
-  root: 'https://backend-farmaciasDO.azurewebsites.net/',
+  root: 'https://backendfarmacias.azurewebsites.net',
 
   /* Version Config */
   version: '1.0',

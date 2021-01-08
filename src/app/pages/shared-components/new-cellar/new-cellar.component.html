@@ -1,4 +1,4 @@
-<div class="farmacia">
+<div class="farmacia" *ngIf="creatingCellar === false">
     <div>
         <h2 class="h2">
             Crear nueva Sucursal
@@ -37,7 +37,14 @@
 
     <div fxLayout="row">
         <span fxFlex></span>
-        <button mat-button>Cancelar</button>
-        <button mat-button color="primary">Crear Sucursal</button>
+        <button mat-button  (click)="close()">Cancelar</button>
+        <button mat-button color="primary" (click)="saveCellar()">Crear Sucursal</button>
+    </div>
+</div>
+<div class="blue-light-theme" *ngIf="creatingCellar === true">
+    <div style="height: 50vh;" fxLayout="column" fxLayoutAlign="center center">
+        <mat-progress-spinner diameter="45" color="primary" mode="indeterminate">
+        </mat-progress-spinner> <br><br>
+        <span style="color: rgba(0,0,0,0.3); font-size: 18px;">Creando...</span>
     </div>
 </div>

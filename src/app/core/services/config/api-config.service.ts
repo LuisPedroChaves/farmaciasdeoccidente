@@ -13,6 +13,9 @@ export class ApiConfigService {
 
   /* #region  AUTH */
   public API_LOGIN = this.API_URL + '/login';
+
+  // Cellar
+  public API_CELLAR = this.API_URL + '/cellar';
   /* #endregion */
 
 }

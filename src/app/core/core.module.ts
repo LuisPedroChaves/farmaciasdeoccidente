@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ServicesModule } from './services/services.module';
+import { PipesModule } from './shared/pipes/pipes.module';
 
 
 
@@ -8,6 +9,11 @@ import { ServicesModule } from './services/services.module';
   declarations: [],
   imports: [
     CommonModule,
+    PipesModule,
+    ServicesModule
+  ],
+  exports: [
+    PipesModule,
     ServicesModule
   ]
 })
