@@ -29,11 +29,13 @@ import { NewCellarComponent } from './new-cellar/new-cellar.component';
 
 /* STYLE ----------------------*/
 import { ToastaModule } from 'ngx-toasta';
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [NewCellarComponent],
   imports: [
     CommonModule,
+    FormsModule,
 
     // visibilty
     FlexLayoutModule,
@@ -62,6 +64,7 @@ import { ToastaModule } from 'ngx-toasta';
     MatProgressBarModule,
   ],
   exports: [
+    FormsModule,
     // visibilty
     FlexLayoutModule,
     CoreModule,

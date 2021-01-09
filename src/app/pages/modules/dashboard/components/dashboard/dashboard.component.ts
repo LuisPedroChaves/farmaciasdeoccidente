@@ -28,7 +28,6 @@ export class DashboardComponent implements OnInit, AfterContentInit, OnDestroy {
     public cellarService: CellarService,
     private currentCellarService: CurrentCellarService,
     private router: Router,
-    public toasty: ToastyService
   ) {
     this.mediaMatcher.addListener(mql => zone.run(() => {
       this.mediaMatcher = matchMedia(`(max-width: ${SMALL_WIDTH_BREAKPOINT}px)`);
@@ -52,8 +51,8 @@ export class DashboardComponent implements OnInit, AfterContentInit, OnDestroy {
   getTypeIcon(t: string): string {
     let icon = '';
     switch (t) {
-      case 'BODEGA': icon = 'all_inbox'; break;
-      case 'FARMACIA': icon = 'store'; break;
+      case 'BODEGA': icon = 'store'; break;
+      case 'FARMACIA': icon = 'local_pharmacy'; break;
     }
     return icon;
   }
@@ -70,20 +69,14 @@ export class DashboardComponent implements OnInit, AfterContentInit, OnDestroy {
 
   newCellar() {
     const dialogRef = this.dialog.open(NewCellarComponent, {
+      disableClose: true,
       width: '600px',
       panelClass: 'iea-dialog'
     });
 
     dialogRef.afterClosed().subscribe(result => {
       if (result !== undefined) {
-        this.cellarService.createCellar(result).subscribe(data => {
-          if (data.ok === true) {
-            this.toasty.success('Sucursal agregada exitosamente');
-            this.cellarService.loadData();
-          } else {
-            this.toasty.error('Error al agregar la sucursal');
-          }
-        });
+        this.cellarService.loadData();
       }
     });
   }

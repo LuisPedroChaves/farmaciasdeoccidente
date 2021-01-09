@@ -1,4 +1,4 @@
-<div class="farmacia" *ngIf="creatingCellar === false">
+<div class="farmacia">
     <div>
         <h2 class="h2">
             Crear nueva Sucursal
@@ -8,28 +8,28 @@
     <div>
         <mat-form-field appearance="outline" color="primary" class="input-all">
             <mat-label>Nombre de la Sucursal</mat-label>
-            <!-- <input matInput placeholder="Ingrese un nombre" [(ngModel)]="newCellar.name"> -->
+            <input matInput [(ngModel)]="newCellar.name"  placeholder="Ingrese un Nombre">
         </mat-form-field>
     </div>
     <div>
         <mat-form-field appearance="outline" color="primary" class="input-all">
             <mat-label>Dirección</mat-label>
-            <input matInput placeholder="Ingrese una Direccion">
+            <input matInput [(ngModel)]="newCellar.address" placeholder="Ingrese una Direccion">
         </mat-form-field>
     </div>
     <div>
         <mat-form-field appearance="outline" color="primary" class="input-all">
             <mat-label>Descripción</mat-label>
-            <textarea matInput placeholder="Ingrese una Descripción"></textarea>
+            <textarea matInput [(ngModel)]="newCellar.description" placeholder="Ingrese una Descripción"></textarea>
         </mat-form-field>
     </div>
     <div fxLayout="row">
         <mat-label>Tipo</mat-label>&nbsp;&nbsp;&nbsp;
-        <mat-radio-group aria-labelledby="example-radio-group-label" class="example-radio-group">
-            <mat-radio-button color="warn" class="example-radio-button" [value]="0">
+        <mat-radio-group  [(ngModel)]="newCellar.type" aria-labelledby="example-radio-group-label" class="example-radio-group">
+            <mat-radio-button color="warn" class="example-radio-button" value="BODEGA">
                 Bodega
             </mat-radio-button>
-            <mat-radio-button color="warn" class="example-radio-button" [value]="1">
+            <mat-radio-button color="warn" class="example-radio-button" value="FARMACIA">
                 Farmacia
             </mat-radio-button>
         </mat-radio-group>
@@ -37,14 +37,10 @@
 
     <div fxLayout="row">
         <span fxFlex></span>
-        <button mat-button  (click)="close()">Cancelar</button>
-        <button mat-button color="primary" (click)="saveCellar()">Crear Sucursal</button>
-    </div>
-</div>
-<div class="blue-light-theme" *ngIf="creatingCellar === true">
-    <div style="height: 50vh;" fxLayout="column" fxLayoutAlign="center center">
-        <mat-progress-spinner diameter="45" color="primary" mode="indeterminate">
-        </mat-progress-spinner> <br><br>
-        <span style="color: rgba(0,0,0,0.3); font-size: 18px;">Creando...</span>
+        <button mat-button *ngIf="!creatingCellar"  (click)="close()">Cancelar</button>
+        <button mat-button color="primary" (click)="saveCellar()">
+            <span *ngIf="!creatingCellar">Crear Sucursal</span>
+            <mat-progress-spinner *ngIf="creatingCellar" mode="indeterminate" diameter="30"></mat-progress-spinner>
+        </button>
     </div>
 </div>

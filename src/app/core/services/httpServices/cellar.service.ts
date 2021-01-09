@@ -50,8 +50,8 @@ export class CellarService implements IDataService<CellarItem[]> {
   }
 
   createCellar(u: CellarItem): Observable<any> {
-    const jsonParms = JSON.stringify(u);
-    return this.http.post(this.apiConfigService.API_CELLAR, jsonParms);
+    // const jsonParms = JSON.stringify(u);
+    return this.http.post(this.apiConfigService.API_CELLAR, u);
   }
 
   updateCellar(u: CellarItem): Observable<any> {
