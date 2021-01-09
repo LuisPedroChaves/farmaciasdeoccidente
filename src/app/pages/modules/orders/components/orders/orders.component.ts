@@ -43,6 +43,7 @@ export class OrdersComponent implements OnInit {
   newCostumer() {
     const dialogRef = this.dialog.open(NewOrderComponent, {
       width: this.smallScreen ? '100%' : '800px',
+      height: this.smallScreen ? '100%' : '600px',
       data: { title: 'Nuevo Cliente' },
       disableClose: true,
       panelClass: ['iea-dialog'],
