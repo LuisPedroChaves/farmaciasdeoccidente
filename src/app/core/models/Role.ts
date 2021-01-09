@@ -2,6 +2,7 @@
 export interface RoleItem {
     _id?: string;
     name: string;
+    type: string;
     permissions: PermissionItem[];
 }
 
@@ -11,7 +12,7 @@ export interface PermissionItem {
     name: string;
     label: string;
     parent: string;
-    company: string;
+    type: string;
     level: number;
     options: string[];
     selected: boolean;

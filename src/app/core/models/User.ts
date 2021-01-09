@@ -1,10 +1,11 @@
 import { RoleItem } from './Role';
 
 export interface UserItem {
-    _id: string;
-    name: string;
-    username: string;
-    imageIndex: number;
+    _id?: string;
     _role: RoleItem;
-    email: string;
+    name: string,
+	username: string,
+	password?: string,
+	imageIndex: number,
+	email: string,
 }

@@ -1,10 +1,10 @@
 import { Component, OnInit, NgZone, ViewChild, OnDestroy, AfterContentInit } from '@angular/core';
 import { MatSidenav } from '@angular/material/sidenav';
+import { Subscription } from 'rxjs';
 import { EventBusService } from '../../../../../core/services/internal/event-bus.service';
 import { ControlEvent } from '../../../../../core/models/ControlEvent';
 import { ConfigService } from '../../../../../core/services/config/config.service';
-import { Subscription } from 'rxjs';
-import { filter } from 'rxjs/operators';
+import { RoleService } from '../../../../../core/services/httpServices/role.service';
 import { UserItem } from 'src/app/core/models/User';
 import { RoleItem } from 'src/app/core/models/Role';
 
@@ -13,7 +13,7 @@ import { RoleItem } from 'src/app/core/models/Role';
   templateUrl: './users.component.html',
   styleUrls: ['./users.component.scss']
 })
-export class UsersComponent implements OnInit, OnDestroy {
+export class UsersComponent implements OnInit, OnDestroy, AfterContentInit {
   // subscriptions ------------------
   configSubscription: Subscription;
   smallScreen = window.innerWidth < 960 ? true : false;
@@ -21,44 +21,44 @@ export class UsersComponent implements OnInit, OnDestroy {
 
   currentUser: UserItem;
   currentRole: RoleItem;
-  companySubscription: Subscription;
 
   @ViewChild('sidenavusers') sidenavusers: MatSidenav;
 
   rolesSubscription: Subscription;
-  roles: RoleItem[] = [
-    {name: 'rol1', permissions: []},
-    {name: 'rol2', permissions: []},
-    {name: 'rol3', permissions: []},
-    {name: 'rol4', permissions: []},
-    {name: 'rol6', permissions: []},
-  ];
+  roles: RoleItem[];
   // HOOK FUNCTIONS //////////////////////////////////////////////////////////////////////////////////////////
   // tslint:disable-next-line: max-line-length
-  constructor(public eventBus: EventBusService, public config: ConfigService) {
+  constructor(
+    public eventBus: EventBusService,
+    public config: ConfigService,
+    //TODO: public store: Store<AppState>
+    public roleService: RoleService,
+    ) {
 
   }
 
   ngOnInit(): void {
     this.eventBus.readData().subscribe(event => this.handleEvent(event));
+
+    this.rolesSubscription = this.roleService.readData().subscribe(data => {
+      this.roles = data;
+    });
   }
 
-  // tslint:disable-next-line: typedef
+  ngAfterContentInit() {
+    this.roleService.getData();
+  }
 
-  // tslint:disable-next-line: typedef
   ngOnDestroy() {
-    // this.rolesSubscription?.unsubscribe();
-    // this.companySubscription?.unsubscribe();
-    // this.configSubscription?.unsubscribe();
+    this.rolesSubscription?.unsubscribe();
+    this.configSubscription?.unsubscribe();
   }
 
   // EVENT FUNCTIONS ////////////////////////////////////////////////////////////////////////////////////////
   handleEvent(event: ControlEvent) {
-    console.log("🚀 ~ file: users.component.ts ~ line 54 ~ UsersComponent ~ handleEvent ~ event", event);
     switch (event.Event) {
       case this.config.EVENT_USERS_CHANGE_COMPONENT:
         this.tab = event.Payload;
-        console.log("🚀 ~ file: users.component.ts ~ line 58 ~ UsersComponent ~ handleEvent ~ this.tab", this.tab);
         if (this.smallScreen) {
           this.sidenavusers.opened = false;
         }
@@ -84,7 +84,6 @@ export class UsersComponent implements OnInit, OnDestroy {
     const e: ControlEvent = new ControlEvent();
     e.Event = event;
     e.Payload = payload;
-    console.log("🚀 ~ file: users.component.ts ~ line 81 ~ UsersComponent ~ emitEvent ~ e", e)
     this.eventBus.setData(e);
   }
   }

@@ -21,8 +21,13 @@ export class ApiConfigService {
   // Cellar
   public API_CELLAR = this.API_URL + '/cellar';
 
-  // Cellar
+  // Role
+  public API_ROLES = '/assets/data/modules.json'; // ---------- no modificar
   public API_ROLE = this.API_URL + '/role';
+  public API_MY_ROLE = this.API_URL + '/role/';
+
+  // User
+  public API_USER = this.API_URL + '/user';
   /* #endregion */
 
 }

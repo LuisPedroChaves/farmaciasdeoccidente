@@ -1,0 +1,66 @@
+[
+    { "name": "inventory", "label": "Inventario", "parent": "cpo", "level": 1 , "options": ["read","update","delete","create"] },
+    { "name": "stock", "label":"Inventario Real", "parent": "inventory", "level": 2 , "options": ["read","update","delete","create"] },
+    { "name": "con-stock", "label":"Inventario a Consignación", "parent": "inventory", "level": 2 , "options": ["read","update","delete","create"] },
+    { "name": "transfers", "label": "Transferencias", "parent": "stock", "level": 3 , "options": ["read","update","delete","create"] },
+    { "name": "transfers-con", "label": "Transferencias", "parent": "con-stock", "level": 3 , "options": ["read","update","delete","create"] },
+    { "name": "billing", "label": "Facturación", "parent": "cpo", "level": 1 , "options": ["read","update","delete","create"] },
+    { "name": "operations", "label": "Operaciones", "parent": "cpo", "level": 1 , "options": ["read","update","delete","create"] },
+    { "name": "orders", "label": "Pedidos", "parent": "operations", "level": 2 , "options": ["read","update","delete","create"] },
+    { "name": "purchases", "label": "Compras", "parent": "operations", "level": 2 , "options": ["read","update","delete","create"] },
+    { "name": "returns", "label": "Devoluciones", "parent": "operations", "level": 2 , "options": ["read","create"] },
+    
+    
+    { "name": "registers", "label": "Registros", "parent": "cpo", "level": 1 , "options": ["read","update","delete","create"] },
+    { "name": "combos", "label": "Combos de Productos", "parent": "registers", "level": 2 , "options": ["read","update","delete","create"] },
+    { "name": "clients", "label": "Clientes", "parent": "registers", "level": 2 , "options": ["read","update","delete","create"] },
+    { "name": "providers", "label": "Proveedores", "parent": "registers", "level": 2 , "options": ["read","update","delete","create"] },
+    { "name": "products", "label": "Productos", "parent": "registers", "level": 2 , "options": ["read","update","delete","create"] },
+    { "name": "product", "label": "Productos", "parent": "products", "level": 3 , "options": ["read","update","delete","create"] },
+    { "name": "services", "label": "Servicios", "parent": "products", "level": 3 , "options": ["read","update","delete","create"] },
+    { "name": "categories", "label": "Categorías", "parent": "products", "level": 3 , "options": ["read","update","delete","create"] },
+    { "name": "units", "label": "Unidades", "parent": "products", "level": 3 , "options": ["read","update","delete","create"] },
+
+
+
+    { "name": "accounting", "label": "Contabilidad", "parent": "seo", "level": 1 , "options": ["read","update","delete","create"] },
+    { "name": "general-accounting", "label": "Contabilidad General", "parent": "accounting", "level": 2 , "options": ["read","update","delete","create"] },
+    { "name": "accounts", "label": "Cuentas", "parent": "general-accounting", "level": 3 , "options": ["read","update","delete","create"] },
+    { "name": "departments", "label": "Departamentos", "parent": "general-accounting", "level": 3 , "options": ["read","update","delete","create"] },
+    { "name": "policy", "label": "Pólizas", "parent": "general-accounting", "level": 3 , "options": ["read","update","delete","create"] },
+    { "name": "ledger", "label": "Libro Mayor", "parent": "general-accounting", "level": 3 , "options": ["read","update","delete","create"] },
+    { "name": "balance", "label": "Balance", "parent": "general-accounting", "level": 3 , "options": ["read","update","delete","create"] },
+    { "name": "income-statment", "label": "Estado de Resultados", "parent": "general-accounting", "level": 3 , "options": ["read","update","delete","create"] },
+    { "name": "cash-flow", "label": "Flujo de Efectivo", "parent": "general-accounting", "level": 3 , "options": ["read","update","delete","create"] },
+    { "name": "bank-con", "label": "Conciliación Bancaria", "parent": "general-accounting", "level": 3 , "options": ["read","update","delete","create"] },
+    { "name": "sales-book", "label": "Libro de Ventas", "parent": "general-accounting", "level": 3 , "options": ["read","update","delete","create"] },
+    { "name": "purchases-book", "label": "Libro de Compras", "parent": "general-accounting", "level": 3 , "options": ["read","update","delete","create"] },
+    
+    { "name": "banks", "label": "Bancos", "parent": "accounting", "level": 2 , "options": ["read","update","delete","create"] },
+    { "name": "banks-registered", "label": "Cuentas Bancarias", "parent": "banks", "level": 3 , "options": ["read","update","delete","create"] },
+    { "name": "bank-accounts", "label": "Bancos", "parent": "banks", "level": 3 , "options": ["read","update","delete","create"] },
+    
+    { "name": "movements", "label": "Movimientos", "parent": "accounting", "level": 2 , "options": ["read","update","delete","create"] },
+    { "name": "bank-transfers", "label": "Transferencias Bancarias", "parent": "movements", "level": 3 , "options": ["read","update","delete","create"] },
+    { "name": "checks", "label": "Cheques", "parent": "movements", "level": 3 , "options": ["read","update","delete","create"] },
+
+
+
+
+    { "name": "payroll", "label": "Planilla", "parent": "seo", "level": 1 , "options": ["read","update","delete","create"] },
+    { "name": "payroll-general", "label": "Planilla de Empleados", "parent": "payroll", "level": 2 , "options": ["read","update","delete","create"] },
+    { "name": "payroll-employees", "label": "Planilla de Salarios", "parent": "payroll-general", "level": 3 , "options": ["read","update","delete","create"] },
+    { "name": "payroll-bonus", "label": "Planilla de Bonos", "parent": "payroll-general", "level": 3 , "options": ["read","update","delete","create"] },
+    { "name": "payroll-admin", "label": "Planillas Complemento", "parent": "payroll-general", "level": 3 , "options": ["read","update","delete","create"] },
+            
+    { "name": "employees", "label": "Empleados", "parent": "payroll", "level": 2 , "options": ["read","update","delete","create"] },
+    { "name": "contracts", "label": "Empleados", "parent": "employees", "level": 3 , "options": ["read","update","delete","create"] },
+    { "name": "jobs", "label": "Puestos de Trabajo", "parent": "employees", "level": 3 , "options": ["read","update","delete","create"] },
+    { "name": "courses", "label": "Cursos y Grados", "parent": "employees", "level": 3 , "options": ["read","update","delete","create"] },
+
+    { "name": "budget", "label": "Presupuestos", "parent": "seo", "level": 1 , "options": ["read","update","delete","create"] },
+
+
+
+    { "name": "accounting", "label": "Contabilidad", "parent": "icb", "level": 1 , "options": ["read","update","delete","create"] }
+]
