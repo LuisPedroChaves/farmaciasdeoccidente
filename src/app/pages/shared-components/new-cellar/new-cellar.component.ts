@@ -10,7 +10,12 @@ import { CellarItem } from '../../../core/models/Cellar';
 export class NewCellarComponent implements OnInit {
 
   creatingCellar = false;
-  newCellar: CellarItem;
+  newCellar: CellarItem = {
+    name: '',
+    address: '',
+    description: '',
+    type: '',
+  };
 
   constructor(public dialogRef: MatDialogRef<NewCellarComponent>, @Inject(MAT_DIALOG_DATA) public data: any) { }
 

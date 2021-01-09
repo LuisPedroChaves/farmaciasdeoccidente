@@ -75,15 +75,13 @@ export class DashboardComponent implements OnInit, AfterContentInit, OnDestroy {
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      console.log("🚀 ~ file: dashboard.component.ts ~ line 78 ~ DashboardComponent ~ dialogRef.afterClosed ~ result", result)
-      this.toasty.success('Sucursal agregada exitosamente Exitosamente');
       if (result !== undefined) {
         this.cellarService.createCellar(result).subscribe(data => {
           if (data.ok === true) {
-            this.toasty.success('Sucursal agregada exitosamente Exitosamente');
+            this.toasty.success('Sucursal agregada exitosamente');
             this.cellarService.loadData();
           } else {
-            this.toasty.error('Error al agregar la sucursal', 'Aceptar');
+            this.toasty.error('Error al agregar la sucursal');
           }
         });
       }

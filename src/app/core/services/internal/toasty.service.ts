@@ -7,7 +7,7 @@ import { ToastaConfig, ToastaService, ToastOptions } from 'ngx-toasta';
 export class ToastyService {
 
   constructor(private toastaService: ToastaService, private toastaConfig: ToastaConfig) {
-    this.toastaConfig.theme = 'material';
+    this.toastaConfig.theme = 'default';
     this.toastaConfig.position  = 'top-center';
     this.toastaConfig.showDuration = false;
   }
@@ -18,7 +18,7 @@ export class ToastyService {
       msg: message,
       showClose: true,
       timeout: 60000,
-      theme: theme ? theme : 'material',
+      theme: theme ? theme : 'default',
     };
 
     switch (type) {
@@ -39,7 +39,7 @@ export class ToastyService {
       msg: m,
       showClose: true,
       timeout: 4000,
-      theme: 'material',
+      theme: 'default',
     };
 
     this.toastaService.success(toastOptions);
@@ -54,7 +54,7 @@ export class ToastyService {
       msg: m,
       showClose: true,
       timeout: 4000,
-      theme: 'material',
+      theme: 'default',
     };
 
     this.toastaService.error(toastOptions);
@@ -68,7 +68,7 @@ export class ToastyService {
       msg: m,
       showClose: true,
       timeout: 6000,
-      theme: 'material',
+      theme: 'default',
     };
 
     this.toastaService.error(toastOptions);

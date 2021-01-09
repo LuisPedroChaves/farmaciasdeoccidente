@@ -1,6 +1,6 @@
 
 export interface CellarItem {
-    _id: string;
+    _id?: string;
 	name: string,
     address: string,
     description: string,
