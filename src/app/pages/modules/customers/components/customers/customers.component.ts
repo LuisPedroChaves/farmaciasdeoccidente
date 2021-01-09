@@ -6,7 +6,6 @@ import { NewCustomersComponent } from '../new-customers/new-customers.component'
 import { EditCustomerComponent } from '../edit-customer/edit-customer.component';
 import { MatDialog } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
-const SMALL_WIDTH_BREAKPOINT = 960;
 @Component({
   selector: 'app-customers',
   templateUrl: './customers.component.html',
