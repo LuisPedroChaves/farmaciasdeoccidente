@@ -10,15 +10,11 @@ $blue-2: #045195;
 }
 
 .padding-15 {
-    padding: 20px;
-}
-
-.header {
-    padding: 15px;
+    padding: 1s5px;
 }
 
 .component-title {
-    margin-left: 25px !important;
+    margin-left: 15px !important;
 }
 
 .component-space {
@@ -33,59 +29,43 @@ $blue-2: #045195;
     background-color: white !important;
 }
 
-.white-bg {
-    background-color: white !important;
-}
-
-.stockheader {
-    padding: 15px;
-}
-
-.allspace {
-    height: calc(100vh - 195px);
-}
-
-.allspace-sm {
-    height: calc(100vh - 245px);
-}
-
-.table-hover-row:hover {
-    background-color: rgba($color: #000000, $alpha: 0.02);
-}
-
-.inventorytable {
-    padding: 0px 10px;
-}
-
-.banklogo {
-    width: 60px;
-    border-radius: 10px;
-    margin-right: 7px;
-}
-
-.bankcontainer {
-    height: calc(100vh - 73px);
-    background-color: white;
-}
-
-.bankcontainer-sm {
-    height: calc(100vh - 123px);
-    background-color: white;
-}
-
-.bigbar {
+table {
     width: 100%;
-    background-color: rgb(245, 245, 245);
 }
 
-.smallbigbar {
-    width: 100%;
-    background-color: rgb(245, 245, 245);
+tr.example-detail-row {
+    height: 0;
 }
 
-.smallbar {
-    width: 400px;
-    background-color: rgb(245, 245, 245);
+tr.example-element-row:not(.example-expanded-row):hover {
+    background: whitesmoke;
+    border: none !important;
+}
+
+tr.example-element-row:not(.example-expanded-row):active {
+    background: #efefef;
+    border: none !important;
+}
+
+.example-element-row td {
+    border-bottom-width: 0;
+}
+
+.example-element-detail {
+    overflow: hidden;
+    display: flex;
+}
+
+.example-element-description {
+    padding: 20px;
+}
+
+.example-element-description-attribution {
+    opacity: 0.5;
+}
+
+.costumers-header {
+    padding: 15px 15px;
 }
 
 .fab {

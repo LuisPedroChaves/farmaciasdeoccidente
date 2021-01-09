@@ -1,131 +1,102 @@
 <div [ngClass]="{ 'app': !smallScreen, 'app-sm': smallScreen } ">
     <div class="section-content">
+        <button *ngIf="!smallScreen" mat-fab color="primary" class="fab mat-elevation-z10" (click)="newCostumer()">
+            <mat-icon>add</mat-icon><span class="extended-fab-button__text">Venta</span>
+          </button>
         <div>
-            <header class="module-header padding-15" fxLayoutAlign="start center" fxLayout="row wrap">
-                <h1 class="product-font ma-0 module-title">Cuentas por cobrar</h1>
+            <header class="module-header" [ngClass]="{'padding-25': !smallScreen, 'padding-15': smallScreen }" fxLayoutAlign="start center" fxLayout="row wrap">
+                <h1 class="product-font ma-0 module-title">Cuentas por Cobrar</h1>
             </header>
             <mat-divider></mat-divider>
 
-            <!-- class="module-container" -->
-            <mat-sidenav-container fxLayout="row wrap" [ngClass]="{'bankcontainer': !smallScreen, 'bankcontainer-sm': smallScreen}">
-                <mat-sidenav-content fxFlex fxLayout="row wrap">
-                    <div fxLayout="row wrap" fxFlex="100">
-                        <div fxFlex="100" fxLayout="row wrap" fxLayoutAlign="start center" class="stockheader">
-                            <button *ngIf="!smallScreen" mat-fab color="primary" class="fab mat-elevation-z10">
-                                <mat-icon>add</mat-icon><span class="extended-fab-button__text">Cliente</span>
-                              </button>
-                            <span fxFlex></span>
-                            <mat-form-field *ngIf="!smallScreen" appearance="outline" class="findinput" floatLabel="always" color="primary">
-                                <mat-icon matPrefix>search</mat-icon>
-                                <mat-label>Buscar Cuenta</mat-label>
-                                <input matInput placeholder="Búsqueda rápida" (keyup)="applyFilter2($event)">
-                            </mat-form-field>
-
-                        </div>
-                    </div>
-                    <div class="inventorytable" fxFlex="100" fxLayout="row wrap">
-
-
-
-
-                        <div fxFlex="100" fxLayout="row wrap" class="allspace" data-simplebar>
-
-
-                            <table mat-table [dataSource]="dataSource">
-
-                                <!-- Category Column -->
-                                <ng-container matColumnDef="customer">
-                                    <th mat-header-cell *matHeaderCellDef> cliente </th>
-                                    <td mat-cell *matCellDef="let element"><img [src]="element._bank.logo" alt="" class="banklogo"> {{element.customer}} </td>
-                                </ng-container>
-
-                                <!-- Code Column -->
-
-                                <ng-container matColumnDef="employee">
-                                    <th mat-header-cell *matHeaderCellDef> Tipo </th>
-                                    <td mat-cell *matCellDef="let element"> {{element.type}} </td>
-                                </ng-container>
-
-                                <!-- Name Column -->
-                                <ng-container matColumnDef="name">
-                                    <th mat-header-cell *matHeaderCellDef> Nombre </th>
-                                    <td mat-cell *matCellDef="let element"> {{element.name}} </td>
-                                </ng-container>
-
-
-
-                                <!-- Cost Column -->
-                                <ng-container matColumnDef="no.invoice">
-                                    <th mat-header-cell *matHeaderCellDef> No. Cuenta </th>
-                                    <td mat-cell *matCellDef="let element"> {{element.account_number}} </td>
-                                </ng-container>
-
-                                <!-- Min Stock Column -->
-                                <ng-container matColumnDef="date">
-                                    <th mat-header-cell *matHeaderCellDef> Fecha </th>
-                                    <td mat-cell *matCellDef="let element"> {{element.createDate | date : 'dd/MM/yyyy'}} </td>
-                                </ng-container>
-
-                                <!-- Stock Column -->
-                                <ng-container matColumnDef="balance">
-                                    <th mat-header-cell *matHeaderCellDef> Saldo </th>
-                                    <td mat-cell *matCellDef="let element">Q. {{element.balance | number: '.2'}} </td>
-                                </ng-container>
-
-                                <ng-container matColumnDef="state">
-                                    <th mat-header-cell *matHeaderCellDef></th>
-                                    <td mat-cell *matCellDef="let element">
-                                        <button mat-icon-button [matMenuTriggerFor]="menu"><mat-icon class="material-icons-outlined">more_vert</mat-icon></button>
-                                        <mat-menu #menu="matMenu">
-                                            <button mat-menu-item (click)="bankbar.opened = true; title = 'Editar Cuenta'; selectedAccount = element"><mat-icon class="material-icons-outlined">info</mat-icon> Ver detalles</button>
-                                            <button mat-menu-item (click)="bankbar.opened = true; title = 'Estado de Cuenta'; selectedAccount = element"><mat-icon class="material-icons-outlined">chrome_reader_mode</mat-icon> Ver estado de cuenta</button>
-                                        </mat-menu>
-                                    </td>
-                                </ng-container>
-                                <ng-container matColumnDef="credit">
-                                    <th mat-header-cell *matHeaderCellDef> crédito </th>
-                                    <td mat-cell *matCellDef="let element">Q. {{element.balance | number: '.2'}} </td>
-                                </ng-container>
-                                <ng-container matColumnDef="creditDays">
-                                    <th mat-header-cell *matHeaderCellDef>Dias de Crédito </th>
-                                    <td mat-cell *matCellDef="let element">Q. {{element.balance | number: '.2'}} </td>
-                                </ng-container>
-
-                                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-                                <tr mat-row class="table-hover-row" *matRowDef="let row; columns: displayedColumns;">
-                                </tr>
-                            </table>
-                        </div>
-                        <!-- 
-                        <div fxFlex="100" fxLayout="row wrap">
-                            <div fxFlex="100" fxLayout="column" fxLayoutAlign="center center" class="allspace">
-                                <mat-icon>add_shopping_cart</mat-icon>
-                                <span>No hay cuentas bancarias creadas</span>
-                            </div>
-                        </div> -->
-
-                    </div>
-                    <!-- <div fxFlex="100" fxLayout="row wrap">
-                        <div fxFlex="100" fxLayout="column" fxLayoutAlign="center center" class="allspace">
-                        </div>
-                    </div> -->
-                </mat-sidenav-content>
-
-                <mat-sidenav #bankbar position="end" mode="over" opened="false" [ngClass]="{'smallbar': title === 'Bancos' && !smallScreen, 'bigbar': title !== 'Bancos', 'smallbigbar': smallScreen}">
-                    <header class="header" fxLayoutAlign="start center" fxLayout="row wrap">
-                        <button mat-icon-button (click)="bankbar.toggle()">
-                            <mat-icon>close</mat-icon>
+            <div fxLayout="row wrap" class="module-container " data-simplebar>
+                <div class="container-strech">
+                    <div fxLayout="row wrap" fxLayoutAlign="start center" class="costumers-header">
+                        <h2 class="title1 product-font ma-0">Cuentas Pendientes por cobrar</h2>
+                        &nbsp;&nbsp;&nbsp;&nbsp;
+                        <button *ngIf="smallScreen" class="new-button-sm" mat-icon-button (click)="newCostumer()">
+                            <svg class="svg-24 svg-in-button" viewBox="0 0 24 24">
+                                <path fill="currentColor" d="M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z" />
+                            </svg>
                         </button>
-                        <h2 class="ma-0">{{ title }}</h2>
-                    </header>
-                    <div>
-                        <!-- <app-bank-list [smallScreen]="smallScreen" [banks]="banks" *ngIf="title === 'Bancos' && banks !== undefined"></app-bank-list> -->
-                        <!-- <app-new-account [smallScreen]="smallScreen" [banks]="banks" *ngIf="title === 'Nueva Cuenta Bancaria' && banks !== undefined"></app-new-account> -->
-                        <!-- <app-edit-account [smallScreen]="smallScreen" [banks]="banks" [currentAccount]="selectedAccount" *ngIf="title === 'Editar Cuenta' && selectedAccount !== undefined"></app-edit-account> -->
-                        <!-- <app-account-status [smallScreen]="smallScreen" [currentAccount]="selectedAccount" *ngIf="title === 'Estado de Cuenta' && selectedAccount !== undefined"></app-account-status> -->
+
+                        <span fxFlex></span>
+                        <mat-form-field appearance="outline" floatLabel="always" class="findinput">
+                            <mat-label>Buscar</mat-label>
+                            <mat-icon class="text-muted" matPrefix>search</mat-icon>
+                            <input (keyup)="applyFilter($event)" matInput type="text">
+                        </mat-form-field>
                     </div>
-                </mat-sidenav>
-            </mat-sidenav-container>
+                    <div class="costumers-header">
+
+                        <table mat-table [dataSource]="dataSource" multiTemplateDataRows class="mat-elevation-z2 noborder-table ">
+                            <ng-container matColumnDef="image">
+                                <th mat-header-cell *matHeaderCellDef></th>
+                                <td mat-cell *matCellDef="let element">
+                                    <mat-icon color="primary" class="material-icons-outlined">person</mat-icon>
+                                </td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="customer">
+                                <th mat-header-cell *matHeaderCellDef> Cliente </th>
+                                <td mat-cell *matCellDef="let element"> {{element.customer}} </td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="employee">
+                                <th mat-header-cell *matHeaderCellDef> Empleado </th>
+                                <td mat-cell *matCellDef="let element"> {{element.employee}} </td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="date">
+                                <th mat-header-cell *matHeaderCellDef> Fecha </th>
+                                <td mat-cell *matCellDef="let element"> {{element.date}} </td>
+                            </ng-container>
+                            <ng-container matColumnDef="invoice">
+                                <th mat-header-cell *matHeaderCellDef> No. de Factura </th>
+                                <td mat-cell *matCellDef="let element"> {{element.invoice}} </td>
+                            </ng-container>
+                            <ng-container matColumnDef="state">
+                                <th mat-header-cell *matHeaderCellDef> Estado </th>
+                                <td mat-cell *matCellDef="let element"> {{element.state}} </td>
+                            </ng-container>
+                            <ng-container matColumnDef="balance">
+                                <th mat-header-cell *matHeaderCellDef> Saldo </th>
+                                <td mat-cell *matCellDef="let element"> {{element.balance}} </td>
+                            </ng-container>
+                            <ng-container matColumnDef="credit">
+                                <th mat-header-cell *matHeaderCellDef>Credito </th>
+                                <td mat-cell *matCellDef="let element"> {{element.credit}} </td>
+                            </ng-container>
+                            <ng-container matColumnDef="creditDays">
+                                <th mat-header-cell *matHeaderCellDef> Dias de Credito </th>
+                                <td mat-cell *matCellDef="let element"> {{element.creditDays}} </td>
+                            </ng-container>
+
+                            <!-- Expanded Content Column - The detail row is made up of this one column that spans across all columns -->
+                            <!-- <ng-container matColumnDef="expandedDetail">
+                                <td mat-cell *matCellDef="let element" [attr.colspan]="columnsToDisplay.length">
+                                <div class="example-element-detail" [@detailExpand]="element == expandedElement ? 'expanded' : 'collapsed'">
+                                    <div class="example-element-description">
+                                        Editar Cliente
+        
+                                    </div>
+                                </div>
+                                </td>
+                            </ng-container> -->
+
+                            <tr mat-header-row *matHeaderRowDef="columnsToDisplay2"></tr>
+                            <tr mat-row *matRowDef="let element; columns: columnsToDisplay2;" class="example-element-row" (click)="editCostumer(element)">
+                            </tr>
+                            <!-- <tr mat-row *matRowDef="let element; columns: columnsToDisplay2;"
+                                class="example-element-row"
+                                [class.example-expanded-row]="expandedElement === element"
+                                (click)="expandedElement = expandedElement === element ? null : element">
+                            </tr> -->
+                            <!-- <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="example-detail-row"></tr> -->
+                        </table>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </div>
