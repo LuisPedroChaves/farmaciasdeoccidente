@@ -20,6 +20,10 @@ const routes: Routes = [
         // canActivate: [CheckTokenGuard]
       },
       {
+        path: 'dispatches', pathMatch: 'full',  loadChildren: () => import('./pages/modules/dispatches/dispatches.module').then(m => m.DispatchesModule),
+        // canActivate: [CheckTokenGuard]
+      },
+      {
         path: 'customers', pathMatch: 'full',  loadChildren: () => import('./pages/modules/customers/customers.module').then(m => m.CustomersModule),
         // canActivate: [CheckTokenGuard]
       },

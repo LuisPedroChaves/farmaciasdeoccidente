@@ -23,6 +23,7 @@ export class AppLayoutComponent implements OnInit {
       ]
     },
     { state: '/orders', name: 'Ordenes', type: 'link', icon: 'receipt_long', order: 3 },
+    { state: '/dispatches', name: 'Despachos', type: 'link', icon: 'receipt_long', order: 3 },
     {
       state: '/factory/sales', name: 'Rutas', type: 'sub', order: 4, icon: 'electric_moped',
       children: [

@@ -21,6 +21,7 @@ import {MatDatepickerModule} from '@angular/material/datepicker';
 import { MatNativeDateModule, MAT_DATE_LOCALE } from '@angular/material/core';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import {MatProgressBarModule} from '@angular/material/progress-bar';
+import {MatBottomSheetModule} from '@angular/material/bottom-sheet';
 
 /* FLEX ----------------------*/
 import { FlexLayoutModule, CoreModule } from '@angular/flex-layout';
@@ -62,6 +63,7 @@ import { FormsModule } from '@angular/forms';
     MatNativeDateModule,
     MatProgressSpinnerModule,
     MatProgressBarModule,
+    MatBottomSheetModule
   ],
   exports: [
     FormsModule,
@@ -90,7 +92,7 @@ import { FormsModule } from '@angular/forms';
     MatNativeDateModule,
     MatProgressSpinnerModule,
     MatProgressBarModule,
-
+    MatBottomSheetModule
   ]
   ,providers: [
     {provide: MAT_DATE_LOCALE, useValue:'es-GT'}
