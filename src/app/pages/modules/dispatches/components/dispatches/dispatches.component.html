@@ -1,5 +1,6 @@
 <!-- <div *ngIf="!loading && coursesp.includes('read')" [ngClass]="{'saving': saving}"> -->
 <div *ngIf="!loading" [ngClass]="{'saving': saving}">
+    <h1 class="product-font ma-0 module-title title">Despachos Pendientes</h1>
     <header class="header" fxLayout="row wrap" fxLayoutAlign="start center">
         <button mat-flat-button color="primary">
       <mat-icon>update</mat-icon> Actualizar
@@ -12,7 +13,7 @@
         </mat-form-field> &nbsp; &nbsp; &nbsp;
     </header>
     <div class="padding-list">
-        <div class="courselist" fxLayout="row wrap">
+        <div class="courselist" fxLayout="row wrap" data-simplebar>
             <div fxFlex="100" fxLayout="row wrap">
                 <div *ngFor="let c of courses" fxFlex.gt-lg="25" fxFlex.gt-md="33" fxFlex.gt-sm="50" fxFlex.gt-xs="50" fxFlex="100" [ngClass]="{'inactive': !c.isActive}" class="jobcard user">
                     <div matRipple class="cursor-pointer job-card mat-elevation-z2" fxLayout="row wrap" fxLayoutAlign="start center">
