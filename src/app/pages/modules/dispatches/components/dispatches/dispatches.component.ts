@@ -32,7 +32,7 @@ export class DispatchesComponent implements OnInit, OnDestroy, AfterContentInit 
         name: 'Farmacia1',
         details: 'detalles',
         time: 10,
-        image: 'medicamento.jpg',
+        image: 'imagen2.jpg',
         isActive: true,
       },
       {
@@ -43,7 +43,7 @@ export class DispatchesComponent implements OnInit, OnDestroy, AfterContentInit 
         name: 'Farmacia1',
         details: 'detalles',
         time: 10,
-        image: 'medicamento.jpg',
+        image: 'imagen1.jpg',
         isActive: true,
       },
       {
@@ -54,7 +54,7 @@ export class DispatchesComponent implements OnInit, OnDestroy, AfterContentInit 
         name: 'Farmacia1',
         details: 'detalles',
         time: 10,
-        image: 'medicamento.jpg',
+        image: 'imagen2.jpg',
         isActive: true,
       },
       {
@@ -65,7 +65,7 @@ export class DispatchesComponent implements OnInit, OnDestroy, AfterContentInit 
         name: 'Farmacia1',
         details: 'detalles',
         time: 10,
-        image: 'medicamento.jpg',
+        image: 'imagen1.jpg',
         isActive: true,
       },
       {
@@ -76,7 +76,7 @@ export class DispatchesComponent implements OnInit, OnDestroy, AfterContentInit 
         name: 'Farmacia1',
         details: 'detalles',
         time: 10,
-        image: 'medicamento.jpg',
+        image: 'imagen2.jpg',
         isActive: true,
       },
       {
@@ -87,7 +87,7 @@ export class DispatchesComponent implements OnInit, OnDestroy, AfterContentInit 
         name: 'Farmacia1',
         details: 'detalles',
         time: 10,
-        image: 'medicamento.jpg',
+        image: 'imagen1.jpg',
         isActive: true,
       },
       {
@@ -98,7 +98,7 @@ export class DispatchesComponent implements OnInit, OnDestroy, AfterContentInit 
         name: 'Farmacia1',
         details: 'detalles',
         time: 10,
-        image: 'medicamento.jpg',
+        image: 'imagen2.jpg',
         isActive: true,
       },
       {
@@ -109,7 +109,7 @@ export class DispatchesComponent implements OnInit, OnDestroy, AfterContentInit 
         name: 'Farmacia1',
         details: 'detalles',
         time: 10,
-        image: 'medicamento.jpg',
+        image: 'imagen1.jpg',
         isActive: true,
       },
       {
@@ -120,7 +120,7 @@ export class DispatchesComponent implements OnInit, OnDestroy, AfterContentInit 
         name: 'Farmacia1',
         details: 'detalles',
         time: 10,
-        image: 'medicamento.jpg',
+        image: 'imagen2.jpg',
         isActive: true,
       },
     ];
