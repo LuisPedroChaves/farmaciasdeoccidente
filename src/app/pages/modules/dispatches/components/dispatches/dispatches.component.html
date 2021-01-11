@@ -12,7 +12,7 @@
         </mat-form-field> &nbsp; &nbsp; &nbsp;
     </header>
     <div class="padding-list">
-        <div class="courselist" fxLayout="row wrap" data-simplebar>
+        <div class="courselist" fxLayout="row wrap">
             <div fxFlex="100" fxLayout="row wrap">
                 <div *ngFor="let c of courses" fxFlex.gt-lg="25" fxFlex.gt-md="33" fxFlex.gt-sm="50" fxFlex.gt-xs="50" fxFlex="100" [ngClass]="{'inactive': !c.isActive}" class="jobcard user">
                     <div matRipple class="cursor-pointer job-card mat-elevation-z2" fxLayout="row wrap" fxLayoutAlign="start center">
@@ -60,7 +60,7 @@
                             <span class="text-muted" *ngIf="c._employee_job === null || c._employee_job === undefined">No hay docente
                 asignado</span>
                         </div>
-                        <div flex-flow="row center center">
+                        <div fxLayout="row center center">
                             <button mat-button class="info-row" color="primary">
                   EDITAR
                 </button>
