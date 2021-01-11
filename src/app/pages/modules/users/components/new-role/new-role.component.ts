@@ -38,8 +38,8 @@ export class NewRoleComponent implements OnInit {
   ngOnInit(): void {
     this.roleService.getPermissionsList().subscribe(data => {
       this.allPermissions = data;
-      const company = this.allPermissions.filter(p => p.parent === this.currentPermissions);
-      this.currentForm = company;
+      const type = this.allPermissions.filter(p => p.parent === this.currentPermissions);
+      this.currentForm = type;
     });
   }
 

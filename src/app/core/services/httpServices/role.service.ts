@@ -72,6 +72,6 @@ export class RoleService implements IDataService<RoleItem[]> {
   }
 
   deleteRole(u: RoleItem): Observable<any> {
-    return this.http.delete(this.apiConfigService.API_ROLE + '' + u._id);
+    return this.http.delete(this.apiConfigService.API_ROLE + '/' + u._id);
   }
 }

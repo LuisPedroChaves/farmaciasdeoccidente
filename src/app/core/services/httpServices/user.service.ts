@@ -54,11 +54,11 @@ export class UserService implements IDataService<UserItem[]>  {
   }
 
   updateUser(u: UserItem): Observable<any> {
-    const jsonParms = JSON.stringify(u);
-    return this.http.put(this.apiConfigService.API_USER + '/' + u._id, jsonParms);
+    // const jsonParms = JSON.stringify(u);
+    return this.http.put(this.apiConfigService.API_USER + '/' + u._id, u);
   }
 
   deleteUser(u: UserItem): Observable<any> {
-    return this.http.delete(this.apiConfigService.API_USER + '' + u._id);
+    return this.http.delete(this.apiConfigService.API_USER + '/' + u._id);
   }
 }

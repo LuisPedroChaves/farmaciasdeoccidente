@@ -1,5 +1,5 @@
 <div class="new-header" fxLayout="row wrap" fxLayoutAlign="start center">
-    <button mat-icon-button class="close-button">
+    <button mat-icon-button class="close-button"  (click)="emitEvent(config.EVENT_USERS_CHANGE_COMPONENT, 'userlist')">
         <mat-icon>close</mat-icon>
     </button>
     <h2 class="ma-0 colorTitulo">Detalles de Usuario</h2>
@@ -27,7 +27,7 @@
             </mat-menu>
         </div>
         <div fxFlex class="form-paddin">
-            <form autocomplete="off">
+            <form [formGroup]="form"  autocomplete="off">
                 <div class="input-section">
                     <mat-form-field appearance="outline" class="input-all" color="primary">
                         <mat-label>Nombre y Apellido</mat-label>
@@ -62,18 +62,28 @@
                         <mat-hint>Seleccione un rol creado para asignar los permisos y accesos al usuario</mat-hint>
                     </mat-form-field>
                 </div>
+                <div   class="input-section">
+                    <mat-form-field appearance="outline" class="input-all" color="primary">
+                      <mat-label>Sucursal Asignada</mat-label>
+                      <mat-select placeholder="Seleccione una surusal" class="text-md" formControlName="cellar">
+                        <mat-option *ngFor="let c of cellars" [value]="c._id">{{c.name}}</mat-option>
+                      </mat-select>
+                      <mat-hint>Seleccione una sucursal para asignar al usuario (Sí el rol es de ADMINISTRADOR O REPARTIDOR no es necesario seleccionar una sucursal).</mat-hint>
+                    </mat-form-field>
+                  </div>
                 <br><br>
                 <div class="input-section" fxLayout="row wrap">
-                    <button mat-stroked-button color="primary" class="product-font">Cancelar</button> &nbsp;
-                    <button mat-flat-button [disabled]="this.form.invalid" color="primary" class="product-font">Guardar Cambios</button>
+                    <button mat-stroked-button *ngIf="!loading" color="primary" class="product-font" (click)="emitEvent(config.EVENT_USERS_CHANGE_COMPONENT, 'userlist')">Cancelar</button> &nbsp;
+                    <button mat-flat-button  *ngIf="!loading" [disabled]="this.form.invalid" color="primary" (click)="updateUser()" class="product-font">Guardar Cambios</button>
                     <span fxFlex></span>
-                    <button mat-stroked-button color="warn" class="product-font">
+                    <button mat-stroked-button *ngIf="!loading"  color="warn" class="product-font" (click)="deleteUser()">
                         <mat-icon class="material-icons-outlined svg-in-button">delete</mat-icon>
                         {{ smallScreen ? '':'Eliminar Usuario'}}
                     </button>
                 </div>
+                <mat-progress-spinner fxLayoutAlign="center center" *ngIf="loading" mode="indeterminate" diameter="50">
+                </mat-progress-spinner>
             </form>
-
         </div>
     </div>
 </div>

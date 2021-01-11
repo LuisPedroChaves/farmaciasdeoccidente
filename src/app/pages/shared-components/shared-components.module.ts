@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 /* MATERIAL ---------------------------------- */
 import { MatTableModule } from '@angular/material/table';
@@ -30,13 +31,14 @@ import { NewCellarComponent } from './new-cellar/new-cellar.component';
 
 /* STYLE ----------------------*/
 import { ToastaModule } from 'ngx-toasta';
-import { FormsModule } from '@angular/forms';
+import { ConfirmationDialogComponent } from './confirmation-dialog/confirmation-dialog.component';
 
 @NgModule({
-  declarations: [NewCellarComponent],
+  declarations: [NewCellarComponent, ConfirmationDialogComponent],
   imports: [
     CommonModule,
     FormsModule,
+    ReactiveFormsModule,
 
     // visibilty
     FlexLayoutModule,
@@ -67,6 +69,7 @@ import { FormsModule } from '@angular/forms';
   ],
   exports: [
     FormsModule,
+    ReactiveFormsModule,
     // visibilty
     FlexLayoutModule,
     CoreModule,

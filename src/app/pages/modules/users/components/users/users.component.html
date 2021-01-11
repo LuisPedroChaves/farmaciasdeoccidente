@@ -24,7 +24,7 @@
                     </mat-sidenav>
                     <mat-sidenav-content>
                         <div class="module-container" data-simplebar>
-                            <app-user-list *ngIf="tab === 'userlist'"></app-user-list>
+                            <app-user-list *ngIf="tab === 'userlist'" [smallScreen]="smallScreen"></app-user-list>
                             <app-new-user *ngIf="tab === 'new-user' && roles !== undefined" [roles]="roles" [smallScreen]="smallScreen"></app-new-user>
                             <app-user-details *ngIf="tab === 'user-details' && currentUser !== undefined && roles !== undefined" [roles]="roles" [currentUser]="currentUser" [smallScreen]="smallScreen"></app-user-details>
                             <app-role-list *ngIf="tab === 'rolelist'" [roles]="roles"></app-role-list>
