@@ -1,0 +1,27 @@
+<header class="header" fxLayout="row wrap" fxLayoutAlign="center center">
+    <h2 class="product-font">{{ data.title }}</h2>
+</header>
+<div class="message" fxLayout="row wrap" fxLayoutAlign="center center" *ngIf="data.message">
+    {{ data.message }}
+</div>
+<div class="alert" fxLayout="row wrap"  *ngIf="data.alert">
+    <div fxFlex="40px" fxLayoutAlign="start center">
+        <mat-icon class="material-icons-outlined">report_problem</mat-icon>
+    </div>
+    <div fxFlex>
+        {{ data.alert }}
+    </div>
+</div>
+<div class="info" fxLayout="row wrap"  *ngIf="data.info">
+    <div fxFlex="40px" fxLayoutAlign="start center">
+        <mat-icon class="material-icons-outlined">info</mat-icon>
+    </div>
+    <div fxFlex>
+        {{ data.info }}
+    </div>
+</div>
+<div fxLayout="row wrap" class="options">
+    <button mat-button color="primary" (click)="dialogRef.close()">Cancelar</button>
+    <span fxFlex></span>
+    <button mat-stroked-button color="primary"  (click)="dialogRef.close(true)">Aceptar</button>
+</div>

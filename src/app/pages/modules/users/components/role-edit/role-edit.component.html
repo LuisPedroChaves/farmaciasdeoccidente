@@ -1,5 +1,5 @@
 <div class="new-header" fxLayout="row wrap" fxLayoutAlign="start center">
-    <button mat-icon-button class="close-button">
+    <button mat-icon-button class="close-button" (click)="emitEvent(config.EVENT_USERS_CHANGE_COMPONENT, 'rolelist')">
         <mat-icon>close</mat-icon>
     </button>
     <h2 class="ma-0 colorTitulo">Editar Rol</h2>
@@ -9,7 +9,7 @@
         <div class="input-section" fxLayoutAlign="start center" fxLayout="row wrap">
             <mat-form-field fxFlex appearance="outline" class="input-all" color="primary">
                 <mat-label>Nombre del rol</mat-label>
-                <input matInput type="text" placeholder="Ingrese el nombre del rol" class="text-md bold">
+                <input matInput [(ngModel)]="newRole.name"  type="text" placeholder="Ingrese el nombre del rol" class="text-md bold">
                 <!-- <mat-error>Debe Ingresar un nombre válido</mat-error> -->
                 <mat-hint>Ingrese el nombre de identificación para el rol</mat-hint>
             </mat-form-field>
@@ -18,14 +18,14 @@
                 <mat-icon>{{ allExpandState ? 'unfold_more':'unfold_less' }}</mat-icon>
             </button>
             <span fxFlex></span>
-            <button mat-flat-button class="colorTitulo">
+            <button mat-flat-button *ngIf="newRole.type !== 'ADMIN' && !creatingRol"  (click)="saveRole()"  color="primary">
                 Guardar Rol
             </button> &nbsp; &nbsp;
-            <button mat-stroked-button color="warn">
+            <button mat-stroked-button *ngIf="!creatingRol" (click)="delete()"  color="warn">
                 <mat-icon class="material-icons-outlined">delete</mat-icon>
                 Eliminar
             </button>
-
+            <mat-progress-spinner *ngIf="creatingRol" mode="indeterminate" diameter="30"></mat-progress-spinner>
         </div>
     </div>
     <br>
@@ -34,17 +34,17 @@
     <div class="form-padding" fxLayout="row wrap" *ngIf="currentForm !== undefined ">
 
 
-        <mat-expansion-panel *ngFor="let m of getPermissions(this.newRole._company.name)" id="epn" [expanded]="allExpandState" class="expanded-section">
+        <mat-expansion-panel *ngFor="let m of getPermissions(this.newRole.type)" id="epn" [expanded]="allExpandState" class="expanded-section" >
             <mat-expansion-panel-header>
                 <mat-panel-title fxLayoutAlign="start center" fxLayout="row wrap">
 
                     <div fxFlex.lg="30" fxFlex.xl="30" fxFlex.gt-md="30" fxFlex.gt-sm="50" fxFlex.gt-xs="50" fxFlex="60">
-                        <mat-checkbox name="t-us-nr-lg-001" color="accent">
+                        <mat-checkbox name="t-us-nr-lg-001" color="accent" [(ngModel)]="m.selected" (click)="$event.stopPropagation();">
                             <b class="role-module-title product-font"> {{ m.label }}</b>
                         </mat-checkbox>
                     </div>
                     <div fxFlex *ngIf="getPermissions(m.name).length <= 0">
-                        <mat-select fxFlex multiple class="input-all feature-select" required="true">
+                        <mat-select fxFlex multiple class="input-all feature-select" required="true" [(ngModel)]="m.options">
                             <mat-option value="read">Consultar</mat-option>
                             <mat-option value="update">Modificar</mat-option>
                             <mat-option value="delete">Eliminar</mat-option>
@@ -57,11 +57,9 @@
                 <div>
                     <div *ngFor="let sm of getPermissions(m.name)">
                         <div class="sbSquare" fxLayout="row wrap" fxLayoutAlign="start center">
-                            <div fxFlex.lg="35" fxFlex.xl="35" fxFlex.gt-md="35" fxFlex.gt-sm="50" fxFlex.gt-xs="50" fxFlex="60">
-                                <mat-checkbox color="accent">{{sm.label}}</mat-checkbox>
-                            </div>
+                            <div fxFlex.lg="35" fxFlex.xl="35" fxFlex.gt-md="35" fxFlex.gt-sm="50" fxFlex.gt-xs="50" fxFlex="60"><mat-checkbox [(ngModel)]="sm.selected" color="accent">{{sm.label}}</mat-checkbox></div>
                             <div fxFlex *ngIf="getPermissions(sm.name).length <= 0">
-                                <mat-select fxFlex multiple class="input-all feature-select" required="true">
+                                <mat-select fxFlex multiple class="input-all feature-select" required="true" [(ngModel)]="sm.options">
                                     <mat-option value="read">Consultar</mat-option>
                                     <mat-option value="update">Modificar</mat-option>
                                     <mat-option value="delete">Eliminar</mat-option>
@@ -73,13 +71,13 @@
                         <div class="feturespace">
                             <div *ngFor="let f of getPermissions(sm.name)" class="sbFeature" fxLayout="row" fxLayoutWrap="wrap" fxLayoutAlign="start center">
                                 <div fxFlex.lg="40" fxFlex.xl="40" fxFlex.gt-md="40" fxFlex.gt-sm="60" fxFlex.gt-xs="60" fxFlex="60">
-                                    <mat-checkbox name="t-us-nr-lg-001" color="accent">
+                                    <mat-checkbox name="t-us-nr-lg-001" color="accent" [(ngModel)]="f.selected">
                                         {{f.label}}
                                     </mat-checkbox>
 
                                 </div>
                                 <div fxFlex class="featureoptions">
-                                    <mat-select fxFlex multiple class="input-all feature-select" required="true">
+                                    <mat-select fxFlex multiple class="input-all feature-select" required="true" [(ngModel)]="f.options">
                                         <mat-option value="read">Consultar</mat-option>
                                         <mat-option value="update">Modificar</mat-option>
                                         <mat-option value="delete">Eliminar</mat-option>

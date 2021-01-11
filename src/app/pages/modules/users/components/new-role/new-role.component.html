@@ -30,10 +30,10 @@
       </button>
       <span fxFlex></span>
 
-      <button mat-flat-button (click)="saveRole()"  color="primary">
-        <span *ngIf="!creatingRol">Crear Rol</span>
-        <mat-progress-spinner *ngIf="creatingRol" mode="indeterminate" diameter="30"></mat-progress-spinner>
+      <button mat-flat-button *ngIf="!creatingRol"  (click)="saveRole()"  color="primary">
+        Crear Rol
       </button>
+      <mat-progress-spinner *ngIf="creatingRol" mode="indeterminate" diameter="30"></mat-progress-spinner>
     </div>
   </div>
   <br>
