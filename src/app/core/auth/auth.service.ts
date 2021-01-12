@@ -27,11 +27,11 @@ export class AuthService {
     return JSON.parse(localStorage.getItem('farmaciasDO-session')) ? JSON.parse(localStorage.getItem('farmaciasDO-session')).token : null;
   }
 
-  // logout(id: string): Observable<any> {
-  //   return this.http.put(this.ApiEndpoints.API_LOGOUT + '/' + id, {}).pipe(
-  //     map((response: Response) => response)
-  //   );
-  // }
+  logout(id: string): Observable<any> {
+    return this.http.put(this.ApiEndpoints.API_LOGOUT + '/' + id, {}).pipe(
+      map((response: Response) => response)
+    );
+  }
 
   refreshToken() {
     const url = this.ApiEndpoints.API_LOGIN + '/renuevatoken';

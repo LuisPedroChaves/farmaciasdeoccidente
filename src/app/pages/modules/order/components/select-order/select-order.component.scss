@@ -1,0 +1,40 @@
+.new-header { padding: 10px; }
+$blue: #2979ff;
+.close-button { margin-right: 10px; }
+.avatarimage { width: 125px; height: 125px; border-radius: 100%; border: 3px solid $blue; }
+.image-section { width: 135px; height: 135px; }
+.text-center { text-align: center !important; }
+.image-edit {
+    position:relative;
+    display: block;
+    margin-bottom: 25px;
+}
+.avatarimageStep {
+    min-height: 130px !important;
+    min-width: 140px !important;
+    max-height: 130px !important;
+    max-width: 140px !important;
+    text-align: center !important;
+    img {
+        width: 125px;
+        border-radius: 100%;
+        border: 4px solid $blue;
+    }
+}
+
+.display-bottom-right { position:absolute;right:0;bottom:0; color: white; margin-right: 15px; }
+.form-paddin { padding: 0px 25px; }
+.input-section { padding: 0px 5px; }
+.menu-images { min-width: 185px; width: 185px; max-width: 185px; padding: 7px; }
+.avataroption { width: 40px; height: 40px; }
+.avatar { width: 38px; height: 38px; border-radius: 8px; cursor: pointer; }
+.avatar:hover { border-radius: 20px; transition: 0.3s; }
+.text-md { font-size: 18px; }
+
+
+.section { padding: 0px 15px; }
+.joblist { height: 100px; }
+.assigned-job { margin-bottom: 5px; border-radius: 10px; background-color: white; .whitebg { background-color: white !important; } }
+.card { background-color: white; border-radius: 10px; padding: 5px; }
+.infos { padding: 5px 0px; }
+.spinner { height: calc(100vh  - 250px); }

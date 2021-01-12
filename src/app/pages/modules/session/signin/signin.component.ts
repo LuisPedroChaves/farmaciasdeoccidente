@@ -1,17 +1,19 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { Store } from '@ngrx/store';
 import { Subscription } from 'rxjs';
+import { AppState } from 'src/app/core/store/app.reducer';
 import { AuthService } from '../../../../core/auth/auth.service';
+import * as actions from '../../../../core/store/actions';
 
 @Component({
   selector: 'app-signin',
   templateUrl: './signin.component.html',
   styleUrls: ['./signin.component.scss']
 })
-export class SigninComponent implements OnInit {
+export class SigninComponent implements OnInit, OnDestroy {
 
-  configSubscription: Subscription;
   sessionSubscription: Subscription;
   smallScreen = window.innerWidth < 960 ? true : false;
   visible = false;
@@ -27,40 +29,64 @@ export class SigninComponent implements OnInit {
   type: string;
 
   constructor(
-    //TODO: public store: Store<AppState>,
+    public store: Store<AppState>,
     private fb: FormBuilder,
     private router: Router,
     public authService: AuthService
-  ) {
-  //   this.configSubscription = this.store.select('config').pipe(filter( config => config !== null)).subscribe( config => {
-  //     this.smallScreen = config.deviceConfig.smallScreen;
-  // });
-   }
+  ) {  }
 
   ngOnInit(): void {
-    // this.sessionSubscription = this.store.select('session').subscribe( session => {
-    //   this.loading = session.loading;
-    //   this.errormsg = null;
-    //   this.showError = false;
-    //   if (session.error !== null) {
-    //     this.error = session.error.errorMessage;
-    //     this.showError = true;
-    //   }
-    //   this.loaded = session.loaded;
-    //   if (session.token && session.error === null && session.loaded === true) {
-    //     this.type = session.currentUser.type;
-    //     if (this.type === 'ADMIN') {
-    //       this.router.navigate(['/admin']);
-    //     } else {
-    //       this.router.navigate(['/']);
-    //     }
-    //   }
-    // });
+    this.sessionSubscription = this.store.select('session').subscribe( session => {
+      this.loading = session.loading;
+      this.errormsg = null;
+      this.showError = false;
+      if (session.error !== null) {
+        this.error = session.error.errorMessage;
+        this.showError = true;
+      }
+      this.loaded = session.loaded;
+      if (session.token && session.error === null && session.loaded === true) {
+        this.type = session.currentUser.type;
+        if (this.type === 'ADMIN') {
+          this.router.navigate(['/admin']);
+        } else {
+          this.router.navigate(['/']);
+        }
+      }
+    });
     // FORM
     this.form = this.fb.group ( {
       user: ['', Validators.compose([Validators.required] )],
       password: ['' , Validators.compose ( [ Validators.required ] )]
     });
+  }
+
+  ngOnDestroy() {
+    this.sessionSubscription?.unsubscribe();
+  }
+
+  onSubmit() {
+    this.error = undefined;
+    if (this.form.invalid) { return; }
+    const { user, password } = this.form.value;
+    this.store.dispatch(actions.login({ u: user, p: password }));
+
+    // this.loginNow = true;
+    // this.authService.login(user, password).subscribe(data => {
+    //   this.loginNow = false;
+    //   const r = {...data};
+    //   this.company = r.company;
+    //   localStorage.setItem('iea-session', JSON.stringify(r));
+    //   if (this.company === 'admin') {
+    //     this.router.navigate(['/admin']);
+    //   } else {
+    //     this.router.navigate(['/']);
+    //   }
+    // }, error => {
+    //   this.loginNow = false;
+    //   this.error = 'El usuario o contraseña no es válido';
+    // });
+
   }
 
 }

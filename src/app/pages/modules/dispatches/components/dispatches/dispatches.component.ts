@@ -276,9 +276,6 @@ export class DispatchesComponent implements OnInit, OnDestroy, AfterContentInit 
   ) { }
 
   ngOnInit(): void {
-    // this.configSubscription = this.store.select('config').pipe(filter( configd => configd !== null)).subscribe( configd => {
-    //   this.smallScreen = configd.deviceConfig.smallScreen;
-    // });
     // this.sessionsubscription = this.store.select('session').pipe(filter( session => session !== null)).subscribe( session => {
     //     if (session.permissions !== null) {
     //       const b = session.permissions.filter(pr => pr.name === 'courses');
@@ -309,6 +306,10 @@ export class DispatchesComponent implements OnInit, OnDestroy, AfterContentInit 
   generateImage(): string {
     const image = 'Geometry.jpg';
     return image;
+  }
+
+  selectOrder(order: any) {
+    this.router.navigate(['/order', order.name]);
   }
 
 }

@@ -13,6 +13,7 @@ export class ApiConfigService {
 
   /* #region  AUTH */
   public API_LOGIN = this.API_URL + '/login';
+  public API_LOGOUT = this.API_URL + '/logout';
 
   /* #endregion */
 

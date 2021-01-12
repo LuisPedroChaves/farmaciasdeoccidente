@@ -15,7 +15,7 @@
         <div class="courselist" fxLayout="row wrap" data-simplebar>
             <div fxFlex="100" fxLayout="row wrap">
                 <div *ngFor="let c of courses" fxFlex.gt-lg="25" fxFlex.gt-md="33" fxFlex.gt-sm="50" fxFlex.gt-xs="50" fxFlex="100" [ngClass]="{'inactive': !c.isActive}" class="jobcard user">
-                    <div matRipple class="cursor-pointer job-card mat-elevation-z2" fxLayout="row wrap" fxLayoutAlign="start center">
+                    <div matRipple class="cursor-pointer job-card mat-elevation-z2" (click)="selectOrder(c)"  fxLayout="row wrap" fxLayoutAlign="start center">
                         <div fxFlex="100" fxLayout="row wrap" class="cover" style="background-image: url('assets/images/covers/{{c.image}}');">
                             <span class="more" *ngIf="!c.isActive">Curso inactivo</span>
                             <span fxFlex></span>
