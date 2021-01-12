@@ -39,7 +39,7 @@ export class SelectOrderComponent implements OnInit {
   campus: any[];
 
   image = 'assets/images/avatars/00M.jpg';
-  selectedEmployee: any;
+  selectedOrder: any;
   allservices;
 
   constructor(
@@ -74,7 +74,7 @@ export class SelectOrderComponent implements OnInit {
     //     });
     //   });
     // });
-    this.selectedEmployee = {
+    this.selectedOrder = {
         invoiceNumber: '5',
         nit: '730613-k',
         name: 'Farmacia1',
