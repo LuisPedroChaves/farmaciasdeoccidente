@@ -1,5 +1,6 @@
 <!-- <div *ngIf="!loading && coursesp.includes('read')" [ngClass]="{'saving': saving}"> -->
 <div *ngIf="!loading" [ngClass]="{'saving': saving}">
+    <h1 class="product-font ma-0 module-title title">Despachos Pendientes</h1>
     <header class="header" fxLayout="row wrap" fxLayoutAlign="start center">
         <button mat-flat-button color="primary">
       <mat-icon>update</mat-icon> Actualizar
@@ -60,7 +61,7 @@
                             <span class="text-muted" *ngIf="c._employee_job === null || c._employee_job === undefined">No hay docente
                 asignado</span>
                         </div>
-                        <div flex-flow="row center center">
+                        <div fxLayout="row center center">
                             <button mat-button class="info-row" color="primary">
                   EDITAR
                 </button>
