@@ -193,7 +193,7 @@
             <div [fxFlex]="smallScreen ? 100 : '200px'" fxLayoutAlign="center start" class="text-center form-paddin">
                 <div class="image-edit input-section">
                     <div class="avatarimageStep">
-                        <mat-icon class="iconimage">account_circle</mat-icon>
+                        <img src="/assets/images/person-icon.jpg" class="avatarimage">
                     </div>
                 </div>
             </div>
@@ -205,19 +205,10 @@
                     <h2 class="ma-0 text-muted">{{selectedOrder.name}}</h2>
                 </div>
                 <div class="input-section">
-                    <h2 class="ma-0 text-muted">{{selectedOrder.address}}</h2>
-                </div>
-                <div class="input-section">
                     <h2 class="ma-0 text-muted">{{selectedOrder.phone}}</h2>
                 </div>
                 <div class="input-section">
-                    <h2 class="ma-0 text-muted">{{selectedOrder.area}}</h2>
-                </div>
-                <div class="input-section">
-                    <h2 class="ma-0 text-muted">{{selectedOrder.town}}</h2>
-                </div>
-                <div class="input-section">
-                    <h2 class="ma-0 text-muted">{{selectedOrder.department}}</h2>
+                    <h2 class="ma-0 text-muted">{{selectedOrder.address}}, {{selectedOrder.area}}, {{selectedOrder.town}}, {{selectedOrder.department}}</h2>
                 </div>
             </div>
             <div class="input-section" fxLayout="row wrap">
@@ -242,14 +233,13 @@
                 <div fxFlex fxLayout="row wrap">
 
                     <div fxFlex="100" class="input-section">
-                        <b>No.Orden: </b> {{selectedOrder.noOrder}}
+                        <b class="size-fact">No.Orden: </b> {{selectedOrder.noOrder}}
                     </div>
                     <div fxFlex="100" class="input-section">
-                        <b>No. de Factura: </b> {{selectedOrder.invoiceNumber}}
+                        <b class="size-fact">No. de Factura: </b> {{selectedOrder.invoiceNumber}}
                     </div>
                 </div>
             </div>
-
             <div class="section infos" fxLayoutAlign="start stard" fxLayout="row wrap">
                 <div fxFlex="60px" fxLayoutAlign="start center" class="text-center form-paddin">
                     <mat-icon class="material-icons-outlined text-muted">request_quote</mat-icon>
