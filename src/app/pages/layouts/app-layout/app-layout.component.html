@@ -63,27 +63,27 @@
                         <svg *ngIf="m.svg" style="width:24px;height:24px" mat-list-icon viewBox="0 0 24 24">
                             <path fill="#404040" [attr.d]="m.svg" />
                         </svg>
-                        <mat-icon *ngIf="m.icon" class="material-icons-outlined" mat-list-icon>{{ m.icon }}</mat-icon>
+                        <mat-icon *ngIf="m.icon" class="material-icons-outlined" color="accent" mat-list-icon>{{ m.icon }}</mat-icon>
                         <h4 mat-line>{{ m.name }}</h4>
                         <span fxFlex></span>
-                        <mat-icon *ngIf="m.children" class="menu-button" [ngClass]="{'rotated' : m.open}">expand_more</mat-icon>
+                        <mat-icon *ngIf="m.children" class="menu-button" color="accent" [ngClass]="{'rotated' : m.open}">expand_more</mat-icon>
                     </mat-list-item>
                     <mat-list-item class="menu-items" *ngIf="m.type === 'sub'" (click)="m.open = !m.open">
 
                         <svg *ngIf="m.svg" style="width:24px;height:24px" mat-list-icon viewBox="0 0 24 24">
                             <path fill="#404040" [attr.d]="m.svg" />
                         </svg>
-                        <mat-icon *ngIf="m.icon" class="material-icons-outlined" mat-list-icon>{{ m.icon }}</mat-icon>
+                        <mat-icon *ngIf="m.icon" class="material-icons-outlined" color="accent" mat-list-icon>{{ m.icon }}</mat-icon>
                         <h4 mat-line>{{ m.name }}</h4>
                         <span fxFlex></span>
-                        <mat-icon *ngIf="m.children" class="menu-button" [ngClass]="{'rotated' : m.open}">expand_more</mat-icon>
+                        <mat-icon *ngIf="m.children" class="menu-button" color="accent" [ngClass]="{'rotated' : m.open}">expand_more</mat-icon>
                     </mat-list-item>
                     <div *ngIf="m.children" id="{{m.state}}" class="submenu" [ngClass]="{'expanded' : m.open}">
                         <mat-list-item *ngFor="let c of m.children" [routerLink]="c.state" style="padding-left: 15px;" class="menu-items">
                             <svg *ngIf="c.svg" style="width:24px;height:24px" mat-list-icon viewBox="0 0 24 24">
                                 <path fill="#404040" [attr.d]="c.svg" />
                             </svg>
-                            <mat-icon class="material-icons-outlined" *ngIf="c.icon" mat-list-icon>{{ c.icon }}</mat-icon>
+                            <mat-icon class="material-icons-outlined" color="accent" *ngIf="c.icon" mat-list-icon>{{ c.icon }}</mat-icon>
                             <h4 mat-line>{{ c.name }}</h4>
                             <span fxFlex></span>
                         </mat-list-item>
