@@ -19,7 +19,6 @@ export class ApiConfigService {
   /* #endregion */
 
   /* #region  ADMIN */
-
   // Cellar
   public API_CELLAR = this.API_URL + '/cellar';
 
@@ -30,6 +29,12 @@ export class ApiConfigService {
 
   // User
   public API_USER = this.API_URL + '/user';
+  /* #endregion */
+
+  /* #region  SUCURSALES */
+  // Customer
+  public API_CUSTOMER = this.API_URL + '/customer';
+
   /* #endregion */
 
 }

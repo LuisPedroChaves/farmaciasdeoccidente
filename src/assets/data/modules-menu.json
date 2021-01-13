@@ -24,8 +24,8 @@
         "order": 2
     },
     {
-        "state": "routes",
-        "name": "Rutas",
+        "state": "deliveries",
+        "name": "Rutas y Entregas",
         "type": "link",
         "icon": "electric_moped",
         "iconType": "icon",

@@ -80,7 +80,6 @@ export class SelectOrderComponent implements OnInit {
         name: 'Farmacia1',
         address: '|Ciudad',
         phone: '2535354',
-        area: 'Zona 3',
         town: 'almolonga',
         department: 'quetzaltenago',
         paymentMethod: '100',
