@@ -3,5 +3,5 @@
     { "name": "orders", "label":"Ordenes", "parent": "order", "level": 2 , "options": ["read","update","delete","create"] },
     { "name": "dispatches", "label":"Despachos", "parent": "order", "level": 2 , "options": ["read","update","delete","create"] },
     { "name": "routes", "label": "Rutas", "parent": "order", "level": 2 , "options": ["read","update","delete","create"] },
-    { "name": "transfers-con", "label": "Transferencias", "parent": "con-stock", "level": 3 , "options": ["read","update","delete","create"] }
+    { "name": "customersRoutes", "label": "Clientes", "parent": "PHARMA", "level": 1 , "options": ["read","update","delete","create"]}
 ]
