@@ -1,6 +1,6 @@
 [
     {
-        "state": "orders",
+        "state": "order",
         "name": "Ordenes",
         "type": "sub",
         "icon": "receipt_long",
@@ -8,9 +8,9 @@
         "order": 1
     },
     {
-        "state": "order",
+        "state": "orders",
         "name": "Crear orden",
-        "type": "sub",
+        "type": "link",
         "icon": "receipt_long",
         "iconType": "icon",
         "order": 1
@@ -18,7 +18,7 @@
     {
         "state": "dispatches",
         "name": "Despachos",
-        "type": "sub",
+        "type": "link",
         "icon": "widgets",
         "iconType": "icon",
         "order": 2

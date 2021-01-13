@@ -30,12 +30,12 @@ export class AppLayoutComponent implements OnInit, OnDestroy, AfterContentInit {
   };
 
   cellars: CellarItem[];
-  menu: MenuItem[] = [];
+  menuItems: MenuItem[] = [];
   myrole: PermissionItem[];
   collapse = true;
   sidePanelOpened;
 
-  menuItems = [
+  menuItems2 = [
     { state: '/', name: 'Inicio', type: 'link', icon: 'dashboard', order: 1 },
     {
       state: '/factory/production', name: 'Transferencias', type: 'sub', order: 2,icon: 'wifi_protected_setup',
@@ -130,8 +130,8 @@ export class AppLayoutComponent implements OnInit, OnDestroy, AfterContentInit {
           parentEquivalent.children.push(childmenu);
         });
       }
-      this.menu.push(parentEquivalent);
-      console.log(this.menu);
+      this.menuItems.push(parentEquivalent);
+      console.log(this.menuItems);
     });
   }
 
