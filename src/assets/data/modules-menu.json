@@ -11,7 +11,7 @@
         "state": "orders",
         "name": "Crear orden",
         "type": "link",
-        "icon": "receipt_long",
+        "icon": "history_edu",
         "iconType": "icon",
         "order": 1
     },
@@ -19,7 +19,7 @@
         "state": "dispatches",
         "name": "Despachos",
         "type": "link",
-        "icon": "widgets",
+        "icon": "list_alt",
         "iconType": "icon",
         "order": 2
     },
@@ -27,8 +27,16 @@
         "state": "routes",
         "name": "Rutas",
         "type": "link",
-        "icon": "assignment",
+        "icon": "electric_moped",
         "iconType": "icon",
         "order": 3
+    },
+    {
+        "state": "customersRoutes",
+        "name": "Clientes",
+        "type": "link",
+        "icon": "person_pin_circle",
+        "iconType": "icon",
+        "order": 2
     }
 ]

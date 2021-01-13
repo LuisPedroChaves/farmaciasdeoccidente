@@ -11,6 +11,7 @@ import { ChildrenItems, MenuItem } from 'src/app/core/models/Menu';
 import { MenuService } from '../../../core/services/httpServices/menu.service';
 import { RoleService } from '../../../core/services/httpServices/role.service';
 import { PermissionItem } from 'src/app/core/models/Role';
+import { HttpClient } from '@angular/common/http';
 const SMALL_WIDTH_BREAKPOINT = 960;
 
 @Component({
@@ -67,7 +68,8 @@ export class AppLayoutComponent implements OnInit, OnDestroy, AfterContentInit {
     public router: Router,
     public cellarService: CellarService,
     public menuService: MenuService,
-    public roleService: RoleService
+    public roleService: RoleService,
+    public http: HttpClient,
     ) {
     // tslint:disable-next-line: deprecation
     this.mediaMatcher.addListener(mql => zone.run(() => {
@@ -103,9 +105,17 @@ export class AppLayoutComponent implements OnInit, OnDestroy, AfterContentInit {
       this.roleService.getMyRole(),
       this.menuService.initMenu()
     ]).subscribe(data => {
-      this.myrole = data[0].role.permissions;
-      this.store.dispatch(actions.setMyRole({ myroles: this.myrole }));
-      this.calculateMenu(data[1], this.myrole);
+      if (data[0].role.type === 'ADMIN') {
+        this.http.get<MenuItem[]>('/assets/data/modules.json').subscribe((result: any) => {
+          this.myrole = result;
+          this.store.dispatch(actions.setMyRole({ myroles: this.myrole }));
+          this.calculateMenu(data[1], this.myrole);
+        });
+      }else {
+        this.myrole = data[0].role.permissions;
+        this.store.dispatch(actions.setMyRole({ myroles: this.myrole }));
+        this.calculateMenu(data[1], this.myrole);
+      }
     });
   }
 
@@ -131,7 +141,6 @@ export class AppLayoutComponent implements OnInit, OnDestroy, AfterContentInit {
         });
       }
       this.menuItems.push(parentEquivalent);
-      console.log(this.menuItems);
     });
   }
 
