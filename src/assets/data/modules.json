@@ -1,7 +1,7 @@
 [
-    { "name": "orders", "label": "Ordenes", "parent": "PHARMA", "level": 1 , "options": ["read","update","delete","create"] },
-    { "name": "order", "label":"Ordenes", "parent": "orders", "level": 2 , "options": ["read","update","delete","create"] },
-    { "name": "dispatches", "label":"Despachos", "parent": "orders", "level": 2 , "options": ["read","update","delete","create"] },
-    { "name": "routes", "label": "Rutas", "parent": "orders", "level": 2 , "options": ["read","update","delete","create"] },
+    { "name": "order", "label": "Ordenes", "parent": "PHARMA", "level": 1 , "options": ["read","update","delete","create"] },
+    { "name": "orders", "label":"Ordenes", "parent": "order", "level": 2 , "options": ["read","update","delete","create"] },
+    { "name": "dispatches", "label":"Despachos", "parent": "order", "level": 2 , "options": ["read","update","delete","create"] },
+    { "name": "routes", "label": "Rutas", "parent": "order", "level": 2 , "options": ["read","update","delete","create"] },
     { "name": "transfers-con", "label": "Transferencias", "parent": "con-stock", "level": 3 , "options": ["read","update","delete","create"] }
 ]
