@@ -8,8 +8,41 @@
   <link rel="icon" type="image/x-icon" href="favicon.ico">
   <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+  <style type="text/css"> .pace .pace-activity {top: 70px;} .pace .pace-progress-inner {box-shadow: none;}</style>
+  <style>
+    .dark-bg { background-color: #202020 !important; }
+    .app-loading {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 95vh;
+      overflow: hidden !important;
+    }
+    .spinner {
+      animation: rotate 0.5s linear infinite;
+      transform-origin: center center;
+      /* position: absolute; */
+    }
+    .loadingimage {
+      max-height: 50px;
+      max-width: 50px;
+      margin: 15px;
+    }
+    @keyframes rotate { 100% { transform: rotate(360deg); } }
+  </style>
 </head>
 <body class="mat-typography">
-  <app-root></app-root>
+  <app-root>
+    <div id="loadingscreen" class="app-loading">
+      <img id="loadingIcon" src="" class="loadingimage" alt="">
+      <svg class="spinner" xmlns="http://www.w3.org/2000/svg" width="50" height="50" viewBox="0 0 50 50">
+        <path fill="#012767" d="M25,5A20.14,20.14,0,0,1,45,22.88a2.51,2.51,0,0,0,2.49,2.26h0A2.52,2.52,0,0,0,50,22.33a25.14,25.14,0,0,0-50,0,2.52,2.52,0,0,0,2.5,2.81h0A2.51,2.51,0,0,0,5,22.88,20.14,20.14,0,0,1,25,5Z">
+        </path>
+      </svg>
+    </div>
+  </app-root>
 </body>
 </html>

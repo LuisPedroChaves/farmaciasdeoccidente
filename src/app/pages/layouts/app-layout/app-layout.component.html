@@ -9,24 +9,23 @@
       <span *ngIf="!this.mediaMatcher.matches">FARMACIAS DE OCCIDENTE</span>
         </span>
         <span fxFlex></span>
-        <!-- <div class="currentStore" *ngIf="isAdmin" fxLayoutAlign="start center" [matMenuTriggerFor]="menuSotres"> -->
-        <div class="aguaservo-menu" fxLayoutAlign="start center" [matMenuTriggerFor]="menuSotres">
+        <div class="currentStore" *ngIf="isAdmin" fxLayoutAlign="start center" [matMenuTriggerFor]="menuSotres">
             <div class="cellar-image" fxLayoutAlign="center center">
-                <mat-icon class="menu-3">local_pharmacy</mat-icon>
+                <mat-icon>{{ getTypeIcon(currentStore.type) }}</mat-icon>
             </div>
-            <span *ngIf="!mediaMatcher.matches">FARMACIA</span>
+            <span *ngIf="!mediaMatcher.matches">{{ currentStore.name }}</span>
             <span fxFlex></span>
             <mat-icon>arrow_drop_down</mat-icon>
         </div>
         <mat-menu #menuSotres="matMenu">
-            <button mat-menu-item>
-        <mat-icon class="material-icons-outlined">getTypeIcon(c.type)</mat-icon>
-        c.name
-      </button>
-            <button mat-menu-item>
-        <mat-icon>add</mat-icon>
-        Nuevo
-      </button>
+            <button mat-menu-item *ngFor="let c of cellars" (click)="accessToCellar(c)">
+                <mat-icon class="material-icons-outlined">{{ getTypeIcon(c.type) }}</mat-icon>
+                {{ c.name }}
+            </button>
+            <!-- <button mat-menu-item (click)="newCellar()">
+                <mat-icon>add</mat-icon>
+                Nuevo
+            </button> -->
         </mat-menu>
         <!-- <button mat-icon-button class="optionbutton" (click)="showPanel('notifications')">
             <mat-icon matBadgeColor="warn">notifications_none</mat-icon>
@@ -34,11 +33,11 @@
         <!-- <button  mat-icon-button class="optionbutton" (click)="showPanel('messages')">
             <mat-icon matBadge="5" matBadgeColor="warn">chat_bubble_outline</mat-icon>
         </button> -->
-        <button mat-icon-button class="optionbutton" [matMenuTriggerFor]="menu">
-      <mat-icon class="material-icons-outlined">person</mat-icon>
-    </button>
+        <button mat-icon-button class="optionbutton avatartopbutton" [matMenuTriggerFor]="menu">
+            <img [src]="getImage()" alt="Avatar" class="avatar-top">
+        </button>
         <mat-menu #menu="matMenu">
-            <button mat-menu-item>
+            <button mat-menu-item (click)="logout()">
         <mat-icon>exit_to_app</mat-icon>
         <span>Cerrar Sesión</span>
       </button>
@@ -49,8 +48,7 @@
     <mat-sidenav-container class="sidenav-container app-inner">
         <mat-sidenav id="sidebar-panel" [mode]="this.mediaMatcher.matches ? 'over' : 'side'" [(opened)]="collapse" (open)="sidePanelOpened = true" (close)="sidePanelOpened = false" #sidemenu [ngStyle]="{ width: '250px' }" style="margin-top: 0; padding-top: 0 !important;">
             <mat-nav-list style="padding-top: 0;">
-                <!-- <mat-list-item *ngIf="isAdmin" (click)="back()" class="menu-items"> -->
-                <mat-list-item class="menu-items">
+                <mat-list-item *ngIf="isAdmin" (click)="back()" class="menu-items">
                     <mat-icon color="accent" mat-list-icon>arrow_back</mat-icon>
                     <h4 mat-line>Panel Principal</h4>
                 </mat-list-item>

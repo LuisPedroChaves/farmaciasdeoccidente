@@ -1,0 +1,34 @@
+[
+    {
+        "state": "orders",
+        "name": "Ordenes",
+        "type": "sub",
+        "icon": "receipt_long",
+        "iconType": "icon",
+        "order": 1
+    },
+    {
+        "state": "order",
+        "name": "Crear orden",
+        "type": "sub",
+        "icon": "receipt_long",
+        "iconType": "icon",
+        "order": 1
+    },
+    {
+        "state": "dispatches",
+        "name": "Despachos",
+        "type": "sub",
+        "icon": "widgets",
+        "iconType": "icon",
+        "order": 2
+    },
+    {
+        "state": "routes",
+        "name": "Rutas",
+        "type": "link",
+        "icon": "assignment",
+        "iconType": "icon",
+        "order": 3
+    }
+]

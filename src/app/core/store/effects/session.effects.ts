@@ -26,18 +26,18 @@ export class SessionEffects {
     ));
 
 
-    logout$ = createEffect( () => this.actions$.pipe(
-        ofType(actions.logout),
-        mergeMap( (action) => this.authService.logout(action.id).pipe(
-            map(data => {
-                localStorage.removeItem('farmaciasDO-session');
-                return actions.logoutSuccess();
-            }),
-            catchError(err => {
-                const MESSAGE = 'Usuario o Contraseña invalido';
+    // logout$ = createEffect( () => this.actions$.pipe(
+    //     ofType(actions.logout),
+    //     mergeMap( (action) => this.authService.logout(action.id).pipe(
+    //         map(data => {
+    //             localStorage.removeItem('farmaciasDO-session');
+    //             return actions.logoutSuccess();
+    //         }),
+    //         catchError(err => {
+    //             const MESSAGE = 'Usuario o Contraseña invalido';
 
-                return of(actions.loginError({ payload: {...err, errorMessage: MESSAGE} }));
-            })
-        ))
-    ));
+    //             return of(actions.loginError({ payload: {...err, errorMessage: MESSAGE} }));
+    //         })
+    //     ))
+    // ));
 }

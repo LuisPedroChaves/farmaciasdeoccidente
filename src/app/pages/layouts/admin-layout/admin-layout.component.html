@@ -14,12 +14,12 @@
           <button  mat-icon-button class="optionbutton" (click)="showPanel('messages')">
               <mat-icon matBadge="5" matBadgeColor="warn">chat_bubble_outline</mat-icon>
           </button> -->
-        <button mat-icon-button class="optionbutton" (click)="showPanel()" [matMenuTriggerFor]="menu">
-        <mat-icon class="material-icons-outlined">person</mat-icon>
-      </button>
+          <button mat-icon-button class="optionbutton avatartopbutton" [matMenuTriggerFor]="menu">
+            <img [src]="getImage()" alt="Avatar" class="avatar-top">
+        </button>
         <!-- <mat-menu #menu="matMenu"> -->
         <mat-menu #menu="matMenu">
-            <button mat-menu-item>
+            <button mat-menu-item (click)="logout()">
           <mat-icon>exit_to_app</mat-icon>
           <span>Cerrar Sesión</span>
         </button>
