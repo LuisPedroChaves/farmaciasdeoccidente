@@ -1,4 +1,16 @@
-import { Component, NgZone, OnInit } from '@angular/core';
+import { Component, NgZone, OnInit, OnDestroy, AfterContentInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { Store } from '@ngrx/store';
+import { combineLatest, Subscription } from 'rxjs';
+import { filter } from 'rxjs/operators';
+import { CellarItem } from 'src/app/core/models/Cellar';
+import { AppState } from 'src/app/core/store/app.reducer';
+import * as actions from '../../../core/store/actions';
+import { CellarService } from '../../../core/services/httpServices/cellar.service';
+import { ChildrenItems, MenuItem } from 'src/app/core/models/Menu';
+import { MenuService } from '../../../core/services/httpServices/menu.service';
+import { RoleService } from '../../../core/services/httpServices/role.service';
+import { PermissionItem } from 'src/app/core/models/Role';
 const SMALL_WIDTH_BREAKPOINT = 960;
 
 @Component({
@@ -6,13 +18,25 @@ const SMALL_WIDTH_BREAKPOINT = 960;
   templateUrl: './app-layout.component.html',
   styleUrls: ['./app-layout.component.scss']
 })
-export class AppLayoutComponent implements OnInit {
+export class AppLayoutComponent implements OnInit, OnDestroy, AfterContentInit {
 
   public mediaMatcher: MediaQueryList = window.matchMedia(`(max-width: ${SMALL_WIDTH_BREAKPOINT}px)`);
+
+  sessionSubscription: Subscription;
+  currentuser: any;
+  isAdmin = false;
+  currentStore: any = {
+    name: ''
+  };
+
+  cellars: CellarItem[];
+  menu: MenuItem[] = [];
+  myrole: PermissionItem[];
   collapse = true;
   sidePanelOpened;
+
   menuItems = [
-    { state: '/factory', name: 'Inicio', type: 'link', icon: 'dashboard', order: 1 },
+    { state: '/', name: 'Inicio', type: 'link', icon: 'dashboard', order: 1 },
     {
       state: '/factory/production', name: 'Transferencias', type: 'sub', order: 2,icon: 'wifi_protected_setup',
       children: [
@@ -37,7 +61,14 @@ export class AppLayoutComponent implements OnInit {
     { state: '/factory/providers', name: 'Cuentas por Cobrar', type: 'link', icon: 'request_quote', order: 2 },
   ];
 
-  constructor(zone: NgZone) {
+  constructor(
+    zone: NgZone,
+    public store: Store<AppState>,
+    public router: Router,
+    public cellarService: CellarService,
+    public menuService: MenuService,
+    public roleService: RoleService
+    ) {
     // tslint:disable-next-line: deprecation
     this.mediaMatcher.addListener(mql => zone.run(() => {
       this.mediaMatcher = matchMedia(`(max-width: ${SMALL_WIDTH_BREAKPOINT}px)`);
@@ -48,7 +79,103 @@ export class AppLayoutComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.sessionSubscription = this.store.select('session').pipe(filter( session => session !== null )).subscribe(session => {
+      this.currentuser = session.currentUser;
+      if (session !== null) {
+        if (session.token === null) {
+          this.router.navigate(['session/signin']);
+        }
+      }
+      if (this.currentuser) {
+        if (this.currentuser.type === 'ADMIN') {
+          this.isAdmin = true;
+        }
+      }
+    });
+    setTimeout(() => {
+      if (localStorage.getItem('currentstore')) {
+        this.currentStore = JSON.parse(localStorage.getItem('currentstore'));
+      }
+    }, 1000);
 
+    this.cellarService.readData().subscribe(data => { this.cellars = data; });
+    combineLatest([
+      this.roleService.getMyRole(),
+      this.menuService.initMenu()
+    ]).subscribe(data => {
+      this.myrole = data[0].role.permissions;
+      this.store.dispatch(actions.setMyRole({ myroles: this.myrole }));
+      this.calculateMenu(data[1], this.myrole);
+    });
+  }
+
+  ngOnDestroy() {
+    this.sessionSubscription?.unsubscribe();
+    this.isAdmin = false;
+  }
+
+  ngAfterContentInit() {
+    this.cellarService.getData();
+  }
+
+  calculateMenu(menu: MenuItem[], permissions: PermissionItem[] ) {
+    const parents = permissions.filter(p => p.level === 1);
+    parents.forEach(p => {
+      const childrens = permissions.filter(mp => mp.parent === p.name);
+      const parentEquivalent: MenuItem = menu.filter(m => m.state === p.name)[0];
+      if (childrens.length > 0) {
+        parentEquivalent.children = [];
+        childrens.forEach(c => {
+          const childmenu: ChildrenItems = menu.filter(mc => mc.state === c.name)[0];
+          parentEquivalent.children.push(childmenu);
+        });
+      }
+      this.menu.push(parentEquivalent);
+      console.log(this.menu);
+    });
+  }
+
+  back() {
+    localStorage.removeItem('currentstore');
+    this.router.navigate(['/admin']);
+  }
+
+  accessToCellar(c: CellarItem) {
+    localStorage.setItem('currentstore', JSON.stringify(c));
+
+    location.reload();
+  }
+
+  getImage() {
+    if (localStorage.getItem('farmaciasDO-session') !== null) {
+      const user = JSON.parse(localStorage.getItem('farmaciasDO-session')).user;
+      switch (user.imageIndex) {
+        case 0: return '/assets/images/avatars/01.png';
+        case 1: return '/assets/images/avatars/02.png';
+        case 2: return '/assets/images/avatars/03.png';
+        case 3: return '/assets/images/avatars/04.png';
+        case 4: return '/assets/images/avatars/05.png';
+        case 5: return '/assets/images/avatars/00M.jpg';
+        case 6: return '/assets/images/avatars/00F.jpg';
+      }
+    } else {
+      return '/assets/images/avatars/00M.jpg';
+    }
+  }
+
+  getTypeIcon(t: string): string {
+    let icon = '';
+    switch (t) {
+      case 'BODEGA': icon = 'store'; break;
+      case 'FARMACIA': icon = 'local_pharmacy'; break;
+    }
+    return icon;
+  }
+
+  logout(): void {
+    localStorage.removeItem('farmaciasDO-session');
+    localStorage.removeItem('currentstore');
+    this.store.dispatch(actions.logoutSuccess());
   }
 
 }

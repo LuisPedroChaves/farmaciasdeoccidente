@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { Subscription } from 'rxjs';
+import { CellarItem } from 'src/app/core/models/Cellar';
 import { AppState } from 'src/app/core/store/app.reducer';
 import { AuthService } from '../../../../core/auth/auth.service';
 import * as actions from '../../../../core/store/actions';
@@ -33,10 +34,10 @@ export class SigninComponent implements OnInit, OnDestroy {
     private fb: FormBuilder,
     private router: Router,
     public authService: AuthService
-  ) {  }
+  ) { }
 
   ngOnInit(): void {
-    this.sessionSubscription = this.store.select('session').subscribe( session => {
+    this.sessionSubscription = this.store.select('session').subscribe(session => {
       this.loading = session.loading;
       this.errormsg = null;
       this.showError = false;
@@ -47,17 +48,28 @@ export class SigninComponent implements OnInit, OnDestroy {
       this.loaded = session.loaded;
       if (session.token && session.error === null && session.loaded === true) {
         this.type = session.currentUser.type;
-        if (this.type === 'ADMIN') {
-          this.router.navigate(['/admin']);
-        } else {
-          this.router.navigate(['/']);
+        switch (this.type) {
+          case 'ADMIN':
+            this.router.navigate(['/admin']);
+            break;
+          case 'FACTORY':
+            localStorage.setItem('currentstore', JSON.stringify(session.currentUser.user._cellar));
+            this.router.navigate(['/']);
+            break;
+          case 'PHARMA':
+            localStorage.setItem('currentstore', JSON.stringify(session.currentUser.user._cellar));
+            this.router.navigate(['/']);
+            break;
+          case 'DELIVERY':
+            this.router.navigate(['/']);
+            break;
         }
       }
     });
     // FORM
-    this.form = this.fb.group ( {
-      user: ['', Validators.compose([Validators.required] )],
-      password: ['' , Validators.compose ( [ Validators.required ] )]
+    this.form = this.fb.group({
+      user: ['', Validators.compose([Validators.required])],
+      password: ['', Validators.compose([Validators.required])]
     });
   }
 

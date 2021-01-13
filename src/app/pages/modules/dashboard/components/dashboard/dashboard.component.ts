@@ -58,13 +58,8 @@ export class DashboardComponent implements OnInit, AfterContentInit, OnDestroy {
   }
 
   accessToCellar(c: CellarItem) {
-    this.currentCellarService.setData(c);
     localStorage.setItem('currentstore', JSON.stringify(c));
-    if (c.type === 'FARMACIA') {
-      this.router.navigate(['/store']);
-    } else if (c.type === 'BODEGA') {
-      this.router.navigate(['/factory']);
-    }
+    this.router.navigate(['/']);
   }
 
   newCellar() {

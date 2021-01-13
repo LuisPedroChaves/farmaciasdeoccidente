@@ -15,6 +15,14 @@ import { environment } from 'src/environments/environment';
 import { AuthInterceptor } from './core/services/interceptors/auth.interceptor';
 import { CheckTokenGuard } from './core/auth/check-token.guard';
 
+// ngrx
+import { StoreModule } from '@ngrx/store';
+import { EffectsModule } from '@ngrx/effects';
+import { StoreDevtoolsModule } from '@ngrx/store-devtools';
+import { appReducers } from './core/store/app.reducer';
+import { effectsArray } from './core/store/effects';
+import { AuthGuard } from './core/auth/auth.guard';
+import { AuthAdminGuard } from './core/auth/auth-admin.guard';
 
 @NgModule({
   declarations: [
@@ -30,9 +38,9 @@ import { CheckTokenGuard } from './core/auth/check-token.guard';
     HttpClientModule,
 
     // ngrx
-    // StoreModule.forRoot(appReducers),
-    // EffectsModule.forRoot(effectsArray),
-    // StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: environment.production}),
+    StoreModule.forRoot(appReducers),
+    EffectsModule.forRoot(effectsArray),
+    StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: environment.production}),
 
     // app modules
     CoreModule,
@@ -41,8 +49,8 @@ import { CheckTokenGuard } from './core/auth/check-token.guard';
   providers: [
     { provide: APP_BASE_HREF, useValue: environment.baseurl },
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
-    // AuthGuard,
-    // AuthAdminGuard,
+    AuthGuard,
+    AuthAdminGuard,
     CheckTokenGuard
   ],
   bootstrap: [AppComponent]
