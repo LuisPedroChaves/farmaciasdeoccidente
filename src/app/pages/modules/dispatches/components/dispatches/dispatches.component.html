@@ -48,19 +48,20 @@
                         </div>
                         <!-- <div fxFlex="100" (click)="selectCourse(c)" fxLayout="column wrap" class="ellipsis-text course-info"> -->
                         <div fxFlex="100" fxLayout="column wrap" class="course-info">
-                            <h2 class="ma-0 product-font">{{ c.name }}</h2>
-                            <span class="text-muted">{{c._level.name}} - Sección {{c._section.name}}</span>
+                            <h2 class="ma-0 product-font">{{ c.noOrder }}</h2>
+                            <span class="text-muted">{{c.nit}} -  {{c.name}}</span>
                             <!-- <mat-chip-list class="teacher" *ngIf=" c._employee_job !== null && c._employee_job !== undefined">
-                                    <mat-chip style="max-width: 200px" [selectable]="false" [selected]="false" [disableRipple]="true" >
-                                        <img [src]="c._employee_job._employee.image" matChipAvatar>
-                                        <div class="ellipsis-text">
-                                            {{ c._employee_job._employee.name }}
-                                        </div>
-                                    </mat-chip>
-                                </mat-chip-list> -->
+                                <mat-chip style="max-width: 200px" [selectable]="false" [selected]="false" [disableRipple]="true" >
+                                    <img [src]="c._employee_job._employee.image" matChipAvatar>
+                                    <div class="ellipsis-text">
+                                        {{ c._employee_job._employee.name }}
+                                    </div>
+                                </mat-chip>
+                            </mat-chip-list> -->
                             <span class="text-muted" *ngIf="c._employee_job === null || c._employee_job === undefined">No hay docente
-                asignado</span>
+                                asignado</span>
                         </div>
+                        <p class="textDetails">{{c.details}} </p>
                         <div fxLayout="row center center">
                             <button mat-button class="info-row" color="primary">
                   EDITAR
