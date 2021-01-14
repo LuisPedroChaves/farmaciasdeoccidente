@@ -103,7 +103,7 @@ $blue: #045195;
     border-radius: 10px;
     background-color: white;
     .whitebg {
-        background-color: white !important;
+        background-color: white!important;
     }
 }
 
@@ -119,4 +119,13 @@ $blue: #045195;
 
 .spinner {
     height: calc(100vh - 250px);
+}
+
+.whitebg1 {
+    background-color: #b4de32 !important;
+}
+
+.T {
+    color: #045195;
+    font-size: 25px;
 }
