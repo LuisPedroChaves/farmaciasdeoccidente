@@ -37,9 +37,10 @@ export class NewCellarComponent implements OnInit {
         this.dialogRef.close('ok');
         this.creatingCellar = false;
       } else {
+        this.creatingCellar = false;
+        this.toasty.error('Error al crear la sucursal');
       }
     }, err => {
-    console.log("🚀 ~ file: new-cellar.component.ts ~ line 42 ~ NewCellarComponent ~ this.cellarService.createCellar ~ err", err)
       this.creatingCellar = false;
       this.toasty.error('Error al crear la sucursal');
     });

@@ -23,11 +23,11 @@ export class OrdersComponent implements OnInit {
   costumersSubscription: Subscription;
   orders: any[] = [
     // tslint:disable-next-line: max-line-length
-    {invoiceNumber: '5', nit: '730613-k',name: 'Luis',  address: '|Ciudad', phone: '2535354', area: '3', town: 'almolonga', department: 'quetzaltenago', paymentMethod: '100',  details: 'sjfgkleuwrejh', total: '300' },
+    {invoiceNumber: '5', nit: '730613-k',name: 'Luis',  address: '|Ciudad', phone: '2535354', town: 'almolonga', department: 'quetzaltenago', paymentMethod: '100',  details: 'sjfgkleuwrejh', total: '300' },
   ];
   dataSource = new MatTableDataSource();
-  columnsToDisplay = ['invoiceNumber','nit','name', 'address', 'phone', 'area', 'town', 'department', 'paymentMethod', 'details', 'total' ];
-  columnsToDisplay2 = ['image','invoiceNumber','nit','name', 'address', 'phone', 'area', 'town', 'department', 'paymentMethod', 'details', 'total'];
+  columnsToDisplay = ['invoiceNumber','nit','name', 'address', 'phone', 'town', 'department', 'paymentMethod', 'details', 'total' ];
+  columnsToDisplay2 = ['image','invoiceNumber','nit','name', 'address', 'phone', , 'town', 'department', 'paymentMethod', 'details', 'total'];
   expandedElement: any | null;
   // HOOK FUNCTIONS //////////////////////////////////////////////////////////////////////////////////////////
   constructor(public eventBus: EventBusService, public config: ConfigService, public dialog: MatDialog

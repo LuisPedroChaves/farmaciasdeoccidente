@@ -1,0 +1,24 @@
+<div [ngClass]="{ 'app': !smallScreen, 'app-sm': smallScreen } ">
+    <div class="section-content">
+        <div>
+            <header class="module-header" [ngClass]="{'padding-25': !smallScreen, 'padding-15': smallScreen }" fxLayoutAlign="start center" fxLayout="row wrap">
+                <h1 class="product-font ma-0 module-title">Rutas {{ smallScreen ? '': 'y Entregas'}}</h1>
+                <span fxFlex></span>
+            </header>
+            <mat-divider></mat-divider>
+            <div fxLayout="row wrap">
+                <mat-tab-group class="module-container">
+                    <mat-tab label="Repartidores">
+                        <app-delivery-list></app-delivery-list>
+                    </mat-tab>
+                    <mat-tab label="Entregas pendientes">
+                        <app-shipments></app-shipments>
+                    </mat-tab>
+                    <mat-tab label="Detalles del repartidor">
+                        <app-delivery-details></app-delivery-details>
+                    </mat-tab>
+                  </mat-tab-group>
+            </div>
+        </div>
+    </div>
+</div>

@@ -23,7 +23,6 @@ export class EditOrderComponent implements OnInit {
       nit: new FormControl(this.data.client.nit, [Validators.required]),
       address: new FormControl(this.data.client.address),
       phone: new FormControl(this.data.client.phone),
-      area: new FormControl(this.data.client.area),
       town: new FormControl(this.data.client.town),
       department: new FormControl(this.data.client.department),
       company: new FormControl(this.data.client.company),
