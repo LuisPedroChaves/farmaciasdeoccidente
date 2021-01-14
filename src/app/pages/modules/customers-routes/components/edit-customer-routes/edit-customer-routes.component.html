@@ -1,83 +1,160 @@
-<header class="header">
+  <header class="header">
     <h1 class="ma-0 product-font">Detalles del cliente</h1>
     <span fxFlex></span>
-    <button mat-icon-button (click)="dialogRef.close()"><mat-icon>close</mat-icon></button>
-</header>
-<div *ngIf="editMode === false">
+    <button mat-icon-button (click)="dialogRef.close()">
+      <mat-icon>close</mat-icon>
+    </button>
+  </header>
+  <div *ngIf="editMode === false">
     <div fxLayout="row wrap" class="content">
-        <div fxFlex="100" fxLayoutAlign="start center" fxLayout="row wrap">
-            <div fxFlex="50px">
-                <mat-icon class="text-muted material-icons-outlined colorTitulo">person</mat-icon>
-            </div>
-            <div fxFlex class="input-padding">
-                <h2>{{ data.client.name }}</h2>
-                <span fxFlex></span>
-                <button mat-icon-button (click)="editMode = true">
-                    <mat-icon class="material-icons-outlined colorTitulo" >create</mat-icon>
-                </button>
-            </div>
+      <div fxFlex="100" fxLayoutAlign="start center" fxLayout="row wrap">
+        <div fxFlex="50px">
+          <mat-icon class="text-muted material-icons-outlined colorTitulo">person</mat-icon>
         </div>
-        <div fxFlex="100" fxLayoutAlign="start center" fxLayout="row wrap" class="lastsection">
-            <div fxFlex="50px">
-                <mat-icon class="text-muted material-icons-outlined colorTitulo">info</mat-icon>
-            </div>
-            <div fxFlex fxLayout="row wrap">
-                <div fxFlex="100" class=" text-muted input-padding">
-                    {{ data.client.nit }}
-                </div>
-                <div fxFlex="100" class=" text-muted input-padding">
-                    {{ data.client.address }}
-                </div>
-                <div fxFlex="100" class=" text-muted input-padding">
-                    {{ data.client.phone }}
-                </div>
-                <div fxFlex="100" class=" text-muted input-padding">
-                    {{ data.client.town }}
-                </div>
-                <div fxFlex="100" class=" text-muted input-padding">
-                    {{ data.client.department }}
-                </div>
-            </div>
+        <div fxFlex class="input-padding">
+          <h2>{{ data.customer.name }}</h2>
+          <span fxFlex></span>
+          <button mat-icon-button (click)="editMode = true">
+            <mat-icon class="material-icons-outlined colorTitulo">create</mat-icon>
+          </button>
         </div>
+      </div>
+      <div fxFlex="100" fxLayoutAlign="start center" fxLayout="row wrap" class="lastsection">
+        <div fxFlex="50px">
+          <mat-icon class="text-muted material-icons-outlined colorTitulo">info</mat-icon>
+        </div>
+        <div fxFlex fxLayout="row wrap">
+          <div fxFlex="100" class=" text-muted input-padding">
+            {{ data.customer.nit }}
+          </div>
+          <div fxFlex="100" class=" text-muted input-padding">
+            {{ data.customer.phone }}
+          </div>
+          <div fxFlex="100" class=" text-muted input-padding">
+            {{ data.customer.address }}
+          </div>
+          <div fxFlex="100" class=" text-muted input-padding">
+            {{ data.customer.town }}
+          </div>
+          <div fxFlex="100" class=" text-muted input-padding">
+            {{ data.customer.department }}
+          </div>
+        </div>
+      </div>
     </div>
-</div>
-<div *ngIf="editMode === true">
-    <form fxLayout="row wrap" class="content">
-        <div fxFlex="100" fxLayoutAlign="start center" fxLayout="row wrap">
-            <div fxFlex="50px">
-                <mat-icon class="text-muted material-icons-outlined colorTitulo">person</mat-icon>
+  </div>
+  <div *ngIf="editMode === true">
+    <form [formGroup]="form" fxLayout="row wrap">
+      <div class="clientspace" data-simplebar>
+        <div fxLayout="row wrap" fxLayoutAlign="start center" style="margin-top: 8px;">
+          <div fxFlex="50px" fxHide.xs>
+            <mat-icon color="accent" class="material-icons-outlined grayicon">person</mat-icon>
+          </div>
+          <div fxFlex fxLayout="row wrap">
+            <div fxFlex="100" class="inputpadding">
+              <mat-form-field appearance="outline" color="primary" class="width-all">
+                <mat-label>Nombre</mat-label>
+                <input formControlName="name" type="text" matInput placeholder="Ingrese el nombre del empleado">
+              </mat-form-field>
             </div>
-            <div fxFlex class="input-padding">
-                <mat-form-field appearance="standard" class="input-all colorTitulo">
-                    <mat-label>Nombre del cliente</mat-label>
-                    <input type="text" formControlName="name" matInput placeholder="Ingrese el nombre del cliente">
-                </mat-form-field>
-            </div>
+          </div>
+          <div fxFlex="50px"></div>
         </div>
-        <div fxFlex="100" fxLayoutAlign="start center" fxLayout="row wrap">
-            <div fxFlex="50px">
-                <mat-icon class="text-muted material-icons-outlined colorTitulo">info</mat-icon>
+        <div fxLayout="row wrap" fxLayoutAlign="start center" style="margin-top: 8px;">
+          <div fxFlex="50px" fxHide.xs>
+            <mat-icon color="accent" class="material-icons-outlined grayicon">perm_phone_msg
+            </mat-icon>
+          </div>
+          <div fxFlex fxLayout="row wrap">
+            <div fxFlex="50%" fxFlex.xs="100%" class="inputpadding">
+              <mat-form-field appearance="outline" color="primary" class="width-all">
+                <mat-label>NIT</mat-label>
+                <input formControlName="nit" type="text" matInput placeholder="Ingrese el NIT">
+              </mat-form-field>
             </div>
-            <div fxFlex fxLayout="row wrap">
-                <div fxFlex="50" class="input-padding">
-                    <mat-form-field appearance="standard" class="input-all colorTitulo">
-                        <mat-label>Nit</mat-label>
-                        <input type="text" formControlName="nit" matInput placeholder="Ingrese el número de Nit del cliente">
-                    </mat-form-field>
-                </div>
-                <div fxFlex="50" class="input-padding">
-                    <mat-form-field appearance="standard" class="input-all colorTitulo">
-                        <mat-label>Ciudad</mat-label>
-                        <input type="text" formControlName="address" matInput placeholder="Ingrese la ciudad del cliente">
-                    </mat-form-field>
-                </div>
+            <div fxFlex="50%" fxFlex.xs="100%" class="inputpadding">
+              <mat-form-field appearance="outline" color="primary" class="width-all">
+                <mat-label>Teléfono</mat-label>
+                <input formControlName="phone" type="text" matInput placeholder="Ingrese el número de Teléfono">
+              </mat-form-field>
             </div>
+
+          </div>
+          <div fxFlex="50px"></div>
         </div>
+        <div fxLayout="row wrap" fxLayoutAlign="start center" style="margin-top: 8px;">
+          <div fxFlex="50px" fxHide.xs>
+            <mat-icon color="accent" class="material-icons-outlined grayicon">place
+            </mat-icon>
+          </div>
+          <div fxFlex fxLayout="row wrap">
+            <div fxFlex="100%" class="inputpadding">
+              <mat-form-field appearance="outline" color="primary" class="width-all">
+                <mat-label>Dirección</mat-label>
+                <input formControlName="address" type="text" matInput placeholder="Ingrese la Dirección">
+              </mat-form-field>
+            </div>
+          </div>
+          <div fxFlex="50px"></div>
+        </div>
+        <div fxLayout="row wrap" fxLayoutAlign="start center" style="margin-top: 8px;">
+          <div fxFlex="50px" fxHide.xs>
+            <div fxFlex="100px" fxHide.xs>
+              <mat-icon color="accent" class="material-icons-outlined grayicon">public
+              </mat-icon>
+            </div>
+          </div>
+          <div fxFlex fxLayout="row wrap">
+            <div fxFlex="50%" fxFlex.xs="100%" class="inputpadding">
+              <mat-form-field appearance="outline" color="primary" class="width-all">
+                <mat-label>Municipio</mat-label>
+                <input formControlName="town" type="text" matInput placeholder="Ingrese el municipio">
+              </mat-form-field>
+            </div>
+            <div fxFlex="50%" fxFlex.xs="100%" class="inputpadding">
+              <mat-form-field color="primary" class="width-all" appearance="outline">
+                <mat-label>Departamento</mat-label>
+                <mat-select formControlName="department">
+                  <mat-option value="Alta Verapaz">Alta Verapaz</mat-option>
+                  <mat-option value="Baja Verapaz">Baja Verapaz</mat-option>
+                  <mat-option value="Chimaltenango">Chimaltenango</mat-option>
+                  <mat-option value="Chiquimula">Chiquimula</mat-option>
+                  <mat-option value="Petén">Petén</mat-option>
+                  <mat-option value="El Progreso">El Progreso</mat-option>
+                  <mat-option value="Quiché">Quiché</mat-option>
+                  <mat-option value="Escuintla">Escuintla</mat-option>
+                  <mat-option value="Guatemala">Guatemala</mat-option>
+                  <mat-option value="Huehuetenango">Huehuetenango</mat-option>
+                  <mat-option value="Izabal">Izabal</mat-option>
+                  <mat-option value="Jalapa">Jalapa</mat-option>
+                  <mat-option value="Jutiapa">Jutiapa</mat-option>
+                  <mat-option value="Quetzaltenango">Quetzaltenango</mat-option>
+                  <mat-option value="Retalhuleu">Retalhuleu</mat-option>
+                  <mat-option value="Sacatepéquez">Sacatepéquez</mat-option>
+                  <mat-option value="San Marcos">San Marcos</mat-option>
+                  <mat-option value="Santa Rosa">Santa Rosa</mat-option>
+                  <mat-option value="Sololá">Sololá</mat-option>
+                  <mat-option value="Suchitepéquez">Suchitepéquez</mat-option>
+                  <mat-option value="Totonicapán">Totonicapán</mat-option>
+                  <mat-option value="Zacapa">Zacapa</mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+          </div>
+          <div fxFlex="50px"></div>
+        </div>
+        <div fxLayout="row wrap">
+          <div fxFlex="100px" fxHide.xs></div>
+        </div>
+      </div>
     </form>
     <div class="header">
-        <button mat-stroked-button color="warn" *ngIf="data.customersp.includes('delete')"><mat-icon class="material-icons-outlined colorTitulo">delete</mat-icon> Eliminar</button>
-        <span fxFlex></span>
-        <button mat-button (click)="editMode = false">Cancelar</button>
-        <button mat-button color="primary" *ngIf="data.customersp.includes('update')">Guardar</button>
+      <button mat-stroked-button (click)="delete()"  color="warn" *ngIf="data.customersp.includes('delete') && !loading">
+        <mat-icon class="material-icons-outlined colorTitulo">delete</mat-icon> Eliminar
+      </button>
+      <span fxFlex></span>
+      <button mat-button *ngIf="!loading" (click)="editMode = false">Cancelar</button>
+      <button mat-button (click)="saveClient()"  color="primary" *ngIf="data.customersp.includes('update') && !loading">Guardar</button>
+      <mat-progress-spinner *ngIf="loading" mode="indeterminate" diameter="30"></mat-progress-spinner>
     </div>
-</div>
+  </div>

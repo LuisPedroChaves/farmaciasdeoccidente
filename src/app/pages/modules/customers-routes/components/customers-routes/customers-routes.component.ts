@@ -1,4 +1,4 @@
-import { Component, OnInit, AfterContentInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, AfterContentInit, OnDestroy, ViewChild } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { EventBusService } from '../../../../../core/services/internal/event-bus.service';
 import { ConfigService } from '../../../../../core/services/config/config.service';
@@ -12,6 +12,7 @@ import { Store } from '@ngrx/store';
 import { AppState } from 'src/app/core/store/app.reducer';
 import { CustomerService } from '../../../../../core/services/httpServices/customer.service';
 import { filter } from 'rxjs/operators';
+import { MatSort } from '@angular/material/sort';
 @Component({
   selector: 'app-customers',
   templateUrl: './customers-routes.component.html',
@@ -19,6 +20,8 @@ import { filter } from 'rxjs/operators';
 
 })
 export class CustomersRoutesComponent implements OnInit, AfterContentInit, OnDestroy {
+
+  @ViewChild(MatSort, {static: true}) sort: MatSort;
 
   smallScreen = window.innerWidth < 960 ? true : false;
 
@@ -83,24 +86,17 @@ export class CustomersRoutesComponent implements OnInit, AfterContentInit, OnDes
   }
 
 
-  editCostumer(costumer: CustomerItem) {
+  editCostumer(customer: CustomerItem) {
     const dialogRef = this.dialog.open(EditCustomerRoutesComponent, {
       width: this.smallScreen ? '100%' : '800px',
-      height: '500px',
-      data: { title: 'Nuevo Cliente', client: costumer, customersp: this.customersp },
+      data: { customer, customersp: this.customersp },
       disableClose: true,
-      panelClass: ['iea-dialog' ],
+      panelClass: ['farmacia' ],
     });
 
     dialogRef.afterClosed().subscribe(result => {
       if (result !== undefined) {
-        if (result === true ) {
-          // this.toasty.success('Cliente modificado exitósamente');
-          this.customerService.loadData();
-        } else {
-          // this.toasty.error('Error', 'Hubo un problema al modificar el cliente');
-
-        }
+        this.customerService.loadData();
       }
     });
   }

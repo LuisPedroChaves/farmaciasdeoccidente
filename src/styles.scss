@@ -2,6 +2,7 @@
 
 @import '@angular/material/prebuilt-themes/deeppurple-amber.css';
 @import '~@angular/material/theming';
+@import './app/pages/modules/mat-table-responsive/mat-table-responsive.directive.scss'; // Para tablas responsivas
 // Define a custom mixin that takes in the current theme
 @mixin theme-color-grabber($theme) {
     // Parse the theme and create variables for each color in the pallete

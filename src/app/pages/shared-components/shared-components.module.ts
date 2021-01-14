@@ -32,6 +32,7 @@ import { NewCellarComponent } from './new-cellar/new-cellar.component';
 /* STYLE ----------------------*/
 import { ToastaModule } from 'ngx-toasta';
 import { ConfirmationDialogComponent } from './confirmation-dialog/confirmation-dialog.component';
+import { MatTableResponsiveModule } from '../modules/mat-table-responsive/mat-table-responsive.module';
 
 @NgModule({
   declarations: [NewCellarComponent, ConfirmationDialogComponent],
@@ -65,7 +66,8 @@ import { ConfirmationDialogComponent } from './confirmation-dialog/confirmation-
     MatNativeDateModule,
     MatProgressSpinnerModule,
     MatProgressBarModule,
-    MatBottomSheetModule
+    MatBottomSheetModule,
+    MatTableResponsiveModule
   ],
   exports: [
     FormsModule,
@@ -95,7 +97,8 @@ import { ConfirmationDialogComponent } from './confirmation-dialog/confirmation-
     MatNativeDateModule,
     MatProgressSpinnerModule,
     MatProgressBarModule,
-    MatBottomSheetModule
+    MatBottomSheetModule,
+    MatTableResponsiveModule
   ]
   ,providers: [
     {provide: MAT_DATE_LOCALE, useValue:'es-GT'}

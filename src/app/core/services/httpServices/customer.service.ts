@@ -59,6 +59,6 @@ export class CustomerService implements IDataService<CustomerItem[]> {
   }
 
   deleteCustomer(u: CustomerItem): Observable<any> {
-    return this.http.delete(this.apiConfigService.API_CUSTOMER + '' + u._id);
+    return this.http.delete(this.apiConfigService.API_CUSTOMER + '/' + u._id);
   }
 }

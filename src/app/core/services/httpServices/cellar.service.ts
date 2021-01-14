@@ -60,7 +60,7 @@ export class CellarService implements IDataService<CellarItem[]> {
   }
 
   deleteCellar(u: CellarItem): Observable<any> {
-    return this.http.delete(this.apiConfigService.API_CELLAR + '' + u._id);
+    return this.http.delete(this.apiConfigService.API_CELLAR + '/' + u._id);
   }
 
 }

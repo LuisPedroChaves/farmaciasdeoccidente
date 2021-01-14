@@ -32,6 +32,7 @@ export class NewCustomerRoutesComponent implements OnInit {
 
   saveClient() {
     if (this.form.invalid) { return; }
+    this.loading = true;
     const client: CustomerItem = {...this.form.value};
     this.customerService.createCustomer(client).subscribe(data => {
       if (data.ok === true) {

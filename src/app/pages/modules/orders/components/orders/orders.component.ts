@@ -27,7 +27,7 @@ export class OrdersComponent implements OnInit {
   ];
   dataSource = new MatTableDataSource();
   columnsToDisplay = ['invoiceNumber','nit','name', 'address', 'phone', 'town', 'department', 'paymentMethod', 'details', 'total' ];
-  columnsToDisplay2 = ['image','invoiceNumber','nit','name', 'address', 'phone', , 'town', 'department', 'paymentMethod', 'details', 'total'];
+  columnsToDisplay2 = ['image','invoiceNumber','nit','name', 'address', 'phone', 'town', 'department', 'paymentMethod', 'details', 'total'];
   expandedElement: any | null;
   // HOOK FUNCTIONS //////////////////////////////////////////////////////////////////////////////////////////
   constructor(public eventBus: EventBusService, public config: ConfigService, public dialog: MatDialog
