@@ -1,0 +1,156 @@
+$blue: #2979ff;
+$blue-2: #0c50c7;
+.header {
+    padding: 15px;
+}
+
+.header-2 {
+    padding: 5px 15px;
+    padding-bottom: 0px;
+}
+
+.bluetext {
+    color: $blue;
+}
+
+.coursebar {
+    padding: 5px 10px;
+    background-color: rgba($color: $blue, $alpha: 0.2);
+    border-radius: 10px 10px 0px 0px;
+}
+
+.sectionsbar {
+    padding: 5px 10px;
+    background-color: rgba($color: $blue, $alpha: 0.07);
+}
+
+.space {
+    background-color: white;
+    border-radius: 0px 0px 10px 10px;
+    padding: 10px;
+    height: calc(100vh - 300px);
+}
+
+.curso {
+    padding: 15px;
+    border-radius: 10px;
+    margin-bottom: 5px;
+}
+
+.course-title {
+    font-size: 20px;
+    margin-bottom: 5px;
+}
+
+.course-description {
+    margin-bottom: 5px;
+}
+
+.level {
+    padding: 5px 10px;
+    margin: 2.5px;
+    background-color: rgba($color: $blue, $alpha: 0.1);
+    border-radius: 10px;
+    font-size: 12px;
+    font-weight: 500;
+}
+
+.job-card {
+    background-color: white;
+    border-radius: 15px;
+}
+
+.jobcard {
+    padding-bottom: 15px;
+}
+
+.user {
+    padding-right: 20px;
+}
+
+.more {
+    color: white;
+}
+
+.cover {
+    height: 75px;
+    background-color: $blue;
+    padding: 10px;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center center;
+}
+
+.course-info {
+    padding: 10px;
+    height: 100px;
+}
+
+.teacher {
+    margin-top: 5px;
+}
+
+.padding-15 {
+    padding: 15px;
+}
+
+.padding-list {
+    padding: 0px 15px;
+}
+
+.courselist {
+    height: calc(100vh - 200px);
+    background-color: white;
+    border-radius: 0px 0px 10px 10px;
+    padding: 10px;
+}
+
+.active {
+    background-color: $blue !important;
+    color: white !important;
+}
+
+.loadingspin {
+    height: calc(100vh - 115px);
+}
+
+div.scrollmenu {
+    overflow: auto;
+    white-space: nowrap;
+}
+
+div.scrollmenu span {
+    display: inline-block;
+    text-align: center;
+    text-decoration: none;
+}
+
+div.scrollmenu a:hover {
+    background-color: #777;
+}
+
+.saving {
+    opacity: 0.5;
+    pointer-events: none;
+}
+
+.inactive {
+    opacity: 0.5;
+}
+
+.info-row {
+    margin-bottom: 5px;
+    margin-top: 3px;
+    padding: 5px;
+    justify-content: center
+}
+
+.title {
+    padding: 10px;
+}
+
+.textDetails {
+    background-color: #0c50c7;
+    width: 100%;
+    overflow: auto;
+}
