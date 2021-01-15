@@ -1,12 +1,12 @@
 <div id="wrapper" class="background" style="height: 100%" data-simplebar>
-    <button mat-fab routerLink="orders" color="primary" class="fab mat-elevation-z10">
+    <button mat-fab routerLink="/orders" color="primary" class="fab mat-elevation-z10">
         <mat-icon>receipt_long</mat-icon>
         <span class="extended-fab-button__text">Ordenes</span>
       </button>
     <div class="cellarheader product-font" fxLayoutAlign="start end">
         <span *ngIf="editMode === false">
             {{ currentCellar.name }}
-            
+
         </span>
         <mat-form-field appearance="standard" fxFlex *ngIf="editMode === true">
             <mat-label>Nombre</mat-label>
