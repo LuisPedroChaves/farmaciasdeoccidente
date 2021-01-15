@@ -1,0 +1,30 @@
+.padding-15 {
+    padding: 15px;
+}
+
+.loader-screen {
+    height: calc(100vh - 200px);
+}
+
+.usercard {
+    padding-bottom: 15px;
+}
+
+.user {
+    padding-right: 20px;
+}
+
+.user-card {
+    background-color: white;
+    border-radius: 15px;
+    padding: 25px;
+    // -webkit-box-shadow: 0px 0px 12px 1px rgba(35,62,107,0.15);
+    // -moz-box-shadow: 0px 0px 12px 1px rgba(35,62,107,0.15);
+    // box-shadow: 0px 0px 12px 1px rgba(35,62,107,0.15);
+}
+
+.avataruser {
+    width: 50px;
+    height: 50px;
+    border-radius: 35px;
+}
