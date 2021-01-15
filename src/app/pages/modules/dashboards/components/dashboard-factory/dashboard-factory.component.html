@@ -1,1 +1,137 @@
-<p>dashboard-factory works!</p>
+<div id="wrapper" class="background" style="height: 100%" data-simplebar>
+    <button mat-fab routerLink="orders" color="primary" class="fab mat-elevation-z10">
+        <mat-icon>receipt_long</mat-icon>
+        <span class="extended-fab-button__text">Ordenes</span>
+      </button>
+    <div class="cellarheader product-font" fxLayoutAlign="start end">
+        <span *ngIf="editMode === false">
+            {{ currentCellar.name }}
+            
+        </span>
+        <mat-form-field appearance="standard" fxFlex *ngIf="editMode === true">
+            <mat-label>Nombre</mat-label>
+            <input matInput placeholder="Ingrese un Nombre" [(ngModel)]="currentCellarPlaceholder.name">
+        </mat-form-field>
+    </div>
+    <div class="cellarinfo" fxLayout="row wrap">
+        <div fxFlex.gt-sm="60" fxFlex="100" class="ca-padding-20">
+            <div class="info-row">
+                <div class="info-title">
+                    Elementos
+                </div>
+                <div class="info" fxLayout="row wrap">
+                    <div fxFlex="32">
+                        <div>
+                            Clientes
+                        </div>
+                        <div fxLayoutAlign="start center">
+                            <mat-icon class="material-icons-outlined mat-text-muted">person</mat-icon>&nbsp;&nbsp; <b>{{ clientCount }}</b>
+                        </div>
+                    </div>
+                    <div fxFlex="32">
+                        <div>
+                            Empleados
+                        </div>
+                        <div fxLayoutAlign="start center">
+                            <mat-icon class="material-icons-outlined mat-text-muted">work_outlined</mat-icon>&nbsp;&nbsp; <b>{{ employeesCount }}</b>
+                        </div>
+                    </div>
+                    <div fxFlex="32">
+                        <div>
+                            Productos
+                        </div>
+                        <div fxLayoutAlign="start center">
+                            <mat-icon class="material-icons-outlined mat-text-muted">widgets</mat-icon>&nbsp;&nbsp; <b>{{ productCount }}</b>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <br>
+            <div *ngIf="editMode === false" class="info-row">
+                <div class="info-title">
+                    Dirección
+                </div>
+                <div class="info">
+                    {{ currentCellar.address }}
+                </div>
+            </div>
+            <div *ngIf="editMode === true" class="info-row">
+                <div class="info">
+                    <mat-form-field appearance="standard" fxFlex>
+                        <mat-label>Dirección</mat-label>
+                        <input matInput placeholder="Ingrese una dirección" [(ngModel)]="currentCellarPlaceholder.address">
+                    </mat-form-field>
+                </div>
+            </div>
+            <br>
+            <div class="info-row" *ngIf="editMode === false">
+                <div class="info-title">
+                    Tipo
+                </div>
+                <div class="info">
+                    {{ currentCellar.description }}
+                </div>
+            </div>
+            <div class="info-row" *ngIf="editMode === true">
+                <div class="info">
+                    <mat-label>Tipo</mat-label>
+                    <mat-radio-group aria-labelledby="example-radio-group-label" class="example-radio-group" [(ngModel)]="currentCellarPlaceholder.type">
+                        <mat-radio-button class="example-radio-button" [value]="0">
+                            Fábrica
+                        </mat-radio-button>
+                        <mat-radio-button class="example-radio-button" [value]="1">
+                            Punto de Venta
+                        </mat-radio-button>
+                    </mat-radio-group>
+                </div>
+            </div>
+            <br>
+            <div class="info-row" *ngIf="editMode === false">
+                <div class="info-title">
+                    Descripción
+                </div>
+                <div class="info">
+                    {{ currentCellar.description }}
+                </div>
+            </div>
+            <div class="info-row" *ngIf="editMode === true">
+                <div class="info">
+                    <mat-form-field appearance="standard" fxFlex>
+                        <mat-label>Descripción</mat-label>
+                        <textarea matInput placeholder="Ingrese una Descripción" [(ngModel)]="currentCellarPlaceholder.description"></textarea>
+                    </mat-form-field>
+                </div>
+            </div>
+            <br>
+            <div class="info-row" *ngIf="editMode === false">
+                <div class="info-title">
+                    Cambiar información
+                </div>
+                <div class="info">
+                    <br>
+                    <button mat-button class="option-button-2" (click)="editModeOn()">
+                        <mat-icon>create</mat-icon> Editar
+                    </button>
+                </div>
+            </div>
+            <div class="info-row" *ngIf="editMode === true">
+                <div class="info-title">
+                    Cambiar información
+                </div>
+                <div class="info">
+                    <br>
+                    <button mat-flat-button color="warn" (click)="delete()">
+                        ELIMINAR
+                    </button>
+                    <span fxFlex></span>
+                    <button mat-button class="option-button-2" (click)="editModeOff()">
+                        CANCELAR
+                    </button>
+                    <button mat-flat-button color="primary" (click)="saveCellar()">
+                        GUARDAR CAMBIOS
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
