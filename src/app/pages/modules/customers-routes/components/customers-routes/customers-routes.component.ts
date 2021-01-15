@@ -75,7 +75,7 @@ export class CustomersRoutesComponent implements OnInit, AfterContentInit, OnDes
       width: this.smallScreen ? '100%' : '800px',
       data: { customersp: this.customersp },
       disableClose: true,
-      panelClass: ['farmacia' ],
+      panelClass: ['farmacia-dialog', 'farmacia' ],
     });
 
     dialogRef.afterClosed().subscribe(result => {
@@ -84,14 +84,13 @@ export class CustomersRoutesComponent implements OnInit, AfterContentInit, OnDes
       }
     });
   }
-
 
   editCostumer(customer: CustomerItem) {
     const dialogRef = this.dialog.open(EditCustomerRoutesComponent, {
       width: this.smallScreen ? '100%' : '800px',
       data: { customer, customersp: this.customersp },
       disableClose: true,
-      panelClass: ['farmacia' ],
+      panelClass: ['farmacia-dialog', 'farmacia' ],
     });
 
     dialogRef.afterClosed().subscribe(result => {
@@ -100,7 +99,6 @@ export class CustomersRoutesComponent implements OnInit, AfterContentInit, OnDes
       }
     });
   }
-
 
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;

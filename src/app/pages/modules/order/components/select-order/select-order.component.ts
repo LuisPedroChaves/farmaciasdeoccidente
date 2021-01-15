@@ -118,7 +118,7 @@ export class SelectOrderComponent implements OnInit {
     // const dialogRef = this.dialog.open(AssignJobComponent, {
     //   width: this.smallScreen === true ? '100%' : '500px',
     //   data: { jobs: this.jobs, campus: this.campus, degree: this.form.controls._degree.value },
-    //   panelClass: ['iea-dialog' ],
+    //   panelClass: ['farmacia-dialog', 'farmacia' ],
     // });
 
     // dialogRef.afterClosed().subscribe(result => {
@@ -163,7 +163,7 @@ export class SelectOrderComponent implements OnInit {
     //   width: '350px',
     //   data: { title: 'Eliminar Empleado', message: '¿Confirma que desea eliminar al empleado ' + this.selectedEmployee.name + '?'},
     //   disableClose: true,
-    //   panelClass: ['iea-dialog' ],
+    //   panelClass: ['farmacia-dialog', 'farmacia' ],
     // });
 
     // dialogRef.afterClosed().subscribe(result => {
@@ -184,7 +184,7 @@ export class SelectOrderComponent implements OnInit {
     //   width: this.smallScreen ? '100%' : '550px',
     //   data: { },
     //   disableClose: true,
-    //   panelClass: ['iea-dialog' ],
+    //   panelClass: ['farmacia-dialog' , 'farmacia'],
     // });
 
     // dialogRef.afterClosed().subscribe(result => {
@@ -200,7 +200,7 @@ export class SelectOrderComponent implements OnInit {
     //   width: this.smallScreen ? '100%' : '350px',
     //   data: { },
     //   disableClose: true,
-    //   panelClass: ['iea-dialog' ],
+    //   panelClass: ['farmacia-dialog' , 'farmacia'],
     // });
 
     // dialogRef.afterClosed().subscribe(result => {

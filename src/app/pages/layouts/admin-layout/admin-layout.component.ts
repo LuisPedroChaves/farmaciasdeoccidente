@@ -29,7 +29,7 @@ export class AdminLayoutComponent implements OnInit, OnDestroy {
   currentPanel: string;
   currentStore: any;
   menuItems = [
-    { state: '/', name: 'Sucursales', type: 'link', icon: 'store', order: 1 },
+    { state: '/admin', name: 'Sucursales', type: 'link', icon: 'store', order: 1 },
     { state: 'users', name: 'Usuarios', type: 'link', icon: 'people', order: 2 },
     { state: 'employees', name: 'Empleados', type: 'link', icon: 'groups', order: 3 },
   ];

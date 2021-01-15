@@ -35,6 +35,9 @@ export class ApiConfigService {
   // Customer
   public API_CUSTOMER = this.API_URL + '/customer';
 
+  // Order
+  public API_ORDER = this.API_URL + '/order';
+
   /* #endregion */
 
 }

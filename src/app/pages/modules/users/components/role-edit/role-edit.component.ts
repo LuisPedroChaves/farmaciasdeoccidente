@@ -92,7 +92,7 @@ export class RoleEditComponent implements OnInit {
       width: this.smallScreen ? '100%' : '350px',
       data: { title: 'Eliminar Rol', message: '¿Confirma que desea eliminar el rol ' + this.newRole.name + '?'},
       disableClose: true,
-      panelClass: ['farmacia'],
+      panelClass: ['farmacia-dialog', 'farmacia'],
     });
 
     dialogRef.afterClosed().subscribe(result => {

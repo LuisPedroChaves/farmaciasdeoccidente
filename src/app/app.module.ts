@@ -21,6 +21,8 @@ import { EffectsModule } from '@ngrx/effects';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { appReducers } from './core/store/app.reducer';
 import { effectsArray } from './core/store/effects';
+
+// Guards
 import { AuthGuard } from './core/auth/auth.guard';
 import { AuthAdminGuard } from './core/auth/auth-admin.guard';
 
@@ -51,7 +53,7 @@ import { AuthAdminGuard } from './core/auth/auth-admin.guard';
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
     AuthGuard,
     AuthAdminGuard,
-    CheckTokenGuard
+    CheckTokenGuard,
   ],
   bootstrap: [AppComponent]
 })

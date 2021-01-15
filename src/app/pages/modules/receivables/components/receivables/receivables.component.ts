@@ -50,7 +50,7 @@ export class ReceivablesComponent implements OnInit {
       width: this.smallScreen ? '100%' : '500px',
       data: { title: 'Nuevo Cliente'},
       disableClose: true,
-      panelClass: ['iea-dialog' ],
+      panelClass: ['farmacia-dialog', 'farmacia' ],
     });
 
     dialogRef.afterClosed().subscribe(result => {
@@ -64,7 +64,7 @@ export class ReceivablesComponent implements OnInit {
       width: this.smallScreen ? '100%' : '500px',
       data: { title: 'Nuevo Cliente', client: costumer},
       disableClose: true,
-      panelClass: ['iea-dialog' ],
+      panelClass: ['farmacia-dialog' , 'farmacia'],
     });
 
     dialogRef.afterClosed().subscribe(result => {

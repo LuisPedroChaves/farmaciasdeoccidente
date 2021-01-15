@@ -115,7 +115,7 @@ export class UserDetailsComponent implements OnInit, AfterContentInit, OnInit {
       width: this.smallScreen ? '100%' : '350px',
       data: { title: 'Eliminar Usuario', message: '¿Confirma que desea eliminar el usuario ' + this.currentUser.name + '?' },
       disableClose: true,
-      panelClass: ['farmacia'],
+      panelClass: ['farmacia-dialog', 'farmacia'],
     });
 
     dialogRef.afterClosed().subscribe(result => {

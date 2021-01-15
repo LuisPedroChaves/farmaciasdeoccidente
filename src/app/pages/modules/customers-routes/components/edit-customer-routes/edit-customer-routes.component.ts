@@ -69,7 +69,7 @@ export class EditCustomerRoutesComponent implements OnInit {
       width: '350px',
       data: { title: 'Eliminar Cliente', message: '¿Confirma que desea eliminar el Cliente ' + this.data.customer.name + '?'},
       disableClose: true,
-      panelClass: ['farmacia' ],
+      panelClass: ['farmacia-dialog', 'farmacia' ],
     });
 
     dialogRef.afterClosed().subscribe(result => {

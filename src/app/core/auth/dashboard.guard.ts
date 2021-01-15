@@ -4,24 +4,25 @@ import { CanActivate, Router, ActivatedRouteSnapshot, RouterStateSnapshot } from
 @Injectable()
 export class DashboardGuard implements CanActivate {
 
-  constructor(private router: Router) {
-  }
+    constructor(private router: Router) {
+    }
 
 
-  public canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean {
-        if (localStorage.getItem('farmaciasDO-session')) {
-            if (JSON.parse(localStorage.getItem('farmaciasDO-session')).type === 'ADMIN') {
-                return true;
-            } else {
-                if (JSON.parse(localStorage.getItem('farmaciasDO-session')).type === 'seo') { //TODO: agregar DASHBOARDS
-                    this.router.navigate(['/dashboard-seo']);
+    public canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean {
+        if (localStorage.getItem('currentstore')) {
+            const type = JSON.parse(localStorage.getItem('currentstore')).type;
+            switch (type) {
+                case 'FARMACIA':
+                    return true;
+                case 'BODEGA':
+                    this.router.navigate(['/factory']);
                     return false;
-                } else {
-                    this.router.navigate(['/dashboard-cpo']);
-                    return false;
-
-                }
+                default:
+                    break;
             }
+        }else {
+            this.router.navigate(['/delivery']);
+            return false;
         }
 
     }

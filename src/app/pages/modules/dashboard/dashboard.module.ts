@@ -12,7 +12,6 @@ import { SharedComponentsModule } from '../../shared-components/shared-component
     RouterModule.forChild(DashboardRoutes),
     // CoreModule,
     SharedComponentsModule
-  ],
-  // providers: [DashboardGuard]
+  ]
 })
 export class DashboardModule { }

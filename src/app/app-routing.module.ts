@@ -15,7 +15,7 @@ const routes: Routes = [
     children: [
       // tslint:disable-next-line: max-line-length
       {
-        path: '', loadChildren: () => import('./pages/modules/dashboard/dashboard.module').then(m => m.DashboardModule),
+        path: '', loadChildren: () => import('./pages/modules/dashboards/dashboards.module').then(m => m.DashboardsModule),
         canActivate: [CheckTokenGuard]
       },
       {

@@ -66,7 +66,7 @@ export class DashboardComponent implements OnInit, AfterContentInit, OnDestroy {
     const dialogRef = this.dialog.open(NewCellarComponent, {
       disableClose: true,
       width: '600px',
-      panelClass: 'iea-dialog'
+      panelClass: ['farmacia-dialog', 'farmacia']
     });
 
     dialogRef.afterClosed().subscribe(result => {

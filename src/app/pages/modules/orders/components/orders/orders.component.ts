@@ -1,74 +1,145 @@
-import { Component, OnInit } from '@angular/core';
-import { Subscription } from 'rxjs';
-import { EventBusService } from '../../../../../core/services/internal/event-bus.service';
-import { ConfigService } from '../../../../../core/services/config/config.service';
+import { Component, OnInit, ViewChild, AfterContentInit, OnDestroy } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
+import { MatSort } from '@angular/material/sort';
+import { Subscription } from 'rxjs';
+import { Store } from '@ngrx/store';
+import { AppState } from 'src/app/core/store/app.reducer';
+import { EventBusService } from '../../../../../core/services/internal/event-bus.service';
+import { ConfigService } from '../../../../../core/services/config/config.service';
+import { OrderService } from '../../../../../core/services/httpServices/order.service';
+import { OrderItem } from '../../../../../core/models/Order';
+import { filter } from 'rxjs/operators';
 import { NewOrderComponent } from '../new-order/new-order.component';
 import { EditOrderComponent } from '../edit-order/edit-order.component';
+import { CellarItem } from '../../../../../core/models/Cellar';
 @Component({
   selector: 'app-orders',
   templateUrl: './orders.component.html',
   styleUrls: ['./orders.component.scss']
 })
-export class OrdersComponent implements OnInit {
+export class OrdersComponent implements OnInit, AfterContentInit, OnDestroy {
 
-  configSubscription: Subscription;
-  sessionsubscription: Subscription;
-  // permissions
+  @ViewChild(MatSort, { static: true }) sort: MatSort;
+
   smallScreen = window.innerWidth < 960 ? true : false;
 
-  // costumers -------------
-  selectedCostumer: any;
-  costumersSubscription: Subscription;
-  orders: any[] = [
-    // tslint:disable-next-line: max-line-length
-    {invoiceNumber: '5', nit: '730613-k',name: 'Luis',  address: '|Ciudad', phone: '2535354', town: 'almolonga', department: 'quetzaltenago', paymentMethod: '100',  details: 'sjfgkleuwrejh', total: '300' },
-  ];
+  sessionsubscription: Subscription;
+  ordersSubscription: Subscription;
+
+  selectedOrder: OrderItem;
+  orders: OrderItem[];
+  currentCellar: CellarItem;
+
+  month = new Date().getMonth() + 1;
+  year = new Date().getFullYear();
+  currentFilter = 'current';
+
+  ordersp: string[];
+
   dataSource = new MatTableDataSource();
-  columnsToDisplay = ['invoiceNumber','nit','name', 'address', 'phone', 'town', 'department', 'paymentMethod', 'details', 'total' ];
-  columnsToDisplay2 = ['image','invoiceNumber','nit','name', 'address', 'phone', 'town', 'department', 'paymentMethod', 'details', 'total'];
-  expandedElement: any | null;
+  columnsToDisplay = ['noOrder', 'noBill', 'createdAt', 'nit', 'name', 'phone', 'address', 'details', 'payment', 'state', 'total', 'options'];
+  columnsToDisplay2 = ['image', 'noOrder', 'noBill', 'createdAt', 'nit', 'name', 'phone', 'address', 'details', 'payment', 'state', 'total', 'options'];
+  expandedElement: OrderItem | null;
   // HOOK FUNCTIONS //////////////////////////////////////////////////////////////////////////////////////////
-  constructor(public eventBus: EventBusService, public config: ConfigService, public dialog: MatDialog
+  constructor(
+    public store: Store<AppState>,
+    public eventBus: EventBusService,
+    public config: ConfigService,
+    public dialog: MatDialog,
+    public orderService: OrderService
   ) {
 
   }
 
   ngOnInit(): void {
-    this.dataSource = new MatTableDataSource(this.orders);
+    this.sessionsubscription = this.store.select('session').pipe(filter(session => session !== null)).subscribe(session => {
+      if (session.permissions !== null) {
+        const b = session.permissions.filter(pr => pr.name === 'orders');
+        this.ordersp = b.length > 0 ? b[0].options : [];
+      }
+    });
+    this.ordersSubscription = this.orderService.readData().subscribe(data => {
+      this.orders = data;
+      this.dataSource = new MatTableDataSource<OrderItem>(this.orders);
+    });
   }
 
-  // OPERATIONAL FUNCTIONS //////////////////////////////////////////////////////////////////////////////
-  newCostumer() {
+  ngAfterContentInit() {
+    const filter = { month: this.month, year: this.year };
+    this.orderService.loadData(filter);
+  }
+
+  ngOnDestroy() {
+    this.ordersSubscription?.unsubscribe();
+    this.sessionsubscription?.unsubscribe();
+  }
+
+  applyFilter(filterValue?: string) {
+    if (filterValue) {
+
+      this.dataSource.filter = filterValue.trim().toLowerCase();
+      if (this.currentFilter === 'last') {
+        if (new Date().getMonth() === 0) {
+          this.month = 12;
+        } else {
+          this.month = new Date().getMonth();
+
+        }
+      }
+      if (this.currentFilter === 'current') { this.month = new Date().getMonth() + 1; }
+      const filters = { month: this.month, year: this.year };
+      this.orderService.loadData(filters);
+    } else {
+      if (this.currentFilter === 'last') {
+        if (new Date().getMonth() === 0) {
+          this.month = 12;
+        } else {
+          this.month = new Date().getMonth();
+
+        }
+      }
+      if (this.currentFilter === 'current') { this.month = new Date().getMonth() + 1; }
+      const filters = { month: this.month, year: this.year };
+      this.orderService.loadData(filters);
+    }
+  }
+
+  newOrder() {
     const dialogRef = this.dialog.open(NewOrderComponent, {
       width: this.smallScreen ? '100%' : '800px',
-      height: this.smallScreen ? '100%' : '600px',
-      data: { title: 'Nuevo Cliente' },
+      minHeight: '80vh',
+      maxHeight: '80vh',
+      data: { ordersp: this.ordersp },
       disableClose: true,
-      panelClass: ['iea-dialog'],
+      panelClass: ['farmacia-dialog', 'farmacia'],
     });
 
     dialogRef.afterClosed().subscribe(result => {
-
+      if (result !== undefined) {
+        const filter = { month: this.month, year: this.year };
+        this.orderService.loadData(filter);
+      }
     });
   }
 
-
-  editCostumer(costumer: any) {
+  editOrder(order: OrderItem) {
     const dialogRef = this.dialog.open(EditOrderComponent, {
-      width: this.smallScreen ? '100%' : '500px',
-      data: { title: 'Nuevo Cliente', client: costumer },
+      width: this.smallScreen ? '100%' : '800px',
+      data: { order: order, ordersp: this.ordersp },
       disableClose: true,
-      panelClass: ['iea-dialog'],
+      panelClass: ['farmacia-dialog', 'farmacia'],
     });
 
     dialogRef.afterClosed().subscribe(result => {
+      if (result !== undefined) {
+        const filter = { month: this.month, year: this.year };
+        this.orderService.loadData(filter);
+      }
     });
   }
 
-
-  applyFilter(event: Event) {
+  applyFilter2(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
     this.dataSource.filter = filterValue.trim().toLowerCase();
   }

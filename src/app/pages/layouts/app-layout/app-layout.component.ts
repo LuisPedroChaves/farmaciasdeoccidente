@@ -151,8 +151,20 @@ export class AppLayoutComponent implements OnInit, OnDestroy, AfterContentInit {
 
   accessToCellar(c: CellarItem) {
     localStorage.setItem('currentstore', JSON.stringify(c));
+    this.currentStore = c;
+    switch (c.type) {
+      case 'FARMACIA':
+        this.router.navigate(['/']);
+        break;
+      case 'BODEGA':
+        this.router.navigate(['/factory']);
+        break;
 
-    location.reload();
+      default:
+        break;
+    }
+
+    // location.reload();
   }
 
   getImage() {

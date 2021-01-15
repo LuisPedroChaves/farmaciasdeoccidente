@@ -65,7 +65,7 @@ export class EmployeesComponent implements OnInit {
     this.dialogRef = this.dialog.open(NewEmployeeComponent, {
       width: '600px',
       // disableClose: true,
-      panelClass: 'iea-dialog'
+      panelClass: ['farmacia-dialog', 'farmacia']
       // data: { title: 'Nuevo Empleado', jobs: this.jobs, cellars: this.cellars }
     });
 
@@ -83,7 +83,7 @@ export class EmployeesComponent implements OnInit {
     this.dialogRef = this.dialog.open( NewJobComponent, {
       width: '600px',
       // disableClose: true,
-      panelClass: 'iea-dialog'
+      panelClass: ['farmacia-dialog', 'farmacia']
       // data: { title: 'Nuevo Empleado', jobs: this.jobs, cellars: this.cellars }
     });
 
