@@ -229,3 +229,23 @@
 }
 
 .loader-screen { height: calc(100vh - 200px); }
+
+.noborder-table {
+    td.mat-cell { border-bottom-style: none !important; }
+}
+
+.mat-table
+{
+  background-color:transparent!important;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    border-radius: 10px 10px 0px 0px;
+  }
+
+  .mat-cell {
+    text-align: center;
+    justify-content:center;
+  }

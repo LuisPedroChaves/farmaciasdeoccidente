@@ -57,7 +57,7 @@
           <button *ngIf="!smallScreen" mat-fab color="primary" class="fab mat-elevation-z10" (click)="newOrder()">
             <mat-icon>add</mat-icon><span class="extended-fab-button__text">Orden</span>
           </button>
-          <div class="costumers-header" *ngIf="orders !== undefined">
+          <div *ngIf="orders !== undefined" class="allspace" data-simplebar>
 
             <table mat-table matSort matTableResponsive [dataSource]="dataSource" multiTemplateDataRows class="mat-elevation-z2 noborder-table ">
               <ng-container matColumnDef="image">
@@ -76,28 +76,28 @@
               </ng-container>
               <ng-container matColumnDef="createdAt">
                 <th mat-header-cell *matHeaderCellDef> Fecha </th>
-                <td mat-cell *matCellDef="let element"> {{element.createdAt}} </td>
+                <td mat-cell *matCellDef="let element"> {{element.date | date: 'dd/MM/yyyy HH:mm' }} </td>
               </ng-container>
               <ng-container matColumnDef="nit">
                 <th mat-header-cell *matHeaderCellDef> Nit </th>
-                <td mat-cell *matCellDef="let element"> {{element.nit}} </td>
+                <td mat-cell *matCellDef="let element"> {{element._customer.nit}} </td>
               </ng-container>
               <ng-container matColumnDef="name">
                 <th mat-header-cell *matHeaderCellDef> Nombre </th>
-                <td mat-cell *matCellDef="let element"> {{element.name}} </td>
+                <td mat-cell *matCellDef="let element"> {{element._customer.name}} </td>
               </ng-container>
               <ng-container matColumnDef="phone">
                 <th mat-header-cell *matHeaderCellDef> Teléfono </th>
-                <td mat-cell *matCellDef="let element"> {{element.phone}} </td>
+                <td mat-cell *matCellDef="let element"> {{element._customer.phone}} </td>
               </ng-container>
               <ng-container matColumnDef="address">
                 <th mat-header-cell *matHeaderCellDef> Dirección </th>
-                <td mat-cell *matCellDef="let element"> {{element.address}} {{element.town}} {{element.department}} </td>
+                <td mat-cell *matCellDef="let element"> {{element._customer.address}} {{element._customer.town}} {{element._customer.department}} </td>
               </ng-container>
-              <ng-container matColumnDef="details">
+              <!-- <ng-container matColumnDef="details">
                 <th mat-header-cell *matHeaderCellDef> Detalles </th>
                 <td mat-cell *matCellDef="let element"> {{element.details}} </td>
-              </ng-container>
+              </ng-container> -->
               <ng-container matColumnDef="payment">
                 <th mat-header-cell *matHeaderCellDef> Método de Pago </th>
                 <td mat-cell *matCellDef="let element"> {{element.payment}} </td>
@@ -108,12 +108,23 @@
               </ng-container>
               <ng-container matColumnDef="total">
                 <th mat-header-cell *matHeaderCellDef> Total </th>
-                <td mat-cell *matCellDef="let element"> {{element.total}} </td>
+                <td mat-cell *matCellDef="let element"> Q {{element.total | number: '.2'}} </td>
               </ng-container>
               <ng-container matColumnDef="options">
-                <th mat-header-cell *matHeaderCellDef> Opciones </th>
-                <td mat-cell *matCellDef="let element"> {{element.options}} </td>
-              </ng-container>
+                <th mat-header-cell *matHeaderCellDef> </th>
+                <td mat-cell *matCellDef="let element">
+                    <button mat-icon-button [matMenuTriggerFor]="menu">
+                        <mat-icon>more_vert</mat-icon>
+                    </button>
+                    <mat-menu #menu="matMenu">
+                        <!-- <button mat-menu-item *ngIf="billing.includes('create') && element.contingency === true" color="primary" (click)="generateBill(element)"><mat-icon class="material-icons-outlined" >receipt_long</mat-icon> Generar Factura</button>
+                        <button mat-menu-item (click)="viewSale(element)"><mat-icon class="material-icons-outlined" >info</mat-icon> Detalles de las facturas</button>
+                        <button mat-menu-item (click)="printInvoice(element, element.products)"><mat-icon class="material-icons-outlined" >print</mat-icon> Imprimir Factura</button> -->
+                        <mat-divider></mat-divider>
+                        <button mat-menu-item *ngIf="ordersp && ordersp.includes('delete') && element.state === 'ORDEN'" color="warn" (click)="delete(element)"><mat-icon class="material-icons-outlined" >block</mat-icon> Anular Orden</button>
+                    </mat-menu>
+                </td>
+            </ng-container>
 
               <!-- Expanded Content Column - The detail row is made up of this one column that spans across all columns -->
               <!-- <ng-container matColumnDef="expandedDetail">
@@ -128,8 +139,7 @@
                             </ng-container> -->
 
               <tr mat-header-row *matHeaderRowDef="columnsToDisplay2"></tr>
-              <tr mat-row *matRowDef="let element; columns: columnsToDisplay2;" class="example-element-row"
-                (click)="editOrder(element)">
+              <tr mat-row *matRowDef="let element; columns: columnsToDisplay2;" class="example-element-row">
               </tr>
               <!-- <tr mat-row *matRowDef="let element; columns: columnsToDisplay2;"
                                 class="example-element-row"

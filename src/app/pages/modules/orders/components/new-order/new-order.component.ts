@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, Inject, OnInit, OnDestroy } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { OrderService } from '../../../../../core/services/httpServices/order.service';
@@ -10,15 +10,15 @@ import { OrderItem } from '../../../../../core/models/Order';
   templateUrl: './new-order.component.html',
   styleUrls: ['./new-order.component.scss']
 })
-export class NewOrderComponent implements OnInit {
+export class NewOrderComponent implements OnInit, OnDestroy {
 
   loading = false;
 
   form = new FormGroup({
     name: new FormControl(null, [Validators.required]),
     nit: new FormControl(null,  [Validators.required]),
-    phone: new FormControl(null, ),
-    address: new FormControl(null, ),
+    phone: new FormControl(null, [Validators.required]),
+    address: new FormControl(null, [Validators.required]),
     town: new FormControl(null, ),
     department: new FormControl('Huehuetenango', ),
     details: new FormControl(null, [Validators.required]),
@@ -28,17 +28,42 @@ export class NewOrderComponent implements OnInit {
     timeOrder: new FormControl(0, ),
   });
 
+  time: number = 0;
+  display ;
+  interval;
+
   constructor(public dialogRef: MatDialogRef<NewOrderComponent>, @Inject(MAT_DIALOG_DATA) public data: any,
   public orderService: OrderService,
   public toasty: ToastyService
   ) { }
 
   ngOnInit(): void {
+    this.startTimer();
+  }
+
+  ngOnDestroy(): void {
+    // this.time = 0;
+  }
+
+  startTimer() {
+    this.interval = setInterval(() => {
+      if (this.time === 0) {
+        this.time++;
+      } else {
+        this.time++;
+      }
+      this.display=this.transform( this.time)
+    }, 1000);
+  }
+  transform(value: number): string {
+       const minutes: number = Math.floor(value / 60);
+       return minutes + ':' + (value - minutes * 60);
   }
 
   saveClient() {
     if (this.form.invalid) { return; }
     this.loading = true;
+    this.form.get('timeOrder').setValue(this.display);
     const order: OrderItem = {...this.form.value};
     this.orderService.createOrder(order).subscribe(data => {
       if (data.ok === true) {
