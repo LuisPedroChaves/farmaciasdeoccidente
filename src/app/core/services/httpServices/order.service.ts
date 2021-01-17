@@ -15,7 +15,7 @@ export class OrderService implements IDataService<OrderItem[]> {
   orderSubject = new Subject<OrderItem[]>();
 
   cellarID = JSON.parse(localStorage.getItem('currentstore'))._id;
-  userID = JSON.parse(localStorage.getItem('farmaciasDO-session'))._id;
+  userID = JSON.parse(localStorage.getItem('farmaciasDO-session')).id;
   constructor(
     public http: HttpClient,
     public apiConfigService: ApiConfigService
@@ -55,6 +55,7 @@ export class OrderService implements IDataService<OrderItem[]> {
     // const jsonParms = JSON.stringify(u);
     u._cellar = this.cellarID;
     u._user = this.userID;
+    console.log("🚀 ~ file: order.service.ts ~ line 58 ~ OrderService ~ createOrder ~ u", u)
     return this.http.post(this.apiConfigService.API_ORDER, u);
   }
 
