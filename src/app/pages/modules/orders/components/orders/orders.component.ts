@@ -15,6 +15,7 @@ import { EditOrderComponent } from '../edit-order/edit-order.component';
 import { CellarItem } from '../../../../../core/models/Cellar';
 import { ConfirmationDialogComponent } from 'src/app/pages/shared-components/confirmation-dialog/confirmation-dialog.component';
 import { ToastyService } from '../../../../../core/services/internal/toasty.service';
+import { Router } from '@angular/router';
 @Component({
   selector: 'app-orders',
   templateUrl: './orders.component.html',
@@ -27,7 +28,6 @@ export class OrdersComponent implements OnInit, AfterContentInit, OnDestroy {
   smallScreen = window.innerWidth < 960 ? true : false;
 
   sessionsubscription: Subscription;
-  ordersSubscription: Subscription;
 
   selectedOrder: OrderItem;
   orders: OrderItem[];
@@ -50,8 +50,13 @@ export class OrdersComponent implements OnInit, AfterContentInit, OnDestroy {
     public config: ConfigService,
     public dialog: MatDialog,
     public orderService: OrderService,
-    public toasty: ToastyService
+    public toasty: ToastyService,
+    public router: Router
   ) {
+    this.orderService.readData().subscribe(data => {
+      this.orders = data;
+      this.dataSource = new MatTableDataSource<OrderItem>(this.orders);
+    });
 
   }
 
@@ -62,20 +67,21 @@ export class OrdersComponent implements OnInit, AfterContentInit, OnDestroy {
         this.ordersp = b.length > 0 ? b[0].options : [];
       }
     });
-    this.ordersSubscription = this.orderService.readData().subscribe(data => {
-      this.orders = data;
-      this.dataSource = new MatTableDataSource<OrderItem>(this.orders);
-    });
+    this.currentCellar = JSON.parse(localStorage.getItem('currentstore'));
+
   }
 
   ngAfterContentInit() {
-    const filter = { month: this.month, year: this.year };
+    const filter = { month: this.month, year: this.year, _cellar: this.currentCellar._id };
     this.orderService.loadData(filter);
   }
 
   ngOnDestroy() {
-    this.ordersSubscription?.unsubscribe();
     this.sessionsubscription?.unsubscribe();
+  }
+
+  selectOrder(order: OrderItem) {
+    this.router.navigate(['/order', order._id, 'orders']);
   }
 
   applyFilter(filterValue?: string) {
@@ -91,7 +97,7 @@ export class OrdersComponent implements OnInit, AfterContentInit, OnDestroy {
         }
       }
       if (this.currentFilter === 'current') { this.month = new Date().getMonth() + 1; }
-      const filters = { month: this.month, year: this.year };
+      const filters = { month: this.month, year: this.year, _cellar: this.currentCellar._id };
       this.orderService.loadData(filters);
     } else {
       if (this.currentFilter === 'last') {
@@ -103,9 +109,15 @@ export class OrdersComponent implements OnInit, AfterContentInit, OnDestroy {
         }
       }
       if (this.currentFilter === 'current') { this.month = new Date().getMonth() + 1; }
-      const filters = { month: this.month, year: this.year };
+      const filters = { month: this.month, year: this.year, _cellar: this.currentCellar._id };
       this.orderService.loadData(filters);
     }
+  }
+
+
+  applyFilter2(event: Event) {
+    const filterValue = (event.target as HTMLInputElement).value;
+    this.dataSource.filter = filterValue.trim().toLowerCase();
   }
 
   newOrder() {
@@ -113,14 +125,14 @@ export class OrdersComponent implements OnInit, AfterContentInit, OnDestroy {
       width: this.smallScreen ? '100%' : '800px',
       minHeight: '78vh',
       maxHeight: '78vh',
-      data: { ordersp: this.ordersp },
+      data: { ordersp: this.ordersp, currentCellar: this.currentCellar },
       disableClose: true,
       panelClass: ['farmacia-dialog', 'farmacia'],
     });
 
     dialogRef.afterClosed().subscribe(result => {
       if (result !== undefined) {
-        const filter = { month: this.month, year: this.year };
+        const filter = { month: this.month, year: this.year, _cellar: this.currentCellar._id };
         this.orderService.loadData(filter);
       }
     });
@@ -136,7 +148,7 @@ export class OrdersComponent implements OnInit, AfterContentInit, OnDestroy {
 
     dialogRef.afterClosed().subscribe(result => {
       if (result !== undefined) {
-        const filter = { month: this.month, year: this.year };
+        const filter = { month: this.month, year: this.year, _cellar: this.currentCellar._id };
         this.orderService.loadData(filter);
       }
     });
@@ -156,7 +168,7 @@ export class OrdersComponent implements OnInit, AfterContentInit, OnDestroy {
           // this.loading = true;
           this.orderService.deleteOrder(order).subscribe(data => {
             this.toasty.success('Orden eliminada exitosamente');
-            const filter = { month: this.month, year: this.year };
+            const filter = { month: this.month, year: this.year, _cellar: this.currentCellar._id };
             this.orderService.loadData(filter);
             // this.loading = false;
           }, error => {
@@ -166,11 +178,6 @@ export class OrdersComponent implements OnInit, AfterContentInit, OnDestroy {
         }
       }
     });
-  }
-
-  applyFilter2(event: Event) {
-    const filterValue = (event.target as HTMLInputElement).value;
-    this.dataSource.filter = filterValue.trim().toLowerCase();
   }
 
 }

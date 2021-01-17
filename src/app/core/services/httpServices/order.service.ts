@@ -14,15 +14,14 @@ export class OrderService implements IDataService<OrderItem[]> {
   public orderList: OrderItem[];
   orderSubject = new Subject<OrderItem[]>();
 
-  cellarID = JSON.parse(localStorage.getItem('currentstore'))._id;
   userID = JSON.parse(localStorage.getItem('farmaciasDO-session')).id;
   constructor(
     public http: HttpClient,
     public apiConfigService: ApiConfigService
   ) { }
 
-  loadData({month, year}) {
-    this.http.get(this.apiConfigService.API_ORDER + '/' + this.cellarID + '?month=' + month + '&year=' + year).pipe(
+  loadData({month, year, _cellar}) {
+    this.http.get(this.apiConfigService.API_ORDER + '/' + _cellar + '?month=' + month + '&year=' + year).pipe(
         map((response: any) => {
           this.orderList = response.orders;
           this.orderSubject.next( this.orderList);
@@ -30,9 +29,9 @@ export class OrderService implements IDataService<OrderItem[]> {
   }
 
   getData(filter: any) {
-    const {month, year} = filter;
+    const {month, year, _cellar} = filter;
     if ( this.orderList === undefined ) {
-      this.loadData({month, year});
+      this.loadData({month, year, _cellar});
     } else {
       this.orderSubject.next( this.orderList );
     }
@@ -51,16 +50,19 @@ export class OrderService implements IDataService<OrderItem[]> {
     }
   }
 
+  getOrder(id: string): Observable<any> {
+    return this.http.get(this.apiConfigService.API_ORDER + '/order/' + id);
+  }
+
   createOrder(u: OrderItem): Observable<any> {
     // const jsonParms = JSON.stringify(u);
-    u._cellar = this.cellarID;
     u._user = this.userID;
-    console.log("🚀 ~ file: order.service.ts ~ line 58 ~ OrderService ~ createOrder ~ u", u)
     return this.http.post(this.apiConfigService.API_ORDER, u);
   }
 
   updateOrder(u: OrderItem): Observable<any> {
     // const jsonParms = JSON.stringify(u);
+    u._user = this.userID;
     return this.http.put(this.apiConfigService.API_ORDER + '/' + u._id, u);
   }
 

@@ -24,7 +24,7 @@
     <br>
     <div class="session-start" fxLayout="column wrap" fxLayoutAlign="center center">
       <span *ngIf="!loading" class="mat-text-muted">¿Ha olvidado su contraseña?</span>
-      <mat-spinner *ngIf="loading" diameter="30" mode="indeterminate"></mat-spinner>
+      <mat-spinner *ngIf="loading" diameter="30" mode="indeterminate"  color="warn"></mat-spinner>
       <span *ngIf="showError === true" class="formerror">{{ error }}</span>
     </div>
   </mat-card>

@@ -120,6 +120,6 @@
     <button mat-button *ngIf="!loading" (click)="saveClient()" [disabled]="this.form.invalid" color="primary">
       GUARDAR
     </button>
-    <mat-progress-spinner *ngIf="loading" mode="indeterminate" diameter="30"></mat-progress-spinner>
+    <mat-progress-spinner *ngIf="loading" mode="indeterminate" diameter="30"  color="warn"></mat-progress-spinner>
   </div>
 </div>

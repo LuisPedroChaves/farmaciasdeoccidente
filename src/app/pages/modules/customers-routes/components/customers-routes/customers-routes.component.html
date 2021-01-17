@@ -11,7 +11,7 @@
       <mat-divider></mat-divider>
 
       <div fxLayout="row wrap" class="module-container " data-simplebar>
-        <div class="container-strech">
+        <!-- <div class="container-strech"> -->
           <div fxLayout="row wrap" fxLayoutAlign="start center" class="costumers-header">
             <h2 class="title1 product-font ma-0">Catálogo de Clientes</h2>
             &nbsp;&nbsp;&nbsp;&nbsp;
@@ -92,9 +92,9 @@
           </div>
           <div fxLayout="column wrap" fxLayoutAlign="center center" class="padding-15 loader-screen"
             *ngIf="customers === undefined">
-            <mat-progress-spinner mode="indeterminate" diameter="60"></mat-progress-spinner>
+            <mat-progress-spinner mode="indeterminate" diameter="60" color="warn"></mat-progress-spinner>
           </div>
-        </div>
+        <!-- </div> -->
       </div>
     </div>
   </div>

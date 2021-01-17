@@ -155,6 +155,6 @@
         <span fxFlex></span>
         <button mat-button *ngIf="!loading" (click)="editMode = false">Cancelar</button>
         <button mat-button (click)="saveClient()" color="primary" *ngIf="data.customersp.includes('update') && !loading">Guardar</button>
-        <mat-progress-spinner *ngIf="loading" mode="indeterminate" diameter="30"></mat-progress-spinner>
+        <mat-progress-spinner *ngIf="loading" mode="indeterminate" diameter="30"  color="warn"></mat-progress-spinner>
     </div>
 </div>
