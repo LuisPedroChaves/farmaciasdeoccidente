@@ -2,9 +2,7 @@
 <div *ngIf="!loading" [ngClass]="{'saving': saving}">
     <h1 class="product-font ma-0 module-title title">Despachos Pendientes</h1>
     <header class="header" fxLayout="row wrap" fxLayoutAlign="start center">
-        <button mat-flat-button color="warn">
-      <mat-icon>update</mat-icon> Actualizar
-    </button>
+
         <span fxFlex></span>
         <mat-form-field appearance="outline" floatLabel="always" class="findinput">
             <mat-label>Buscar Curso</mat-label>
@@ -82,3 +80,6 @@
     <div *ngIf="loading" fxLayoutAlign="center center" class="loadingspin" fxLayout="column wrap">
         <mat-progress-spinner mode="indeterminate" diameter="60" color="warn"></mat-progress-spinner>
     </div>
+    <button *ngIf="!smallScreen" mat-fab color="warn" class="fab mat-elevation-z10">
+        <mat-icon>update</mat-icon><span class="extended-fab-button__text">Actualizar</span>
+      </button>

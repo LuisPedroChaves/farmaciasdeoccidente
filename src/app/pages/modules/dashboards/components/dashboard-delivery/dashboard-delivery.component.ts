@@ -1,10 +1,10 @@
-import { Component, OnInit, AfterContentInit } from '@angular/core';
+import { Component, OnInit, AfterContentInit, ViewChild } from '@angular/core';
+import { MatBottomSheet } from '@angular/material/bottom-sheet';
 import { MatDialog } from '@angular/material/dialog';
+import { MatMenuTrigger } from '@angular/material/menu';
 import { Router } from '@angular/router';
-import { CellarItem } from 'src/app/core/models/Cellar';
-import { CellarService } from 'src/app/core/services/httpServices/cellar.service';
+import { Subscription } from 'rxjs';
 import { ToastyService } from 'src/app/core/services/internal/toasty.service';
-import { ConfirmationDialogComponent } from 'src/app/pages/shared-components/confirmation-dialog/confirmation-dialog.component';
 
 @Component({
   selector: 'app-dashboard-delivery',
@@ -13,106 +13,368 @@ import { ConfirmationDialogComponent } from 'src/app/pages/shared-components/con
 })
 export class DashboardDeliveryComponent implements OnInit, AfterContentInit {
 
-  currentCellar: CellarItem = JSON.parse(localStorage.getItem('currentstore'));
-  currentCellarPlaceholder: CellarItem = {
-    _id: '',
-    name: '',
-    address: '',
-    description: '',
-    type: ''
-  };
-  editMode = false;
-
-  counts: any;
-  clientCount: number = 25;
-  productCount: number = 50;
-  employeesCount: number = 100;
+    // subscriptions ------------------
+    configSubscription: Subscription;
+    sessionsubscription: Subscription;
+    coursesubs: Subscription;
+    searchtext: string;
+  
+      // screen
+  smallScreen: boolean;
+  
+  courses: any[] =  [
+    {
+      invoiceNumber: '5',
+      nit: '730613-k',
+      name: 'Farmacia1',
+      address: '|Ciudad',
+      phone: '2535354',
+      town: 'almolonga',
+      department: 'quetzaltenago',
+      payment: '100',
+      total: '300',
+      details: 'detallesgfklgfuyglgñigiuj',
+      image: 'imagen2.jpg',
+      state:'entregado',
+      timestamps: '25Days',
+      timeOrder:'30Days',
+      timeDispatch: '2Days',
+      timeSend:'5Days',
+      noOrder:'125',
+      _id:'123',
+      isActive:true
+  
+  
+    },
+    {
+      invoiceNumber: '5',
+      nit: '730613-k',
+      name: 'Farmacia1',
+      address: '|Ciudad',
+      phone: '2535354',
+      town: 'almolonga',
+      department: 'quetzaltenago',
+      paymentMethod: '100',
+      total: '300',
+      details: 'detallesgfklgfuyglgñigiuj',
+      image: 'imagen2.jpg',
+      state:'entregado',
+      timestamps: '25Days',
+      timeOrder:'30Days',
+      timeDispatch: '2Days',
+      timeSend:'5Days',
+      noOrder:'125',
+      _id:'123',
+      isActive:true
+  
+    },
+    {
+      invoiceNumber: '5',
+      nit: '730613-k',
+      name: 'Farmacia1',
+      address: '|Ciudad',
+      phone: '2535354',
+      town: 'almolonga',
+      department: 'quetzaltenago',
+      paymentMethod: '100',
+      total: '300',
+      details: 'detallesgfklgfuyglgñigiuj',
+      image: 'imagen2.jpg',
+      state:'entregado',
+      timestamps: '25Days',
+      timeOrder:'30Days',
+      timeDispatch: '2Days',
+      timeSend:'5Days',
+      noOrder:'125',
+      _id:'123',
+      isActive:true
+    },
+    {
+      invoiceNumber: '5',
+      nit: '730613-k',
+      name: 'Farmacia1',
+      address: '|Ciudad',
+      phone: '2535354',
+      town: 'almolonga',
+      department: 'quetzaltenago',
+      paymentMethod: '100',
+      total: '300',
+      details: 'detallesgfklgfuyglgñigiuj',
+      image: 'imagen2.jpg',
+      state:'entregado',
+      timestamps: '25Days',
+      timeOrder:'30Days',
+      timeDispatch: '2Days',
+      timeSend:'5Days',
+      noOrder:'125',
+      _id:'123',
+      isActive:true
+    },
+    {
+  
+      invoiceNumber: '5',
+      nit: '730613-k',
+      name: 'Farmacia1',
+      address: '|Ciudad',
+      phone: '2535354',
+      town: 'almolonga',
+      department: 'quetzaltenago',
+      paymentMethod: '100',
+      total: '300',
+      details: 'detallesgfklgfuyglgñigiuj',
+      image: 'imagen2.jpg',
+      state:'entregado',
+      timestamps: '25Days',
+      timeOrder:'30Days',
+      timeDispatch: '2Days',
+      timeSend:'5Days',
+      noOrder:'125',
+      _id:'123',
+      isActive:true
+  
+    },
+    {
+      invoiceNumber: '5',
+      nit: '730613-k',
+      name: 'Farmacia1',
+      address: '|Ciudad',
+      phone: '2535354',
+      town: 'almolonga',
+      department: 'quetzaltenago',
+      paymentMethod: '100',
+      total: '300',
+      details: 'detallesgfklgfuyglgñigiuj',
+      image: 'imagen2.jpg',
+      state:'entregado',
+      timestamps: '25Days',
+      timeOrder:'30Days',
+      timeDispatch: '2Days',
+      timeSend:'5Days',
+      noOrder:'125',
+      _id:'123',
+      isActive:true
+    },
+    {
+  
+      invoiceNumber: '5',
+      nit: '730613-k',
+      name: 'Farmacia1',
+      address: '|Ciudad',
+      phone: '2535354',
+      town: 'almolonga',
+      department: 'quetzaltenago',
+      paymentMethod: '100',
+      total: '300',
+      details: 'detallesgfklgfuyglgñigiuj',
+      image: 'imagen2.jpg',
+      state:'entregado',
+      timestamps: '25Days',
+      timeOrder:'30Days',
+      timeDispatch: '2Days',
+      timeSend:'5Days',
+      noOrder:'125',
+      _id:'123',
+      isActive:true
+    },
+    {
+  
+      invoiceNumber: '5',
+      nit: '730613-k',
+      name: 'Farmacia1',
+      address: '|Ciudad',
+      phone: '2535354',
+      town: 'almolonga',
+      department: 'quetzaltenago',
+      paymentMethod: '100',
+      total: '300',
+      details: 'detallesgfklgfuyglgñigiuj',
+      image: 'imagen2.jpg',
+      state:'entregado',
+      timestamps: '25Days',
+      timeOrder:'30Days',
+      timeDispatch: '2Days',
+      timeSend:'5Days',
+      noOrder:'125',
+      _id:'123',
+      isActive:true
+  
+    },
+    {
+  
+      invoiceNumber: '5',
+      nit: '730613-k',
+      name: 'Farmacia1',
+      address: '|Ciudad',
+      phone: '2535354',
+      town: 'almolonga',
+      department: 'quetzaltenago',
+      paymentMethod: '100',
+      total: '300',
+      details: 'detallesgfklgfuyglgñigiuj',
+      image: 'imagen2.jpg',
+      state:'entregado',
+      timestamps: '25Days',
+      timeOrder:'30Days',
+      timeDispatch: '2Days',
+      timeSend:'5Days',
+      noOrder:'125',
+      _id:'123',
+      isActive:true
+  
+    },
+    {
+  
+      invoiceNumber: '5',
+      nit: '730613-k',
+      name: 'Farmacia1',
+      address: '|Ciudad',
+      phone: '2535354',
+      town: 'almolonga',
+      department: 'quetzaltenago',
+      paymentMethod: '100',
+      total: '300',
+      details: 'detallesgfklgfuyglgñigiuj',
+      image: 'imagen2.jpg',
+      state:'entregado',
+      timestamps: '25Days',
+      timeOrder:'30Days',
+      timeDispatch: '2Days',
+      timeSend:'5Days',
+      noOrder:'125',
+      _id:'123',
+      isActive:true
+  
+    },
+    {
+      invoiceNumber: '5',
+      nit: '730613-k',
+      name: 'Farmacia1',
+      address: '|Ciudad',
+      phone: '2535354',
+      town: 'almolonga',
+      department: 'quetzaltenago',
+      paymentMethod: '100',
+      total: '300',
+      details: 'detallesgfklgfuyglgñigiuj',
+      image: 'imagen2.jpg',
+      state:'entregado',
+      timestamps: '25Days',
+      timeOrder:'30Days',
+      timeDispatch: '2Days',
+      timeSend:'5Days',
+      noOrder:'125',
+      _id:'123',
+      isActive:true
+  
+    },
+    {
+  
+      invoiceNumber: '5',
+      nit: '730613-k',
+      name: 'Farmacia1',
+      address: '|Ciudad',
+      phone: '2535354',
+      town: 'almolonga',
+      department: 'quetzaltenago',
+      paymentMethod: '100',
+      total: '300',
+      details: 'detallesgfklgfuyglgñigiuj',
+      image: 'imagen2.jpg',
+      state:'entregado',
+      timestamps: '25Days',
+      timeOrder:'30Days',
+      timeDispatch: '2Days',
+      timeSend:'5Days',
+      noOrder:'125',
+      _id:'123',
+      isActive:true
+  
+    },
+    {
+  
+      invoiceNumber: '5',
+      nit: '730613-k',
+      name: 'Farmacia1',
+      address: '|Ciudad',
+      phone: '2535354',
+      town: 'almolonga',
+      department: 'quetzaltenago',
+      paymentMethod: '100',
+      total: '300',
+      details: 'detallesgfklgfuyglgñigiuj',
+      image: 'imagen2.jpg',
+      state:'entregado',
+      timestamps: '25Days',
+      timeOrder:'30Days',
+      timeDispatch: '2Days',
+      timeSend:'5Days',
+      noOrder:'125',
+      _id:'123',
+      isActive:true
+  
+    },
+    {
+  
+      invoiceNumber: '5',
+      nit: '730613-k',
+      name: 'Farmacia1',
+      address: '|Ciudad',
+      phone: '2535354',
+      town: 'almolonga',
+      department: 'quetzaltenago',
+      paymentMethod: '100',
+      total: '300',
+      details: 'detallesgfklgfuyglgñigiujhfggyfjyhgthgjgjlgtyhghgtglgbkjuhgjuhyjihyihyuihihyui8uyjhi9ujiujhiyhiy87i{9oujihyuihyñuihyiñ8huju8y8uyhñ8yñ8iyu8i8oyh8uyhi8ñýhiuyhuyv vfgfgcgcdgcgcggdmhgmgdcmgcgcdmgfdghgfhfvhfvfv,vf,jhf,jfgdgdffr,yhfrhfv,hfv,jh',
+      image: 'imagen2.jpg',
+      state:'entregado',
+      timestamps: '25Days',
+      timeOrder:'30Days',
+      timeDispatch: '2Days',
+      timeSend:'5Days',
+      noOrder:'125',
+       _id:'123',
+       isActive:true
+  
+    },
+  ];
+  employeejobs: any[];
+  loading = false;
+  allsubscriptions;
+  saving = false;
+  
+  @ViewChild(MatMenuTrigger)
+  contextMenu: MatMenuTrigger;
+  contextMenu2: MatMenuTrigger;
+  
+  contextMenuPosition = { x: '0px', y: '0px' };
 
   constructor(
-    private cellarService: CellarService,
-    private toasty: ToastyService,
+    //TODO: public store: Store<AppState>,
+    private bottomSheet: MatBottomSheet,
+    public toasty: ToastyService,
     public dialog: MatDialog,
-    private router: Router,
+    public router: Router,
   ) { }
 
   ngOnInit(): void {
-        // this.dashboardService.readData().subscribe(data => {
-    //   this.counts = data;
-    //   if (this.counts !== undefined) {
-    //     this.clientCount = this.counts.clientes;
-    //     this.productCount = this.counts.productos;
-    //     this.employeesCount = this.counts.empleados;
-    //   }
-    // });
   }
 
   ngAfterContentInit() {
-    // this.dashboardService.getData();
   }
 
-  editModeOn() {
-    this.clone(this.currentCellar, this.currentCellarPlaceholder);
-    this.editMode = true;
-  }
-  editModeOff() {
-    this.editMode = false;
-  }
-
-  clone(from: any, to: any) {
-    to._id = from._id;
-    to.name = from.name;
-    to.address = from.address;
-    to.type = from.type;
-    to.description = from.description;
-  }
-
-  accessToCellar(c: CellarItem) {
-    const currentC = JSON.parse(localStorage.getItem('currentstore'));
-    localStorage.setItem('currentstore', JSON.stringify(c));
-    if (currentC.type !== c.type) {
-      if (c.type === 'FARMACIA') {
-        this.router.navigate(['/']);
-      } else if (c.type === 'BODEGA') {
-        this.router.navigate(['/factory']);
-      }
-    } else {
-      this.clone(this.currentCellarPlaceholder, this.currentCellar);
+  ngOnDestroy(): void {
+    this.configSubscription?.unsubscribe();
+    this.sessionsubscription?.unsubscribe();
+    this.allsubscriptions?.unsubscribe();
     }
-  }
 
-  saveCellar() {
-    const newC: any = {};
-    this.clone(this.currentCellarPlaceholder, newC);
-    this.cellarService.updateCellar(newC).subscribe(data => {
-      if (data.ok === true) {
-        this.toasty.success('Modificado Exitosamente');
-        this.accessToCellar(newC);
-        this.editMode = false;
-      }
-    });
-  }
-
-  delete() {
-    const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
-      width: '350px',
-      disableClose: true,
-      data: { title: 'Eliminar sucursal', message: '¿Confirma que desea eliminar la sucursal?' }
-    });
-
-    dialogRef.afterClosed().subscribe(result => {
-      if (result !== undefined) {
-        if (result === true) {
-          this.cellarService.deleteCellar(this.currentCellarPlaceholder).subscribe(data => {
-            if (data.ok === true) {
-              this.toasty.success('Eliminado Exitosamente');
-              this.router.navigate(['/']);
-            } else {
-              this.toasty.success('Error eliminando la sucursal');
-            }
-          });
-        }
-      }
-    });
-  }
+  generateImage(): string {
+    const image = 'Geometry.jpg';
+    return image;
+    }
+    
+    selectOrder(order: any) {
+    this.router.navigate(['/order', order.name]);
+    }
 
 }
