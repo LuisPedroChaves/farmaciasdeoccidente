@@ -70,6 +70,10 @@ export class OrderService implements IDataService<OrderItem[]> {
     return this.http.put(this.apiConfigService.API_ORDER + '/' + u._id, u);
   }
 
+  updateOrderState(u: OrderItem): Observable<any> {
+    return this.http.put(this.apiConfigService.API_ORDER + '/state/' + u._id, u);
+  }
+
   deleteOrder(u: OrderItem): Observable<any> {
     return this.http.delete(this.apiConfigService.API_ORDER + '/' + u._id);
   }

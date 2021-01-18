@@ -57,7 +57,7 @@ $blue-2: #0c50c7;
 
 .job-card {
     background-color: white;
-    border-radius: 15px;
+    border-radius: 5px;
 }
 
 .jobcard {
@@ -70,6 +70,8 @@ $blue-2: #0c50c7;
 
 .more {
     color: white;
+    width: 45px;
+    height:  45px;
 }
 
 .cover {
@@ -83,7 +85,7 @@ $blue-2: #0c50c7;
 
 .course-info {
     padding: 10px;
-    height: 100px;
+    height: 72px;
 }
 
 .teacher {
@@ -142,17 +144,12 @@ div.scrollmenu a:hover {
     margin-bottom: 5px;
     margin-top: 3px;
     padding: 5px;
-    justify-content: center
+    justify-content: center;
+    // margin-left: 10px;
 }
 
 .title {
     padding: 10px;
-}
-
-.textDetails {
-    background-color: #0c50c7;
-    width: 100%;
-    overflow: auto;
 }
 
 .fab {
@@ -172,3 +169,11 @@ div.scrollmenu a:hover {
         text-transform: uppercase;
     }
 }
+
+.overflow-visible {
+    margin: 10px;
+    white-space: initial;
+    flex: 1 1 70px;
+    min-width: 60px;
+    overflow: auto;
+  }

@@ -25,6 +25,7 @@ import {MatProgressBarModule} from '@angular/material/progress-bar';
 import {MatBottomSheetModule} from '@angular/material/bottom-sheet';
 import {MatChipsModule} from '@angular/material/chips';
 import {MatAutocompleteModule} from '@angular/material/autocomplete';
+import {MatRippleModule} from '@angular/material/core';
 
 /* FLEX ----------------------*/
 import { FlexLayoutModule, CoreModule } from '@angular/flex-layout';
@@ -71,7 +72,8 @@ import { MatTableResponsiveModule } from '../modules/mat-table-responsive/mat-ta
     MatBottomSheetModule,
     MatTableResponsiveModule,
     MatChipsModule,
-    MatAutocompleteModule
+    MatAutocompleteModule,
+    MatRippleModule
   ],
   exports: [
     FormsModule,
@@ -104,7 +106,8 @@ import { MatTableResponsiveModule } from '../modules/mat-table-responsive/mat-ta
     MatBottomSheetModule,
     MatTableResponsiveModule,
     MatChipsModule,
-    MatAutocompleteModule
+    MatAutocompleteModule,
+    MatRippleModule
   ]
   ,providers: [
     {provide: MAT_DATE_LOCALE, useValue:'es-GT'}
