@@ -110,7 +110,7 @@ export class DispatchesComponent implements OnInit, OnDestroy {
                 body: [
                   [{ text: 'Farmacias de Occidente', style: 'header' }],
                   [{ text: 'Dirección...', style: 'text9' }],
-                  [{ text: 'Nit: 5525357', style: 'text9' }],
+                  [{ text: 'Nit: ...', style: 'text9' }],
                 ]
               }
             },
@@ -121,13 +121,12 @@ export class DispatchesComponent implements OnInit, OnDestroy {
                 headerRows: 1,
                 body: [
                   [{ text: 'ORDEN DE ENVÍO', style: ['text11', 'boldtext', 'right'] }],
-                  [{ text: 'Número de Orden: \n' + order.noOrder, style: ['text8', 'right'] }],
-                  [{ text: 'Número de Factura: \n' + order.noBill, style: ['text8', 'right'] }],
+                  [{ text: 'No.' + order.noOrder, style: ['text10', 'right'] }],
+                  [{ text: 'Factura: \n' + order.noBill, style: ['text8', 'right'] }],
                   [{ text: 'Fecha: ' + moment(order.date).format('DD-MMM-YYYY hh:mm:ss'), style: ['text8', 'right'] }],
                 ]
               }
             }
-
           ], [{}, {}]
         ]
       },
@@ -144,11 +143,11 @@ export class DispatchesComponent implements OnInit, OnDestroy {
             {
               layout: 'noBorders',
               table: {
-                widths: [100, '*'],
+                widths: [50, '*'],
                 headerRows: 1,
                 body: [
                   [{ text: 'NIT:', style: 'text9' }, { text: order.nit, style: 'text9' }],
-                  [{ text: 'Nombre del Receptor:', style: 'text9' }, { text: order.name, style: 'text9' }],
+                  [{ text: 'Nombre:', style: 'text9' }, { text: order.name, style: 'text9' }],
                   [{ text: 'Dirección:', style: 'text9' }, { text: order.address + ' ' + order.town + ' ' + order.department, style: 'text9' }],
                 ]
               }
@@ -159,20 +158,17 @@ export class DispatchesComponent implements OnInit, OnDestroy {
                 widths: [100, 'auto'],
                 headerRows: 1,
                 body: [
-                  // [{ text: 'Fecha de Emisión: ', style:'text9' }, { text: (order._bill.dateE !== null ? moment(order._bill.dateE).format('DD-MMM-YYYY hh:mm:ss') : ''), style:'text9' }],
-                  // [{ text: 'Fecha de Certificación: ', style:'text9' }, { text: (order._bill.dateC !== null ? moment(order._bill.dateC).format('DD-MMM-YYYY hh:mm:ss') : ''), style:'text9' }],
+                  [{ text: 'Método de pago: ', style:'text9' }, { text: order.payment, style:'text9' }],
+                  [{ text: 'Teléfono: ', style:'text9' }, { text: order.phone, style:'text9' }],
                 ]
               }
             }
-
           ], [{}, {}]
         ]
       },
       layout: 'headerLineOnly'
     });
     body.push({ text: '\n' });
-
-
 
     // DETALLE
     const ArrayToPrint: any[] = [];
@@ -188,18 +184,15 @@ export class DispatchesComponent implements OnInit, OnDestroy {
 
     const row: any[] = [
       order.details,
+      order.total
     ];
     ArrayToPrint.push(row);
 
 
-    ArrayToPrint.push([
-      {},
-      order.total,
-    ]);
     body.push({
       style: 'cells',
       table: {
-        widths: ['auto', '*', 50, 50, 50, 50],
+        widths: ['*', 50],
         headerRows: 1,
         body: ArrayToPrint
       }
@@ -212,8 +205,8 @@ export class DispatchesComponent implements OnInit, OnDestroy {
         widths: ['*'],
         headerRows: 1,
         body: [
-          ['* Sujeto a pagos trimestrales ISR'],
-          ['DATOS DEL CERTIFICADOR: INFILE, SOCIEDAD ANONIMA - NIT 12521337'],
+          ['GRACIAS POR SU PREFERENCIA'],
+          // ['DATOS DEL CERTIFICADOR: INFILE, SOCIEDAD ANONIMA - NIT 12521337'],
         ]
       }
     });
