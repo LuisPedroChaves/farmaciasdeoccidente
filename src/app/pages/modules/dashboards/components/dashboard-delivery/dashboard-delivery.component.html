@@ -2,7 +2,7 @@
     <div class="section-content">
         <div>
             <header class="module-header colorBarra" [ngClass]="{'padding-25': !smallScreen, 'padding-15': smallScreen }" fxLayoutAlign="start center" fxLayout="row wrap">
-                <h1 class="product-font  module-title"> {{ smallScreen ? '': 'Entregas'}}</h1>
+                <h1 class="product-font  module-title ht"> {{ smallScreen ? '': 'Entregas'}}</h1>
                 <span fxFlex></span>
             </header>
             <mat-divider class="colorBarra"></mat-divider>
@@ -98,10 +98,10 @@
                             <mat-icon>update</mat-icon><span class="extended-fab-button__text">Actualizar</span>
                           </button>
                     </mat-tab>
-                    <mat-tab label="Finalizadas ">
+                    <mat-tab label="Finalizadas">
                         <!-- <app-shipments></app-shipments> -->
                         <div *ngIf="!loading" [ngClass]="{'saving': saving}">
-                            <header class="header" fxLayout="row wrap" fxLayoutAlign="start center">
+                            <header class="header colorBuscar" fxLayout="row wrap" fxLayoutAlign="start center">
                                 <span fxFlex></span>
                                 <mat-form-field appearance="outline" floatLabel="always" class="findinput">
                                     <mat-label>Buscar Finalizada</mat-label>
