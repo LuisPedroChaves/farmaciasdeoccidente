@@ -358,6 +358,7 @@ export class DashboardDeliveryComponent implements OnInit, AfterContentInit {
   ) { }
 
   ngOnInit(): void {
+
   }
 
   ngAfterContentInit() {

@@ -2,7 +2,7 @@
     <div class="section-content">
         <div>
             <header class="module-header colorBarra" [ngClass]="{'padding-25': !smallScreen, 'padding-15': smallScreen }" fxLayoutAlign="start center" fxLayout="row wrap">
-                <h1 class="product-font  module-title ht"> {{ smallScreen ? '': 'Entregas'}}</h1>
+                <h2 class="product-font  module-title ht"> {{ smallScreen ? '': 'Rutas'}}</h2>
                 <span fxFlex></span>
             </header>
             <mat-divider class="colorBarra"></mat-divider>
@@ -59,20 +59,9 @@
                                                 <div fxFlex="100" fxLayout="column wrap" class="course-info">
                                                     <h2 class="ma-0 product-font">{{ c.noOrder }}</h2>
                                                     <span class="text-muted">{{c.nit}} - {{c.name}}</span>
-                                                    <!-- <mat-chip-list class="teacher" *ngIf=" c._employee_job !== null && c._employee_job !== undefined">
-                                        <mat-chip style="max-width: 200px" [selectable]="false" [selected]="false" [disableRipple]="true" >
-                                            <img [src]="c._employee_job._employee.image" matChipAvatar>
-                                            <div class="ellipsis-text">
-                                                {{ c._employee_job._employee.name }}
-                                            </div>
-                                        </mat-chip>
-                                    </mat-chip-list> -->
-                                                    <span class="text-muted" *ngIf="c._employee_job === null || c._employee_job === undefined">No
-                                                            hay docente
-                                                            asignado</span>
-                                                </div>
-                                                <h1 class="textDetails">{{c.address}} </h1>
-                                                <div fxLayout="row center center">
+
+                                                    <h1 class="textDetails">{{c.address}} </h1>
+                                                    <div fxLayout="row start end">
                                                     <button mat-button class="info-row" color="primary">
                                                             EDITAR
                                                         </button>
@@ -83,6 +72,49 @@
                                                     <button mat-button class="info-row" color="primary">
                                                             ELIMINAR
                                                         </button>
+                                                    </div>
+                                                </div>
+                                                <div fxFlex="100" >
+                                                    <div fxLayout="column wrap">
+                                                        <mat-list style="padding-top: 0;">
+                                                            <mat-list-item class="assigned-job mat-elevation-z4">
+                                                                <mat-icon mat-list-icon class="material-icons-outlined whitebg" color="primary">low_priority</mat-icon>
+                                                                <h4 mat-line>Fecha de Creación</h4>
+                                                                <span mat-line class="text-muted">Hora y fecha:</span>
+                                                                <small mat-line class="text-muted">Campus: </small>
+                                                            </mat-list-item>
+                                                        </mat-list>
+                                                    </div>
+                                                    <div fxLayout="column wrap">
+                                                        <mat-list style="padding-top: 0;">
+                                                            <mat-list-item class="assigned-job mat-elevation-z4">
+                                                                <mat-icon mat-list-icon class="material-icons-outlined whitebg" color="primary">low_priority</mat-icon>
+                                                                <h4 mat-line>Fecha de Creación</h4>
+                                                                <span mat-line class="text-muted">Hora y fecha:</span>
+                                                                <small mat-line class="text-muted">Campus: </small>
+                                                            </mat-list-item>
+                                                        </mat-list>
+                                                    </div>
+                                                    <div fxLayout="column wrap">
+                                                        <mat-list style="padding-top: 0;">
+                                                            <mat-list-item class="assigned-job mat-elevation-z4">
+                                                                <mat-icon mat-list-icon class="material-icons-outlined whitebg" color="primary">low_priority</mat-icon>
+                                                                <h4 mat-line>Fecha de Creación</h4>
+                                                                <span mat-line class="text-muted">Hora y fecha:</span>
+                                                                <small mat-line class="text-muted">Campus: </small>
+                                                            </mat-list-item>
+                                                        </mat-list>
+                                                    </div>
+                                                    <div fxLayout="column wrap">
+                                                        <mat-list style="padding-top: 0;">
+                                                            <mat-list-item class="assigned-job mat-elevation-z4">
+                                                                <mat-icon mat-list-icon class="material-icons-outlined whitebg" color="primary">low_priority</mat-icon>
+                                                                <h4 mat-line>Fecha de Creación</h4>
+                                                                <span mat-line class="text-muted">Hora y fecha:</span>
+                                                                <small mat-line class="text-muted">Campus: </small>
+                                                            </mat-list-item>
+                                                        </mat-list>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>

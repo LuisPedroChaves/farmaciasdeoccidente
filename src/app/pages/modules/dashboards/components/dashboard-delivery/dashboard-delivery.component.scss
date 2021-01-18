@@ -83,15 +83,11 @@ $blue-2: #ffff;
 
 .course-info {
     padding: 10px;
-    height: 100px;
+    
 }
 
 .teacher {
     margin-top: 5px;
-}
-
-.padding-15 {
-    // padding: 15px;
 }
 
 .courselist {
@@ -138,7 +134,6 @@ div.scrollmenu a:hover {
     margin-bottom: 5px;
     margin-top: 3px;
     padding: 5px;
-    justify-content: center
 }
 
 .title {
@@ -171,7 +166,6 @@ div.scrollmenu a:hover {
 
 .colorBarra {
     background-color: #045195;
-    ;
 }
 
 .colorBuscar {
@@ -180,8 +174,141 @@ div.scrollmenu a:hover {
 
 .ht {
     color: white;
+    padding: 15px;
 }
 
 .mat-tab-label .mat-tab-label-content {
     color: white;
+}
+
+.new-header {
+    padding: 10px;
+}
+
+$blue: #045195;
+.close-button {
+    margin-right: 10px;
+}
+
+.avatarimage {
+    width: 125px;
+    height: 125px;
+    border-radius: 100%;
+    border: 2px solid $blue;
+}
+
+.image-section {
+    width: 135px;
+    height: 135px;
+}
+
+.text-center {
+    text-align: center !important;
+}
+
+.image-edit {
+    position: relative;
+    display: block;
+    margin-bottom: 25px;
+}
+
+.avatarimageStep {
+    min-height: 130px !important;
+    min-width: 140px !important;
+    max-height: 130px !important;
+    max-width: 140px !important;
+    text-align: center !important;
+    img {
+        width: 125px;
+        border-radius: 50%;
+        border: 4px solid #045195;
+    }
+}
+
+.display-bottom-right {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    color: white;
+    margin-right: 15px;
+}
+
+.form-paddin {
+    padding: 0px 25px;
+}
+
+.input-section {
+    padding: 0px 5px;
+}
+
+.size-fact {
+    font-size: medium;
+}
+
+.menu-images {
+    min-width: 185px;
+    width: 185px;
+    max-width: 185px;
+    padding: 7px;
+}
+
+.avataroption {
+    width: 40px;
+    height: 40px;
+}
+
+.avatar {
+    width: 38px;
+    height: 38px;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+.avatar:hover {
+    border-radius: 20px;
+    transition: 0.3s;
+}
+
+.text-md {
+    font-size: 18px;
+}
+
+.section {
+    padding: 0px 15px;
+}
+
+.joblist {
+    height: 100px;
+}
+
+.assigned-job {
+    margin-bottom: 5px;
+    border-radius: 10px;
+    background-color: white;
+    .whitebg {
+        background-color: white!important;
+    }
+}
+
+.card {
+    background-color: white;
+    border-radius: 10px;
+    padding: 5px;
+}
+
+.infos {
+    padding: 5px 0px;
+}
+
+.spinner {
+    height: calc(100vh - 250px);
+}
+
+.whitebg1 {
+    background-color: #b4de32 !important;
+}
+
+.T {
+    color: #045195;
+    font-size: 25px;
 }
