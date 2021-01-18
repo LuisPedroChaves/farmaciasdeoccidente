@@ -56,7 +56,7 @@ export class EditCustomerRoutesComponent implements OnInit {
         this.loading = false;
       } else {
         this.loading = false;
-        this.toasty.error('Error al crear el cliente');
+        this.toasty.error('Error al editar el cliente');
       }
     }, error => {
       this.loading = false;

@@ -1,19 +1,36 @@
 .header {
-    padding: 15px;
+    padding: 28px;
 }
 
-.content {
-    padding: 15px 45px;
+.clientspace {
+    height: 500px;
+    width: 100%;
 }
 
-.input-padding {
-    padding: 0px 5px;
+.grayicon {
+    color: #0a1958;
 }
 
-.lastsection {
-    padding-bottom: 25px;
+.width-all {
+    width: 100%;
+    font-size: 13px;
 }
 
-.colorTitulo {
-    color: #0a1958
+.inputpadding {
+    padding-left: 3px;
+    padding-right: 3px;
+}
+
+.radio {
+    margin-right: 10px;
+    font-size: 13px;
+}
+
+.h2 {
+    color: #0a1958;
+}
+
+.info-row {
+    margin-bottom: 5px;
+    margin-top: 3px;
 }

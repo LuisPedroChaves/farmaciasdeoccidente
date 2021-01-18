@@ -1,6 +1,6 @@
 <div class="farmacia">
   <header fxLayout="row wrap" fxLayoutAlign="center center" class="header">
-    <h2 style="margin: 0;" class="h2">Nueva Orden {{display }}</h2>
+    <h2 style="margin: 0;" class="h2">Nueva Orden</h2>
     <span fxFlex></span>
     <button mat-icon-button *ngIf="!loading" (click)="dialogRef.close()">
       <mat-icon>close</mat-icon>
@@ -17,8 +17,19 @@
         <div fxFlex fxLayout="row wrap">
           <div fxFlex="30%" fxFlex.xs="100%" class="inputpadding">
             <mat-form-field appearance="outline" color="primary" class="width-all">
-              <mat-label>Nit</mat-label>
-              <input formControlName="nit"  type="text" matInput placeholder="Ingrese el nit del cliente" focused="true">
+              <mat-label>Nit.</mat-label>
+              <input type="text" (ngModelChange)="findThis($event)"
+                     placeholder="Ingrese el numero de Nit"
+                     aria-label="Number"
+                     matInput
+                     formControlName="nit"
+                     [matAutocomplete]="auto">
+              <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete">
+                  <mat-option *ngFor="let option of filteredOptions | async" [value]="option.nit">
+                      <span>{{option.nit}}</span> |
+                      <small class="mat-text-muted">{{option.name}}</small>
+                  </mat-option>
+              </mat-autocomplete>
             </mat-form-field>
           </div>
           <div fxFlex="70%" fxFlex.xs="100%" class="inputpadding">
@@ -158,6 +169,6 @@
     <button mat-button *ngIf="!loading" (click)="saveClient()" [disabled]="this.form.invalid" color="primary">
       GUARDAR
     </button>
-    <mat-progress-spinner *ngIf="loading" mode="indeterminate" diameter="30"></mat-progress-spinner>
+    <mat-progress-spinner *ngIf="loading" mode="indeterminate" diameter="30"  color="warn"></mat-progress-spinner>
   </div>
 </div>

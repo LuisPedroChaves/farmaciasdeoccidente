@@ -1,194 +1,12 @@
 <div class="module-container" *ngIf="selectedOrder !== undefined" data-simplebar>
 
     <div class="new-header" fxLayout="row wrap" fxLayoutAlign="start center">
-        <button mat-icon-button class="close-button" [routerLink]="'/dispatches'">
+        <button mat-icon-button class="close-button" [routerLink]="'/' + return">
             <mat-icon>close</mat-icon>
         </button>
-        <h2 color="accent" class="ma-0 info-row T">Detalles del Cliente</h2>
+        <h2 color="accent" class="ma-0 info-row T">Orden no. {{ selectedOrder.noOrder }}</h2>
     </div>
-    <form *ngIf="editMode===true" [formGroup]="form" autocomplete="off" class="container-form">
-        <div class="section" fxLayout="row wrap">
-            <div [fxFlex]="smallScreen ? 100 : '200px'" fxLayoutAlign="center start" class="text-center form-paddin">
-                <div class="image-edit input-section">
-                    <div class="avatarimageStep">
-                        <img [src]="image" alt="" class="iconimage">
-                    </div>
-                    <a mat-icon-button mat-raised-button color="accent" (click)="uploadImage()" class="display-bottom-right">
-                        <mat-icon>create</mat-icon>
-                    </a>
-                </div>
-            </div>
-            <div [fxFlex]="smallScreen ? 100 : ''">
-                <div class="input-section">
-                    <mat-form-field appearance="outline" class="input-all" color="primary">
-                        <mat-label>Nombre y Apellido</mat-label>
-                        <input matInput type="text" placeholder="Ingrese el nombre del empleado" formControlName="name" class="text-md">
-                        <mat-error *ngIf="form.controls.name.invalid">Debe Ingresar un nombre y apellido válido</mat-error>
-                    </mat-form-field>
-                </div>
-                <div class="input-section">
-                    <mat-form-field appearance="outline" class="input-all" color="primary">
-                        <mat-label>DPI</mat-label>
-                        <input matInput type="text" placeholder="Ingrese el número de DPI del empleado" formControlName="dpi">
-                        <mat-error *ngIf="form.controls.dpi.invalid">Debe ingresar el número de DPI del empleado</mat-error>
-                    </mat-form-field>
-                </div>
-            </div>
-        </div>
-        <mat-divider></mat-divider> <br>
-
-        <div class="section" fxLayout="row wrap">
-            <h2 class="product-font ma-0">Información del empleado</h2>
-        </div> <br>
-        <div class="section" fxLayout="row wrap">
-            <div fxFlex="60px" fxLayoutAlign="start center" class="text-center form-paddin">
-                <mat-icon class="material-icons-outlined text-muted">date_range</mat-icon>
-            </div>
-            <div fxFlex fxLayout="row wrap">
-
-                <div fxFlex="50" class="input-section">
-                    <mat-form-field appearance="outline" class="input-all" color="primary">
-                        <mat-label>Fecha de Nacimiento</mat-label>
-                        <input matInput [matDatepicker]="picker" formControlName="birthDate" placeholder="Seleccione la fecha de nacimiento">
-                        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-                        <mat-datepicker #picker></mat-datepicker>
-                    </mat-form-field>
-                </div>
-                <div fxFlex="50" class="input-section">
-                    <mat-form-field appearance="outline" class="input-all" color="primary">
-                        <mat-label>Fecha de inicio de Labores</mat-label>
-                        <input matInput [matDatepicker]="picker2" formControlName="startDate" placeholder="Seleccione la fecha de inicio de labores">
-                        <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
-                        <mat-datepicker #picker2></mat-datepicker>
-                    </mat-form-field>
-                </div>
-            </div>
-        </div>
-
-        <div class="section" fxLayout="row wrap">
-            <div fxFlex="60px" fxLayoutAlign="start center" class="text-center form-paddin">
-                <mat-icon class="material-icons-outlined text-muted">phone</mat-icon>
-            </div>
-            <div fxFlex fxLayout="row wrap">
-
-                <div fxFlex="50" class="input-section">
-                    <mat-form-field appearance="outline" class="input-all" color="primary">
-                        <mat-label>Teléfono 1</mat-label>
-                        <input matInput type="text" placeholder="Ingrese un número de teléfono" formControlName="phone1">
-                    </mat-form-field>
-                </div>
-                <div fxFlex="50" class="input-section">
-                    <mat-form-field appearance="outline" class="input-all" color="primary">
-                        <mat-label>Teléfono 2</mat-label>
-                        <input matInput type="text" placeholder="Ingrese un número de teléfono" formControlName="phone2">
-                    </mat-form-field>
-                </div>
-            </div>
-        </div>
-
-        <div class="section" fxLayout="row wrap">
-            <div fxFlex="60px" fxLayoutAlign="start center" class="text-center form-paddin">
-                <mat-icon class="material-icons-outlined text-muted">home</mat-icon>
-            </div>
-            <div fxFlex fxLayout="row wrap">
-
-                <div fxFlex="50" class="input-section">
-                    <mat-form-field appearance="outline" class="input-all" color="primary">
-                        <mat-label>Dirección</mat-label>
-                        <input matInput type="text" placeholder="Ingrese la dirección del empleado" formControlName="address">
-                    </mat-form-field>
-                </div>
-                <div fxFlex="50" class="input-section">
-                    <mat-form-field appearance="outline" class="input-all" color="primary">
-                        <mat-label>Contrato</mat-label>
-                        <span matPrefix>Q. </span>
-                        <input matInput type="text" placeholder="Ingrese el salario por contrato" formControlName="contract">
-                    </mat-form-field>
-                </div>
-            </div>
-        </div>
-
-
-        <div class="section" fxLayout="row wrap">
-            <div fxFlex="60px" fxLayoutAlign="start center" class="text-center form-paddin">
-                <mat-icon class="material-icons-outlined text-muted">account_balance</mat-icon>
-            </div>
-            <div fxFlex fxLayout="row wrap">
-
-                <div fxFlex="50" class="input-section">
-                    <mat-form-field appearance="outline" class="input-all" color="primary">
-                        <mat-label>Cuenta Bancaria</mat-label>
-                        <input matInput type="text" placeholder="Ingrese el número de cuenta bancaria" formControlName="account">
-                    </mat-form-field>
-                </div>
-                <div fxFlex="50" class="input-section">
-                    <mat-form-field appearance="outline" class="input-all" color="primary">
-                        <mat-label>IGSS</mat-label>
-                        <input matInput type="text" placeholder="Ingrese un número de afiliación al igss" formControlName="igss_number">
-                    </mat-form-field>
-                </div>
-            </div>
-        </div>
-        <br>
-        <mat-divider></mat-divider> <br>
-        <div class="section" fxLayout="row wrap">
-            <h2 class="product-font ma-0">Información del Puesto de trabajo</h2>
-        </div><br>
-        <div class="section" fxLayout="row wrap">
-            <div fxFlex fxLayout="row wrap">
-
-                <div [fxFlex]="smallScreen ? 100 : 30" class="input-section" fxLayout="row wrap">
-                    <mat-form-field *ngIf="degrees !== undefined" appearance="outline" color="primary">
-                        <mat-label>Grado académico</mat-label>
-                        <mat-select formControlName="_degree">
-                            <mat-option *ngFor="let d of degrees" [value]="d._id">{{ d.name }}</mat-option>
-                        </mat-select>
-                        <mat-hint>Esta información es necesaria para calcular la tarifa por curso en el caso de los docentes</mat-hint>
-                    </mat-form-field>
-                    &nbsp; &nbsp;
-                    <button mat-icon-button (click)="addDegree()">
-                        <mat-icon>add</mat-icon>
-                    </button>
-                </div>
-                <div [fxFlex]="smallScreen ? 100 : ''" class="input-section">
-                    <div *ngIf="employeejobs.length <= 0" fxLayout="column wrap" fxLayoutAlign="center center" class="joblist">
-                        <mat-icon class="text-muted material-icons-outlined">work_off</mat-icon>
-                        <span class="text-muted">No hay puestos asignados</span>
-                        <a mat-stroked-button (click)="addJob()">
-                            <mat-icon>add</mat-icon> Asignar Puesto
-                        </a>
-                    </div>
-                    <div *ngIf="employeejobs.length > 0" fxLayout="column wrap">
-                        <mat-list style="padding-top: 0;">
-                            <mat-list-item *ngFor="let j of employeejobs; let i = index" class="assigned-job mat-elevation-z4">
-                                <mat-icon mat-list-icon class="material-icons-outlined whitebg">work_outline</mat-icon>
-                                <h4 mat-line>{{j._job.name}}</h4>
-                                <span mat-line class="text-muted">Horas: {{j.hours}} &nbsp; &nbsp; &nbsp; Salario: Q. {{j.salary | number: '.2'}}</span>
-                                <small mat-line class="text-muted">Campus: {{j._campus.name}}</small>
-                                <button mat-icon-button (click)="removeJob(j)"><mat-icon>close</mat-icon></button>
-                            </mat-list-item>
-                        </mat-list>
-                        <div fxLayoutAlign="center center">
-                            <button mat-stroked-button (click)="addJob()">
-                                <mat-icon>add</mat-icon> Asignar Puesto
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <br>
-        <mat-divider></mat-divider> <br>
-        <div class="section" fxLayout="row wrap">
-            <button mat-stroked-button (click)="delete()" color="warn"><mat-icon class="material-icons-outlined">delete</mat-icon> Eliminar</button>
-            <span fxFlex></span>
-            <button mat-stroked-button [routerLink]="'/employees/employees'">Cancelar</button> &nbsp; &nbsp;
-            <button mat-flat-button color="primary" (click)="saveEmployee()">Guardar Empleado</button>
-        </div>
-        <br><br><br>
-    </form>
-    <div *ngIf="editMode === false" class="container-form">
+    <div class="container-form">
         <div class="section" fxLayout="row wrap" fxLayoutAlign="start center">
             <div [fxFlex]="smallScreen ? 100 : '200px'" fxLayoutAlign="center start" class="text-center form-paddin">
                 <div class="image-edit input-section">
@@ -208,23 +26,34 @@
                     <h2 class="ma-0 text-muted">{{selectedOrder.phone}}</h2>
                 </div>
                 <div class="input-section">
-                    <h2 class="ma-0 text-muted">{{selectedOrder.address}}, {{selectedOrder.town}}, {{selectedOrder.department}}</h2>
+                    <h2 class="ma-0 text-muted">{{selectedOrder.address}} {{selectedOrder.town}}, {{selectedOrder.department}}</h2>
                 </div>
             </div>
             <div class="input-section" fxLayout="row wrap">
                 <span fxFlex></span>
-                <button mat-icon-button (click)="editMode = true">
-                    <mat-icon class="material-icons-outlined text-muted">create</mat-icon>
-                </button>
-                <button mat-icon-button (click)="delete()">
-                    <mat-icon class="material-icons-outlined text-muted">delete</mat-icon>
-                </button>
+                <mat-chip-list>
+                    <mat-chip *ngIf="selectedOrder.state === 'ORDEN'">
+                       Creada
+                    </mat-chip>
+                    <mat-chip *ngIf="selectedOrder.state === 'DESPACHO'" selected color="accent">
+                       Despachada
+                    </mat-chip>
+                    <mat-chip *ngIf="selectedOrder.state === 'ENVIO'" selected color="primary">
+                       Enviada
+                    </mat-chip>
+                    <mat-chip *ngIf="selectedOrder.state === 'ENTREGA'" selected color="warn">
+                       Entragada
+                    </mat-chip>
+                    <mat-chip *ngIf="selectedOrder.state === 'FIN'" selected color="warn">
+                       Finalizada
+                    </mat-chip>
+                  </mat-chip-list>
             </div>
         </div>
 
         <div class="card">
             <div class="section" fxLayout="row wrap">
-                <h2 color="primary" class="product-font ma-0 T">Información de la Orden</h2>
+                <h2 color="primary" class="product-font ma-0 T">Detalles de la orden</h2>
             </div> <br>
             <div class="section infos" fxLayoutAlign="start stard" fxLayout="row wrap">
                 <div fxFlex="60px" fxLayoutAlign="start center" class="text-center form-paddin">
@@ -234,11 +63,11 @@
 
                     <div fxFlex="100" class="input-section">
                         <!-- <b class="size-fact">No.Orden: </b> -->
-                        <h2 class="ma-0"> <span class="ma-0 text-muted">No.Orden:</span> {{selectedOrder.noOrder}}</h2>
+                        <h3 class="ma-0"> <span class="ma-0 text-muted">No.Orden:</span> {{selectedOrder.noOrder}}</h3>
                     </div>
                     <div fxFlex="100" class="input-section">
                         <!-- <b class="size-fact">No. de Factura: </b> -->
-                        <h2 class="ma-0"> <span class="ma-0 text-muted">No. de Factura:</span> {{selectedOrder.invoiceNumber}}</h2>
+                        <h3 class="ma-0"> <span class="ma-0 text-muted">No. de Factura:</span> {{selectedOrder.noBill}}</h3>
                     </div>
                 </div>
             </div>
@@ -248,10 +77,10 @@
                 </div>
                 <div fxFlex fxLayout="row wrap">
                     <div fxFlex="100" class="input-section">
-                        <b>Método de pago: </b> {{selectedOrder.paymentMethod}}
+                        <b>Método de pago: </b> {{selectedOrder.payment}}
                     </div>
                     <div fxFlex="100" class="input-section">
-                        <b>Total: </b> {{selectedOrder.total}}
+                        <h3 class="ma-0"> <b>Total:</b> Q{{selectedOrder.total | number: '.2'}}</h3>
                     </div>
                 </div>
             </div>
@@ -278,57 +107,37 @@
             <div class="section" fxLayout="row wrap">
                 <div fxFlex fxLayout="row wrap">
                     <div [fxFlex]="smallScreen ? 100 : ''" class="input-section">
-                        <div fxLayout="column wrap" fxLayoutAlign="center center" class="joblist">
-                            <mat-icon class="text-muted material-icons-outlined" color="primary">work_off</mat-icon>
-                            <span class="text-muted">No hay puestos asignados</span>
+                        <div *ngIf="!selectedOrder._delivery" fxLayout="column wrap" fxLayoutAlign="center center" class="joblist">
+                            <mat-icon class="text-muted material-icons-outlined" color="primary">alt_route</mat-icon>
+                            <span class="text-muted">Orden sin ruta asignada</span>
                         </div>
-                        <div fxLayout="column wrap">
-                            <mat-list style="padding-top: 0;">
-                                <mat-list-item class="assigned-job mat-elevation-z4">
-                                    <mat-icon mat-list-icon class="material-icons-outlined whitebg" color="primary">low_priority</mat-icon>
-                                    <h4 mat-line>Fecha de Creación</h4>
-                                    <span mat-line class="text-muted">Hora y fecha: {{selectedOrder.timestamps}}</span>
-                                    <small mat-line class="text-muted">Campus: </small>
-                                </mat-list-item>
-                            </mat-list>
-                        </div>
-                        <div fxLayout="column wrap">
-                            <mat-list style="padding-top: 0;">
-                                <mat-list-item class="assigned-job mat-elevation-z4">
-                                    <mat-icon mat-list-icon class="material-icons-outlined whitebg1" color="primary">chrome_reader_mode</mat-icon>
-                                    <h4 mat-line>Estado</h4>
-                                    <span mat-line class="text-muted">Estado: {{selectedOrder.state}}</span>
-                                    <small mat-line class="text-muted">Campus: </small>
-                                </mat-list-item>
-                            </mat-list>
-                        </div>
-                        <div fxLayout="column wrap">
-                            <mat-list style="padding-top: 0;">
-                                <mat-list-item class="assigned-job mat-elevation-z4">
-                                    <mat-icon mat-list-icon class="material-icons-outlined whitebg" color="primary">pending_actions</mat-icon>
-                                    <h4 mat-line>Tiempo de Orden</h4>
-                                    <span mat-line class="text-muted">Tiempo de Orden: {{selectedOrder.timeOrder}}</span>
-                                    <small mat-line class="text-muted">Campus: </small>
-                                </mat-list-item>
-                            </mat-list>
-                        </div>
-                        <div fxLayout="column wrap">
-                            <mat-list style="padding-top: 0;">
-                                <mat-list-item class="assigned-job mat-elevation-z4">
-                                    <mat-icon mat-list-icon class="material-icons-outlined whitebg" color="primary">share_arrival_time</mat-icon>
-                                    <h4 mat-line>tiempo de Despacho</h4>
-                                    <span mat-line class="text-muted">Tiempo de Despacho: {{selectedOrder.timeDispatch}}</span>
-                                    <small mat-line class="text-muted">Campus: </small>
-                                </mat-list-item>
-                            </mat-list>
-                        </div>
-                        <div fxLayout="column wrap">
+                                                <!-- <div fxLayout="column wrap">
                             <mat-list style="padding-top: 0;">
                                 <mat-list-item class="assigned-job mat-elevation-z4">
                                     <mat-icon mat-list-icon class="material-icons-outlined whitebg" color="primary">departure_board</mat-icon>
                                     <h4 mat-line>Tiempo de Envio</h4>
                                     <span mat-line class="text-muted">Tiempo de Envio: {{selectedOrder.timeSend}}</span>
                                     <small mat-line class="text-muted">Campus: </small>
+                                </mat-list-item>
+                            </mat-list>
+                        </div> -->
+                        <div *ngIf="selectedOrder.timeDispatch"  fxLayout="column wrap">
+                            <mat-list style="padding-top: 0;">
+                                <mat-list-item class="assigned-job mat-elevation-z4">
+                                    <mat-icon mat-list-icon class="material-icons-outlined whitebg" color="primary">share_arrival_time</mat-icon>
+                                    <h4 mat-line>Despacho </h4>
+                                    <span mat-line class="text-muted">Fecha y hora: {{selectedOrder.timeDispatch | date: 'dd/MM/yyyy HH:mm'}}</span>
+                                    <small mat-line class="text-muted">Tiempo de despacho: {{ getDifferenceInMinutes(selectedOrder.date, selectedOrder.timeDispatch) }} </small>
+                                </mat-list-item>
+                            </mat-list>
+                        </div>
+                        <div fxLayout="column wrap">
+                            <mat-list style="padding-top: 0;">
+                                <mat-list-item class="assigned-job mat-elevation-z4">
+                                    <mat-icon mat-list-icon class="material-icons-outlined whitebg" color="primary">low_priority</mat-icon>
+                                    <h4 mat-line>Creación</h4>
+                                    <h2 mat-line  class="text-muted">Fecha y hora: {{selectedOrder.date | date: 'dd/MM/yyyy HH:mm'}}</h2>
+                                    <small mat-line class="text-muted">Tiempo de registro: {{ selectedOrder.timeOrder }} minutos </small>
                                 </mat-list-item>
                             </mat-list>
                         </div>
@@ -338,7 +147,6 @@
         </div>
     </div>
 </div>
-<!--
-<div *ngIf="selectedEmployee === undefined" class="container-form spinner" fxLayout="column wrap" fxLayoutAlign="center center" >
-    <mat-progress-spinner mode="indeterminate" diameter="40" color="primary"></mat-progress-spinner>
-</div> -->
+<div *ngIf="selectedOrder === undefined" class="container-form spinner" fxLayout="column wrap" fxLayoutAlign="center center" >
+    <mat-progress-spinner mode="indeterminate" diameter="60" color="warn"></mat-progress-spinner>
+</div>

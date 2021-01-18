@@ -40,7 +40,7 @@
         <button mat-button *ngIf="!creatingCellar"  (click)="close()">Cancelar</button>
         <button mat-button color="primary" (click)="saveCellar()">
             <span *ngIf="!creatingCellar">Crear Sucursal</span>
-            <mat-progress-spinner *ngIf="creatingCellar" mode="indeterminate" diameter="30"></mat-progress-spinner>
+            <mat-progress-spinner *ngIf="creatingCellar" mode="indeterminate" diameter="30"  color="warn"></mat-progress-spinner>
         </button>
     </div>
 </div>
