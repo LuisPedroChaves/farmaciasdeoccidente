@@ -1,4 +1,4 @@
-import { Component, OnInit, AfterContentInit, ViewChild } from '@angular/core';
+import { Component, OnInit, AfterContentInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { MatBottomSheet } from '@angular/material/bottom-sheet';
 import { MatDialog } from '@angular/material/dialog';
 import { MatMenuTrigger } from '@angular/material/menu';
@@ -9,7 +9,8 @@ import { ToastyService } from 'src/app/core/services/internal/toasty.service';
 @Component({
   selector: 'app-dashboard-delivery',
   templateUrl: './dashboard-delivery.component.html',
-  styleUrls: ['./dashboard-delivery.component.scss']
+  styleUrls: ['./dashboard-delivery.component.scss'],
+  encapsulation: ViewEncapsulation.None
 })
 export class DashboardDeliveryComponent implements OnInit, AfterContentInit {
 
