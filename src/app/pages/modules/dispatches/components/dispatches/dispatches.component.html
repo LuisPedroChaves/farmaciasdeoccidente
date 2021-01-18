@@ -1,34 +1,35 @@
 <!-- <div *ngIf="!loading && coursesp.includes('read')" [ngClass]="{'saving': saving}"> -->
 <div *ngIf="!loading" [ngClass]="{'saving': saving}">
-    <h1 class="product-font ma-0 module-title title">Despachos Pendientes</h1>
-    <header class="header" fxLayout="row wrap" fxLayoutAlign="start center">
-
-        <span fxFlex></span>
-        <mat-form-field appearance="outline" floatLabel="always" class="findinput">
-            <mat-label>Buscar Curso</mat-label>
-            <mat-icon class="text-muted" matPrefix>search</mat-icon>
-            <input matInput type="text" placeholder="Ingrese un curso o un maestro" [(ngModel)]="searchtext">
-        </mat-form-field> &nbsp; &nbsp; &nbsp;
-    </header>
-    <div class="padding-list">
-        <div class="courselist" fxLayout="row wrap" data-simplebar>
-            <div fxFlex="100" fxLayout="row wrap">
-                <div *ngFor="let c of courses" fxFlex.gt-lg="25" fxFlex.gt-md="33" fxFlex.gt-sm="50" fxFlex.gt-xs="50" fxFlex="100" [ngClass]="{'inactive': !c.isActive}" class="jobcard user">
-                    <div matRipple class="cursor-pointer job-card mat-elevation-z2" (click)="selectOrder(c)" fxLayout="row wrap" fxLayoutAlign="start center">
-                        <div fxFlex="100" fxLayout="row wrap" class="cover" style="background-image: url('assets/images/covers/{{c.image}}');">
-                            <span class="more" *ngIf="!c.isActive">Curso inactivo</span>
-                            <span fxFlex></span>
-                            <!-- <button mat-icon-button class="more" *ngIf="coursesp.includes('update')" [matMenuTriggerFor]="menu"> -->
-                            <button mat-icon-button class="more" [matMenuTriggerFor]="menu">
+  <h1 class="product-font ma-0 module-title title">Despachos Pendientes</h1>
+  <header class="header" fxLayout="row wrap" fxLayoutAlign="start center">
+    <mat-form-field appearance="outline" floatLabel="always" class="findinput">
+      <mat-label>Buscar Orden</mat-label>
+      <mat-icon class="text-muted" matPrefix>search</mat-icon>
+      <input matInput type="text">
+    </mat-form-field> &nbsp; &nbsp; &nbsp;
+  </header>
+  <div class="padding-list">
+    <div class="courselist" fxLayout="row wrap" data-simplebar>
+      <div fxFlex="100" fxLayout="row wrap">
+        <div *ngFor="let c of dispatches" fxFlex.gt-lg="25" fxFlex.gt-md="33" fxFlex.gt-sm="50" fxFlex.gt-xs="50"
+          fxFlex="100" class="jobcard user">
+          <div matRipple class="cursor-pointer job-card mat-elevation-z2" (click)="selectOrder(c)" fxLayout="row wrap"
+            fxLayoutAlign="start center">
+            <div fxFlex="100" fxLayout="row wrap" class="cover"
+              style="background-image: url('assets/images/covers/imagen1.jpg');">
+              <span class="more">Curso inactivo</span>
+              <span fxFlex></span>
+              <!-- <button mat-icon-button class="more" *ngIf="coursesp.includes('update')" [matMenuTriggerFor]="menu"> -->
+              <button mat-icon-button class="more" [matMenuTriggerFor]="menu">
                 <mat-icon>more_vert</mat-icon>
               </button>
-                            <mat-menu #menu="matMenu">
-                                <!-- <button mat-menu-item (click)="selectCourse(c)"><mat-icon class="material-icons-outlined">create</mat-icon> Editar curso</button> -->
-                                <button mat-menu-item>
+              <mat-menu #menu="matMenu">
+                <!-- <button mat-menu-item (click)="selectCourse(c)"><mat-icon class="material-icons-outlined">create</mat-icon> Editar curso</button> -->
+                <button mat-menu-item>
                   <mat-icon class="material-icons-outlined">create</mat-icon> Editar curso
                 </button>
-                                <!-- <button mat-menu-item (click)="assignEmployee(c)"> -->
-                                <button mat-menu-item>
+                <!-- <button mat-menu-item (click)="assignEmployee(c)"> -->
+                <button mat-menu-item>
                   <mat-icon>
                     <svg style="width:24px;height:24px" viewBox="0 0 24 24">
                       <path fill="currentColor"
@@ -37,18 +38,18 @@
                   </mat-icon>
                   Asignar empleado
                 </button>
-                                <mat-divider></mat-divider>
-                                <!-- <button mat-menu-item *ngIf="coursesp.includes('delete')" (click)="delete(c)"><mat-icon class="material-icons-outlined">delete</mat-icon> Eliminar</button> -->
-                                <button mat-menu-item>
+                <mat-divider></mat-divider>
+                <!-- <button mat-menu-item *ngIf="coursesp.includes('delete')" (click)="delete(c)"><mat-icon class="material-icons-outlined">delete</mat-icon> Eliminar</button> -->
+                <button mat-menu-item>
                   <mat-icon class="material-icons-outlined">delete</mat-icon> Eliminar
                 </button>
-                            </mat-menu>
-                        </div>
-                        <!-- <div fxFlex="100" (click)="selectCourse(c)" fxLayout="column wrap" class="ellipsis-text course-info"> -->
-                        <div fxFlex="100" fxLayout="column wrap" class="course-info">
-                            <h2 class="ma-0 product-font">{{ c.noOrder }}</h2>
-                            <span class="text-muted">{{c.nit}} -  {{c.name}}</span>
-                            <!-- <mat-chip-list class="teacher" *ngIf=" c._employee_job !== null && c._employee_job !== undefined">
+              </mat-menu>
+            </div>
+            <!-- <div fxFlex="100" (click)="selectCourse(c)" fxLayout="column wrap" class="ellipsis-text course-info"> -->
+            <div fxFlex="100" fxLayout="column wrap" class="course-info">
+              <h2 class="ma-0 product-font">{{ c.noOrder }}</h2>
+              <span class="text-muted">{{c.nit}} - {{c.name}}</span>
+              <!-- <mat-chip-list class="teacher" *ngIf=" c._employee_job !== null && c._employee_job !== undefined">
                                 <mat-chip style="max-width: 200px" [selectable]="false" [selected]="false" [disableRipple]="true" >
                                     <img [src]="c._employee_job._employee.image" matChipAvatar>
                                     <div class="ellipsis-text">
@@ -56,30 +57,31 @@
                                     </div>
                                 </mat-chip>
                             </mat-chip-list> -->
-                            <span class="text-muted" *ngIf="c._employee_job === null || c._employee_job === undefined">No hay docente
-                                asignado</span>
-                        </div>
-                        <p class="textDetails">{{c.details}} </p>
-                        <div fxLayout="row center center">
-                            <button mat-button class="info-row" color="primary">
-                  EDITAR
-                </button>
-
-                            <button mat-button class="info-row" color="primary">
-                  ASIGNAR
-                </button>
-                            <button mat-button class="info-row" color="primary">
-                  ELIMINAR
-                </button>
-                        </div>
-                    </div>
-                </div>
+              <!-- <span class="text-muted" *ngIf="c._employee_job === null || c._employee_job === undefined">No hay docente
+                                asignado</span> -->
             </div>
+            <p class="textDetails">{{c.details}} </p>
+            <div fxLayout="row center center">
+              <button mat-button class="info-row" color="primary">
+                EDITAR
+              </button>
+
+              <button mat-button class="info-row" color="primary">
+                ASIGNAR
+              </button>
+              <button mat-button class="info-row" color="primary">
+                ELIMINAR
+              </button>
+            </div>
+          </div>
         </div>
+      </div>
     </div>
-    <div *ngIf="loading" fxLayoutAlign="center center" class="loadingspin" fxLayout="column wrap">
-        <mat-progress-spinner mode="indeterminate" diameter="60" color="warn"></mat-progress-spinner>
-    </div>
-    <button *ngIf="!smallScreen" mat-fab color="warn" class="fab mat-elevation-z10">
-        <mat-icon>update</mat-icon><span class="extended-fab-button__text">Actualizar</span>
-      </button>
+  </div>
+</div>
+<div *ngIf="loading" fxLayoutAlign="center center" class="loadingspin" fxLayout="column wrap">
+  <mat-progress-spinner mode="indeterminate" diameter="60" color="warn"></mat-progress-spinner>
+</div>
+<button (click)="loadDispatchs()"  mat-fab color="warn" class="fab mat-elevation-z10">
+  <mat-icon>update</mat-icon><span class="extended-fab-button__text">Actualizar</span>
+</button>

@@ -50,6 +50,10 @@ export class OrderService implements IDataService<OrderItem[]> {
     }
   }
 
+  getDispatches(_cellar: string): Observable<any> {
+    return this.http.get(this.apiConfigService.API_ORDER + '/dispatches/' + _cellar);
+  }
+
   getOrder(id: string): Observable<any> {
     return this.http.get(this.apiConfigService.API_ORDER + '/order/' + id);
   }

@@ -29,7 +29,6 @@ export class OrdersComponent implements OnInit, AfterContentInit, OnDestroy {
 
   sessionsubscription: Subscription;
 
-  selectedOrder: OrderItem;
   orders: OrderItem[];
   currentCellar: CellarItem;
 
