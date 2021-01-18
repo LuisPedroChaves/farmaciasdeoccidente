@@ -7,7 +7,7 @@
             </header>
             <mat-divider class="colorBarra"></mat-divider>
             <div fxLayout="row wrap">
-                <mat-tab-group class="module-container colorBarra">
+                <mat-tab-group mat-stretch-tabs class="module-container colorBarra mat-elevation-z4">
                     <mat-tab label="Pendientes">
                         <!-- <div *ngIf="!loading && coursesp.includes('read')" [ngClass]="{'saving': saving}"> -->
                         <div *ngIf="!loading" [ngClass]="{'saving': saving}">
