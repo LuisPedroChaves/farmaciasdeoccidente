@@ -4,6 +4,7 @@ import { RouterModule } from '@angular/router';
 import { DispatchesRoutes } from './dispatches.routing';
 import { SharedComponentsModule } from '../../shared-components/shared-components.module';
 import { DispatchesComponent } from './components/dispatches/dispatches.component';
+import { CoreModule } from 'src/app/core/core.module';
 
 
 
@@ -12,6 +13,7 @@ import { DispatchesComponent } from './components/dispatches/dispatches.componen
   imports: [
     CommonModule,
     RouterModule.forChild(DispatchesRoutes),
+    CoreModule,
     SharedComponentsModule
   ]
 })

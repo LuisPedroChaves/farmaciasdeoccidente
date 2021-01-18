@@ -13,6 +13,18 @@ import { TimestampDatePipe } from './timePipes/timestamp-date.pipe';
   declarations: [FilterPipe, MoneyPipe, RoundDigitPipe, OrderByPipe, TimeFormatPipe, TimestampDatePipe],
   imports: [
     CommonModule
-  ]
+  ],
+  exports: [
+    // OrderModule,
+    FilterPipe,
+    OrderByPipe,
+    MoneyPipe,
+
+    // time pipes
+    TimeFormatPipe,
+    TimestampDatePipe,
+    // format pipes
+    RoundDigitPipe,
+  ],
 })
 export class PipesModule { }
