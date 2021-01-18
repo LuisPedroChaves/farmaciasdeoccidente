@@ -7,10 +7,10 @@
             </header>
             <mat-divider class="colorBarra"></mat-divider>
             <div fxLayout="row wrap">
-                <mat-tab-group mat-stretch-tabs class="module-container colorBarra mat-elevation-z4">
+                <mat-tab-group mat-stretch-tabs class="module-container colorBarra">
                     <mat-tab label="Pendientes">
                         <!-- <div *ngIf="!loading && coursesp.includes('read')" [ngClass]="{'saving': saving}"> -->
-                        <div *ngIf="!loading" [ngClass]="{'saving': saving}">
+                        <div *ngIf="!loading" [ngClass]="{'saving': saving}" class="mat-elevation-z4">
                             <header class="header colorBuscar" fxLayout="row wrap" fxLayoutAlign="start center">
                                 <span fxFlex></span>
                                 <mat-form-field appearance="outline" floatLabel="always" class="findinput">
@@ -19,7 +19,7 @@
                                     <input matInput type="text" placeholder="Ingrese entrega" [(ngModel)]="searchtext">
                                 </mat-form-field> &nbsp; &nbsp; &nbsp;
                             </header>
-                            <div class="padding-list">
+                            <div class="padding-list mat-elevation-z4">
                                 <div class="courselist" fxLayout="row wrap" data-simplebar>
                                     <div fxFlex="100" fxLayout="row wrap">
                                         <div *ngFor="let c of courses" fxFlex.gt-lg="25" fxFlex.gt-md="33" fxFlex.gt-sm="50" fxFlex.gt-xs="50" fxFlex="100" [ngClass]="{'inactive': !c.isActive}" class="jobcard user">
