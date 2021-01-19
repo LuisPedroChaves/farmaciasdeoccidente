@@ -1,14 +1,14 @@
-<mat-sidenav-container fxFlex="100"  [ngClass]="{'space':!smallScreen, 'space-sm':smallScreen}">
+<mat-sidenav-container fxFlex="100" [ngClass]="{'space':!smallScreen, 'space-sm':smallScreen}">
 
-    <mat-sidenav-content fxFlex [ngClass]="{'accounts-space':!smallScreen, 'accounts-space-sm':smallScreen}" data-simplebar >
+    <mat-sidenav-content fxFlex [ngClass]="{'accounts-space':!smallScreen, 'accounts-space-sm':smallScreen}" data-simplebar>
         <div class="header" fxLayout="row wrap" fxLayoutAlign="start center">
-            <h2 *ngIf="!smallScreen" class="ma-0 product-font">Traslados Entrantes</h2>
+            <h2 *ngIf="!smallScreen" class="ma-0 product-font T1">Traslados Entrantes</h2>
             <span fxFlex></span>
             <button class="filterbutton" mat-icon-button>
-                <mat-icon class="material-icons-outlined">print</mat-icon>
+                <mat-icon class="material-icons-outlined"color="accent" >print</mat-icon>
             </button>
             <button class="filterbutton" mat-icon-button>
-                <mat-icon class="material-icons-outlined">get_app</mat-icon>
+                <mat-icon class="material-icons-outlined" color="accent" >get_app</mat-icon>
             </button>
         </div>
         <div *ngIf="loading === false && balanceInfo !== undefined">
@@ -17,42 +17,42 @@
 
 
                 <div fxFlex fxLayout="column wrap" class="view">
-                    <div fxLayout="row wrap">
+                    <div fxLayout="row wrap" class="V">
                         Visualización
                     </div>
                     <div fxLayout="row wrap">
-                        <button  [matTooltip]="listview === true ? 'Vista en columnas':'Vista de Lista'" class="filterbutton" mat-icon-button (click)="listview = !listview;">
-                            <mat-icon class="material-icons-outlined">{{listview === true ? 'table_chart':'view_list'}}</mat-icon>
+                        <button [matTooltip]="listview === true ? 'Vista en columnas':'Vista de Lista'" class="filterbutton" mat-icon-button (click)="listview = !listview;">
+                            <mat-icon class="material-icons-outlined" color="accent">{{listview === true ? 'table_chart':'view_list'}}</mat-icon>
                         </button>
                         <button [matTooltip]="expanded === true ? 'Contraer todo':'Expandir todo'" class="filterbutton" mat-icon-button (click)="expanded = !expanded;">
-                            <mat-icon class="material-icons-outlined">{{expanded === true ? 'unfold_less':'unfold_more'}}</mat-icon>
+                            <mat-icon class="material-icons-outlined" color="accent">{{expanded === true ? 'unfold_less':'unfold_more'}}</mat-icon>
                         </button>
                     </div>
                 </div>
-                <div fxFlex="20" fxLayout="column wrap" class="ammounttitle">
-                    <h1 class="ma-0 active">Q. 500</h1>
-                    <small>Suma de Activo</small>
+                <div fxFlex="20" fxLayout="column wrap" class="ammounttitle V">
+                    <h1 class="ma-0 active"> 500</h1>
+                    <small>Suma de Pendientes</small>
                 </div>
-                <div fxFlex="20" fxLayout="column wrap" class="ammounttitle">
-                    <h1 class="ma-0 pasive">Q. 200</h1>
-                    <small>Suma de Pasivo</small>
+                <div fxFlex="20" fxLayout="column wrap" class="ammounttitle V">
+                    <h1 class="ma-0 pasive">200</h1>
+                    <small>Suma en Proceso</small>
                 </div>
-                <div fxFlex="20" fxLayout="column wrap" class="ammounttitle">
-                    <h1 class="ma-0 capital">Q. 1500</h1>
-                    <small>Suma de Capital</small>
+                <div fxFlex="20" fxLayout="column wrap" class="ammounttitle V">
+                    <h1 class="ma-0 capital"> 1500</h1>
+                    <small>Suma en Ruta</small>
                 </div>
             </div>
             <mat-accordion *ngIf="listview === true" class="example-headers-align" multi>
-                <mat-expansion-panel  [expanded]="expanded">
+                <mat-expansion-panel [expanded]="expanded">
                     <mat-expansion-panel-header>
                         <mat-panel-title>
-                            <h3 class="ma-0 product-font"><b>Activo</b></h3>
+                            <h3 class="ma-0 product-font V"><b>Pendientes</b></h3>
                         </mat-panel-title>
                         <mat-panel-description>
-                            Q. 500
-                            <mat-icon>
+                            500
+                            <mat-icon>pending
                                 <svg class="svg-24" viewBox="0 0 24 24">
-                                    <path fill="currentColor" d="M3,21V17.29L10.78,12.8L14.55,15L21,11.25V21H3M21,8.94L14.55,12.67L10.78,10.5L3,15V12.79L10.78,8.3L14.55,10.5L21,6.75V8.94Z" />
+                                    
                                 </svg>
                             </mat-icon>
                         </mat-panel-description>
@@ -73,16 +73,16 @@
                     </div>
 
                 </mat-expansion-panel>
-                <mat-expansion-panel  [expanded]="expanded">
+                <mat-expansion-panel [expanded]="expanded">
                     <mat-expansion-panel-header>
                         <mat-panel-title>
-                            <h3 class="ma-0 product-font"><b>Pasivo</b></h3>
+                            <h3 class="ma-0 product-font V"><b>En Proceso</b></h3>
                         </mat-panel-title>
                         <mat-panel-description>
-                            Q. 200
-                            <mat-icon>
+                            200
+                            <mat-icon>pending_actions
                                 <svg style="width:24px;height:24px" viewBox="0 0 24 24">
-                                    <path fill="currentColor" d="M21,21H3V11.25L9.45,15L13.22,12.8L21,17.29V21M3,8.94V6.75L9.45,10.5L13.22,8.3L21,12.79V15L13.22,10.5L9.45,12.67L3,8.94Z" />
+                                    
                                 </svg>
                             </mat-icon>
                         </mat-panel-description>
@@ -103,14 +103,14 @@
                         </div>
                     </div>
                 </mat-expansion-panel>
-                <mat-expansion-panel  [expanded]="expanded">
+                <mat-expansion-panel [expanded]="expanded">
                     <mat-expansion-panel-header>
                         <mat-panel-title>
-                            <h3 class="ma-0 product-font"><b>Capital</b></h3>
+                            <h3 class="ma-0 product-font V"><b>En Ruta</b></h3>
                         </mat-panel-title>
                         <mat-panel-description>
-                            Q. 1500
-                            <mat-icon>local_atm</mat-icon>
+                            1500
+                            <mat-icon>share_arrival_time</mat-icon>
                         </mat-panel-description>
                     </mat-expansion-panel-header>
 
@@ -158,7 +158,7 @@
                     </mat-expansion-panel>
 
                 </div>
-                <div class="c2 column-space" fxLayout="row wrap" fxLayoutAlign="start center" fxFlex="50" >
+                <div class="c2 column-space" fxLayout="row wrap" fxLayoutAlign="start center" fxFlex="50">
                     <div fxLayout="row wrap" class="subcattitle" fxFlex="100">
                         <h3 class="ma-0 product-font"><b>Pasivo</b></h3>
                     </div>
