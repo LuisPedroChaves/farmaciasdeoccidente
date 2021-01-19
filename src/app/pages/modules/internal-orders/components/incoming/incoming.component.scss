@@ -1,56 +1,182 @@
-$blue: #2979ff;
-$blue-2: #0c50c7;
-.header { padding: 10px; }
-.add { margin-right: 10px; }
-.longfind { padding: 0px 15px; }
-.space {  height: calc(100vh - 83px);  }
-.space-sm {  height: calc(100vh - 113px); }
-.accounts-space { height: calc(100vh - 83px); background-color: white; }
-.accounts-space-sm { height: calc(100vh - 189px); background-color: white; }
-.loadingspace { height: calc(100vh - 100px); background-color: white; }
-.accountlist { margin: 5px }
-.check { padding: 0px 3px; }
-.cell { padding: 0 5px; }
-.filterbutton { margin-left: 7px; margin-right: 7px; }
-.filter { padding: 15px; }
-.filters { padding: 5px; }
-.sidebar { width: 350px; }
-.sidebar-sm { width: 100%; }
-.barheader { padding: 18px 10px; }
-.input-all { width: 100%; }
-.dateinput { width: 100px; border: 1px solid rgba(0,0,0,0.1); margin-left: 5px; margin-right: 5px; padding: 5px; }
-.c1 { border-right: 1px solid rgba(0,0,0,0.1); padding: 5px 10px; padding-bottom: 35px; }
-.c2 {  padding: 5px 10px; padding-bottom: 35px; }
+$blue: #045195;
+$blue-2: #0a1958;
+.header {
+    padding: 10px;
+}
+
+.add {
+    margin-right: 10px;
+}
+
+.longfind {
+    padding: 0px 15px;
+}
+
+.space {
+    height: calc(100vh - 83px);
+}
+
+.space-sm {
+    height: calc(100vh - 113px);
+}
+
+.accounts-space {
+    height: calc(100vh - 83px);
+    background-color: white;
+}
+
+.accounts-space-sm {
+    height: calc(100vh - 189px);
+    background-color: white;
+}
+
+.loadingspace {
+    height: calc(100vh - 100px);
+    background-color: white;
+}
+
+.accountlist {
+    margin: 5px
+}
+
+.check {
+    padding: 0px 3px;
+}
+
+.cell {
+    padding: 0 5px;
+}
+
+.filterbutton {
+    margin-left: 7px;
+    margin-right: 7px;
+}
+
+.filter {
+    padding: 15px;
+}
+
+.filters {
+    padding: 5px;
+}
+
+.sidebar {
+    width: 350px;
+}
+
+.sidebar-sm {
+    width: 100%;
+}
+
+.barheader {
+    padding: 18px 10px;
+}
+
+.input-all {
+    width: 100%;
+}
+
+.dateinput {
+    width: 100px;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    margin-left: 5px;
+    margin-right: 5px;
+    padding: 5px;
+}
+
+.c1 {
+    border-right: 1px solid rgba(0, 0, 0, 0.1);
+    padding: 5px 10px;
+    padding-bottom: 35px;
+}
+
+.c2 {
+    padding: 5px 10px;
+    padding-bottom: 35px;
+}
+
 .example-action-buttons {
-  padding-bottom: 20px;
+    padding-bottom: 20px;
 }
 
 .example-headers-align .mat-expansion-panel-header-title,
 .example-headers-align .mat-expansion-panel-header-description {
-  flex-basis: 0;
+    flex-basis: 0;
 }
 
 .example-headers-align .mat-expansion-panel-header-description {
-  justify-content: space-between;
-  align-items: center;
+    justify-content: space-between;
+    align-items: center;
 }
 
-.example-headers-align .mat-form-field + .mat-form-field {
-  margin-left: 8px;
+.example-headers-align .mat-form-field+.mat-form-field {
+    margin-left: 8px;
 }
+
 .ammounttitle {
     padding: 10px;
-    border-left: 1px solid rgba(0,0,0,0.1);
+    border-left: 1px solid rgba(0, 0, 0, 0.1);
 }
-.view { padding: 10px; }
-.totals { padding: 10px 5px; }
-.pasive { color: rgb(179, 61, 61); }
-.active { color: rgb(78, 129, 73); }
-.capital { color: $blue-2; }
-.spaceaccounts { max-height: 500px; padding: 0px 16px 24px 16px; overflow: auto; margin: 16px; margin-top: 0px; }
-.accountrow { border-bottom: 1px solid rgba(0,0,0,0.05); }
-.titlecat { border-bottom: 1px solid rgba($color: $blue, $alpha: 0.25); padding: 10px; }
-.cell { padding: 10px 5px; }
-.subcattitle { padding: 10px; }
-.columns { border-top: 1px solid rgba(0,0,0,0.1) }
-.accountsspace { padding: 0px 10px; padding-bottom: 25px; }
+
+.view {
+    padding: 10px;
+}
+
+.totals {
+    padding: 10px 5px;
+}
+
+.pasive {
+    color: rgb(179, 61, 61);
+}
+
+.active {
+    color: rgb(78, 129, 73);
+}
+
+.capital {
+    color: $blue-2;
+}
+
+.spaceaccounts {
+    max-height: 500px;
+    padding: 0px 16px 24px 16px;
+    overflow: auto;
+    margin: 16px;
+    margin-top: 0px;
+}
+
+.accountrow {
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.titlecat {
+    border-bottom: 1px solid rgba($color: $blue, $alpha: 0.25);
+    padding: 10px;
+}
+
+.cell {
+    padding: 10px 5px;
+}
+
+.subcattitle {
+    padding: 10px;
+}
+
+.columns {
+    border-top: 1px solid rgba(0, 0, 0, 0.1)
+}
+
+.accountsspace {
+    padding: 0px 10px;
+    padding-bottom: 25px;
+}
+
+.T1 {
+    color: #045195;
+    font-size: 20px;
+}
+
+.V {
+    color: #0a1958;
+}

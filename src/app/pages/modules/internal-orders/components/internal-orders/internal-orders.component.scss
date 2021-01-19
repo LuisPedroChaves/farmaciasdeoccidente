@@ -1,18 +1,95 @@
-$blue: #2979ff;
-$blue-2: #0c50c7;
-.header { padding: 5px; border-bottom: 1px solid rgba(0,0,0,0.1); }
+$blue: #045195;
+$blue-2: #0a1958;
+.header {
+    padding: 15px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
 
-.iconspace { height: 40px; }
-.iconspace2 { height: 20px; span { font-size: 12px; line-height: 1; } }
-.option { text-decoration: none; outline: none; display: inline-block; border: 1px solid rgba(0,0,0,0.05); width: 105px; text-align: center; border-radius: 15px; font-size: 600; margin-left: 2.5px; margin-right: 2.5px; padding: 5px; mat-icon { margin: 5px; font-size: 28px; } }
-.option:hover { background-color: rgba(0,0,0,0.05); }
+.iconspace {
+    height: 40px;
+}
 
-.campus { font-weight: 500; padding: 5px; width: 80px; height: 50px; border-radius: 10px; cursor: pointer; margin-left: 5px; margin-right: 5px; text-align: center; }
-.campus-active { font-weight: 500; padding: 5px; width: 80px; height: 50px; border-radius: 10px; cursor: pointer; margin-left: 5px; margin-right: 5px; text-align: center; background-color: rgba($color: $blue, $alpha: 0.2); color: $blue; }
-.campus-active:hover { background-color: rgba($color: $blue, $alpha: 0.25); }
-.campus:hover { background-color: rgba(0,0,0,0.05); }
-.space { height: calc(100% - 83px); width: 100%; }
-.space-sm { height: calc(100% - 133px); width: 100%; }
+.iconspace2 {
+    height: 18px;
+    span {
+        font-size: 12px;
+        line-height: 1;
+    }
+}
 
+.option {
+    text-decoration: none;
+    outline: none;
+    display: inline-block;
+    border: 1px solid rgba(0, 0, 0, 0.05);
+    width: 105px;
+    text-align: center;
+    border-radius: 15px;
+    font-size: 600;
+    margin-left: 2.5px;
+    margin-right: 2.5px;
+    padding: 5px;
+    mat-icon {
+        margin: 5px;
+        font-size: 28px;
+    }
+}
 
-.active-tab { color: $blue-2; background-color: rgba($color: $blue, $alpha: 0.1); border-color: white; }
+.option:hover {
+    background-color: rgba(0, 0, 0, 0.05);
+}
+
+.campus {
+    font-weight: 500;
+    padding: 5px;
+    width: 80px;
+    height: 50px;
+    border-radius: 10px;
+    cursor: pointer;
+    margin-left: 5px;
+    margin-right: 5px;
+    text-align: center;
+}
+
+.campus-active {
+    font-weight: 500;
+    padding: 5px;
+    width: 80px;
+    height: 50px;
+    border-radius: 10px;
+    cursor: pointer;
+    margin-left: 5px;
+    margin-right: 5px;
+    text-align: center;
+    background-color: rgba($color: $blue, $alpha: 0.2);
+    color: $blue;
+}
+
+.campus-active:hover {
+    background-color: rgba($color: $blue, $alpha: 0.25);
+}
+
+.campus:hover {
+    background-color: rgba(0, 0, 0, 0.05);
+}
+
+.space {
+    height: calc(100% - 83px);
+    width: 100%;
+}
+
+.space-sm {
+    height: calc(100% - 133px);
+    width: 100%;
+}
+
+.active-tab {
+    color: $blue-2;
+    background-color: rgba($color: $blue, $alpha: 0.1);
+    border-color: white;
+}
+
+.T {
+    color: #045195;
+    font-size: 25px;
+}
