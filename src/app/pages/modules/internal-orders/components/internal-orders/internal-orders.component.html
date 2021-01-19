@@ -1,0 +1,23 @@
+<div *ngIf="internalOrdersp !== undefined">
+    <div class="header scrollmenu"  fxLayout="row" fxLayoutAlign="start start">
+        <h2>
+            <mat-icon>send</mat-icon>
+            Pedidos a bodegas</h2>
+        <div fxFlex></div>
+        <div *ngIf="internalOrdersp.includes('read')" [ngClass]="{'active-tab': this.tab === 'incoming'}" (click)="changeTab('incoming')" class="option cursor-pointer" matRipple fxLayout="column wrap" fxLayoutAlign="start center">
+            <div class="iconspace"><mat-icon inline="false" class="material-icons-outlined">chrome_reader_mode</mat-icon></div>
+            <div *ngIf="!smallScreen" class="iconspace2"><span>Entrantes</span></div>
+        </div>
+        <div *ngIf="internalOrdersp.includes('read')" [ngClass]="{'active-tab': this.tab === 'outgoing'}" (click)="changeTab('outgoing')" class="option cursor-pointer" matRipple fxLayout="column wrap" fxLayoutAlign="start center">
+            <div class="iconspace"><mat-icon inline="false" class="material-icons-outlined">collections_bookmark</mat-icon></div>
+            <div *ngIf="!smallScreen" class="iconspace2"><span>Salientes</span></div>
+        </div>
+        <div *ngIf="internalOrdersp.includes('read')" [ngClass]="{'active-tab': this.tab === 'history'}" (click)="changeTab('history')" class="option cursor-pointer" matRipple fxLayout="column wrap" fxLayoutAlign="start center">
+            <div class="iconspace"><mat-icon inline="false" class="material-icons-outlined">ballot</mat-icon></div>
+            <div *ngIf="!smallScreen" class="iconspace2"><span>Historial</span></div>
+        </div>
+    </div>
+    <div [ngClass]="{'space':!smallScreen, 'space-sm':smallScreen}">
+        <router-outlet></router-outlet>
+    </div>
+</div>

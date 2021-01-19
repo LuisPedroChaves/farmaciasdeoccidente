@@ -38,5 +38,21 @@
         "icon": "person_pin_circle",
         "iconType": "icon",
         "order": 2
+    },
+    {
+        "state": "internalOrders",
+        "name": "Pedidos",
+        "type": "link",
+        "icon": "send",
+        "iconType": "icon",
+        "order": 3
+    },
+    {
+        "state": "transfers",
+        "name": "Traslados",
+        "type": "link",
+        "icon": "local_shipping",
+        "iconType": "icon",
+        "order": 4
     }
 ]

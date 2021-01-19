@@ -43,6 +43,14 @@ const routes: Routes = [
         canActivate: [CheckTokenGuard]
       },
       {
+        path: 'internalOrders',  loadChildren: () => import('./pages/modules/internal-orders/internal-orders.module').then(m => m.InternalOrdersModule),
+        canActivate: [CheckTokenGuard]
+      },
+      {
+        path: 'transfers',  loadChildren: () => import('./pages/modules/transfers/transfers.module').then(m => m.TransfersModule),
+        canActivate: [CheckTokenGuard]
+      },
+      {
         path: 'receivables', pathMatch: 'full',  loadChildren: () => import('./pages/modules/receivables/receivables.module').then(m => m.ReceivablesModule),
         canActivate: [CheckTokenGuard]
       },
