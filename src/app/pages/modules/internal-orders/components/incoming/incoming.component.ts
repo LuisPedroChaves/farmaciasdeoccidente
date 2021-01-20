@@ -16,23 +16,25 @@ export class IncomingComponent implements OnInit {
     "month": null,
     "year": 2020,
     "active": [
-        { "name": "Fijo", "accounts":[
-            { "noOrder":"0151580","date":"12/2/2020", "details":"Caja y Bancos", "state": "listo" }
-        ] },
-        { "name": "Circulante", "accounts":[] },
-        { "name": "Diferido", "accounts":[] }
+      { "noOrder":"0151580","date":"12/2/2020", "details":"Caja y Bancos", "state": "listo" },
+      { "noOrder":"0151580","date":"12/2/2020", "details":"Caja y Bancos", "state": "listo" },
+      { "noOrder":"0151580","date":"12/2/2020", "details":"Caja y Bancos", "state": "listo" },
+      { "noOrder":"0151580","date":"12/2/2020", "details":"Caja y Bancos", "state": "listo" },
+      { "noOrder":"0151580","date":"12/2/2020", "details":"Caja y Bancos", "state": "listo" },
     ],
     "passive": [
-        { "name": "Fijo", "accounts":[
-            { "noOrder":"0151580","date":"12/2/2020", "details":"Caja y Bancos", "state": "listo"  }
-        ] },
-        { "name": "Circulante", "accounts":[] },
-        { "name": "Diferido", "accounts":[] }
+      { "noOrder":"0151580","date":"12/2/2020", "details":"Caja y Bancos", "state": "listo" },
+      { "noOrder":"0151580","date":"12/2/2020", "details":"Caja y Bancos", "state": "listo" },
+      { "noOrder":"0151580","date":"12/2/2020", "details":"Caja y Bancos", "state": "listo" },
+      { "noOrder":"0151580","date":"12/2/2020", "details":"Caja y Bancos", "state": "listo" },
+      { "noOrder":"0151580","date":"12/2/2020", "details":"Caja y Bancos", "state": "listo" },
     ],
     "capital": [
-        { "name": "Fijo", "accounts":[
-            { "noOrder":"0151580","date":"12/2/2020", "details":"Caja y Bancos", "state": "listo"  }
-        ] }
+      { "noOrder":"0151580","date":"12/2/2020", "details":"Caja y Bancos", "state": "listo" },
+      { "noOrder":"0151580","date":"12/2/2020", "details":"Caja y Bancos", "state": "listo" },
+      { "noOrder":"0151580","date":"12/2/2020", "details":"Caja y Bancos", "state": "listo" },
+      { "noOrder":"0151580","date":"12/2/2020", "details":"Caja y Bancos", "state": "listo" },
+      { "noOrder":"0151580","date":"12/2/2020", "details":"Caja y Bancos", "state": "listo" },
     ]
 };
 
