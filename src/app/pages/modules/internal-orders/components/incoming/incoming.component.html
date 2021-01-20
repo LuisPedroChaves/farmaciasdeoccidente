@@ -53,18 +53,6 @@
                         </mat-panel-title>
                         <mat-panel-description>
                             500
-                            <mat-panel-description>
-                                No.Orden
-                            </mat-panel-description>
-                            <mat-panel-description>
-                                Fecha
-                            </mat-panel-description>
-                            <mat-panel-description>
-                                Detalles
-                            </mat-panel-description>
-                            <mat-panel-description>
-                                Estado
-                            </mat-panel-description>
                             <mat-icon>pending
                                 <svg class="svg-24" viewBox="0 0 24 24">
 
@@ -74,8 +62,14 @@
                     </mat-expansion-panel-header>
                     <mat-divider></mat-divider>
                     <div class="spaceaccounts">
-                        <div fxLayout="row wrap" *ngFor="let a of balanceInfo.active">
+                        <div fxLayout="row wrap" >
                             <div fxFlex="100" class="accountrow" fxLayout="row wrap" fxLayoutAlign="start center">
+                                <div fxFlex="10" class="ellipsis-text cell text-muted">No. Pedido</div>
+                                <div fxFlex class="ellipsis-text cell">Fecha</div>
+                                <div fxFlex class="ellipsis-text cell">Nota</div>
+                                <div fxFlex class="ellipsis-text cell">Estado</div>
+                            </div>
+                            <div *ngFor="let a of balanceInfo.active"  fxFlex="100" class="accountrow" fxLayout="row wrap" fxLayoutAlign="start center">
                                 <div fxFlex="10" class="ellipsis-text cell text-muted">{{ a.noOrder }}</div>
                                 <div fxFlex class="ellipsis-text cell">{{ a.date }}</div>
                                 <div fxFlex class="ellipsis-text cell">{{ a.details }}</div>
