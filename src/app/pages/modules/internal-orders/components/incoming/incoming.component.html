@@ -2,21 +2,14 @@
 
     <mat-sidenav-content fxFlex [ngClass]="{'accounts-space':!smallScreen, 'accounts-space-sm':smallScreen}" data-simplebar>
         <div class="header" fxLayout="row wrap" fxLayoutAlign="start center">
-            <h2 *ngIf="!smallScreen" class="product-font ma-0 module-title">Pedidos Entrantes</h2>
+            <h2 *ngIf="!smallScreen" class="product-font ma-0 T1">Pedidos Entrantes</h2>
             <span fxFlex></span>
             <button class="filterbutton" mat-icon-button>
-                <mat-icon class="material-icons-outlined"color="accent" >print</mat-icon>
-  <mat-sidenav-content fxFlex [ngClass]="{'accounts-space':!smallScreen, 'accounts-space-sm':smallScreen}"
-    data-simplebar>
-    <div class="header" fxLayout="row wrap" fxLayoutAlign="start center">
-      <h2 *ngIf="!smallScreen" class="ma-0 product-font T1">Pedidos Entrantes</h2>
-      <span fxFlex></span>
-      <button class="filterbutton" mat-icon-button>
-        <mat-icon class="material-icons-outlined" color="accent">print</mat-icon>
-      </button>
+                <mat-icon class="material-icons-outlined" color="accent">print</mat-icon>
+            </button>
             <button class="filterbutton" mat-icon-button>
-        <mat-icon class="material-icons-outlined" color="accent">get_app</mat-icon>
-      </button>
+                <mat-icon class="material-icons-outlined" color="accent">get_app</mat-icon>
+            </button>
         </div>
         <div *ngIf="loading === false && balanceInfo !== undefined">
 
@@ -29,13 +22,14 @@
                     </div>
                     <div fxLayout="row wrap">
                         <button [matTooltip]="listview === true ? 'Vista en columnas':'Vista de Lista'" class="filterbutton" mat-icon-button (click)="listview = !listview;">
-              <mat-icon class="material-icons-outlined" color="accent">{{listview === true ? 'table_chart':'view_list'}}
-              </mat-icon>
-            </button>
+                            <mat-icon class="material-icons-outlined" color="accent">{{listview === true ?
+                                'table_chart':'view_list'}}
+                            </mat-icon>
+                        </button>
                         <button [matTooltip]="expanded === true ? 'Contraer todo':'Expandir todo'" class="filterbutton" mat-icon-button (click)="expanded = !expanded;">
-              <mat-icon class="material-icons-outlined" color="accent">
-                {{expanded === true ? 'unfold_less':'unfold_more'}}</mat-icon>
-            </button>
+                            <mat-icon class="material-icons-outlined" color="accent">
+                                {{expanded === true ? 'unfold_less':'unfold_more'}}</mat-icon>
+                        </button>
                     </div>
                 </div>
                 <div fxFlex="20" fxLayout="column wrap" class="ammounttitle V">
@@ -59,10 +53,22 @@
                         </mat-panel-title>
                         <mat-panel-description>
                             500
+                            <mat-panel-description>
+                                No.Orden
+                            </mat-panel-description>
+                            <mat-panel-description>
+                                Fecha
+                            </mat-panel-description>
+                            <mat-panel-description>
+                                Detalles
+                            </mat-panel-description>
+                            <mat-panel-description>
+                                Estado
+                            </mat-panel-description>
                             <mat-icon>pending
                                 <svg class="svg-24" viewBox="0 0 24 24">
 
-                </svg>
+                                </svg>
                             </mat-icon>
                         </mat-panel-description>
                     </mat-expansion-panel-header>
@@ -89,7 +95,7 @@
                             <mat-icon>pending_actions
                                 <svg style="width:24px;height:24px" viewBox="0 0 24 24">
 
-                </svg>
+                                </svg>
                             </mat-icon>
                         </mat-panel-description>
                     </mat-expansion-panel-header>

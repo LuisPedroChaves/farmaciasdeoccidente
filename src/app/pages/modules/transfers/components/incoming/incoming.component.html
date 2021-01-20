@@ -2,7 +2,7 @@
 
     <mat-sidenav-content fxFlex [ngClass]="{'accounts-space':!smallScreen, 'accounts-space-sm':smallScreen}" data-simplebar>
         <div class="header" fxLayout="row wrap" fxLayoutAlign="start center">
-            <h2 *ngIf="!smallScreen" class="product-font ma-0 module-title">Traslados Entrantes</h2>
+            <h2 *ngIf="!smallScreen" class="product-font ma-0 T1">Traslados Entrantes</h2>
             <span fxFlex></span>
             <button class="filterbutton" mat-icon-button>
                 <mat-icon class="material-icons-outlined"color="accent" >print</mat-icon>
@@ -44,86 +44,83 @@
             </div>
             <mat-accordion *ngIf="listview === true" class="example-headers-align" multi>
                 <mat-expansion-panel [expanded]="expanded">
-                  <mat-expansion-panel-header>
-                    <mat-panel-title>
-                      <h3 class="ma-0 product-font V"><b>Pendientes</b></h3>
-                    </mat-panel-title>
-                    <mat-panel-description>
-                      500
-                      <mat-icon>pending
-                        <svg class="svg-24" viewBox="0 0 24 24">
+                    <mat-expansion-panel-header>
+                        <mat-panel-title>
+                            <h3 class="ma-0 product-font V"><b>Pendientes</b></h3>
+                        </mat-panel-title>
+                        <mat-panel-description>
+                            500
+                            <mat-icon>pending
+                                <svg class="svg-24" viewBox="0 0 24 24">
 
                         </svg>
-                      </mat-icon>
-                    </mat-panel-description>
-                  </mat-expansion-panel-header>
-                  <mat-divider></mat-divider>
-                  <div class="spaceaccounts">
-                    <div fxLayout="row wrap" *ngFor="let a of balanceInfo.active">
-                      <div fxFlex="100" class="accountrow" fxLayout="row wrap"
-                        fxLayoutAlign="start center">
-                        <div fxFlex="10" class="ellipsis-text cell text-muted">{{ a.noOrder }}</div>
-                        <div fxFlex class="ellipsis-text cell">{{ a.date }}</div>
-                        <div fxFlex class="ellipsis-text cell">{{ a.details }}</div>
-                        <div fxFlex class="ellipsis-text cell">{{ a.state }}</div>
-                      </div>
+                            </mat-icon>
+                        </mat-panel-description>
+                    </mat-expansion-panel-header>
+                    <mat-divider></mat-divider>
+                    <div class="spaceaccounts">
+                        <div fxLayout="row wrap" *ngFor="let a of balanceInfo.active">
+                            <div fxFlex="100" class="accountrow" fxLayout="row wrap" fxLayoutAlign="start center">
+                                <div fxFlex="10" class="ellipsis-text cell text-muted">{{ a.noOrder }}</div>
+                                <div fxFlex class="ellipsis-text cell">{{ a.date }}</div>
+                                <div fxFlex class="ellipsis-text cell">{{ a.details }}</div>
+                                <div fxFlex class="ellipsis-text cell">{{ a.state }}</div>
+                            </div>
+                        </div>
                     </div>
-                  </div>
 
                 </mat-expansion-panel>
                 <mat-expansion-panel [expanded]="expanded">
-                  <mat-expansion-panel-header>
-                    <mat-panel-title>
-                      <h3 class="ma-0 product-font V"><b>En Proceso</b></h3>
-                    </mat-panel-title>
-                    <mat-panel-description>
-                      200
-                      <mat-icon>pending_actions
-                        <svg style="width:24px;height:24px" viewBox="0 0 24 24">
+                    <mat-expansion-panel-header>
+                        <mat-panel-title>
+                            <h3 class="ma-0 product-font V"><b>En Proceso</b></h3>
+                        </mat-panel-title>
+                        <mat-panel-description>
+                            200
+                            <mat-icon>pending_actions
+                                <svg style="width:24px;height:24px" viewBox="0 0 24 24">
 
                         </svg>
-                      </mat-icon>
-                    </mat-panel-description>
-                  </mat-expansion-panel-header>
+                            </mat-icon>
+                        </mat-panel-description>
+                    </mat-expansion-panel-header>
 
-                  <mat-divider></mat-divider>
-                  <div class="spaceaccounts">
-                    <div fxLayout="row wrap" *ngFor="let a of balanceInfo.passive">
-                      <div fxFlex="100" class="accountrow" fxLayout="row wrap"
-                        fxLayoutAlign="start center">
-                        <div fxFlex="10" class="ellipsis-text cell text-muted">{{ a.noOrder }}</div>
-                        <div fxFlex class="ellipsis-text cell">{{ a.date }}</div>
-                        <div fxFlex class="ellipsis-text cell">{{ a.details }}</div>
-                        <div fxFlex class="ellipsis-text cell">{{ a.state }}</div>
-                      </div>
+                    <mat-divider></mat-divider>
+                    <div class="spaceaccounts">
+                        <div fxLayout="row wrap" *ngFor="let a of balanceInfo.passive">
+                            <div fxFlex="100" class="accountrow" fxLayout="row wrap" fxLayoutAlign="start center">
+                                <div fxFlex="10" class="ellipsis-text cell text-muted">{{ a.noOrder }}</div>
+                                <div fxFlex class="ellipsis-text cell">{{ a.date }}</div>
+                                <div fxFlex class="ellipsis-text cell">{{ a.details }}</div>
+                                <div fxFlex class="ellipsis-text cell">{{ a.state }}</div>
+                            </div>
+                        </div>
                     </div>
-                  </div>
                 </mat-expansion-panel>
                 <mat-expansion-panel [expanded]="expanded">
-                  <mat-expansion-panel-header>
-                    <mat-panel-title>
-                      <h3 class="ma-0 product-font V"><b>En Ruta</b></h3>
-                    </mat-panel-title>
-                    <mat-panel-description>
-                      1500
-                      <mat-icon>share_arrival_time</mat-icon>
-                    </mat-panel-description>
-                  </mat-expansion-panel-header>
+                    <mat-expansion-panel-header>
+                        <mat-panel-title>
+                            <h3 class="ma-0 product-font V"><b>En Ruta</b></h3>
+                        </mat-panel-title>
+                        <mat-panel-description>
+                            1500
+                            <mat-icon>share_arrival_time</mat-icon>
+                        </mat-panel-description>
+                    </mat-expansion-panel-header>
 
-                  <mat-divider></mat-divider>
-                  <div class="spaceaccounts">
-                    <div fxLayout="row wrap" *ngFor="let a of balanceInfo.capital">
-                      <div fxFlex="100" class="accountrow" fxLayout="row wrap"
-                        fxLayoutAlign="start center">
-                        <div fxFlex="10" class="ellipsis-text cell text-muted">{{ a.noOrder }}</div>
-                        <div fxFlex class="ellipsis-text cell">{{ a.date }}</div>
-                        <div fxFlex class="ellipsis-text cell">{{ a.details }}</div>
-                        <div fxFlex class="ellipsis-text cell">{{ a.state }}</div>
-                      </div>
+                    <mat-divider></mat-divider>
+                    <div class="spaceaccounts">
+                        <div fxLayout="row wrap" *ngFor="let a of balanceInfo.capital">
+                            <div fxFlex="100" class="accountrow" fxLayout="row wrap" fxLayoutAlign="start center">
+                                <div fxFlex="10" class="ellipsis-text cell text-muted">{{ a.noOrder }}</div>
+                                <div fxFlex class="ellipsis-text cell">{{ a.date }}</div>
+                                <div fxFlex class="ellipsis-text cell">{{ a.details }}</div>
+                                <div fxFlex class="ellipsis-text cell">{{ a.state }}</div>
+                            </div>
+                        </div>
                     </div>
-                  </div>
                 </mat-expansion-panel>
-              </mat-accordion>
+            </mat-accordion>
 
             <div *ngIf="listview === false" class="columns" fxLayout="row wrap" fxLayoutAlign="start start">
                 <div class="c1 column-space" fxLayout="row wrap" fxLayoutAlign="start start" fxFlex="50">
