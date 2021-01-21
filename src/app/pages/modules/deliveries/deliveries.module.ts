@@ -7,6 +7,7 @@ import { DeliveryListComponent } from './components/delivery-list/delivery-list.
 import { DeliveriesComponent } from './components/deliveries/deliveries.component';
 import { ShipmentsComponent } from './components/shipments/shipments.component';
 import { DeliveryDetailsComponent } from './components/delivery-details/delivery-details.component';
+import { CoreModule } from '../../../core/core.module';
 
 
 
@@ -15,6 +16,7 @@ import { DeliveryDetailsComponent } from './components/delivery-details/delivery
   imports: [
     CommonModule,
     RouterModule.forChild(DeliveriesRoutes),
+    CoreModule,
     SharedComponentsModule
   ]
 })
