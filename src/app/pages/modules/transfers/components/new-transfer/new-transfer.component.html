@@ -1,6 +1,6 @@
 <div class="farmacia">
     <header fxLayout="row wrap" fxLayoutAlign="center center" class="header">
-        <h2 style="margin: 0;" class="h2">Nueva Traslado</h2>
+        <h2 style="margin: 0;" class="h2">Nuevo Traslado</h2>
         <span fxFlex></span>
         <button mat-icon-button *ngIf="!loading" (click)="dialogRef.close()">
     <mat-icon>close</mat-icon>
@@ -9,43 +9,21 @@
     <mat-divider></mat-divider>
     <form [formGroup]="form" autocomplete="off">
         <div class="clientspace" data-simplebar>
-            <div fxLayout="row wrap" fxLayoutAlign="start center" style="margin-top: 8px;">
+
+            <div fxLayout="row wrap" fxLayoutAlign="start center" style="margin-top: 30px;">
+                <div fxFlex="50px"></div>
                 <div fxFlex="50px" fxHide.xs>
-                    <mat-icon color="accent" class="material-icons-outlined grayicon">format_list_numbered</mat-icon>
+                    <mat-icon color="accent" class="material-icons-outlined grayicon">place
+                    </mat-icon>
                 </div>
                 <div fxFlex fxLayout="row wrap">
-                    <div fxFlex="100" class="inputpadding">
+                    <div fxFlex="50%" fxFlex.xs="100%" class="inputpadding">
                         <mat-form-field appearance="outline" color="primary" class="width-all">
-                            <mat-label>No. de Pedido</mat-label>
-                            <input formControlName="name" type="text" matInput placeholder="Ingrese el nombre del empleado">
+                            <mat-label>No. Traslado</mat-label>
+                            <input formControlName="town" type="text" matInput placeholder="Ingrese el municipio">
                         </mat-form-field>
                     </div>
-                </div>
-                <div fxFlex="50px"></div>
-            </div>
-            <div fxLayout="row wrap" fxLayoutAlign="start center" style="margin-top: 8px;">
-                <div fxFlex="50px" fxHide.xs>
-                    <mat-icon color="accent" class="material-icons-outlined grayicon">format_list_numbered_rtl</mat-icon>
-                </div>
-                <div fxFlex fxLayout="row wrap">
-                    <div fxFlex="100" class="inputpadding">
-                        <mat-form-field appearance="outline" color="primary" class="width-all">
-                            <mat-label>No. de Traslado</mat-label>
-                            <input formControlName="name" type="text" matInput placeholder="Ingrese el nombre del empleado">
-                        </mat-form-field>
-                    </div>
-                </div>
-                <div fxFlex="50px"></div>
-            </div>
-            <div fxLayout="row wrap" fxLayoutAlign="start center" style="margin-top: 8px;">
-                <div fxFlex="50px" fxHide.xs>
-                    <div fxFlex="100px" fxHide.xs>
-                        <mat-icon color="accent" class="material-icons-outlined grayicon">public
-                        </mat-icon>
-                    </div>
-                </div>
-                <div fxFlex fxLayout="row wrap">
-                    <div fxFlex="100%" class="inputpadding">
+                    <div fxFlex="50%" fxFlex.xs="100%" class="inputpadding">
                         <mat-form-field color="primary" class="width-all" appearance="outline">
                             <mat-label>Destino</mat-label>
                             <mat-select formControlName="department">
@@ -78,11 +56,11 @@
                 <div fxFlex="50px"></div>
             </div>
             <div fxLayout="row wrap" fxLayoutAlign="start center" style="margin-top: 8px;">
+                <div fxFlex="50px"></div>
                 <div fxFlex="50px" fxHide.xs>
-                    <div fxFlex="100px" fxHide.xs>
-                        <mat-icon color="accent" class="material-icons-outlined grayicon">rate_review
-                        </mat-icon>
-                    </div>
+                    <mat-icon color="accent" class="material-icons-outlined grayicon">rate_review
+                    </mat-icon>
+
                 </div>
                 <div fxFlex fxLayout="row wrap">
                     <div fxFlex="100" class="inputpadding">
