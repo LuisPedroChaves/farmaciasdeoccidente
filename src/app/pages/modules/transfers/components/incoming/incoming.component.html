@@ -4,12 +4,6 @@
         <div class="header" fxLayout="row wrap" fxLayoutAlign="start center">
             <h2 *ngIf="!smallScreen" class="product-font ma-0 T1">Traslados Entrantes</h2>
             <span fxFlex></span>
-            <button class="filterbutton" mat-icon-button>
-                <mat-icon class="material-icons-outlined"color="accent" >print</mat-icon>
-            </button>
-            <button class="filterbutton" mat-icon-button>
-                <mat-icon class="material-icons-outlined" color="accent" >get_app</mat-icon>
-            </button>
         </div>
         <div *ngIf="loading === false && balanceInfo !== undefined">
 
@@ -30,15 +24,15 @@
                     </div>
                 </div>
                 <div fxFlex="20" fxLayout="column wrap" class="ammounttitle V">
-                    <h1 class="ma-0 active"> 500</h1>
+                    <h1 class="ma-0 pasive"> 500</h1>
                     <small>Suma de Pendientes</small>
                 </div>
                 <div fxFlex="20" fxLayout="column wrap" class="ammounttitle V">
-                    <h1 class="ma-0 pasive">200</h1>
+                    <h1 class="ma-0 V">200</h1>
                     <small>Suma en Proceso</small>
                 </div>
                 <div fxFlex="20" fxLayout="column wrap" class="ammounttitle V">
-                    <h1 class="ma-0 capital"> 1500</h1>
+                    <h1 class="ma-0 active"> 1500</h1>
                     <small>Suma en Ruta</small>
                 </div>
             </div>
@@ -46,21 +40,27 @@
                 <mat-expansion-panel [expanded]="expanded">
                     <mat-expansion-panel-header>
                         <mat-panel-title>
-                            <h3 class="ma-0 product-font V"><b>Pendientes</b></h3>
+                            <h3 class="ma-0 product-font pasive"><b>Pendientes</b></h3>
                         </mat-panel-title>
-                        <mat-panel-description>
-                            500
+                        <mat-panel-description class="pasive">
+                            <b>500</b>
                             <mat-icon>pending
                                 <svg class="svg-24" viewBox="0 0 24 24">
 
-                        </svg>
+                                </svg>
                             </mat-icon>
                         </mat-panel-description>
                     </mat-expansion-panel-header>
                     <mat-divider></mat-divider>
                     <div class="spaceaccounts">
-                        <div fxLayout="row wrap" *ngFor="let a of balanceInfo.active">
+                        <div fxLayout="row wrap">
                             <div fxFlex="100" class="accountrow" fxLayout="row wrap" fxLayoutAlign="start center">
+                                <div fxFlex="10" class="ellipsis-text cell text-muted">No. Pedido</div>
+                                <div fxFlex class="ellipsis-text cell">Fecha</div>
+                                <div fxFlex class="ellipsis-text cell">Nota</div>
+                                <div fxFlex class="ellipsis-text cell">Estado</div>
+                            </div>
+                            <div *ngFor="let a of balanceInfo.active" fxFlex="100" class="accountrow" fxLayout="row wrap" fxLayoutAlign="start center">
                                 <div fxFlex="10" class="ellipsis-text cell text-muted">{{ a.noOrder }}</div>
                                 <div fxFlex class="ellipsis-text cell">{{ a.date }}</div>
                                 <div fxFlex class="ellipsis-text cell">{{ a.details }}</div>
@@ -75,18 +75,32 @@
                         <mat-panel-title>
                             <h3 class="ma-0 product-font V"><b>En Proceso</b></h3>
                         </mat-panel-title>
-                        <mat-panel-description>
-                            200
+                        <mat-panel-description class="V">
+                            <b>200</b>
                             <mat-icon>pending_actions
                                 <svg style="width:24px;height:24px" viewBox="0 0 24 24">
 
-                        </svg>
+                                </svg>
                             </mat-icon>
                         </mat-panel-description>
                     </mat-expansion-panel-header>
 
                     <mat-divider></mat-divider>
                     <div class="spaceaccounts">
+                        <div fxLayout="row wrap">
+                            <div fxFlex="100" class="accountrow" fxLayout="row wrap" fxLayoutAlign="start center">
+                                <div fxFlex="10" class="ellipsis-text cell text-muted">No. Pedido</div>
+                                <div fxFlex class="ellipsis-text cell">Fecha</div>
+                                <div fxFlex class="ellipsis-text cell">Nota</div>
+                                <div fxFlex class="ellipsis-text cell">Estado</div>
+                            </div>
+                            <div *ngFor="let a of balanceInfo.active" fxFlex="100" class="accountrow" fxLayout="row wrap" fxLayoutAlign="start center">
+                                <div fxFlex="10" class="ellipsis-text cell text-muted">{{ a.noOrder }}</div>
+                                <div fxFlex class="ellipsis-text cell">{{ a.date }}</div>
+                                <div fxFlex class="ellipsis-text cell">{{ a.details }}</div>
+                                <div fxFlex class="ellipsis-text cell">{{ a.state }}</div>
+                            </div>
+                        </div>
                         <div fxLayout="row wrap" *ngFor="let a of balanceInfo.passive">
                             <div fxFlex="100" class="accountrow" fxLayout="row wrap" fxLayoutAlign="start center">
                                 <div fxFlex="10" class="ellipsis-text cell text-muted">{{ a.noOrder }}</div>
@@ -100,16 +114,30 @@
                 <mat-expansion-panel [expanded]="expanded">
                     <mat-expansion-panel-header>
                         <mat-panel-title>
-                            <h3 class="ma-0 product-font V"><b>En Ruta</b></h3>
+                            <h3 class="ma-0 product-font active"><b>En Ruta</b></h3>
                         </mat-panel-title>
-                        <mat-panel-description>
-                            1500
+                        <mat-panel-description class="active">
+                            <b>1500</b>
                             <mat-icon>share_arrival_time</mat-icon>
                         </mat-panel-description>
                     </mat-expansion-panel-header>
 
                     <mat-divider></mat-divider>
                     <div class="spaceaccounts">
+                        <div fxLayout="row wrap">
+                            <div fxFlex="100" class="accountrow" fxLayout="row wrap" fxLayoutAlign="start center">
+                                <div fxFlex="10" class="ellipsis-text cell text-muted">No. Pedido</div>
+                                <div fxFlex class="ellipsis-text cell">Fecha</div>
+                                <div fxFlex class="ellipsis-text cell">Nota</div>
+                                <div fxFlex class="ellipsis-text cell">Estado</div>
+                            </div>
+                            <div *ngFor="let a of balanceInfo.active" fxFlex="100" class="accountrow" fxLayout="row wrap" fxLayoutAlign="start center">
+                                <div fxFlex="10" class="ellipsis-text cell text-muted">{{ a.noOrder }}</div>
+                                <div fxFlex class="ellipsis-text cell">{{ a.date }}</div>
+                                <div fxFlex class="ellipsis-text cell">{{ a.details }}</div>
+                                <div fxFlex class="ellipsis-text cell">{{ a.state }}</div>
+                            </div>
+                        </div>
                         <div fxLayout="row wrap" *ngFor="let a of balanceInfo.capital">
                             <div fxFlex="100" class="accountrow" fxLayout="row wrap" fxLayoutAlign="start center">
                                 <div fxFlex="10" class="ellipsis-text cell text-muted">{{ a.noOrder }}</div>

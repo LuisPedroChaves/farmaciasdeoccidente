@@ -282,7 +282,7 @@ mat-chip {
 
 @media (min-width: 768px) {
     .module-title {
-        font-size: 36px !important;
+        font-size: 30px !important;
     }
     .module-container {
         height: calc(100vh - 134px) !important;
@@ -397,4 +397,6 @@ mat-chip {
     }
 }
 
-.cursor-pointer { cursor: pointer; }
+.cursor-pointer {
+    cursor: pointer;
+}
