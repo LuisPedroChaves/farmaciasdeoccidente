@@ -35,10 +35,6 @@ const routes: Routes = [
         canActivate: [CheckTokenGuard]
       },
       {
-        path: 'customers', pathMatch: 'full',  loadChildren: () => import('./pages/modules/customers/customers.module').then(m => m.CustomersModule),
-        canActivate: [CheckTokenGuard]
-      },
-      {
         path: 'customersRoutes', pathMatch: 'full',  loadChildren: () => import('./pages/modules/customers-routes/customers-routes.module').then(m => m.CustomersRoutesModule),
         canActivate: [CheckTokenGuard]
       },
@@ -48,14 +44,6 @@ const routes: Routes = [
       },
       {
         path: 'transfers',  loadChildren: () => import('./pages/modules/transfers/transfers.module').then(m => m.TransfersModule),
-        canActivate: [CheckTokenGuard]
-      },
-      {
-        path: 'receivables', pathMatch: 'full',  loadChildren: () => import('./pages/modules/receivables/receivables.module').then(m => m.ReceivablesModule),
-        canActivate: [CheckTokenGuard]
-      },
-      {
-        path: 'statements', pathMatch: 'full',  loadChildren: () => import('./pages/modules/statements/statements.module').then(m => m.StatementsModule),
         canActivate: [CheckTokenGuard]
       },
     ]
@@ -78,6 +66,18 @@ const routes: Routes = [
       {
         // tslint:disable-next-line: max-line-length
         path: 'employees', pathMatch: 'full', loadChildren: () => import('./pages/modules/employees/employees.module').then(m => m.EmployeesModule),
+        canActivate: [CheckTokenGuard]
+      },
+      {
+        path: 'customers', pathMatch: 'full',  loadChildren: () => import('./pages/modules/customers/customers.module').then(m => m.CustomersModule),
+        canActivate: [CheckTokenGuard]
+      },
+      {
+        path: 'receivables', pathMatch: 'full',  loadChildren: () => import('./pages/modules/receivables/receivables.module').then(m => m.ReceivablesModule),
+        canActivate: [CheckTokenGuard]
+      },
+      {
+        path: 'statements', pathMatch: 'full',  loadChildren: () => import('./pages/modules/statements/statements.module').then(m => m.StatementsModule),
         canActivate: [CheckTokenGuard]
       },
     ]

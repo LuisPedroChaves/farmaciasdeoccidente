@@ -32,6 +32,9 @@ export class AdminLayoutComponent implements OnInit, OnDestroy {
     { state: '/admin', name: 'Sucursales', type: 'link', icon: 'store', order: 1 },
     { state: 'users', name: 'Usuarios', type: 'link', icon: 'people', order: 2 },
     { state: 'employees', name: 'Empleados', type: 'link', icon: 'groups', order: 3 },
+    { state: 'customers', name: 'Catálogo de clientes', type: 'link', icon: 'supervised_user_circle', order: 4, },
+    { state: 'receivables', name: 'Catálogo de clientes', type: 'link', icon: 'supervised_user_circle', order: 5, },
+    { state: 'statements', name: 'Catálogo de clientes', type: 'link', icon: 'supervised_user_circle', order: 6, },
   ];
 
   constructor(
