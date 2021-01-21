@@ -6,392 +6,60 @@ import { MatBottomSheet } from '@angular/material/bottom-sheet';
 import { MatDialog } from '@angular/material/dialog';
 import { ToastyService } from '../../../../../core/services/internal/toasty.service';
 import { combineLatest } from 'rxjs/operators';
+import { OrderItem } from 'src/app/core/models/Order';
+import { CellarItem } from 'src/app/core/models/Cellar';
+import { Store } from '@ngrx/store';
+import { AppState } from 'src/app/core/store/app.reducer';
+import { OrderService } from 'src/app/core/services/httpServices/order.service';
 
 @Component({
   selector: 'app-shipments',
   templateUrl: './shipments.component.html',
   styleUrls: ['./shipments.component.scss']
 })
-export class ShipmentsComponent implements OnInit, OnDestroy, AfterContentInit {
+export class ShipmentsComponent implements OnInit, OnDestroy {
 
-  // subscriptions ------------------
-  configSubscription: Subscription;
+  smallScreen = window.innerWidth < 960 ? true : false;
+
   sessionsubscription: Subscription;
-  coursesubs: Subscription;
-  searchtext: string;
 
-    // screen
-smallScreen: boolean;
+  routes: OrderItem[];
+  currentCellar: CellarItem;
 
-courses: any[] =  [
-  {
-    invoiceNumber: '5',
-    nit: '730613-k',
-    name: 'Farmacia1',
-    address: '|Ciudad',
-    phone: '2535354',
-    town: 'almolonga',
-    department: 'quetzaltenago',
-    payment: '100',
-    total: '300',
-    details: 'detallesgfklgfuyglgñigiuj',
-    image: 'imagen2.jpg',
-    state:'entregado',
-    timestamps: '25Days',
-    timeOrder:'30Days',
-    timeDispatch: '2Days',
-    timeSend:'5Days',
-    noOrder:'125',
-    _id:'123',
-    isActive:true
+  dispatchessp: string[] = [];
 
+  loading = false;
+  saving = false;
+  searchText: string;
 
-  },
-  {
-    invoiceNumber: '5',
-    nit: '730613-k',
-    name: 'Farmacia1',
-    address: '|Ciudad',
-    phone: '2535354',
-    town: 'almolonga',
-    department: 'quetzaltenago',
-    paymentMethod: '100',
-    total: '300',
-    details: 'detallesgfklgfuyglgñigiuj',
-    image: 'imagen2.jpg',
-    state:'entregado',
-    timestamps: '25Days',
-    timeOrder:'30Days',
-    timeDispatch: '2Days',
-    timeSend:'5Days',
-    noOrder:'125',
-    _id:'123',
-    isActive:true
-
-  },
-  {
-    invoiceNumber: '5',
-    nit: '730613-k',
-    name: 'Farmacia1',
-    address: '|Ciudad',
-    phone: '2535354',
-    town: 'almolonga',
-    department: 'quetzaltenago',
-    paymentMethod: '100',
-    total: '300',
-    details: 'detallesgfklgfuyglgñigiuj',
-    image: 'imagen2.jpg',
-    state:'entregado',
-    timestamps: '25Days',
-    timeOrder:'30Days',
-    timeDispatch: '2Days',
-    timeSend:'5Days',
-    noOrder:'125',
-    _id:'123',
-    isActive:true
-  },
-  {
-    invoiceNumber: '5',
-    nit: '730613-k',
-    name: 'Farmacia1',
-    address: '|Ciudad',
-    phone: '2535354',
-    town: 'almolonga',
-    department: 'quetzaltenago',
-    paymentMethod: '100',
-    total: '300',
-    details: 'detallesgfklgfuyglgñigiuj',
-    image: 'imagen2.jpg',
-    state:'entregado',
-    timestamps: '25Days',
-    timeOrder:'30Days',
-    timeDispatch: '2Days',
-    timeSend:'5Days',
-    noOrder:'125',
-    _id:'123',
-    isActive:true
-  },
-  {
-
-    invoiceNumber: '5',
-    nit: '730613-k',
-    name: 'Farmacia1',
-    address: '|Ciudad',
-    phone: '2535354',
-    town: 'almolonga',
-    department: 'quetzaltenago',
-    paymentMethod: '100',
-    total: '300',
-    details: 'detallesgfklgfuyglgñigiuj',
-    image: 'imagen2.jpg',
-    state:'entregado',
-    timestamps: '25Days',
-    timeOrder:'30Days',
-    timeDispatch: '2Days',
-    timeSend:'5Days',
-    noOrder:'125',
-    _id:'123',
-    isActive:true
-
-  },
-  {
-    invoiceNumber: '5',
-    nit: '730613-k',
-    name: 'Farmacia1',
-    address: '|Ciudad',
-    phone: '2535354',
-    town: 'almolonga',
-    department: 'quetzaltenago',
-    paymentMethod: '100',
-    total: '300',
-    details: 'detallesgfklgfuyglgñigiuj',
-    image: 'imagen2.jpg',
-    state:'entregado',
-    timestamps: '25Days',
-    timeOrder:'30Days',
-    timeDispatch: '2Days',
-    timeSend:'5Days',
-    noOrder:'125',
-    _id:'123',
-    isActive:true
-  },
-  {
-
-    invoiceNumber: '5',
-    nit: '730613-k',
-    name: 'Farmacia1',
-    address: '|Ciudad',
-    phone: '2535354',
-    town: 'almolonga',
-    department: 'quetzaltenago',
-    paymentMethod: '100',
-    total: '300',
-    details: 'detallesgfklgfuyglgñigiuj',
-    image: 'imagen2.jpg',
-    state:'entregado',
-    timestamps: '25Days',
-    timeOrder:'30Days',
-    timeDispatch: '2Days',
-    timeSend:'5Days',
-    noOrder:'125',
-    _id:'123',
-    isActive:true
-  },
-  {
-
-    invoiceNumber: '5',
-    nit: '730613-k',
-    name: 'Farmacia1',
-    address: '|Ciudad',
-    phone: '2535354',
-    town: 'almolonga',
-    department: 'quetzaltenago',
-    paymentMethod: '100',
-    total: '300',
-    details: 'detallesgfklgfuyglgñigiuj',
-    image: 'imagen2.jpg',
-    state:'entregado',
-    timestamps: '25Days',
-    timeOrder:'30Days',
-    timeDispatch: '2Days',
-    timeSend:'5Days',
-    noOrder:'125',
-    _id:'123',
-    isActive:true
-
-  },
-  {
-
-    invoiceNumber: '5',
-    nit: '730613-k',
-    name: 'Farmacia1',
-    address: '|Ciudad',
-    phone: '2535354',
-    town: 'almolonga',
-    department: 'quetzaltenago',
-    paymentMethod: '100',
-    total: '300',
-    details: 'detallesgfklgfuyglgñigiuj',
-    image: 'imagen2.jpg',
-    state:'entregado',
-    timestamps: '25Days',
-    timeOrder:'30Days',
-    timeDispatch: '2Days',
-    timeSend:'5Days',
-    noOrder:'125',
-    _id:'123',
-    isActive:true
-
-  },
-  {
-
-    invoiceNumber: '5',
-    nit: '730613-k',
-    name: 'Farmacia1',
-    address: '|Ciudad',
-    phone: '2535354',
-    town: 'almolonga',
-    department: 'quetzaltenago',
-    paymentMethod: '100',
-    total: '300',
-    details: 'detallesgfklgfuyglgñigiuj',
-    image: 'imagen2.jpg',
-    state:'entregado',
-    timestamps: '25Days',
-    timeOrder:'30Days',
-    timeDispatch: '2Days',
-    timeSend:'5Days',
-    noOrder:'125',
-    _id:'123',
-    isActive:true
-
-  },
-  {
-    invoiceNumber: '5',
-    nit: '730613-k',
-    name: 'Farmacia1',
-    address: '|Ciudad',
-    phone: '2535354',
-    town: 'almolonga',
-    department: 'quetzaltenago',
-    paymentMethod: '100',
-    total: '300',
-    details: 'detallesgfklgfuyglgñigiuj',
-    image: 'imagen2.jpg',
-    state:'entregado',
-    timestamps: '25Days',
-    timeOrder:'30Days',
-    timeDispatch: '2Days',
-    timeSend:'5Days',
-    noOrder:'125',
-    _id:'123',
-    isActive:true
-
-  },
-  {
-
-    invoiceNumber: '5',
-    nit: '730613-k',
-    name: 'Farmacia1',
-    address: '|Ciudad',
-    phone: '2535354',
-    town: 'almolonga',
-    department: 'quetzaltenago',
-    paymentMethod: '100',
-    total: '300',
-    details: 'detallesgfklgfuyglgñigiuj',
-    image: 'imagen2.jpg',
-    state:'entregado',
-    timestamps: '25Days',
-    timeOrder:'30Days',
-    timeDispatch: '2Days',
-    timeSend:'5Days',
-    noOrder:'125',
-    _id:'123',
-    isActive:true
-
-  },
-  {
-
-    invoiceNumber: '5',
-    nit: '730613-k',
-    name: 'Farmacia1',
-    address: '|Ciudad',
-    phone: '2535354',
-    town: 'almolonga',
-    department: 'quetzaltenago',
-    paymentMethod: '100',
-    total: '300',
-    details: 'detallesgfklgfuyglgñigiuj',
-    image: 'imagen2.jpg',
-    state:'entregado',
-    timestamps: '25Days',
-    timeOrder:'30Days',
-    timeDispatch: '2Days',
-    timeSend:'5Days',
-    noOrder:'125',
-    _id:'123',
-    isActive:true
-
-  },
-  {
-
-    invoiceNumber: '5',
-    nit: '730613-k',
-    name: 'Farmacia1',
-    address: '|Ciudad',
-    phone: '2535354',
-    town: 'almolonga',
-    department: 'quetzaltenago',
-    paymentMethod: '100',
-    total: '300',
-    details: 'detallesgfklgfuyglgñigiujhfggyfjyhgthgjgjlgtyhghgtglgbkjuhgjuhyjihyihyuihihyui8uyjhi9ujiujhiyhiy87i{9oujihyuihyñuihyiñ8huju8y8uyhñ8yñ8iyu8i8oyh8uyhi8ñýhiuyhuyv vfgfgcgcdgcgcggdmhgmgdcmgcgcdmgfdghgfhfvhfvfv,vf,jhf,jfgdgdffr,yhfrhfv,hfv,jh',
-    image: 'imagen2.jpg',
-    state:'entregado',
-    timestamps: '25Days',
-    timeOrder:'30Days',
-    timeDispatch: '2Days',
-    timeSend:'5Days',
-    noOrder:'125',
-     _id:'123',
-     isActive:true
-
-  },
-];
-employeejobs: any[];
-loading = false;
-allsubscriptions;
-saving = false;
-
-@ViewChild(MatMenuTrigger)
-contextMenu: MatMenuTrigger;
-contextMenu2: MatMenuTrigger;
-
-contextMenuPosition = { x: '0px', y: '0px' };
-
-constructor(
-    //TODO: public store: Store<AppState>,
-    private bottomSheet: MatBottomSheet,
+  constructor(
+    public store: Store<AppState>,
     public toasty: ToastyService,
     public dialog: MatDialog,
     public router: Router,
-) { }
+    public orderService: OrderService,
+  ) { }
 
-ngOnInit(): void {
-// this.sessionsubscription = this.store.select('session').pipe(filter( session => session !== null)).subscribe( session => {
-//     if (session.permissions !== null) {
-//       const b = session.permissions.filter(pr => pr.name === 'courses');
-//       this.coursesp = b.length > 0 ? b[0].options : [];
+  ngOnInit(): void {
+    this.currentCellar = JSON.parse(localStorage.getItem('currentstore'));
+    this.loadRoutes();
+  }
 
-//     }
-// });
+  ngOnDestroy(): void {
+    this.sessionsubscription?.unsubscribe();
+  }
 
 
-// this.allsubscriptions = combineLatest([
-//   this.coursesService.readData()
-// ]).subscribe(data => {
-//   this.courses = data[2];
-//   this.loading = false;
-// });
-}
+  loadRoutes() {
+    this.loading = true;
+    this.orderService.getRoutes(this.currentCellar._id).subscribe(data => {
+      this.routes = data.orders;
+      this.loading = false;
+    });
+  }
 
-ngAfterContentInit() {
-// this.levelsService.getDataSections();
-}
-
-ngOnDestroy(): void {
-this.configSubscription?.unsubscribe();
-this.sessionsubscription?.unsubscribe();
-this.allsubscriptions?.unsubscribe();
-}
-
-generateImage(): string {
-const image = 'Geometry.jpg';
-return image;
-}
-
-selectOrder(order: any) {
-this.router.navigate(['/order', order.name]);
-}
+  selectOrder(order: OrderItem) {
+    this.router.navigate(['/order', order._id, 'deliveries']);
+  }
 
 }
