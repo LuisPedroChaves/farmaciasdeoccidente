@@ -54,5 +54,37 @@
         "icon": "local_shipping",
         "iconType": "icon",
         "order": 4
+    },
+    {
+        "state": "sales",
+        "name": "Ventas",
+        "type": "link",
+        "icon": "point_of_sale",
+        "iconType": "icon",
+        "order": 5
+    },
+    {
+        "state": "receivables",
+        "name": "Cuentas por cobrar",
+        "type": "link",
+        "icon": "request_quote",
+        "iconType": "icon",
+        "order": 6
+    },
+    {
+        "state": "customers",
+        "name": "Clientes",
+        "type": "link",
+        "icon": "person_search",
+        "iconType": "icon",
+        "order": 7
+    },
+    {
+        "state": "statements",
+        "name": "Estado de cuenta",
+        "type": "link",
+        "icon": "person_search",
+        "iconType": "icon",
+        "order": 7
     }
 ]

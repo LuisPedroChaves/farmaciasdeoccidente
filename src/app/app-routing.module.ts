@@ -45,6 +45,22 @@ const routes: Routes = [
       {
         path: 'transfers',  loadChildren: () => import('./pages/modules/transfers/transfers.module').then(m => m.TransfersModule),
         canActivate: [CheckTokenGuard]
+      },// Aquí comienza Cuentas por cobrar
+      {
+        path: 'customers', pathMatch: 'full',  loadChildren: () => import('./pages/modules/customers/customers.module').then(m => m.CustomersModule),
+        canActivate: [CheckTokenGuard]
+      },
+      {
+        path: 'sales', pathMatch: 'full',  loadChildren: () => import('./pages/modules/sales/sales.module').then(m => m.SalesModule),
+        canActivate: [CheckTokenGuard]
+      },
+      {
+        path: 'receivables', pathMatch: 'full',  loadChildren: () => import('./pages/modules/receivables/receivables.module').then(m => m.ReceivablesModule),
+        canActivate: [CheckTokenGuard]
+      },
+      {
+        path: 'statements', pathMatch: 'full',  loadChildren: () => import('./pages/modules/statements/statements.module').then(m => m.StatementsModule),
+        canActivate: [CheckTokenGuard]
       },
     ]
   },
@@ -63,15 +79,11 @@ const routes: Routes = [
         path: 'users', pathMatch: 'full', loadChildren: () => import('./pages/modules/users/users.module').then(m => m.UsersModule),
         canActivate: [CheckTokenGuard]
       },
-      {
-        // tslint:disable-next-line: max-line-length
-        path: 'employees', pathMatch: 'full', loadChildren: () => import('./pages/modules/employees/employees.module').then(m => m.EmployeesModule),
-        canActivate: [CheckTokenGuard]
-      },
-      {
-        path: 'customers', pathMatch: 'full',  loadChildren: () => import('./pages/modules/customers/customers.module').then(m => m.CustomersModule),
-        canActivate: [CheckTokenGuard]
-      },
+      // {
+      //   // tslint:disable-next-line: max-line-length
+      //   path: 'employees', pathMatch: 'full', loadChildren: () => import('./pages/modules/employees/employees.module').then(m => m.EmployeesModule),
+      //   canActivate: [CheckTokenGuard]
+      // },
       {
         path: 'receivables', pathMatch: 'full',  loadChildren: () => import('./pages/modules/receivables/receivables.module').then(m => m.ReceivablesModule),
         canActivate: [CheckTokenGuard]

@@ -5,5 +5,9 @@
     { "name": "deliveries", "label": "Rutas y Entregas", "parent": "order", "level": 2 , "options": ["read","update","delete","create"] },
     { "name": "customersRoutes", "label": "Clientes", "parent": "PHARMA", "level": 1 , "options": ["read","update","delete","create"]},
     { "name": "internalOrders", "label": "Pedidos a bodegas", "parent": "PHARMA", "level": 1 , "options": ["read","update","delete","create"]},
-    { "name": "transfers", "label": "Traslados entre sucursales", "parent": "PHARMA", "level": 1 , "options": ["read","update","delete","create"]}
+    { "name": "transfers", "label": "Traslados", "parent": "PHARMA", "level": 1 , "options": ["read","update","delete","create"]},
+    { "name": "sales", "label": "Ventas", "parent": "PHARMA", "level": 1 , "options": ["read","update","delete","create"]},
+    { "name": "customers", "label": "Catálogo de clientes", "parent": "PHARMA", "level": 1 , "options": ["read","update","delete","create"]},
+    { "name": "receivables", "label": "Cuentas por cobrar", "parent": "PHARMA", "level": 1 , "options": ["read","update","delete","create"]},
+    { "name": "statements", "label": "Estado de cuenta", "parent": "PHARMA", "level": 1 , "options": ["read","update","delete","create"]}
 ]

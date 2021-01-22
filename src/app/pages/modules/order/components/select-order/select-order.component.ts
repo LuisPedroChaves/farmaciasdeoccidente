@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Subscription } from 'rxjs';
 import { ToastyService } from '../../../../../core/services/internal/toasty.service';
 import { MatDialog } from '@angular/material/dialog';
 import { OrderItem } from '../../../../../core/models/Order';
 import { OrderService } from '../../../../../core/services/httpServices/order.service';
+import * as moment from 'moment';
 
 @Component({
   selector: 'app-select-order',
@@ -36,9 +36,22 @@ export class SelectOrderComponent implements OnInit {
     });
   }
 
-  getDifferenceInMinutes(date1, date2) {
-    const diffInMs = Math.abs(date2 - date1);
-    return diffInMs / (1000 * 60);
+  getMinutes(date1, date2) {
+    date1 = new Date(date1);
+    date2 = new Date(date2);
+    return Math.round((((date2.getTime() - date1.getTime()) % 86400000) % 3600000) / 60000).toFixed(2);
+  }
+
+  getHours(date1, date2) {
+    date1 = new Date(date1);
+    date2 = new Date(date2);
+    return Math.floor(((date2.getTime() - date1.getTime()) % 86400000) / 3600000).toFixed(2);
+  }
+
+  getDays(date1, date2) {
+    date1 = new Date(date1);
+    date2 = new Date(date2);
+    return Math.floor((date2.getTime() - date1.getTime()) / 86400000).toFixed(2);
   }
 
   // addJob() {
