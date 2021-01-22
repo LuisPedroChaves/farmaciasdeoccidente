@@ -15,9 +15,6 @@
                         Visualización
                     </div>
                     <div fxLayout="row wrap">
-                        <button [matTooltip]="listview === true ? 'Vista en columnas':'Vista de Lista'" class="filterbutton" mat-icon-button (click)="listview = !listview;">
-                            <mat-icon class="material-icons-outlined" color="accent">{{listview === true ? 'table_chart':'view_list'}}</mat-icon>
-                        </button>
                         <button [matTooltip]="expanded === true ? 'Contraer todo':'Expandir todo'" class="filterbutton" mat-icon-button (click)="expanded = !expanded;">
                             <mat-icon class="material-icons-outlined" color="accent">{{expanded === true ? 'unfold_less':'unfold_more'}}</mat-icon>
                         </button>
