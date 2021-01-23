@@ -129,3 +129,21 @@ $blue: #045195;
     color: #045195;
     font-size: 25px;
 }
+
+.fab {
+    position: fixed;
+    right: 30px;
+    bottom: 30px;
+    z-index: 5;
+    width: unset;
+    padding: 0 135px;
+    border-radius: 29px;
+    .mat-icon {
+        margin-right: 10px;
+    }
+    .extended-fab-button__text {
+        font-weight: 300;
+        letter-spacing: .1em;
+        text-transform: uppercase;
+    }
+}

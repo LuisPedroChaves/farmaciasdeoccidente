@@ -40,8 +40,8 @@ export class SalesComponent implements OnInit, AfterContentInit, OnDestroy {
   ordersp: string[] = [];
 
   dataSource = new MatTableDataSource();
-  columnsToDisplay = ['noOrder', 'noBill', 'createdAt', 'nit', 'name', 'phone', 'address', 'payment', 'state', 'total', 'options'];
-  columnsToDisplay2 = ['image', 'noOrder', 'noBill', 'createdAt', 'nit', 'name', 'phone', 'address',  'payment', 'state', 'total', 'options'];
+  columnsToDisplay = [ 'noBill', 'createdAt', 'nit', 'name', 'phone', 'state', 'total', 'options'];
+  columnsToDisplay2 = ['image',  'noBill', 'createdAt', 'nit', 'name', 'phone',    'state', 'total', 'options'];
   expandedElement: OrderItem | null;
 
   constructor(

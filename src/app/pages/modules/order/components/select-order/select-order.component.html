@@ -1,118 +1,118 @@
 <div class="module-container" *ngIf="selectedOrder !== undefined" data-simplebar>
 
-  <div class="new-header" fxLayout="row wrap" fxLayoutAlign="start center">
-    <button mat-icon-button class="close-button" [routerLink]="'/' + return">
+    <div class="new-header" fxLayout="row wrap" fxLayoutAlign="start center">
+        <button mat-icon-button class="close-button" [routerLink]="'/' + return">
       <mat-icon>close</mat-icon>
     </button>
-    <h2 color="accent" class="ma-0 info-row T">Orden no. {{ selectedOrder.noOrder }}</h2>
-  </div>
-  <div class="container-form">
-    <div class="section" fxLayout="row wrap" fxLayoutAlign="start center">
-      <div [fxFlex]="smallScreen ? 100 : '200px'" fxLayoutAlign="center start" class="text-center form-paddin">
-        <div class="image-edit input-section">
-          <div class="avatarimageStep">
-            <img src="/assets/images/person-icon.jpg" class="avatarimage">
-          </div>
-        </div>
-      </div>
-      <div [fxFlex]="smallScreen ? 100 : ''">
-        <div class="input-section">
-          <h1 class="ma-0">{{selectedOrder.nit}}</h1>
-        </div>
-        <div class="input-section">
-          <h2 class="ma-0 text-muted">{{selectedOrder.name}}</h2>
-        </div>
-        <div class="input-section">
-          <h2 class="ma-0 text-muted">{{selectedOrder.phone}}</h2>
-        </div>
-        <div class="input-section">
-          <h2 class="ma-0 text-muted">{{selectedOrder.address}} {{selectedOrder.town}}, {{selectedOrder.department}}
-          </h2>
-        </div>
-      </div>
-      <div class="input-section" fxLayout="row wrap">
-        <span fxFlex></span>
-        <mat-chip-list>
-          <mat-chip *ngIf="selectedOrder.state === 'ORDEN'">
-            Creada
-          </mat-chip>
-          <mat-chip *ngIf="selectedOrder.state === 'DESPACHO'" selected color="accent">
-            Despachada
-          </mat-chip>
-          <mat-chip *ngIf="selectedOrder.state === 'ENVIO'" selected color="primary">
-            Enviada
-          </mat-chip>
-          <mat-chip *ngIf="selectedOrder.state === 'ENTREGA'" selected color="warn">
-            Entragada
-          </mat-chip>
-          <mat-chip *ngIf="selectedOrder.state === 'FIN'" selected color="warn">
-            Finalizada
-          </mat-chip>
-        </mat-chip-list>
-      </div>
+        <h2 color="accent" class="ma-0 info-row T">Orden no. {{ selectedOrder.noOrder }}</h2>
     </div>
-
-    <div class="card">
-      <div class="section" fxLayout="row wrap">
-        <h2 color="primary" class="product-font ma-0 T">Detalles de la orden</h2>
-      </div> <br>
-      <div class="section infos" fxLayoutAlign="start stard" fxLayout="row wrap">
-        <div fxFlex="60px" fxLayoutAlign="start center" class="text-center form-paddin">
-          <mat-icon class="material-icons-outlined text-muted" color="primary">assignment</mat-icon>
-        </div>
-        <div fxFlex fxLayout="row wrap">
-
-          <div fxFlex="100" class="input-section">
-            <!-- <b class="size-fact">No.Orden: </b> -->
-            <h3 class="ma-0"> <span class="ma-0 text-muted">No.Orden:</span> {{selectedOrder.noOrder}}</h3>
-          </div>
-          <div fxFlex="100" class="input-section">
-            <!-- <b class="size-fact">No. de Factura: </b> -->
-            <h3 class="ma-0"> <span class="ma-0 text-muted">No. de Factura:</span> {{selectedOrder.noBill}}</h3>
-          </div>
-        </div>
-      </div>
-      <div class="section infos" fxLayoutAlign="start stard" fxLayout="row wrap">
-        <div fxFlex="60px" fxLayoutAlign="start center" class="text-center form-paddin">
-          <mat-icon class="material-icons-outlined text-muted" color="primary">request_quote</mat-icon>
-        </div>
-        <div fxFlex fxLayout="row wrap">
-          <div fxFlex="100" class="input-section">
-            <b>Método de pago: </b> {{selectedOrder.payment}}
-          </div>
-          <div fxFlex="100" class="input-section">
-            <h3 class="ma-0"> <b>Total:</b> Q{{selectedOrder.total | number: '.2'}}</h3>
-          </div>
-        </div>
-      </div>
-
-      <div class="section infos" fxLayoutAlign="start stard" fxLayout="row wrap">
-        <div fxFlex="60px" fxLayoutAlign="start center" class="text-center form-paddin">
-          <mat-icon class="material-icons-outlined text-muted" color="primary">article</mat-icon>
-        </div>
-        <div fxFlex fxLayout="row wrap">
-
-          <div fxFlex="100" class="input-section">
-            <b>Detalles: </b> {{selectedOrder.details}}
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <br>
-
-    <div class="card">
-      <div class="section" fxLayout="row wrap">
-        <h2 color="primary" class="product-font ma-0 T">Estado de la Orden</h2>
-      </div><br>
-      <div class="section" fxLayout="row wrap">
-        <div fxFlex fxLayout="row wrap">
-          <div [fxFlex]="smallScreen ? 100 : ''" class="input-section">
-            <div *ngIf="!selectedOrder._delivery" fxLayout="column wrap" fxLayoutAlign="center center" class="joblist">
-              <mat-icon class="text-muted material-icons-outlined" color="primary">alt_route</mat-icon>
-              <span class="text-muted">Orden sin ruta asignada</span>
+    <div class="container-form">
+        <div class="section" fxLayout="row wrap" fxLayoutAlign="start center">
+            <div [fxFlex]="smallScreen ? 100 : '200px'" fxLayoutAlign="center start" class="text-center form-paddin">
+                <div class="image-edit input-section">
+                    <div class="avatarimageStep">
+                        <img src="/assets/images/person-icon.jpg" class="avatarimage">
+                    </div>
+                </div>
             </div>
-            <!-- <div fxLayout="column wrap">
+            <div [fxFlex]="smallScreen ? 100 : ''">
+                <div class="input-section">
+                    <h1 class="ma-0">{{selectedOrder.nit}}</h1>
+                </div>
+                <div class="input-section">
+                    <h2 class="ma-0 text-muted">{{selectedOrder.name}}</h2>
+                </div>
+                <div class="input-section">
+                    <h2 class="ma-0 text-muted">{{selectedOrder.phone}}</h2>
+                </div>
+                <div class="input-section">
+                    <h2 class="ma-0 text-muted">{{selectedOrder.address}} {{selectedOrder.town}}, {{selectedOrder.department}}
+                    </h2>
+                </div>
+            </div>
+            <div class="input-section" fxLayout="row wrap">
+                <span fxFlex></span>
+                <mat-chip-list>
+                    <mat-chip *ngIf="selectedOrder.state === 'ORDEN'">
+                        Creada
+                    </mat-chip>
+                    <mat-chip *ngIf="selectedOrder.state === 'DESPACHO'" selected color="accent">
+                        Despachada
+                    </mat-chip>
+                    <mat-chip *ngIf="selectedOrder.state === 'ENVIO'" selected color="primary">
+                        Enviada
+                    </mat-chip>
+                    <mat-chip *ngIf="selectedOrder.state === 'ENTREGA'" selected color="warn">
+                        Entragada
+                    </mat-chip>
+                    <mat-chip *ngIf="selectedOrder.state === 'FIN'" selected color="warn">
+                        Finalizada
+                    </mat-chip>
+                </mat-chip-list>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="section" fxLayout="row wrap">
+                <h2 color="primary" class="product-font ma-0 T">Detalles de la orden</h2>
+            </div> <br>
+            <div class="section infos" fxLayoutAlign="start stard" fxLayout="row wrap">
+                <div fxFlex="60px" fxLayoutAlign="start center" class="text-center form-paddin">
+                    <mat-icon class="material-icons-outlined text-muted" color="primary">assignment</mat-icon>
+                </div>
+                <div fxFlex fxLayout="row wrap">
+
+                    <div fxFlex="100" class="input-section">
+                        <!-- <b class="size-fact">No.Orden: </b> -->
+                        <h3 class="ma-0"> <span class="ma-0 text-muted">No.Orden:</span> {{selectedOrder.noOrder}}</h3>
+                    </div>
+                    <div fxFlex="100" class="input-section">
+                        <!-- <b class="size-fact">No. de Factura: </b> -->
+                        <h3 class="ma-0"> <span class="ma-0 text-muted">No. de Factura:</span> {{selectedOrder.noBill}}</h3>
+                    </div>
+                </div>
+            </div>
+            <div class="section infos" fxLayoutAlign="start stard" fxLayout="row wrap">
+                <div fxFlex="60px" fxLayoutAlign="start center" class="text-center form-paddin">
+                    <mat-icon class="material-icons-outlined text-muted" color="primary">request_quote</mat-icon>
+                </div>
+                <div fxFlex fxLayout="row wrap">
+                    <div fxFlex="100" class="input-section">
+                        <b>Método de pago: </b> {{selectedOrder.payment}}
+                    </div>
+                    <div fxFlex="100" class="input-section">
+                        <h3 class="ma-0"> <b>Total:</b> Q{{selectedOrder.total | number: '.2'}}</h3>
+                    </div>
+                </div>
+            </div>
+
+            <div class="section infos" fxLayoutAlign="start stard" fxLayout="row wrap">
+                <div fxFlex="60px" fxLayoutAlign="start center" class="text-center form-paddin">
+                    <mat-icon class="material-icons-outlined text-muted" color="primary">article</mat-icon>
+                </div>
+                <div fxFlex fxLayout="row wrap">
+
+                    <div fxFlex="100" class="input-section">
+                        <b>Detalles: </b> {{selectedOrder.details}}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <br>
+
+        <div class="card">
+            <div class="section" fxLayout="row wrap">
+                <h2 color="primary" class="product-font ma-0 T">Estado de la Orden</h2>
+            </div><br>
+            <div class="section" fxLayout="row wrap">
+                <div fxFlex fxLayout="row wrap">
+                    <div [fxFlex]="smallScreen ? 100 : ''" class="input-section">
+                        <div *ngIf="!selectedOrder._delivery" fxLayout="column wrap" fxLayoutAlign="center center" class="joblist">
+                            <mat-icon class="text-muted material-icons-outlined" color="primary">alt_route</mat-icon>
+                            <span class="text-muted">Orden sin ruta asignada</span>
+                        </div>
+                        <!-- <div fxLayout="column wrap">
                             <mat-list style="padding-top: 0;">
                                 <mat-list-item class="assigned-job mat-elevation-z4">
                                     <mat-icon mat-list-icon class="material-icons-outlined whitebg" color="primary">departure_board</mat-icon>
@@ -122,40 +122,42 @@
                                 </mat-list-item>
                             </mat-list>
                         </div> -->
-            <div *ngIf="selectedOrder.timeDispatch" fxLayout="column wrap">
-              <mat-list style="padding-top: 0;">
-                <mat-list-item class="assigned-job mat-elevation-z4">
-                  <mat-icon mat-list-icon class="material-icons-outlined whitebg" color="primary">share_arrival_time
-                  </mat-icon>
-                  <h4 mat-line>Despacho </h4>
-                  <span mat-line class="text-muted">Fecha y hora:
+                        <div *ngIf="selectedOrder.timeDispatch" fxLayout="column wrap">
+                            <mat-list style="padding-top: 0;">
+                                <mat-list-item class="assigned-job mat-elevation-z4">
+                                    <mat-icon mat-list-icon class="material-icons-outlined whitebg" color="primary">share_arrival_time
+                                    </mat-icon>
+                                    <h4 mat-line>Despacho </h4>
+                                    <span mat-line class="text-muted">Fecha y hora:
                     {{selectedOrder.timeDispatch | date: 'dd/MM/yyyy HH:mm'}}</span>
-                  <small mat-line class="text-muted">Tiempo de despacho:</small>
-                  <small mat-line class="text-muted">{{ getDays(selectedOrder.date, selectedOrder.timeDispatch) }} días,</small>
-                  <small mat-line class="text-muted">{{ getHours(selectedOrder.date, selectedOrder.timeDispatch) }} horas,</small>
-                  <small mat-line class="text-muted">{{ getMinutes(selectedOrder.date, selectedOrder.timeDispatch) }} minutos.</small>
-                </mat-list-item>
-              </mat-list>
+                                    <small mat-line class="text-muted">Tiempo de despacho:</small>
+                                    <small mat-line class="text-muted">{{ getDays(selectedOrder.date, selectedOrder.timeDispatch) }} días,</small>
+                                    <small mat-line class="text-muted">{{ getHours(selectedOrder.date, selectedOrder.timeDispatch) }} horas,</small>
+                                    <small mat-line class="text-muted">{{ getMinutes(selectedOrder.date, selectedOrder.timeDispatch) }} minutos.</small>
+                                </mat-list-item>
+                            </mat-list>
+                        </div>
+                        <div fxLayout="column wrap">
+                            <mat-list style="padding-top: 0;">
+                                <mat-list-item class="assigned-job mat-elevation-z4">
+                                    <mat-icon mat-list-icon class="material-icons-outlined whitebg" color="primary">low_priority
+                                    </mat-icon>
+                                    <h4 mat-line>Creación</h4>
+                                    <h2 mat-line class="text-muted">Fecha y hora: {{selectedOrder.date | date: 'dd/MM/yyyy HH:mm'}}</h2>
+                                    <small mat-line class="text-muted">Tiempo de registro: {{ selectedOrder.timeOrder }} minutos </small>
+                                    <span mat-line *ngIf="selectedOrder._user" class="text-muted">Última edición: {{ selectedOrder._user.name }}</span>
+                                </mat-list-item>
+                            </mat-list>
+                        </div>
+                        <button *ngIf="!smallScreen" mat-fab color="warn" class="fab mat-elevation-z10" (click)="newOrder()">
+                          <mat-icon>add</mat-icon><span class="extended-fab-button__text">Orden</span>
+                        </button>
+                    </div>
+                </div>
             </div>
-            <div fxLayout="column wrap">
-              <mat-list style="padding-top: 0;">
-                <mat-list-item class="assigned-job mat-elevation-z4">
-                  <mat-icon mat-list-icon class="material-icons-outlined whitebg" color="primary">low_priority
-                  </mat-icon>
-                  <h4 mat-line>Creación</h4>
-                  <h2 mat-line class="text-muted">Fecha y hora: {{selectedOrder.date | date: 'dd/MM/yyyy HH:mm'}}</h2>
-                  <small mat-line class="text-muted">Tiempo de registro: {{ selectedOrder.timeOrder }} minutos </small>
-                  <span mat-line *ngIf="selectedOrder._user"  class="text-muted">Última edición: {{ selectedOrder._user.name }}</span>
-                </mat-list-item>
-              </mat-list>
-            </div>
-          </div>
         </div>
-      </div>
     </div>
-  </div>
 </div>
-<div fxLayout="column wrap" fxLayoutAlign="center center" class="padding-15 loader-screen"
-  *ngIf="selectedOrder === undefined">
-  <mat-progress-spinner mode="indeterminate" diameter="60" color="warn"></mat-progress-spinner>
+<div fxLayout="column wrap" fxLayoutAlign="center center" class="padding-15 loader-screen" *ngIf="selectedOrder === undefined">
+    <mat-progress-spinner mode="indeterminate" diameter="60" color="warn"></mat-progress-spinner>
 </div>
