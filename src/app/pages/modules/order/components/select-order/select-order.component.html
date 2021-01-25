@@ -1,5 +1,7 @@
 <div class="module-container" *ngIf="selectedOrder !== undefined" data-simplebar>
-
+    <button mat-fab color="warn" class="fab mat-elevation-z10">
+        <mat-icon>done</mat-icon><span class="extended-fab-button__text"> Marcar Entrega</span>
+      </button>
     <div class="new-header" fxLayout="row wrap" fxLayoutAlign="start center">
         <button mat-icon-button class="close-button" [routerLink]="'/' + return">
       <mat-icon>close</mat-icon>
@@ -149,9 +151,6 @@
                                 </mat-list-item>
                             </mat-list>
                         </div>
-                        <button *ngIf="!smallScreen" mat-fab color="warn" class="fab mat-elevation-z10" (click)="newOrder()">
-                          <mat-icon>done</mat-icon><span class="extended-fab-button__text"> Marcar Entrega</span>
-                        </button>
                     </div>
                 </div>
             </div>
