@@ -7,11 +7,12 @@ import { SharedComponentsModule } from '../../shared-components/shared-component
 import { DashboardFactoryComponent } from './components/dashboard-factory/dashboard-factory.component';
 import { DashboardPharmaComponent } from './components/dashboard-pharma/dashboard-pharma.component';
 import { DashboardDeliveryComponent } from './components/dashboard-delivery/dashboard-delivery.component';
+import { DashboardSellerComponent } from './components/dashboard-seller/dashboard-seller.component';
 
 
 
 @NgModule({
-  declarations: [DashboardFactoryComponent, DashboardPharmaComponent, DashboardDeliveryComponent],
+  declarations: [DashboardFactoryComponent, DashboardPharmaComponent, DashboardDeliveryComponent, DashboardSellerComponent],
   imports: [
     CommonModule,
     RouterModule.forChild(DashboardsRoutes),
