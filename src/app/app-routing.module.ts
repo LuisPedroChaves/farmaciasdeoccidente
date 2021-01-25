@@ -23,6 +23,10 @@ const routes: Routes = [
         canActivate: [CheckTokenGuard]
       },
       {
+        path: 'order/:id/:return', pathMatch: 'full',  loadChildren: () => import('./pages/modules/order/order.module').then(m => m.OrderModule),
+        canActivate: [CheckTokenGuard]
+      },
+      {
         path: 'dispatches', pathMatch: 'full',  loadChildren: () => import('./pages/modules/dispatches/dispatches.module').then(m => m.DispatchesModule),
         canActivate: [CheckTokenGuard]
       },
@@ -31,7 +35,7 @@ const routes: Routes = [
         canActivate: [CheckTokenGuard]
       },
       {
-        path: 'order/:id/:return', pathMatch: 'full',  loadChildren: () => import('./pages/modules/order/order.module').then(m => m.OrderModule),
+        path: 'delivery/:id', pathMatch: 'full',  loadChildren: () => import('./pages/modules/delivery/delivery.module').then(m => m.DeliveryModule),
         canActivate: [CheckTokenGuard]
       },
       {

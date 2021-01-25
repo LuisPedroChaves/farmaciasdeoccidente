@@ -37,6 +37,7 @@ export class ApiConfigService {
 
   // Order
   public API_ORDER = this.API_URL + '/order';
+  public API_ROUTE = this.API_URL + '/route';
 
   /* #endregion */
 

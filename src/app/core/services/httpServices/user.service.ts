@@ -48,6 +48,10 @@ export class UserService implements IDataService<UserItem[]>  {
     }
   }
 
+  getUser(id: string): Observable<any> {
+    return this.http.get(this.apiConfigService.API_USER + '/user/' + id);
+  }
+
   createUser(u: UserItem): Observable<any> {
     // const jsonParms = JSON.stringify(u);
     return this.http.post(this.apiConfigService.API_USER, u);

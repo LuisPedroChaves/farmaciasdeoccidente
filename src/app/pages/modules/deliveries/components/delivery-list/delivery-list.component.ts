@@ -5,6 +5,7 @@ import { ConfigService } from 'src/app/core/services/config/config.service';
 import { UserService } from 'src/app/core/services/httpServices/user.service';
 import { EventBusService } from 'src/app/core/services/internal/event-bus.service';
 import { UserItem } from 'src/app/core/models/User';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-delivery-list',
@@ -21,12 +22,14 @@ export class DeliveryListComponent implements OnInit, AfterContentInit, OnDestro
   constructor(
     public eventBus: EventBusService,
     public config: ConfigService,
-    public userService: UserService
+    public userService: UserService,
+    public router: Router
   ) { }
 
   ngOnInit(): void {
     this.usersSubscription = this.userService.readData().subscribe(data => {
       this.users = data;
+      this.users = this.users.filter(user => user._role.type === 'DELIVERY');
     });
   }
 
@@ -36,13 +39,6 @@ export class DeliveryListComponent implements OnInit, AfterContentInit, OnDestro
 
   ngOnDestroy() {
     this.usersSubscription.unsubscribe();
-  }
-
-  emitEvent(event: string, payload?: any) {
-    const e: ControlEvent = new ControlEvent();
-    e.Event = event;
-    e.Payload = payload;
-    this.eventBus.setData(e);
   }
 
   getImage(index: number) {
@@ -56,4 +52,9 @@ export class DeliveryListComponent implements OnInit, AfterContentInit, OnDestro
       case 6: return '/assets/images/avatars/00F.jpg';
     }
   }
+
+  selectDelivery(delivery: UserItem) {
+    this.router.navigate(['/delivery', delivery._id]);
+  }
+
 }

@@ -6,13 +6,12 @@ import { SharedComponentsModule } from '../../shared-components/shared-component
 import { DeliveryListComponent } from './components/delivery-list/delivery-list.component';
 import { DeliveriesComponent } from './components/deliveries/deliveries.component';
 import { ShipmentsComponent } from './components/shipments/shipments.component';
-import { DeliveryDetailsComponent } from './components/delivery-details/delivery-details.component';
 import { CoreModule } from '../../../core/core.module';
 
 
 
 @NgModule({
-  declarations: [DeliveryListComponent, DeliveriesComponent, ShipmentsComponent, DeliveryDetailsComponent],
+  declarations: [DeliveryListComponent, DeliveriesComponent, ShipmentsComponent],
   imports: [
     CommonModule,
     RouterModule.forChild(DeliveriesRoutes),

@@ -3,7 +3,7 @@
 <div fxLayout="row wrap" class="padding-15" *ngIf="users !== undefined">
 
     <div *ngFor="let u of users" fxFlex.gt-lg="25" fxFlex.gt-md="33" fxFlex.gt-sm="50" fxFlex.gt-xs="50" fxFlex="100" class="usercard user">
-        <div matRipple class="cursor-pointer user-card mat-elevation-z2" (click)="emitEvent(config.EVENT_USERS_EDIT, u)" fxLayout="row wrap" fxLayoutAlign="start center">
+        <div matRipple class="cursor-pointer user-card mat-elevation-z2" (click)="selectDelivery(u)" fxLayout="row wrap" fxLayoutAlign="start center">
             <div fxFlex="60px">
                 <img [src]="getImage(u.imageIndex)" alt="" class="avataruser">
             </div>
