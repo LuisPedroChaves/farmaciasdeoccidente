@@ -23,7 +23,7 @@ export class ShipmentsComponent implements OnInit, OnDestroy {
 
   sessionsubscription: Subscription;
 
-  routes: OrderItem[];
+  orders: OrderItem[];
   currentCellar: CellarItem;
 
   dispatchessp: string[] = [];
@@ -31,6 +31,17 @@ export class ShipmentsComponent implements OnInit, OnDestroy {
   loading = false;
   saving = false;
   searchText: string;
+
+  avatars = [
+    { index: 0, image: '/assets/images/avatars/01.png' },
+    { index: 1, image: '/assets/images/avatars/02.png' },
+    { index: 2, image: '/assets/images/avatars/03.png' },
+    { index: 3, image: '/assets/images/avatars/04.png' },
+    { index: 4, image: '/assets/images/avatars/05.png' },
+    { index: 5, image: '/assets/images/avatars/00M.jpg' },
+    { index: 6, image: '/assets/images/avatars/00F.jpg' },
+  ];
+
 
   constructor(
     public store: Store<AppState>,
@@ -42,7 +53,7 @@ export class ShipmentsComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.currentCellar = JSON.parse(localStorage.getItem('currentstore'));
-    this.loadRoutes();
+    this.loadOrders();
   }
 
   ngOnDestroy(): void {
@@ -50,10 +61,10 @@ export class ShipmentsComponent implements OnInit, OnDestroy {
   }
 
 
-  loadRoutes() {
+  loadOrders() {
     this.loading = true;
     this.orderService.getRoutes(this.currentCellar._id).subscribe(data => {
-      this.routes = data.orders;
+      this.orders = data.orders;
       this.loading = false;
     });
   }

@@ -8,6 +8,7 @@ import { ToastyService } from 'src/app/core/services/internal/toasty.service';
 import { AppState } from 'src/app/core/store/app.reducer';
 import { UserItem } from '../../../../../core/models/User';
 import { UserService } from '../../../../../core/services/httpServices/user.service';
+import { NewRouteComponent } from '../../../deliveries/components/new-route/new-route.component';
 
 @Component({
   selector: 'app-delivery-details',
@@ -52,6 +53,23 @@ export class DeliveryDetailsComponent implements OnInit {
       this.userService.getUser(params.id).subscribe(data => {
         this.selectedUser  = data.user;
       });
+    });
+  }
+
+  newRoute() {
+    const dialogRef = this.dialog.open(NewRouteComponent, {
+      width: this.smallScreen ? '100%' : '960px',
+      minHeight: '78vh',
+      maxHeight: '78vh',
+      data: { selectedUser: this.selectedUser },
+      disableClose: true,
+      panelClass: ['farmacia-dialog', 'farmacia'],
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result !== undefined) {
+        //TODO:CARGAR RUTAS DEL REPARTIDOR
+      }
     });
   }
 

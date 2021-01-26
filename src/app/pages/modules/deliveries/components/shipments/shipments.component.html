@@ -1,47 +1,51 @@
 <div *ngIf="!loading" [ngClass]="{'saving': saving}">
-    <header class="header" fxLayout="row wrap" fxLayoutAlign="start center">
-      <mat-form-field appearance="outline" floatLabel="always" class="findinput">
-        <mat-label>Buscar Orden</mat-label>
-        <mat-icon class="text-muted" matPrefix>search</mat-icon>
-        <input matInput type="text" [(ngModel)]="searchText">
-      </mat-form-field> &nbsp; &nbsp; &nbsp;
-    </header>
-    <div class="padding-list">
-      <div class="courselist" fxLayout="row wrap" data-simplebar>
-        <div *ngIf="routes.length > 0"  fxFlex="100" fxLayout="row wrap">
-          <div *ngFor="let c of  (routes | filter: searchText : ['noBill', 'nit', 'name', 'phone', 'address', 'town', 'department'])" fxFlex.gt-lg="25" fxFlex.gt-md="33" fxFlex.gt-sm="50" fxFlex.gt-xs="50"
-            fxFlex="100" [ngClass]="{'inactive': c._delivery}"  class="jobcard user">
-            <div matRipple  (click)="selectOrder(c)"  class="job-card mat-elevation-z2 cursor-pointer" fxLayout="row wrap" fxLayoutAlign="start center">
-              <div  fxFlex="100" fxLayout="row wrap" class="cover"
-                style="background-image: url('assets/images/covers/Psychology.jpg');">
-                <h2 class="more">#{{ c.noOrder }} -</h2>
-                <h2 class="more">Factura: {{ c.noBill }}</h2>
-                <span fxFlex></span>
-              </div>
-              <div  fxFlex="100" fxLayout="column wrap" class="ellipsis-text course-info">
-                <h2 class="ma-0 product-font">{{c.address}}</h2>
-                <span>{{ c.town }}, {{ c.department }}</span>
-                <span class="text-muted">{{c.nit}} - {{ c.name }}</span>
-                <span class="text-muted">Tel: {{ c.phone }}</span>
-                <mat-chip-list class="teacher" *ngIf=" c._delivery !== null && c._delivery !== undefined">
-                    <mat-chip style="max-width: 200px" [selectable]="false" [selected]="false" [disableRipple]="true" >
-                        <img [src]="c._delivery._employee.image" matChipAvatar>
-                        <div class="ellipsis-text">
-                            {{ c._delivery.name }}
-                        </div>
-                    </mat-chip>
-                </mat-chip-list>
-                <span class="text-muted" *ngIf="c._delivery === null || c._delivery === undefined">Orden sin ruta asignada</span>
-              </div>
+  <header class="header" fxLayout="row wrap" fxLayoutAlign="start center">
+    <mat-form-field appearance="outline" floatLabel="always" class="findinput">
+      <mat-label>Buscar Orden</mat-label>
+      <mat-icon class="text-muted" matPrefix>search</mat-icon>
+      <input matInput type="text" [(ngModel)]="searchText">
+    </mat-form-field> &nbsp; &nbsp; &nbsp;
+  </header>
+  <div class="padding-list">
+    <div class="courselist" fxLayout="row wrap" data-simplebar>
+      <div *ngIf="orders.length > 0" fxFlex="100" fxLayout="row wrap">
+        <div
+          *ngFor="let c of  (orders | filter: searchText : ['noBill', 'nit', 'name', 'phone', 'address', 'town', 'department'])"
+          fxFlex.gt-lg="25" fxFlex.gt-md="33" fxFlex.gt-sm="50" fxFlex.gt-xs="50" fxFlex="100"
+          [ngClass]="{'inactive': c._delivery}" class="jobcard user">
+          <div matRipple (click)="selectOrder(c)" class="job-card mat-elevation-z2 cursor-pointer" fxLayout="row wrap"
+            fxLayoutAlign="start center">
+            <div fxFlex="100" fxLayout="row wrap" class="cover"
+              style="background-image: url('assets/images/covers/Psychology.jpg');">
+              <h2 class="more">#{{ c.noOrder }} -</h2>
+              <h2 class="more">Factura: {{ c.noBill }}</h2>
+              <span fxFlex></span>
+            </div>
+            <div fxFlex="100" fxLayout="column wrap" class="ellipsis-text course-info">
+              <h2 class="ma-0 product-font">{{c.address}}</h2>
+              <span>{{ c.town }}, {{ c.department }}</span>
+              <span class="text-muted">{{c.nit}} - {{ c.name }}</span>
+              <span class="text-muted">Tel: {{ c.phone }}</span>
+              <mat-chip-list class="teacher" *ngIf=" c._delivery !== null && c._delivery !== undefined">
+                <mat-chip style="max-width: 200px" [selectable]="false" [selected]="false" [disableRipple]="true">
+                  <img [src]="c._delivery.image ? avatars[c._delivery.image].image : avatars[0].image" matChipAvatar>
+                  <div class="ellipsis-text">
+                    {{ c._delivery.name }}
+                  </div>
+                </mat-chip>
+              </mat-chip-list>
+              <span class="text-muted" *ngIf="c._delivery === null || c._delivery === undefined">Orden sin ruta
+                asignada</span>
             </div>
           </div>
         </div>
       </div>
     </div>
   </div>
-  <div *ngIf="loading" fxLayoutAlign="center center" class="loadingspin" fxLayout="column wrap">
-    <mat-progress-spinner mode="indeterminate" diameter="60" color="warn"></mat-progress-spinner>
-  </div>
-  <button (click)="loadRoutes()" mat-fab color="warn" class="fab mat-elevation-z10">
-    <mat-icon>update</mat-icon><span class="extended-fab-button__text">Actualizar</span>
-  </button>
+</div>
+<div *ngIf="loading" fxLayoutAlign="center center" class="loadingspin" fxLayout="column wrap">
+  <mat-progress-spinner mode="indeterminate" diameter="60" color="warn"></mat-progress-spinner>
+</div>
+<button (click)="loadOrders()" mat-fab color="warn" class="fab mat-elevation-z10">
+  <mat-icon>update</mat-icon><span class="extended-fab-button__text">Actualizar</span>
+</button>

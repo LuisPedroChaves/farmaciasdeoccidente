@@ -7,11 +7,12 @@ import { DeliveryListComponent } from './components/delivery-list/delivery-list.
 import { DeliveriesComponent } from './components/deliveries/deliveries.component';
 import { ShipmentsComponent } from './components/shipments/shipments.component';
 import { CoreModule } from '../../../core/core.module';
+import { NewRouteComponent } from './components/new-route/new-route.component';
 
 
 
 @NgModule({
-  declarations: [DeliveryListComponent, DeliveriesComponent, ShipmentsComponent],
+  declarations: [DeliveryListComponent, DeliveriesComponent, ShipmentsComponent, NewRouteComponent],
   imports: [
     CommonModule,
     RouterModule.forChild(DeliveriesRoutes),

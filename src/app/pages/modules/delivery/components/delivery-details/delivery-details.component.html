@@ -40,14 +40,14 @@ AQUI VA EL ESTADO
                     <div [fxFlex]="smallScreen ? 100 : ''" class="input-section">
                         <div *ngIf="employeejobs.length <= 0" fxLayout="column wrap" fxLayoutAlign="center center" class="joblist">
                             <mat-icon class="text-muted material-icons-outlined">electric_moped</mat-icon>
-                            <span class="text-muted">No hay rutas vigentes</span>
-                            <a mat-stroked-button>
+                            <span class="text-muted">No hay rutas activas</span>
+                            <button mat-stroked-button (click)="newRoute()">
                                 <mat-icon>add</mat-icon> Crear Ruta
-                            </a>
+                            </button>
                         </div>
                         <div *ngIf="employeejobs.length > 0" fxLayout="column wrap">
                             <div fxLayoutAlign="center center" style="margin-bottom: 10px;">
-                                <button mat-stroked-button>
+                                <button mat-stroked-button (click)="newRoute()">
                                     <mat-icon>add</mat-icon> Crear Ruta
                                 </button>
                             </div>

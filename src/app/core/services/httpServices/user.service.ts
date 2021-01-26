@@ -48,6 +48,10 @@ export class UserService implements IDataService<UserItem[]>  {
     }
   }
 
+  getDeliveries(): Observable<any> {
+    return this.http.get(this.apiConfigService.API_USER + '/deliveries');
+  }
+
   getUser(id: string): Observable<any> {
     return this.http.get(this.apiConfigService.API_USER + '/user/' + id);
   }
