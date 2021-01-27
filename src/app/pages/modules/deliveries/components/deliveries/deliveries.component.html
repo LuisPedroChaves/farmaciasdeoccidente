@@ -6,16 +6,23 @@
                 <span fxFlex></span>
             </header>
             <mat-divider></mat-divider>
-            <div fxLayout="row wrap">
+            <div [fxFlex]="smallScreen ? 100:70" fxLayout="row wrap" [ngClass]="{'scrollspace':!smallScreen, 'scrollspace-sm':smallScreen}" class="paddinf10" data-simplebar>
+                <div *ngIf="!smallScreen" fxFlex.gt-sm="100" fxFlex="30" fxLayout="row wrap" class="scrollspace" data-simplebar>
+                    <app-shipments></app-shipments>
+                </div>
+            </div>
+            <mat-divider></mat-divider>
+            <app-delivery-list></app-delivery-list>
+
+
+            <!-- <div fxLayout="row wrap">
                 <mat-tab-group class="module-container">
                     <mat-tab label="Entregas pendientes">
-                        <app-shipments></app-shipments>
                     </mat-tab>
                     <mat-tab label="Repartidores">
-                        <app-delivery-list></app-delivery-list>
                     </mat-tab>
                   </mat-tab-group>
-            </div>
+            </div> -->
         </div>
     </div>
 </div>
