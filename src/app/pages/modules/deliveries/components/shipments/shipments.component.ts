@@ -42,7 +42,6 @@ export class ShipmentsComponent implements OnInit, OnDestroy {
     { index: 6, image: '/assets/images/avatars/00F.jpg' },
   ];
 
-
   constructor(
     public store: Store<AppState>,
     public toasty: ToastyService,
