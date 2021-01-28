@@ -1,227 +1,74 @@
 <div [ngClass]="{ 'app': !smallScreen, 'app-sm': smallScreen } ">
-    <div class="section-content">
-        <div>
-            <header class="module-header colorBarra" [ngClass]="{'padding-25': !smallScreen, 'padding-15': smallScreen }" fxLayoutAlign="start center" fxLayout="row wrap">
-                <h2 class="product-font  module-title ht"> {{ smallScreen ? '': 'Rutas'}}</h2>
-                <span fxFlex></span>
-            </header>
-            <mat-divider class="colorBarra"></mat-divider>
-            <div fxLayout="row wrap">
-                <mat-tab-group mat-stretch-tabs class="module-container colorBarra">
-                    <mat-tab label="Pendientes">
-                        <!-- <div *ngIf="!loading && coursesp.includes('read')" [ngClass]="{'saving': saving}"> -->
-                        <div *ngIf="!loading" [ngClass]="{'saving': saving}" class="mat-elevation-z4">
-                            <header class="header colorBuscar" fxLayout="row wrap" fxLayoutAlign="start center">
-                                <span fxFlex></span>
-                                <mat-form-field appearance="outline" floatLabel="always" class="findinput">
-                                    <mat-label>Buscar Entrega</mat-label>
-                                    <mat-icon class="text-muted" matPrefix>search</mat-icon>
-                                    <input matInput type="text" placeholder="Ingrese entrega" [(ngModel)]="searchtext">
-                                </mat-form-field> &nbsp; &nbsp; &nbsp;
-                            </header>
-                            <div class="padding-list mat-elevation-z4">
-                                <div class="courselist" fxLayout="row wrap" data-simplebar>
-                                    <div fxFlex="100" fxLayout="row wrap">
-                                        <div *ngFor="let c of courses" fxFlex.gt-lg="25" fxFlex.gt-md="33" fxFlex.gt-sm="50" fxFlex.gt-xs="50" fxFlex="100" [ngClass]="{'inactive': !c.isActive}" class="jobcard user">
-                                            <div matRipple class="cursor-pointer job-card mat-elevation-z2" (click)="selectOrder(c)" fxLayout="row wrap" fxLayoutAlign="start center">
-                                                <div fxFlex="100" fxLayout="row wrap" class="cover" style="background-image: url('assets/images/covers/Geography.jpg');">
-                                                    <span class="more" *ngIf="!c.isActive">Curso inactivo</span>
-                                                    <span fxFlex></span>
-                                                    <!-- <button mat-icon-button class="more" *ngIf="coursesp.includes('update')" [matMenuTriggerFor]="menu"> -->
-                                                    <button mat-icon-button class="more" [matMenuTriggerFor]="menu">
-                                                            <mat-icon>more_vert</mat-icon>
-                                                        </button>
-                                                    <mat-menu #menu="matMenu">
-                                                        <!-- <button mat-menu-item (click)="selectCourse(c)"><mat-icon class="material-icons-outlined">create</mat-icon> Editar curso</button> -->
-                                                        <button mat-menu-item>
-                                                                <mat-icon class="material-icons-outlined">create</mat-icon>
-                                                                Editar curso
-                                                            </button>
-                                                        <!-- <button mat-menu-item (click)="assignEmployee(c)"> -->
-                                                        <button mat-menu-item>
-                                                                <mat-icon>
-                                                                    <svg style="width:24px;height:24px" viewBox="0 0 24 24">
-                                                                        <path fill="currentColor"
-                                                                            d="M16.36 12.76C18.31 13.42 20 14.5 20 16V21H4V16C4 14.5 5.69 13.42 7.65 12.76L8.27 14L8.5 14.5C7 14.96 5.9 15.62 5.9 16V19.1H10.12L11 14.03L10.06 12.15C10.68 12.08 11.33 12.03 12 12.03C12.67 12.03 13.32 12.08 13.94 12.15L13 14.03L13.88 19.1H18.1V16C18.1 15.62 17 14.96 15.5 14.5L15.73 14L16.36 12.76M12 5C10.9 5 10 5.9 10 7C10 8.1 10.9 9 12 9C13.1 9 14 8.1 14 7C14 5.9 13.1 5 12 5M12 11C9.79 11 8 9.21 8 7C8 4.79 9.79 3 12 3C14.21 3 16 4.79 16 7C16 9.21 14.21 11 12 11Z" />
-                                                                    </svg>
-                                                                </mat-icon>
-                                                                Asignar empleado
-                                                            </button>
-                                                        <mat-divider></mat-divider>
-                                                        <!-- <button mat-menu-item *ngIf="coursesp.includes('delete')" (click)="delete(c)"><mat-icon class="material-icons-outlined">delete</mat-icon> Eliminar</button> -->
-                                                        <button mat-menu-item>
-                                                                <mat-icon class="material-icons-outlined">delete</mat-icon>
-                                                                Eliminar
-                                                            </button>
-                                                    </mat-menu>
-                                                </div>
-                                                <!-- <div fxFlex="100" (click)="selectCourse(c)" fxLayout="column wrap" class="ellipsis-text course-info"> -->
-                                                <div fxFlex="100" fxLayout="column wrap" class="course-info">
-                                                    <h2 class="ma-0 product-font">{{ c.noOrder }}</h2>
-                                                    <span class="text-muted">{{c.nit}} - {{c.name}}</span>
-
-                                                    <h1 class="textDetails">{{c.address}} </h1>
-                                                </div>
-                                                <div fxFlex="90" class="margenC">
-                                                    <div fxLayout="column wrap">
-                                                        <mat-list style="padding-top: 0;">
-                                                            <mat-list-item class="assigned-job mat-elevation-z4">
-                                                                <mat-icon mat-list-icon class="material-icons-outlined whitebg" color="primary">low_priority</mat-icon>
-                                                                <h4 mat-line>Fecha de Creación</h4>
-                                                                <span mat-line class="text-muted">Hora y fecha:</span>
-                                                                <small mat-line class="text-muted">Campus: </small>
-                                                            </mat-list-item>
-                                                        </mat-list>
-                                                    </div>
-                                                    <div fxLayout="column wrap">
-                                                        <mat-list style="padding-top: 0;">
-                                                            <mat-list-item class="assigned-job mat-elevation-z4">
-                                                                <mat-icon mat-list-icon class="material-icons-outlined whitebg" color="primary">low_priority</mat-icon>
-                                                                <h4 mat-line>Fecha de Creación</h4>
-                                                                <span mat-line class="text-muted">Hora y fecha:</span>
-                                                                <small mat-line class="text-muted">Campus: </small>
-                                                            </mat-list-item>
-                                                        </mat-list>
-                                                    </div>
-                                                    <div fxLayout="column wrap">
-                                                        <mat-list style="padding-top: 0;">
-                                                            <mat-list-item class="assigned-job mat-elevation-z4">
-                                                                <mat-icon mat-list-icon class="material-icons-outlined whitebg" color="primary">low_priority</mat-icon>
-                                                                <h4 mat-line>Fecha de Creación</h4>
-                                                                <span mat-line class="text-muted">Hora y fecha:</span>
-                                                                <small mat-line class="text-muted">Campus: </small>
-                                                            </mat-list-item>
-                                                        </mat-list>
-                                                    </div>
-                                                    <div fxLayout="column wrap">
-                                                        <mat-list style="padding-top: 0;">
-                                                            <mat-list-item class="assigned-job mat-elevation-z4">
-                                                                <mat-icon mat-list-icon class="material-icons-outlined whitebg" color="primary">low_priority</mat-icon>
-                                                                <h4 mat-line>Fecha de Creación</h4>
-                                                                <span mat-line class="text-muted">Hora y fecha:</span>
-                                                                <small mat-line class="text-muted">Campus: </small>
-                                                            </mat-list-item>
-                                                        </mat-list>
-                                                    </div>
-                                                    <div fxLayout="row start end">
-                                                        <button mat-button class="info-row" color="primary">
-                                                            EDITAR
-                                                        </button>
-
-                                                        <button mat-button class="info-row" color="accent">
-                                                            ASIGNAR
-                                                        </button>
-                                                        <button mat-button class="info-row" color="warn">
-                                                            ELIMINAR
-                                                        </button>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div *ngIf="loading" fxLayoutAlign="center center" class="loadingspin" fxLayout="column wrap">
-                                <mat-progress-spinner mode="indeterminate" diameter="40" color="primary">
-                                </mat-progress-spinner>
-                            </div>
-                        </div>
-                        <button *ngIf="!smallScreen" mat-fab color="warn" class="fab mat-elevation-z10">
-                            <mat-icon>update</mat-icon><span class="extended-fab-button__text">Actualizar</span>
-                          </button>
-                    </mat-tab>
-                    <mat-tab label="Finalizadas">
-                        <!-- <app-shipments></app-shipments> -->
-                        <div *ngIf="!loading" [ngClass]="{'saving': saving}">
-                            <header class="header colorBuscar" fxLayout="row wrap" fxLayoutAlign="start center">
-                                <span fxFlex></span>
-                                <mat-form-field appearance="outline" floatLabel="always" class="findinput">
-                                    <mat-label>Buscar Finalizada</mat-label>
-                                    <mat-icon class="text-muted" matPrefix>search</mat-icon>
-                                    <input matInput type="text" placeholder="Ingrese finalizada" [(ngModel)]="searchtext">
-                                </mat-form-field> &nbsp; &nbsp; &nbsp;
-                            </header>
-                            <div class="padding-list">
-                                <div class="courselist" fxLayout="row wrap" data-simplebar>
-                                    <div fxFlex="100" fxLayout="row wrap">
-                                        <div *ngFor="let c of courses" fxFlex.gt-lg="25" fxFlex.gt-md="33" fxFlex.gt-sm="50" fxFlex.gt-xs="50" fxFlex="100" [ngClass]="{'inactive': !c.isActive}" class="jobcard user">
-                                            <div matRipple class="cursor-pointer job-card mat-elevation-z2" (click)="selectOrder(c)" fxLayout="row wrap" fxLayoutAlign="start center">
-                                                <div fxFlex="100" fxLayout="row wrap" class="cover" style="background-image: url('assets/images/covers/{{c.image}}');">
-                                                    <span class="more" *ngIf="!c.isActive">Curso inactivo</span>
-                                                    <span fxFlex></span>
-                                                    <!-- <button mat-icon-button class="more" *ngIf="coursesp.includes('update')" [matMenuTriggerFor]="menu"> -->
-                                                    <button mat-icon-button class="more" [matMenuTriggerFor]="menu">
-                                                            <mat-icon>more_vert</mat-icon>
-                                                        </button>
-                                                    <mat-menu #menu="matMenu">
-                                                        <!-- <button mat-menu-item (click)="selectCourse(c)"><mat-icon class="material-icons-outlined">create</mat-icon> Editar curso</button> -->
-                                                        <button mat-menu-item>
-                                                                <mat-icon class="material-icons-outlined">create</mat-icon>
-                                                                Editar curso
-                                                            </button>
-                                                        <!-- <button mat-menu-item (click)="assignEmployee(c)"> -->
-                                                        <button mat-menu-item>
-                                                                <mat-icon>
-                                                                    <svg style="width:24px;height:24px" viewBox="0 0 24 24">
-                                                                        <path fill="currentColor"
-                                                                            d="M16.36 12.76C18.31 13.42 20 14.5 20 16V21H4V16C4 14.5 5.69 13.42 7.65 12.76L8.27 14L8.5 14.5C7 14.96 5.9 15.62 5.9 16V19.1H10.12L11 14.03L10.06 12.15C10.68 12.08 11.33 12.03 12 12.03C12.67 12.03 13.32 12.08 13.94 12.15L13 14.03L13.88 19.1H18.1V16C18.1 15.62 17 14.96 15.5 14.5L15.73 14L16.36 12.76M12 5C10.9 5 10 5.9 10 7C10 8.1 10.9 9 12 9C13.1 9 14 8.1 14 7C14 5.9 13.1 5 12 5M12 11C9.79 11 8 9.21 8 7C8 4.79 9.79 3 12 3C14.21 3 16 4.79 16 7C16 9.21 14.21 11 12 11Z" />
-                                                                    </svg>
-                                                                </mat-icon>
-                                                                Asignar empleado
-                                                            </button>
-                                                        <mat-divider></mat-divider>
-                                                        <!-- <button mat-menu-item *ngIf="coursesp.includes('delete')" (click)="delete(c)"><mat-icon class="material-icons-outlined">delete</mat-icon> Eliminar</button> -->
-                                                        <button mat-menu-item>
-                                                                <mat-icon class="material-icons-outlined">delete</mat-icon>
-                                                                Eliminar
-                                                            </button>
-                                                    </mat-menu>
-                                                </div>
-                                                <!-- <div fxFlex="100" (click)="selectCourse(c)" fxLayout="column wrap" class="ellipsis-text course-info"> -->
-                                                <div fxFlex="100" fxLayout="column wrap" class="course-info">
-                                                    <h2 class="ma-0 product-font">{{ c.noOrder }}</h2>
-                                                    <span class="text-muted">{{c.nit}} - {{c.name}}</span>
-                                                    <!-- <mat-chip-list class="teacher" *ngIf=" c._employee_job !== null && c._employee_job !== undefined">
-                                        <mat-chip style="max-width: 200px" [selectable]="false" [selected]="false" [disableRipple]="true" >
-                                            <img [src]="c._employee_job._employee.image" matChipAvatar>
-                                            <div class="ellipsis-text">
-                                                {{ c._employee_job._employee.name }}
-                                            </div>
-                                        </mat-chip>
-                                    </mat-chip-list> -->
-                                                    <span class="text-muted" *ngIf="c._employee_job === null || c._employee_job === undefined">No
-                                                            hay docente
-                                                            asignado</span>
-                                                </div>
-                                                <h1 class="textDetails">{{c.address}} </h1>
-                                                <div fxLayout="row center center">
-                                                    <button mat-button class="info-row" color="primary">
-                                                            EDITAR
-                                                        </button>
-
-                                                    <button mat-button class="info-row" color="primary">
-                                                            ASIGNAR
-                                                        </button>
-                                                    <button mat-button class="info-row" color="primary">
-                                                            ELIMINAR
-                                                        </button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div *ngIf="loading" fxLayoutAlign="center center" class="loadingspin" fxLayout="column wrap">
-                                <mat-progress-spinner mode="indeterminate" diameter="40" color="primary">
-                                </mat-progress-spinner>
-                            </div>
-                        </div>
-                        <button *ngIf="!smallScreen" mat-fab color="warn" class="fab mat-elevation-z10">
-                            <mat-icon>update</mat-icon><span class="extended-fab-button__text">Actualizar</span>
-                          </button>
-                    </mat-tab>
-                </mat-tab-group>
+  <div class="section-content">
+    <div>
+      <header class="module-header colorBarra" [ngClass]="{'padding-25': !smallScreen, 'padding-15': smallScreen }" fxLayoutAlign="start center" fxLayout="row wrap">
+        <h2 class="product-font  module-title ht"> Rutas Pendientes</h2>
+        <span fxFlex></span>
+    </header>
+    <mat-divider class="colorBarra"></mat-divider>
+      <div *ngIf="!loading" fxLayout="row wrap">
+        <div class="padding-list mat-elevation-z4 module-container">
+          <button (click)="loadRoutes()" mat-fab class="fab mat-elevation-z10">
+            <mat-icon>update</mat-icon><span class="extended-fab-button__text">Actualizar</span>
+          </button>
+          <div class="courselist" fxLayout="row wrap" data-simplebar>
+            <div fxFlex="100" fxLayout="row wrap">
+              <div *ngFor="let c of activeRoutes" fxFlex.gt-lg="25" fxFlex.gt-md="33" fxFlex.gt-sm="50"
+                fxFlex.gt-xs="50" fxFlex="100" class="jobcard user">
+                <div class="job-card mat-elevation-z2" fxLayout="row wrap" fxLayoutAlign="start center">
+                  <div fxFlex="100" fxLayout="row wrap" class="cover"
+                    style="background-image: url('assets/images/covers/Geography.jpg');">
+                    <h2 class="more">Ruta no.{{ c.noRoute }}</h2><br>
+                    <span fxFlex></span>
+                  </div>
+                  <div fxFlex="100" fxLayout="column wrap" class="ellipsis-tex course-info">
+                    <span class="text-muted">Total: {{c.details.length}} entregas</span>
+                  </div>
+                  <div fxFlex="90" class="margenC">
+                    <div *ngIf="c.details.length > 0" fxLayout="column wrap">
+                      <mat-list
+                        *ngFor="let o of  (c.details | filter: searchText : ['noBill', 'nit', 'name', 'phone', 'address', 'town', 'department'])"
+                        style="padding-top: 0;" class="divider" [ngClass]="{'inactive': o._order.state === 'ENTREGA'}">
+                        <mat-list-item matRipple (click)="selectOrder(o._order)"
+                          class="assigned-job mat-elevation-z4 cursor-pointer">
+                          <mat-icon mat-list-icon *ngIf="o._order.state !== 'ENTREGA'"
+                            class="material-icons-outlined whitebg" color="primary">
+                            receipt_long</mat-icon>
+                          <mat-icon mat-list-icon *ngIf="o._order.state === 'ENTREGA'"
+                            class="material-icons-outlined whitebg" color="warn">
+                            check_circle</mat-icon>
+                          <h4 mat-line>#{{ o._order.noOrder }} <span fxFlex></span> Factura: {{ o._order.noBill }}
+                          </h4>
+                          <small mat-line class="text-muted">{{o._order.name}} </small>
+                          <h4 mat-line>{{o._order.address}} </h4>
+                          <h6 mat-line>{{ o._order.town }}, {{ o._order.department }}
+                          </h6>
+                        </mat-list-item>
+                      </mat-list>
+                    </div>
+                    <div *ngIf="c.state === 'INICIO'" fxLayout="row">
+                      <button mat-button (click)="confirmRoute('rechazar', c)" class="info-row" color="warn">
+                        RECHAZAR
+                      </button>
+                      <span fxFlex></span>
+                      <button mat-button (click)="confirmRoute('confirmar', c)" class="info-row" color="primary">
+                        ACEPTAR
+                      </button>
+                    </div>
+                    <div *ngIf="c.state === 'RUTA'" fxLayout="row">
+                      <h2>En Ruta...</h2>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
+          </div>
         </div>
+      </div>
+      <div *ngIf="loading" fxLayoutAlign="center center" class="loadingspin" fxLayout="column wrap">
+        <mat-progress-spinner mode="indeterminate" diameter="60" color="warn">
+        </mat-progress-spinner>
+      </div>
     </div>
+  </div>
 </div>

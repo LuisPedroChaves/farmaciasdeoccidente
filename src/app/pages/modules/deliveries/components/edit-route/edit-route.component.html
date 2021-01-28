@@ -19,8 +19,8 @@
         <mat-chip *ngIf="route.state === 'FIN'" selected color="warn">
           Finalizada
         </mat-chip>
-        <mat-chip *ngIf="route.state === 'RECHASADA'" selected>
-          Rechasada
+        <mat-chip *ngIf="route.state === 'RECHAZADA'" selected>
+          Rechazada
         </mat-chip>
       </mat-chip-list>
       <span fxFlex></span>
@@ -42,8 +42,13 @@
           <div *ngIf="route.details.length > 0" fxLayout="column wrap">
             <mat-list *ngFor="let c of  route.details" style="padding-top: 0;">
               <mat-list-item class="assigned-job mat-elevation-z4">
-                <mat-icon mat-list-icon class="material-icons-outlined whitebg" color="primary">receipt_long</mat-icon>
-                <h4 mat-line>#{{ c._order.noOrder }} Factura: {{ c._order.noBill }}</h4>
+                <mat-icon mat-list-icon *ngIf="c._order.state !== 'ENTREGA' && route.state !== 'RECHAZADA'"
+                class="material-icons-outlined whitebg" color="primary">
+                receipt_long</mat-icon>
+              <mat-icon mat-list-icon *ngIf="c._order.state === 'ENTREGA' && route.state !== 'RECHAZADA'"
+                class="material-icons-outlined whitebg" color="warn">
+                check_circle</mat-icon>
+                <h4 mat-line>#{{ c._order.noOrder }} <span fxFlex></span>  Factura: {{ c._order.noBill }}</h4>
                 <small mat-line class="text-muted">{{c._order.address}} </small>
                 <small mat-line class="text-muted">{{ c._order.town }}, {{ c._order.department }} </small>
                 <button mat-icon-button (click)="removeOrder(c._order)" *ngIf="route.state === 'INICIO'">
@@ -56,7 +61,7 @@
       </div>
       <div fxFlex fxFlex="50%" fxLayout="row wrap">
         <mat-divider [vertical]="true"></mat-divider>
-        <div [fxFlex]="smallScreen ? 100 : ''" class="input-section">
+        <div *ngIf="route.state === 'INICIO'"  [fxFlex]="smallScreen ? 100 : ''" class="input-section">
           <div fxLayout="column wrap">
             <div class="section" fxLayout="row wrap">
               <h2 color="primary" class="product-font ma-0 T">Ordenes pendientes de entrega</h2>
@@ -77,9 +82,43 @@
               style="padding-top: 0; cursor: pointer;">
               <mat-list-item class="assigned-job mat-elevation-z4">
                 <mat-icon mat-list-icon class="material-icons-outlined whitebg" color="primary">receipt_long</mat-icon>
-                <h4 mat-line>#{{ c.noOrder }} Factura: {{ c.noBill }}</h4>
+                <h4 mat-line>#{{ c.noOrder }} <span fxFlex></span>  Factura: {{ c.noBill }}</h4>
                 <small mat-line class="text-muted">{{c.address}} </small>
                 <small mat-line class="text-muted">{{ c.town }}, {{ c.department }} </small>
+              </mat-list-item>
+            </mat-list>
+          </div>
+        </div>
+        <div *ngIf="route.state !== 'INICIO'"  [fxFlex]="smallScreen ? 100 : ''" class="input-section">
+          <div fxLayout="column wrap">
+            <div class="section" fxLayout="row wrap">
+              <h2 color="primary" class="product-font ma-0 T">Detalles de la ruta</h2>
+            </div><br>
+            <div class="section" fxLayout="row wrap">
+              <h2 color="primary" class="product-font ma-0 T text-muted">Total: Q{{ getTotal() }}</h2>
+            </div><br>
+          </div>
+          <div *ngIf="route.state === 'RUTA'"  fxLayout="column wrap" fxLayoutAlign="center center" class="joblist">
+            <button mat-button *ngIf="!loading" (click)="finishRoute()"
+            color="warn">
+            FINALIZAR RUTA
+          </button>
+          </div>
+          <div *ngIf="route.timeFinish" fxLayout="column wrap">
+            <mat-list style="padding-top: 0;">
+              <mat-list-item class="assigned-job mat-elevation-z4">
+                <mat-icon mat-list-icon class="material-icons-outlined whitebg" color="warn">check_circle
+                </mat-icon>
+                <h4 mat-line>Entrega </h4>
+                <span mat-line class="text-muted">Fecha y hora:
+                  {{route.timeFinish | date: 'dd/MM/yyyy HH:mm'}}</span>
+                <small mat-line class="text-muted">Tiempo de entrega:</small>
+                <small mat-line class="text-muted">{{ getDays(route.date, route.timeFinish) }}
+                  días,</small>
+                <small mat-line class="text-muted">{{ getHours(route.date, route.timeFinish) }}
+                  horas,</small>
+                <small mat-line class="text-muted">{{ getMinutes(route.date, route.timeFinish) }}
+                  minutos.</small>
               </mat-list-item>
             </mat-list>
           </div>
@@ -89,7 +128,7 @@
   </div>
   <mat-divider></mat-divider>
   <div fxLayout="row" class="header">
-      <button mat-stroked-button *ngIf="!loading || route.state !== 'INICIO'"  color="warn" class="product-font" (click)="delete()">
+      <button mat-stroked-button *ngIf="!loading" [disabled]="route.state !== 'INICIO'"   color="warn" class="product-font" (click)="delete()">
         <mat-icon class="material-icons-outlined svg-in-button">delete</mat-icon>
         {{ smallScreen ? '':'Eliminar Ruta'}}
     </button>
@@ -97,7 +136,7 @@
     <button mat-button *ngIf="!loading" (click)="dialogRef.close()" class="info-row">
       CANCELAR
     </button>
-    <button mat-button *ngIf="!loading" (click)="saveRoute()" [disabled]="this.route.details.length === 0 || route.state !== 'INICIO'"
+    <button mat-button *ngIf="!loading && route.state === 'INICIO'" (click)="saveRoute()" [disabled]="this.route.details.length === 0"
       color="primary">
       GUARDAR CAMBIOS
     </button>

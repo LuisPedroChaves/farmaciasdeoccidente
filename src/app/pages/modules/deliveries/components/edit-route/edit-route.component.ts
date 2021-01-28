@@ -52,6 +52,24 @@ export class EditRouteComponent implements OnInit {
     });
   }
 
+  getMinutes(date1, date2) {
+    date1 = new Date(date1);
+    date2 = new Date(date2);
+    return Math.round((((date2.getTime() - date1.getTime()) % 86400000) % 3600000) / 60000).toFixed(2);
+  }
+
+  getHours(date1, date2) {
+    date1 = new Date(date1);
+    date2 = new Date(date2);
+    return Math.floor(((date2.getTime() - date1.getTime()) % 86400000) / 3600000).toFixed(2);
+  }
+
+  getDays(date1, date2) {
+    date1 = new Date(date1);
+    date2 = new Date(date2);
+    return Math.floor((date2.getTime() - date1.getTime()) / 86400000).toFixed(2);
+  }
+
   addOrder(order: OrderItem) {
     if (this.route.details.find(detail => detail._order._id === order._id) || this.route.state !== 'INICIO')  {
       return;
@@ -110,6 +128,36 @@ export class EditRouteComponent implements OnInit {
       this.loading = false;
       this.toasty.error('Error al editar la ruta');
     });
+  }
+
+  finishRoute() {
+    const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
+      width: '350px',
+      data: { title: 'Finalizar Ruta', message: '¿Confirma que desea finalizar la ruta ' + this.route.noRoute + '?'},
+      disableClose: true,
+      panelClass: ['farmacia-dialog', 'farmacia' ],
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result !== undefined) {
+        if (result === true) {
+          this.loading = true;
+          this.route.state = 'FIN';
+          this.routeService.updateRouterState(this.route).subscribe(data => {
+            this.toasty.success('Ruta finalizada exitosamente');
+            this.dialogRef.close('ok');
+            this.loading = false;
+          }, error => {
+            this.loading = false;
+            this.toasty.error('Error al finalizar la ruta');
+          });
+        }
+      }
+    });
+  }
+
+  getTotal() {
+    return this.route.details.reduce((sum, item) => sum + item._order.total, 0).toFixed(2);
   }
 
 }

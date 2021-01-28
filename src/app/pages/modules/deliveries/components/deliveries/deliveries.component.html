@@ -1,28 +1,22 @@
 <div [ngClass]="{ 'app': !smallScreen, 'app-sm': smallScreen } ">
-    <div class="section-content">
-        <div>
-            <header class="module-header" [ngClass]="{'padding-25': !smallScreen, 'padding-15': smallScreen }" fxLayoutAlign="start center" fxLayout="row wrap">
-                <h1 class="product-font ma-0 module-title">Rutas {{ smallScreen ? '': 'y Entregas'}}</h1>
-                <span fxFlex></span>
-            </header>
-            <mat-divider></mat-divider>
-            <div [fxFlex]="smallScreen ? 100:70" fxLayout="row wrap" [ngClass]="{'scrollspace':!smallScreen, 'scrollspace-sm':smallScreen}" class="paddinf10" data-simplebar>
-                <div *ngIf="!smallScreen" fxFlex.gt-sm="100" fxFlex="30" fxLayout="row wrap" class="scrollspace" data-simplebar>
-                    <app-shipments></app-shipments>
-                </div>
+  <div class="section-content">
+    <div>
+      <header class="module-header" [ngClass]="{'padding-25': !smallScreen, 'padding-15': smallScreen }"
+        fxLayoutAlign="start center" fxLayout="row wrap">
+        <h1 class="product-font ma-0 module-title">Rutas {{ smallScreen ? '': 'y Entregas'}}</h1>
+        <span fxFlex></span>
+      </header>
+      <mat-divider></mat-divider>
+      <div fxLayout="row wrap" fxLayoutAlign="start center" style="margin-top: 8px;">
+        <div fxFlex fxLayout="row wrap">
+          <div fxFlex="80%" fxFlex.xs="100%">
+              <app-shipments></app-shipments>
             </div>
-            <mat-divider></mat-divider>
+            <div fxFlex="20%" fxFlex.xs="100%">
+            <h2 class="product-font ma-0 T1">Repartidores</h2>
             <app-delivery-list></app-delivery-list>
-
-
-            <!-- <div fxLayout="row wrap">
-                <mat-tab-group class="module-container">
-                    <mat-tab label="Entregas pendientes">
-                    </mat-tab>
-                    <mat-tab label="Repartidores">
-                    </mat-tab>
-                  </mat-tab-group>
-            </div> -->
+          </div>
         </div>
+      </div>
     </div>
-</div>
+  </div>

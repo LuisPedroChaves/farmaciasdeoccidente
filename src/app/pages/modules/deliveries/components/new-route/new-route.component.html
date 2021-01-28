@@ -25,7 +25,7 @@
                         <mat-list *ngFor="let c of  newRoute.details" style="padding-top: 0;" class="divider">
                             <mat-list-item class="assigned-job mat-elevation-z4">
                                 <mat-icon mat-list-icon class="material-icons-outlined whitebg" color="primary">receipt_long</mat-icon>
-                                <h4 mat-line>#{{ c._order.noOrder }} Factura: {{ c._order.noBill }}</h4>
+                                <h4 mat-line>#{{ c._order.noOrder }} <span fxFlex></span>  Factura: {{ c._order.noBill }}</h4>
                                 <small mat-line class="text-muted">{{c._order.address}} </small>
                                 <small mat-line class="text-muted">{{ c._order.town }}, {{ c._order.department }} </small>
                                 <button mat-icon-button (click)="removeOrder(c._order)"><mat-icon>close</mat-icon></button>
@@ -55,7 +55,7 @@
                         <mat-list matRipple (click)="addOrder(c)" *ngFor="let c of  (orders | filter: searchText : ['noBill', 'nit', 'name', 'phone', 'address', 'town', 'department'])" style="padding-top: 0; cursor: pointer;">
                             <mat-list-item class="assigned-job mat-elevation-z4">
                                 <mat-icon mat-list-icon class="material-icons-outlined whitebg" color="primary">receipt_long</mat-icon>
-                                <h4 mat-line>#{{ c.noOrder }} Factura: {{ c.noBill }}</h4>
+                                <h4 mat-line>#{{ c.noOrder }} <span fxFlex></span>  Factura: {{ c.noBill }}</h4>
                                 <small mat-line class="text-muted">{{c.address}} </small>
                                 <small mat-line class="text-muted">{{ c.town }}, {{ c.department }} </small>
                             </mat-list-item>

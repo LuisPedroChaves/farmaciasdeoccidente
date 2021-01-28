@@ -1,6 +1,6 @@
 <div class="padding-15">
 </div>
-<div fxLayout="row wrap" class="padding-15" *ngIf="users !== undefined">
+<div fxLayout="column wrap" class="padding-15" *ngIf="users !== undefined">
 
     <div *ngFor="let u of users" fxFlex.gt-lg="25" fxFlex.gt-md="33" fxFlex.gt-sm="50" fxFlex.gt-xs="50" fxFlex="100" class="usercard user">
         <div matRipple class="cursor-pointer user-card mat-elevation-z2" (click)="selectDelivery(u)" fxLayout="row wrap" fxLayoutAlign="start center">

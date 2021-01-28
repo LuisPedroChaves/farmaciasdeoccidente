@@ -18,7 +18,7 @@
       </div>
       <div [fxFlex]="smallScreen ? 100 : ''">
         <div class="input-section">
-          <h1 class="ma-0">{{selectedUser.name}}{{ selectedUser.imageIndex }}</h1>
+          <h1 class="ma-0">{{selectedUser.name}}</h1>
         </div>
         <div class="input-section">
           <h2 class="ma-0 text-muted">{{selectedUser._role.name}}</h2>
@@ -27,10 +27,12 @@
       <div class="input-section" fxLayout="row wrap">
         <span fxFlex></span>
         <mat-chip-list>
-          <mat-chip *ngIf="activeRoutes.length > 0" selected color="accent">
-            En ruta
-          </mat-chip>
-          <mat-chip *ngIf="activeRoutes.length === 0" selected color="warn">
+          <mat-chip *ngIf="activeRoutes.length > 0">
+              <mat-icon class="material-icons-outlined" style="margin-right: 5px;">electric_moped</mat-icon>
+              En ruta
+            </mat-chip>
+            <mat-chip *ngIf="activeRoutes.length === 0" selected color="warn">
+            <mat-icon class="material-icons-outlined" style="margin-right: 5px;">where_to_vote</mat-icon>
             Disponible
           </mat-chip>
         </mat-chip-list>
@@ -69,7 +71,7 @@
                     <span mat-line class="text-muted">Hora y fecha: {{a.date | date: 'dd/MM/yyyy HH:mm' }}</span>
                     <mat-chip-list>
                       <mat-chip *ngIf="a.state === 'INICIO'" selected color="primary">
-                        Pendiente de aceptación
+                        Pendiente
                       </mat-chip>
                       <mat-chip *ngIf="a.state === 'RUTA'" selected color="warn">
                         En ruta
@@ -134,11 +136,11 @@
                     <h4 mat-line>{{ a.details.length }} Ordenes</h4>
                     <span mat-line class="text-muted">Hora y fecha: {{a.date | date: 'dd/MM/yyyy HH:mm' }}</span>
                     <mat-chip-list>
-                      <mat-chip *ngIf="a.state === 'INICIO'" selected color="primary">
-                        Pendiente de aceptación
+                      <mat-chip *ngIf="a.state === 'RECHAZADA'" selected>
+                        Rechazada
                       </mat-chip>
-                      <mat-chip *ngIf="a.state === 'RUTA'" selected color="warn">
-                        En ruta
+                      <mat-chip *ngIf="a.state === 'FIN'" selected color="warn">
+                        Finalizada
                       </mat-chip>
                     </mat-chip-list>
                   </mat-list-item>

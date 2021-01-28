@@ -19,7 +19,6 @@ import { EditRouteComponent } from '../../../deliveries/components/edit-route/ed
 })
 export class DeliveryDetailsComponent implements OnInit {
 
-  configSubscription: Subscription;
   sessionsubscription: Subscription;
   smallScreen = window.innerWidth < 960 ? true : false;
 
@@ -75,7 +74,7 @@ export class DeliveryDetailsComponent implements OnInit {
 
   editRoute(route: RouteItem) {
     const dialogRef = this.dialog.open(EditRouteComponent, {
-      width: this.smallScreen ? '100%' : '800px',
+      width: this.smallScreen ? '100%' : '960px',
       data: { route: route },
       disableClose: true,
       panelClass: ['farmacia-dialog', 'farmacia'],

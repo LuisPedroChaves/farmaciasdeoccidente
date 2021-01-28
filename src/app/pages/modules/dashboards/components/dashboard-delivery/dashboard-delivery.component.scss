@@ -147,8 +147,8 @@ div.scrollmenu a:hover {
 
 .fab {
     position: fixed;
-    right: 30px;
-    bottom: 30px;
+    right: 20px;
+    bottom: 20px;
     z-index: 5;
     width: unset;
     padding: 0 26px;
@@ -164,6 +164,10 @@ div.scrollmenu a:hover {
 }
 
 .colorBarra {
+    background-color: #045195;
+}
+
+.app-sm {
     background-color: #045195;
 }
 
@@ -314,4 +318,8 @@ $blue: #045195;
 
 .margenC {
     margin: auto;
+}
+
+.inactive {
+    opacity: 0.5;
 }
