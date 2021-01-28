@@ -8,11 +8,12 @@ import { DeliveriesComponent } from './components/deliveries/deliveries.componen
 import { ShipmentsComponent } from './components/shipments/shipments.component';
 import { CoreModule } from '../../../core/core.module';
 import { NewRouteComponent } from './components/new-route/new-route.component';
+import { EditRouteComponent } from './components/edit-route/edit-route.component';
 
 
 
 @NgModule({
-  declarations: [DeliveryListComponent, DeliveriesComponent, ShipmentsComponent, NewRouteComponent],
+  declarations: [DeliveryListComponent, DeliveriesComponent, ShipmentsComponent, NewRouteComponent, EditRouteComponent],
   imports: [
     CommonModule,
     RouterModule.forChild(DeliveriesRoutes),

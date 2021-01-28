@@ -1,5 +1,4 @@
-import { Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { Component, OnInit, AfterContentInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
@@ -9,6 +8,9 @@ import { AppState } from 'src/app/core/store/app.reducer';
 import { UserItem } from '../../../../../core/models/User';
 import { UserService } from '../../../../../core/services/httpServices/user.service';
 import { NewRouteComponent } from '../../../deliveries/components/new-route/new-route.component';
+import { RouteService } from '../../../../../core/services/httpServices/route.service';
+import { RouteItem } from '../../../../../core/models/Route';
+import { EditRouteComponent } from '../../../deliveries/components/edit-route/edit-route.component';
 
 @Component({
   selector: 'app-delivery-details',
@@ -21,13 +23,10 @@ export class DeliveryDetailsComponent implements OnInit {
   sessionsubscription: Subscription;
   smallScreen = window.innerWidth < 960 ? true : false;
 
-  employeejobs: any[] = [];
-
-  // jobs
-  jobs: any[];
-  campus: any[];
 
   selectedUser: UserItem;
+  activeRoutes: RouteItem[];
+  routes: RouteItem[];
 
   avatars = [
     { index: 0, image: '/assets/images/avatars/01.png' },
@@ -39,20 +38,53 @@ export class DeliveryDetailsComponent implements OnInit {
     { index: 6, image: '/assets/images/avatars/00F.jpg' },
   ];
 
+  month = new Date().getMonth() + 1;
+  year = new Date().getFullYear();
+  currentFilter = 'current';
+
   constructor(
     public store: Store<AppState>,
     public activatedRoute: ActivatedRoute,
     public router: Router,
     public toasty: ToastyService,
     public dialog: MatDialog,
-    public userService: UserService
-  ) { }
+    public userService: UserService,
+    public routeService: RouteService
+  ) {
+    this.routeService.readData().subscribe(data => {
+      this.routes = data;
+    });
+  }
 
   ngOnInit(): void {
     this.activatedRoute.params.subscribe( (params) => {
       this.userService.getUser(params.id).subscribe(data => {
         this.selectedUser  = data.user;
+        this.loadRoutes();
       });
+    });
+  }
+
+  loadRoutes() {
+    this.routeService.getActives(this.selectedUser._id).subscribe(data => {
+      this.activeRoutes = data.actives;
+    });
+    const filter = { month: this.month, year: this.year, _user: this.selectedUser._id };
+    this.routeService.loadData(filter);
+  }
+
+  editRoute(route: RouteItem) {
+    const dialogRef = this.dialog.open(EditRouteComponent, {
+      width: this.smallScreen ? '100%' : '800px',
+      data: { route: route },
+      disableClose: true,
+      panelClass: ['farmacia-dialog', 'farmacia'],
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result !== undefined) {
+        this.loadRoutes();
+      }
     });
   }
 
@@ -68,9 +100,39 @@ export class DeliveryDetailsComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(result => {
       if (result !== undefined) {
-        //TODO:CARGAR RUTAS DEL REPARTIDOR
+        this.loadRoutes();
       }
     });
+  }
+
+  applyFilter(filterValue?: string) {
+    if (filterValue) {
+
+      // this.dataSource.filter = filterValue.trim().toLowerCase();
+      if (this.currentFilter === 'last') {
+        if (new Date().getMonth() === 0) {
+          this.month = 12;
+        } else {
+          this.month = new Date().getMonth();
+
+        }
+      }
+      if (this.currentFilter === 'current') { this.month = new Date().getMonth() + 1; }
+      const filters = { month: this.month, year: this.year, _user: this.selectedUser._id };
+      this.routeService.loadData(filters);
+    } else {
+      if (this.currentFilter === 'last') {
+        if (new Date().getMonth() === 0) {
+          this.month = 12;
+        } else {
+          this.month = new Date().getMonth();
+
+        }
+      }
+      if (this.currentFilter === 'current') { this.month = new Date().getMonth() + 1; }
+      const filters = { month: this.month, year: this.year, _user: this.selectedUser._id };
+      this.routeService.loadData(filters);
+    }
   }
 
 }

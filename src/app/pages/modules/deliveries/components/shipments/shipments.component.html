@@ -28,7 +28,7 @@
               <span class="text-muted">Tel: {{ c.phone }}</span>
               <mat-chip-list class="teacher" *ngIf=" c._delivery !== null && c._delivery !== undefined">
                 <mat-chip style="max-width: 200px" [selectable]="false" [selected]="false" [disableRipple]="true">
-                  <img [src]="c._delivery.image ? avatars[c._delivery.image].image : avatars[0].image" matChipAvatar>
+                  <img [src]="c._delivery.imageIndex ? avatars[c._delivery.imageIndex].image : avatars[0].image" matChipAvatar>
                   <div class="ellipsis-text">
                     {{ c._delivery.name }}
                   </div>
