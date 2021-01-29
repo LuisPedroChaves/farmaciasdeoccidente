@@ -11,6 +11,7 @@ import { NewRouteComponent } from '../../../deliveries/components/new-route/new-
 import { RouteService } from '../../../../../core/services/httpServices/route.service';
 import { RouteItem } from '../../../../../core/models/Route';
 import { EditRouteComponent } from '../../../deliveries/components/edit-route/edit-route.component';
+import { CellarItem } from 'src/app/core/models/Cellar';
 
 @Component({
   selector: 'app-delivery-details',
@@ -26,6 +27,7 @@ export class DeliveryDetailsComponent implements OnInit {
   selectedUser: UserItem;
   activeRoutes: RouteItem[];
   routes: RouteItem[];
+  currentCellar: CellarItem;
 
   avatars = [
     { index: 0, image: '/assets/images/avatars/01.png' },
@@ -56,23 +58,28 @@ export class DeliveryDetailsComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.activatedRoute.params.subscribe( (params) => {
+    this.activatedRoute.params.subscribe((params) => {
       this.userService.getUser(params.id).subscribe(data => {
-        this.selectedUser  = data.user;
+        this.selectedUser = data.user;
         this.loadRoutes();
       });
     });
+    this.currentCellar = JSON.parse(localStorage.getItem('currentstore'));
   }
 
   loadRoutes() {
     this.routeService.getActives(this.selectedUser._id).subscribe(data => {
       this.activeRoutes = data.actives;
     });
-    const filter = { month: this.month, year: this.year, _user: this.selectedUser._id };
+    const filter = { month: this.month, year: this.year, _user: this.selectedUser._id, _cellar: this.currentCellar._id };
     this.routeService.loadData(filter);
   }
 
   editRoute(route: RouteItem) {
+    if (route._cellar._id !== this.currentCellar._id) {
+      this.toasty.error('Esta ruta no pertenece a esta sucursal');
+      return;
+    }
     const dialogRef = this.dialog.open(EditRouteComponent, {
       width: this.smallScreen ? '100%' : '960px',
       data: { route: route },
@@ -92,7 +99,7 @@ export class DeliveryDetailsComponent implements OnInit {
       width: this.smallScreen ? '100%' : '960px',
       minHeight: '78vh',
       maxHeight: '78vh',
-      data: { selectedUser: this.selectedUser },
+      data: { selectedUser: this.selectedUser, currentCellar: this.currentCellar },
       disableClose: true,
       panelClass: ['farmacia-dialog', 'farmacia'],
     });
@@ -117,7 +124,7 @@ export class DeliveryDetailsComponent implements OnInit {
         }
       }
       if (this.currentFilter === 'current') { this.month = new Date().getMonth() + 1; }
-      const filters = { month: this.month, year: this.year, _user: this.selectedUser._id };
+      const filters = { month: this.month, year: this.year, _user: this.selectedUser._id, _cellar: this.currentCellar._id };
       this.routeService.loadData(filters);
     } else {
       if (this.currentFilter === 'last') {
@@ -129,7 +136,7 @@ export class DeliveryDetailsComponent implements OnInit {
         }
       }
       if (this.currentFilter === 'current') { this.month = new Date().getMonth() + 1; }
-      const filters = { month: this.month, year: this.year, _user: this.selectedUser._id };
+      const filters = { month: this.month, year: this.year, _user: this.selectedUser._id, _cellar: this.currentCellar._id };
       this.routeService.loadData(filters);
     }
   }

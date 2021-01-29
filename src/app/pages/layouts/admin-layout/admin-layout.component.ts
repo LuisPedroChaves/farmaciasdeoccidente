@@ -33,7 +33,6 @@ export class AdminLayoutComponent implements OnInit, OnDestroy {
     { state: 'users', name: 'Usuarios', type: 'link', icon: 'people', order: 2 },
     // { state: 'employees', name: 'Empleados', type: 'link', icon: 'groups', order: 3 },
     { state: 'receivables', name: 'Cuentas por cobrar', type: 'link', icon: 'request_quote', order: 5, },
-    { state: 'statements', name: 'Estado de cuenta', type: 'link', icon: 'supervised_user_circle', order: 6, },
   ];
 
   constructor(

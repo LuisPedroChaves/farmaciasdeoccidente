@@ -37,7 +37,7 @@ export class CustomersRoutesComponent implements OnInit, AfterContentInit, OnDes
   columnsToDisplay = ['name', 'nit', 'phone', 'address', 'town', 'department'];
   columnsToDisplay2 = ['image', 'name', 'nit', 'phone', 'address', 'town', 'department'];
   expandedElement: CustomerItem | null;
-  // HOOK FUNCTIONS //////////////////////////////////////////////////////////////////////////////////////////
+
   constructor(
     public store: Store<AppState>,
     public eventBus: EventBusService,

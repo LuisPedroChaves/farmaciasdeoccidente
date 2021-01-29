@@ -19,8 +19,8 @@ export class RouteService implements IDataService<RouteItem[]> {
     public apiConfigService: ApiConfigService
   ) { }
 
-  loadData({month, year, _user}) {
-    this.http.get(this.apiConfigService.API_ROUTE + '/' + _user + '?month=' + month + '&year=' + year).pipe(
+  loadData({month, year, _user, _cellar}) {
+    this.http.get(this.apiConfigService.API_ROUTE + '/' + _user + '/' + _cellar + '?month=' + month + '&year=' + year).pipe(
         map((response: any) => {
           this.routeList = response.routes;
           this.routeSubject.next( this.routeList);
@@ -28,9 +28,9 @@ export class RouteService implements IDataService<RouteItem[]> {
   }
 
   getData(filter: any) {
-    const {month, year, _user} = filter;
+    const {month, year, _user, _cellar} = filter;
     if ( this.routeList === undefined ) {
-      this.loadData({month, year, _user});
+      this.loadData({month, year, _user, _cellar});
     } else {
       this.routeSubject.next( this.routeList );
     }

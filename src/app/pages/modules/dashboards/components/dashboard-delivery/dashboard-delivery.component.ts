@@ -81,8 +81,6 @@ export class DashboardDeliveryComponent implements OnInit, OnDestroy {
       this.activeRoutes = data.actives;
       this.loading = false;
     });
-    const filter = { month: this.month, year: this.year, _user: this.selectedUser._id };
-    this.routeService.loadData(filter);
   }
 
   confirmRoute(type: string, route: RouteItem) {
@@ -119,35 +117,4 @@ export class DashboardDeliveryComponent implements OnInit, OnDestroy {
       }
     });
   }
-
-  applyFilter(filterValue?: string) {
-    if (filterValue) {
-
-      // this.dataSource.filter = filterValue.trim().toLowerCase();
-      if (this.currentFilter === 'last') {
-        if (new Date().getMonth() === 0) {
-          this.month = 12;
-        } else {
-          this.month = new Date().getMonth();
-
-        }
-      }
-      if (this.currentFilter === 'current') { this.month = new Date().getMonth() + 1; }
-      const filters = { month: this.month, year: this.year, _user: this.selectedUser._id };
-      this.routeService.loadData(filters);
-    } else {
-      if (this.currentFilter === 'last') {
-        if (new Date().getMonth() === 0) {
-          this.month = 12;
-        } else {
-          this.month = new Date().getMonth();
-
-        }
-      }
-      if (this.currentFilter === 'current') { this.month = new Date().getMonth() + 1; }
-      const filters = { month: this.month, year: this.year, _user: this.selectedUser._id };
-      this.routeService.loadData(filters);
-    }
-  }
-
 }

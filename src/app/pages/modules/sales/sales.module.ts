@@ -6,11 +6,12 @@ import { RouterModule } from '@angular/router';
 import { SharedComponentsModule } from '../../shared-components/shared-components.module';
 import { SalesRoutes } from './sales.routing';
 import { EditSaleComponent } from './components/edit-sale/edit-sale.component';
+import { PaySaleComponent } from './components/pay-sale/pay-sale.component';
 
 
 
 @NgModule({
-  declarations: [SalesComponent, NewSaleComponent, EditSaleComponent],
+  declarations: [SalesComponent, NewSaleComponent, EditSaleComponent, PaySaleComponent],
   imports: [
     CommonModule,
     RouterModule.forChild(SalesRoutes),

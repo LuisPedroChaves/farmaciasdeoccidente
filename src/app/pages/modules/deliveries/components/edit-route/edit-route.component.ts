@@ -20,6 +20,7 @@ export class EditRouteComponent implements OnInit {
 
   route: RouteItem = {
     _user: this.data.selectedUser,
+    _cellar: null,
     noRoute: 0,
     details: [],
     state: 'INICIO'

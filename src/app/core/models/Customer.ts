@@ -1,3 +1,4 @@
+import { UserItem } from './User';
 
 export interface CustomerItem {
 	_id?: string,
@@ -10,5 +11,6 @@ export interface CustomerItem {
  	company: string,
  	transport: string,
  	limitCredit: number,
- 	limitDaysCredit: number,
+	 limitDaysCredit: number,
+	 _seller?: UserItem,
 }

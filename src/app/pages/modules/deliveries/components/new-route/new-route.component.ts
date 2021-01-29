@@ -19,6 +19,7 @@ export class NewRouteComponent implements OnInit {
 
   newRoute: RouteItem = {
     _user: this.data.selectedUser,
+    _cellar: this.data.currentCellar,
     noRoute: 0,
     details: [],
     state: 'INICIO'

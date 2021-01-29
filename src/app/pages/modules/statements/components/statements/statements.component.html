@@ -1,0 +1,195 @@
+<div class="module-container" *ngIf="selectedCustomer !== undefined" data-simplebar>
+  <div class="new-header" fxLayout="row wrap" fxLayoutAlign="start center">
+    <button mat-icon-button class="close-button" [routerLink]="'/' + return">
+      <mat-icon>close</mat-icon>
+    </button>
+    <h2 color="accent" class="ma-0 info-row T">{{ selectedCustomer.nit }} - {{ selectedCustomer.name }}</h2>
+  </div>
+  <div class="container-form">
+    <div class="section" fxLayout="row wrap" fxLayoutAlign="start center">
+      <div [fxFlex]="smallScreen ? 100 : '200px'" fxLayoutAlign="center start" class="text-center form-paddin">
+        <div class="image-edit input-section">
+          <div class="avatarimageStep">
+            <img src="/assets/images/person-icon.jpg" class="avatarimage">
+          </div>
+        </div>
+      </div>
+      <div [fxFlex]="smallScreen ? 100 : ''">
+        <div class="input-section">
+          <h1 class="ma-0">{{selectedCustomer.company}}</h1>
+        </div>
+        <div class="input-section">
+          <h2 class="ma-0 text-muted">{{selectedCustomer.phone}}</h2>
+        </div>
+        <div class="input-section">
+          <h2 class="ma-0 text-muted">{{selectedCustomer.transport}}</h2>
+        </div>
+        <div class="input-section">
+          <h2 class="ma-0 text-muted">{{selectedCustomer.address}} {{selectedCustomer.town}},
+            {{selectedCustomer.department}}
+          </h2>
+        </div>
+      </div>
+      <div class="input-section" fxLayout="column wrap">
+        <span fxFlex></span>
+        <mat-chip-list>
+          <mat-chip selected color="accent">
+            {{ selectedCustomer.limitDaysCredit }} días de crédito
+          </mat-chip>
+          <mat-chip selected color="accent">
+            Crédito: Q{{ selectedCustomer.limitCredit | number: '.2' }}
+          </mat-chip>
+          <mat-chip style="max-width: 200px" [selectable]="false" [selected]="false" [disableRipple]="true">
+            <img
+              [src]="selectedCustomer._seller.imageIndex ? avatars[selectedCustomer._seller.imageIndex].image : avatars[0].image"
+              matChipAvatar>
+            <div class="ellipsis-text">
+              {{ selectedCustomer._seller.name }}
+            </div>
+          </mat-chip>
+        </mat-chip-list>
+      </div>
+    </div>
+    <div class="card">
+      <div class="section" fxLayout="column wrap">
+        <h2 color="primary" class="product-font ma-0 T">Estado de cuenta</h2>
+      </div> <br>
+      <div class="section" fxLayout="row wrap" fxLayoutAlign="center center">
+        <div class="input-section" fxLayout="column wrap" class="text-center form-paddin">
+          <span fxFlex></span>
+          <div class="input-section">
+            <h2>Pendientes:</h2>
+            <h1 class="ma-0 info-row">{{ this.selectedCustomer.recivables.length }}</h1>
+          </div>
+        </div>
+        <div class="input-section" fxLayout="column wrap" class="text-center form-paddin">
+          <span fxFlex></span>
+          <div class="input-section">
+            <h2>Vencidas:</h2>
+            <h1 class="ma-0 info-row">{{ timeInvaliable }}</h1>
+          </div>
+        </div>
+        <div class="input-section" fxLayout="column wrap" class="text-center form-paddin">
+          <span fxFlex></span>
+          <div class="input-section">
+            <h2>Saldo Total: </h2>
+            <h1 *ngIf="selectedCustomer.limitCredit > total"  color="accent" class="ma-0 info-row T">Q{{total | number: '.2'}}</h1>
+            <h1 *ngIf="selectedCustomer.limitCredit <= total" class="ma-0 info-row" style="color: brown;">Q{{total | number: '.2'}}</h1>
+          </div>
+        </div>
+      </div>
+      <br>
+      <br>
+    </div>
+
+    <br>
+
+    <div class="card">
+      <mat-tab-group mat-align-tabs="center">
+        <mat-tab label="Cuentas por cobrar">
+          <br>
+          <div class="section" fxLayout="row wrap">
+            <div fxFlex fxLayout="row wrap">
+              <div [fxFlex]="smallScreen ? 100 : ''" class="input-section">
+                <div *ngIf="selectedCustomer.recivables.length === 0" fxLayout="column wrap"
+                  fxLayoutAlign="center center" class="joblist">
+                  <mat-icon class="text-muted material-icons-outlined" color="primary">money_off</mat-icon>
+                  <span class="text-muted">No hay cuentas pendientes de cobro</span>
+                </div>
+                <div *ngIf="selectedCustomer.recivables.length > 0" fxLayout="column wrap">
+                  <mat-list matRipple (click)="pay(r)"  *ngFor="let r of selectedCustomer.recivables" style="padding-top: 0; cursor: pointer;">
+                    <mat-list-item class="assigned-job mat-elevation-z4">
+                      <mat-icon mat-list-icon class="material-icons-outlined whitebg" color="warn">receipt_long
+                      </mat-icon>
+                      <h4 mat-line>{{r.noBill}} </h4>
+                      <small mat-line class="text-muted">{{ r._cellar.name }}</small>
+                      <span mat-line class="text-muted">Fecha y hora:</span>
+                      <span mat-line class="text-muted">
+                        {{r.date | date: 'dd/MM/yyyy HH:mm'}}
+                      </span>
+                      <mat-chip-list mat-line>
+                        <mat-chip *ngIf="!r.timeAvaliable">
+                          Vencida
+                        </mat-chip>
+                      </mat-chip-list>
+                      <h2>Q{{ r.total | number: '.2' }}</h2>
+                    </mat-list-item>
+                  </mat-list>
+                </div>
+              </div>
+            </div>
+          </div>
+        </mat-tab>
+        <mat-tab label="Historial">
+            <br>
+          <div class="section" fxLayout="row wrap">
+            <span fxFlex></span>
+            <mat-form-field appearance="outline" color="primary" class="findinput">
+              <mat-label>Filtro</mat-label>
+              <mat-select [(ngModel)]="currentFilter" (selectionChange)="applyFilter()">
+                <mat-option value="current">Mes actual</mat-option>
+                <mat-option value="last">Mes anterior</mat-option>
+                <mat-option value="month">Seleccionar Mes</mat-option>
+              </mat-select>
+            </mat-form-field>
+            <mat-select (selectionChange)="applyFilter()"
+              [ngStyle]="{'display': currentFilter === 'month' ? 'inline': 'none'}" class="dateinput"
+              [(ngModel)]="this.month">
+              <mat-option [value]="1">Enero</mat-option>
+              <mat-option [value]="2">Febrero</mat-option>
+              <mat-option [value]="3">Marzo</mat-option>
+              <mat-option [value]="4">Abril</mat-option>
+              <mat-option [value]="5">Mayo</mat-option>
+              <mat-option [value]="6">Junio</mat-option>
+              <mat-option [value]="7">Julio</mat-option>
+              <mat-option [value]="8">Agosto</mat-option>
+              <mat-option [value]="9">Septiembre</mat-option>
+              <mat-option [value]="10">Octubre</mat-option>
+              <mat-option [value]="11">Noviembre</mat-option>
+              <mat-option [value]="12">Diciembre</mat-option>
+            </mat-select>
+            <mat-select (selectionChange)="applyFilter()"
+              [ngStyle]="{'display': currentFilter === 'month' ? 'inline': 'none'}" *ngIf="currentFilter === 'month'"
+              class="dateinput" [(ngModel)]="this.year">
+              <mat-option
+                *ngFor="let y of [2020, 2021, 2022, 2023, 2024, 2025, 2026, 2027, 2028, 2029, 2030, 2031, 2032, 2033,2034,2035,2036,2037,2038,2039,2040]"
+                [value]="y">{{ y }}</mat-option>
+            </mat-select>
+          </div><br>
+          <div *ngIf="!loading" class="section" fxLayout="row wrap">
+            <div fxFlex fxLayout="row wrap">
+              <div [fxFlex]="smallScreen ? 100 : ''" class="input-section">
+                <div *ngIf="sales.length === 0" fxLayout="column wrap" fxLayoutAlign="center center" class="joblist">
+                  <mat-icon class="text-muted material-icons-outlined" color="primary">money_off</mat-icon>
+                  <span class="text-muted">No hay historial de ventas</span>
+                </div>
+                <div *ngIf="sales.length > 0" fxLayout="column wrap">
+                  <mat-list matRipple (click)="pay(r)"  *ngFor="let r of sales" style="padding-top: 0; cursor: pointer;">
+                    <mat-list-item class="assigned-job mat-elevation-z4">
+                      <mat-icon mat-list-icon class="material-icons-outlined whitebg" color="warn">receipt_long
+                      </mat-icon>
+                      <h4 mat-line>{{r.noBill}} </h4>
+                      <small mat-line class="text-muted">{{ r._cellar.name }}</small>
+                      <span mat-line class="text-muted">Fecha y hora:</span>
+                      <span mat-line class="text-muted">
+                        {{r.date | date: 'dd/MM/yyyy HH:mm'}}
+                      </span>
+                      <h2>Q{{ r.total | number: '.2' }}</h2>
+                    </mat-list-item>
+                  </mat-list>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div fxLayout="column wrap" fxLayoutAlign="center center" class="padding-15 loader-screen" *ngIf="loading">
+            <mat-progress-spinner mode="indeterminate" diameter="60" color="warn"></mat-progress-spinner>
+          </div>
+        </mat-tab>
+      </mat-tab-group>
+    </div>
+  </div>
+</div>
+<div fxLayout="column wrap" fxLayoutAlign="center center" class="padding-15 loader-screen"
+  *ngIf="selectedCustomer === undefined">
+  <mat-progress-spinner mode="indeterminate" diameter="60" color="warn"></mat-progress-spinner>
+</div>

@@ -7,7 +7,5 @@
     { "name": "internalOrders", "label": "Pedidos a bodegas", "parent": "PHARMA", "level": 1 , "options": ["read","update","delete","create"]},
     { "name": "transfers", "label": "Traslados", "parent": "PHARMA", "level": 1 , "options": ["read","update","delete","create"]},
     { "name": "sales", "label": "Ventas", "parent": "PHARMA", "level": 1 , "options": ["read","update","delete","create"]},
-    { "name": "customers", "label": "Catálogo de clientes", "parent": "PHARMA", "level": 1 , "options": ["read","update","delete","create"]},
-    { "name": "receivables", "label": "Cuentas por cobrar", "parent": "PHARMA", "level": 1 , "options": ["read","update","delete","create"]},
-    { "name": "statements", "label": "Estado de cuenta", "parent": "PHARMA", "level": 1 , "options": ["read","update","delete","create"]}
+    { "name": "customers", "label": "Catálogo de clientes", "parent": "PHARMA", "level": 1 , "options": ["read","update","delete","create"]}
 ]

@@ -6,7 +6,7 @@
     <div class="cellarheader product-font" fxLayoutAlign="start end">
         <span *ngIf="editMode === false">
             {{ currentCellar.name }}
-            
+
         </span>
         <mat-form-field appearance="standard" fxFlex *ngIf="editMode === true">
             <mat-label>Nombre</mat-label>
@@ -15,7 +15,7 @@
     </div>
     <div class="cellarinfo" fxLayout="row wrap">
         <div fxFlex.gt-sm="60" fxFlex="100" class="ca-padding-20">
-            <div class="info-row">
+            <!-- <div class="info-row">
                 <div class="info-title">
                     Elementos
                 </div>
@@ -45,7 +45,7 @@
                         </div>
                     </div>
                 </div>
-            </div>
+            </div> -->
             <br>
             <div *ngIf="editMode === false" class="info-row">
                 <div class="info-title">

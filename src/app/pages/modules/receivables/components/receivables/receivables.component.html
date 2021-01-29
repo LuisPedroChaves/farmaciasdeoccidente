@@ -1,102 +1,110 @@
 <div [ngClass]="{ 'app': !smallScreen, 'app-sm': smallScreen } ">
-    <div class="section-content">
-        <button *ngIf="!smallScreen" mat-fab color="primary" class="fab mat-elevation-z10" (click)="newCostumer()">
-            <mat-icon>add</mat-icon><span class="extended-fab-button__text">Venta</span>
-          </button>
-        <div>
-            <header class="module-header" [ngClass]="{'padding-25': !smallScreen, 'padding-15': smallScreen }" fxLayoutAlign="start center" fxLayout="row wrap">
-                <h1 class="product-font ma-0 module-title">Cuentas por Cobrar</h1>
-            </header>
-            <mat-divider></mat-divider>
+  <div class="section-content">
+    <div>
+      <header class="module-header" [ngClass]="{'padding-25': !smallScreen, 'padding-15': smallScreen }"
+        fxLayoutAlign="start center" fxLayout="row wrap">
+        <h1 class="product-font ma-0 module-title">Cuentas por cobrar</h1>
+      </header>
+      <mat-divider></mat-divider>
 
-            <div fxLayout="row wrap" class="module-container " data-simplebar>
-                <div class="container-strech">
-                    <div fxLayout="row wrap" fxLayoutAlign="start center" class="costumers-header">
-                        <h2 class="title1 product-font ma-0">Cuentas Pendientes por cobrar</h2>
-                        &nbsp;&nbsp;&nbsp;&nbsp;
-                        <button *ngIf="smallScreen" class="new-button-sm" mat-icon-button (click)="newCostumer()">
-                            <svg class="svg-24 svg-in-button" viewBox="0 0 24 24">
-                                <path fill="currentColor" d="M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z" />
-                            </svg>
-                        </button>
-
-                        <span fxFlex></span>
-                        <mat-form-field appearance="outline" floatLabel="always" class="findinput">
-                            <mat-label>Buscar</mat-label>
-                            <mat-icon class="text-muted" matPrefix>search</mat-icon>
-                            <input (keyup)="applyFilter($event)" matInput type="text">
-                        </mat-form-field>
-                    </div>
-                    <div class="costumers-header">
-
-                        <table mat-table [dataSource]="dataSource" multiTemplateDataRows class="mat-elevation-z2 noborder-table ">
-                            <ng-container matColumnDef="image">
-                                <th mat-header-cell *matHeaderCellDef></th>
-                                <td mat-cell *matCellDef="let element">
-                                    <mat-icon color="primary" class="material-icons-outlined">person</mat-icon>
-                                </td>
-                            </ng-container>
-
-                            <ng-container matColumnDef="customer">
-                                <th mat-header-cell *matHeaderCellDef> Cliente </th>
-                                <td mat-cell *matCellDef="let element"> {{element.customer}} </td>
-                            </ng-container>
-
-                            <ng-container matColumnDef="employee">
-                                <th mat-header-cell *matHeaderCellDef> Empleado </th>
-                                <td mat-cell *matCellDef="let element"> {{element.employee}} </td>
-                            </ng-container>
-
-                            <ng-container matColumnDef="date">
-                                <th mat-header-cell *matHeaderCellDef> Fecha </th>
-                                <td mat-cell *matCellDef="let element"> {{element.date}} </td>
-                            </ng-container>
-                            <ng-container matColumnDef="invoice">
-                                <th mat-header-cell *matHeaderCellDef> No. de Factura </th>
-                                <td mat-cell *matCellDef="let element"> {{element.invoice}} </td>
-                            </ng-container>
-                            <ng-container matColumnDef="state">
-                                <th mat-header-cell *matHeaderCellDef> Estado </th>
-                                <td mat-cell *matCellDef="let element"> {{element.state}} </td>
-                            </ng-container>
-                            <ng-container matColumnDef="balance">
-                                <th mat-header-cell *matHeaderCellDef> Saldo </th>
-                                <td mat-cell *matCellDef="let element"> {{element.balance}} </td>
-                            </ng-container>
-                            <ng-container matColumnDef="credit">
-                                <th mat-header-cell *matHeaderCellDef>Credito </th>
-                                <td mat-cell *matCellDef="let element"> {{element.credit}} </td>
-                            </ng-container>
-                            <ng-container matColumnDef="creditDays">
-                                <th mat-header-cell *matHeaderCellDef> Dias de Credito </th>
-                                <td mat-cell *matCellDef="let element"> {{element.creditDays}} </td>
-                            </ng-container>
-
-                            <!-- Expanded Content Column - The detail row is made up of this one column that spans across all columns -->
-                            <!-- <ng-container matColumnDef="expandedDetail">
-                                <td mat-cell *matCellDef="let element" [attr.colspan]="columnsToDisplay.length">
-                                <div class="example-element-detail" [@detailExpand]="element == expandedElement ? 'expanded' : 'collapsed'">
-                                    <div class="example-element-description">
-                                        Editar Cliente
-        
-                                    </div>
-                                </div>
-                                </td>
-                            </ng-container> -->
-
-                            <tr mat-header-row *matHeaderRowDef="columnsToDisplay2"></tr>
-                            <tr mat-row *matRowDef="let element; columns: columnsToDisplay2;" class="example-element-row" (click)="editCostumer(element)">
-                            </tr>
-                            <!-- <tr mat-row *matRowDef="let element; columns: columnsToDisplay2;"
-                                class="example-element-row"
-                                [class.example-expanded-row]="expandedElement === element"
-                                (click)="expandedElement = expandedElement === element ? null : element">
-                            </tr> -->
-                            <!-- <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="example-detail-row"></tr> -->
-                        </table>
-                    </div>
-                </div>
-            </div>
+      <div fxLayout="row wrap" class="module-container " data-simplebar>
+        <!-- <div class="container-strech"> -->
+        <div fxLayout="row wrap" fxLayoutAlign="start center" class="costumers-header">
+          <h2 class="title1 product-font ma-0">Catálogo de clientes</h2>
+          &nbsp;&nbsp;&nbsp;&nbsp;
+          <span fxFlex></span>
+          <mat-form-field appearance="outline" floatLabel="always" class="findinput">
+            <mat-label>Buscar</mat-label>
+            <mat-icon class="text-muted" matPrefix>search</mat-icon>
+            <input (keyup)="applyFilter($event)" matInput type="text">
+          </mat-form-field>
         </div>
+        <div class="costumers-header" *ngIf="recivables !== undefined">
+          <!-- *****Tabla responsiva agregar: matSort matTableResponsive -------------- e importar el módulo en sharedCompnents y tambien en el style SCSS -->
+          <table mat-table matSort matTableResponsive [dataSource]="dataSource" multiTemplateDataRows
+            class="mat-elevation-z2 noborder-table ">
+            <ng-container matColumnDef="image">
+              <th mat-header-cell *matHeaderCellDef></th>
+              <td mat-cell *matCellDef="let element">
+                <mat-icon color="primary" class="material-icons-outlined">person</mat-icon>
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="nit">
+              <th mat-header-cell *matHeaderCellDef> Nit </th>
+              <td mat-cell *matCellDef="let element"> {{element.nit}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="name">
+              <th mat-header-cell *matHeaderCellDef> Nombre </th>
+              <td mat-cell *matCellDef="let element"> {{element.name}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="company">
+              <th mat-header-cell *matHeaderCellDef> Empresa </th>
+              <td mat-cell *matCellDef="let element"> {{element.company}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="phone">
+              <th mat-header-cell *matHeaderCellDef> Teléfono </th>
+              <td mat-cell *matCellDef="let element"> {{element.phone}} </td>
+            </ng-container>
+            <ng-container matColumnDef="address">
+              <th mat-header-cell *matHeaderCellDef> Dirección </th>
+              <td mat-cell *matCellDef="let element"> {{element.address}} </td>
+            </ng-container>
+            <ng-container matColumnDef="town">
+              <th mat-header-cell *matHeaderCellDef> Municipio </th>
+              <td mat-cell *matCellDef="let element"> {{element.town}} </td>
+            </ng-container>
+            <ng-container matColumnDef="department">
+              <th mat-header-cell *matHeaderCellDef> Departamento </th>
+              <td mat-cell *matCellDef="let element"> {{element.department}} </td>
+            </ng-container>
+            <ng-container matColumnDef="_seller">
+              <th mat-header-cell *matHeaderCellDef> Vendedor </th>
+              <td mat-cell *matCellDef="let element"> {{element._seller.name}} </td>
+            </ng-container>
+            <ng-container matColumnDef="limitDaysCredit">
+              <th mat-header-cell *matHeaderCellDef> Días de Crédito </th>
+              <td mat-cell *matCellDef="let element"> {{element.limitDaysCredit}} </td>
+            </ng-container>
+            <ng-container matColumnDef="limitCredit">
+              <th mat-header-cell *matHeaderCellDef> Limite de Crédito </th>
+              <td mat-cell *matCellDef="let element"> Q{{element.limitCredit | number: '.2'}} </td>
+            </ng-container>
+            <ng-container matColumnDef="state">
+              <th mat-header-cell *matHeaderCellDef> Estado </th>
+              <td mat-cell *matCellDef="let element">
+                <mat-chip-list>
+                  <mat-chip *ngIf="!element.timeAvaliable" selected color="accent">
+                    Tiempo vencido
+                  </mat-chip>
+                  <mat-chip *ngIf="element.timeAvaliable" selected color="warn">
+                    Tiempo vigente
+                  </mat-chip>
+                </mat-chip-list>
+              </td>
+            </ng-container>
+            <ng-container matColumnDef="balance">
+              <th mat-header-cell *matHeaderCellDef> Saldo </th>
+              <td mat-cell *matCellDef="let element">
+                  <span *ngIf="element.limitCredit > element.balance">Q{{element.balance | number: '.2'}}</span>
+                  <span *ngIf="element.limitCredit <= element.balance" style="color:brown;">Q{{element.balance | number: '.2'}}</span>
+                </td>
+            </ng-container>
+            <tr mat-header-row *matHeaderRowDef="columnsToDisplay2"></tr>
+            <tr mat-row *matRowDef="let element; columns: columnsToDisplay2;" class="example-element-row"
+              (click)="selectCustomer(element)">
+            </tr>
+          </table>
+        </div>
+        <div fxLayout="column wrap" fxLayoutAlign="center center" class="padding-15 loader-screen"
+          *ngIf="recivables === undefined">
+          <mat-progress-spinner mode="indeterminate" diameter="60" color="warn"></mat-progress-spinner>
+        </div>
+        <!-- </div> -->
+      </div>
     </div>
+  </div>
 </div>
