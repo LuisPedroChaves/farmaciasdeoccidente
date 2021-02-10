@@ -1,13 +1,26 @@
 [
-    { "name": "order", "label": "Ordenes", "parent": "PHARMA", "level": 1 , "options": ["read","update","delete","create"] },
-    { "name": "orders", "label":"Ordenes", "parent": "order", "level": 2 , "options": ["read","update","delete","create"] },
-    { "name": "dispatches", "label":"Despachos", "parent": "order", "level": 2 , "options": ["read","update","delete","create"] },
-    { "name": "deliveries", "label": "Rutas y Entregas", "parent": "order", "level": 2 , "options": ["read","update","delete","create"] },
-    { "name": "customersRoutes", "label": "Clientes", "parent": "PHARMA", "level": 1 , "options": ["read","update","delete","create"]},
-    { "name": "internalOrders", "label": "Pedidos a bodegas", "parent": "PHARMA", "level": 1 , "options": ["read","update","delete","create"]},
-    { "name": "transfers", "label": "Traslados", "parent": "PHARMA", "level": 1 , "options": ["read","update","delete","create"]},
-    { "name": "sales", "label": "Ventas", "parent": "PHARMA", "level": 1 , "options": ["read","update","delete","create"]},
-    { "name": "customers", "label": "Catálogo de clientes", "parent": "PHARMA", "level": 1 , "options": ["read","update","delete","create"]},
-    { "name": "receivables", "label": "Cuentas por cobrar", "parent": "PHARMA", "level": 1 , "options": ["read","update","delete","create"]},
-    { "name": "statements", "label": "Estado de cuenta", "parent": "PHARMA", "level": 1 , "options": ["read","update","delete","create"]}
+    { "name": "order", "label": "Ordenes", "parent": "PHARMA", "level": 1, "options": ["read", "update", "delete", "create"] },
+    { "name": "orders", "label": "Ordenes", "parent": "order", "level": 2, "options": ["read", "update", "delete", "create"] },
+    { "name": "dispatches", "label": "Despachos", "parent": "order", "level": 2, "options": ["read", "update", "delete", "create"] },
+    { "name": "deliveries", "label": "Rutas y Entregas", "parent": "order", "level": 2, "options": ["read", "update", "delete", "create"] },
+    { "name": "customersRoutes", "label": "Clientes", "parent": "PHARMA", "level": 1, "options": ["read", "update", "delete", "create"] },
+    { "name": "internalOrders", "label": "Pedidos a bodegas", "parent": "PHARMA", "level": 1, "options": ["read", "update", "delete", "create"] },
+    { "name": "transfers", "label": "Traslados", "parent": "PHARMA", "level": 1, "options": ["read", "update", "delete", "create"] },
+    { "name": "sales", "label": "Ventas", "parent": "PHARMA", "level": 1, "options": ["read", "update", "delete", "create"] },
+    { "name": "customers", "label": "Catálogo de clientes", "parent": "PHARMA", "level": 1, "options": ["read", "update", "delete", "create"] },
+    { "name": "receivables", "label": "Cuentas por cobrar", "parent": "PHARMA", "level": 1, "options": ["read", "update", "delete", "create"] },
+    { "name": "statements", "label": "Estado de cuenta", "parent": "PHARMA", "level": 1, "options": ["read", "update", "delete", "create"] },
+
+    { "name": "order", "label": "Ordenes", "parent": "FACTORY", "level": 1, "options": ["read", "update", "delete", "create"] },
+    { "name": "orders", "label": "Ordenes", "parent": "order", "level": 2, "options": ["read", "update", "delete", "create"] },
+    { "name": "dispatches", "label": "Despachos", "parent": "order", "level": 2, "options": ["read", "update", "delete", "create"] },
+    { "name": "deliveries", "label": "Rutas y Entregas", "parent": "order", "level": 2, "options": ["read", "update", "delete", "create"] },
+    { "name": "customersRoutes", "label": "Clientes", "parent": "FACTORY", "level": 1, "options": ["read", "update", "delete", "create"] },
+    { "name": "internalOrders", "label": "Pedidos a bodegas", "parent": "FACTORY", "level": 1, "options": ["read", "update", "delete", "create"] },
+    { "name": "transfers", "label": "Traslados", "parent": "FACTORY", "level": 1, "options": ["read", "update", "delete", "create"] },
+    { "name": "sales", "label": "Ventas", "parent": "FACTORY", "level": 1, "options": ["read", "update", "delete", "create"] },
+    { "name": "customers", "label": "Catálogo de clientes", "parent": "FACTORY", "level": 1, "options": ["read", "update", "delete", "create"] },
+    { "name": "receivables", "label": "Cuentas por cobrar", "parent": "FACTORY", "level": 1, "options": ["read", "update", "delete", "create"] },
+    { "name": "statements", "label": "Estado de cuenta", "parent": "FACTORY", "level": 1, "options": ["read", "update", "delete", "create"] }
+
 ]
