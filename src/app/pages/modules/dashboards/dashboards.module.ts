@@ -8,6 +8,7 @@ import { DashboardFactoryComponent } from './components/dashboard-factory/dashbo
 import { DashboardPharmaComponent } from './components/dashboard-pharma/dashboard-pharma.component';
 import { DashboardDeliveryComponent } from './components/dashboard-delivery/dashboard-delivery.component';
 import { DashboardSellerComponent } from './components/dashboard-seller/dashboard-seller.component';
+import { CoreModule } from '../../../core/core.module';
 
 
 
@@ -16,6 +17,7 @@ import { DashboardSellerComponent } from './components/dashboard-seller/dashboar
   imports: [
     CommonModule,
     RouterModule.forChild(DashboardsRoutes),
+    CoreModule,
     SharedComponentsModule,
   ],
   providers: [DashboardGuard]

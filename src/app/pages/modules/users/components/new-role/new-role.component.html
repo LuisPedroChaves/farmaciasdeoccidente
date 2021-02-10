@@ -20,6 +20,7 @@
           <mat-button-toggle value="PHARMA"><span class="uppercase">farmacia</span></mat-button-toggle>
           <mat-button-toggle value="FACTORY"><span class="uppercase">bodega</span></mat-button-toggle>
           <mat-button-toggle value="DELIVERY"><span class="uppercase">repartidor</span></mat-button-toggle>
+          <mat-button-toggle value="SELLER"><span class="uppercase">vendedor</span></mat-button-toggle>
           <mat-button-toggle value="ADMIN"><span class="uppercase">admin</span></mat-button-toggle>
         </mat-button-toggle-group>
         <mat-label>Tipo de Rol</mat-label>
@@ -45,6 +46,18 @@
             security
         </mat-icon>
         <span>Los roles administrativos pueden acceder a todo el sistema</span>
+    </div>
+    <div *ngIf="currentPermissions === 'DELIVERY'"  fxFlex="100" fxLayoutAlign="center center" fxLayout="column" style="height: 80vh">
+        <mat-icon class="material-icons-outlined">
+            electric_moped
+        </mat-icon>
+        <span>Los roles de repartidor sólo pueden acceder a sus rutas asignadas</span>
+    </div>
+    <div *ngIf="currentPermissions === 'SELLER'"  fxFlex="100" fxLayoutAlign="center center" fxLayout="column" style="height: 80vh">
+        <mat-icon class="material-icons-outlined">
+            contact_phone
+        </mat-icon>
+        <span>Los roles de vendedor sólo pueden acceder a su cartera de clientes</span>
     </div>
     <mat-expansion-panel *ngFor="let m of getPermissions(currentPermissions)" id="epn" [expanded]="allExpandState"
       class="expanded-section">

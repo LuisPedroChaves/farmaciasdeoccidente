@@ -1,172 +1,150 @@
 <div [ngClass]="{ 'app': !smallScreen, 'app-sm': smallScreen } ">
-    <div class="section-content farmacia">
-        <div>
-            <header class="module-header" [ngClass]="{'padding-25': !smallScreen, 'padding-15': smallScreen }" fxLayoutAlign="start center" fxLayout="row wrap">
-                <h4 class="product-font ma-0 module-title">Ventas</h4> &nbsp;&nbsp;&nbsp;&nbsp;
-                <h2 class="title1 product-font ma-0">Listado general de Ventas</h2>
-            </header>
-            <mat-divider></mat-divider>
-            <div fxLayout="row wrap" class="module-container " data-simplebar>
-                <!-- <div class="container-strech"> -->
-                <div fxLayout="row wrap" fxLayoutAlign="start center" class="costumers-header">
-                    <button *ngIf="smallScreen" class="new-button-sm" mat-icon-button (click)="newOrder()">
+  <div class="section-content farmacia">
+    <div>
+      <header class="module-header" [ngClass]="{'padding-25': !smallScreen, 'padding-15': smallScreen }"
+        fxLayoutAlign="start center" fxLayout="row wrap">
+        <h4 class="product-font ma-0 module-title">Ventas</h4> &nbsp;&nbsp;&nbsp;&nbsp;
+        <h2 class="title1 product-font ma-0">Listado general de Ventas</h2>
+      </header>
+      <mat-divider></mat-divider>
+      <div fxLayout="row wrap" class="module-container " data-simplebar>
+        <!-- <div class="container-strech"> -->
+        <div fxLayout="row wrap" fxLayoutAlign="start center" class="costumers-header">
+          <button *ngIf="smallScreen" class="new-button-sm" mat-icon-button (click)="newOrder()">
             <svg class="svg-24 svg-in-button" viewBox="0 0 24 24">
               <path fill="currentColor" d="M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z" />
             </svg>
           </button>
-                    <mat-form-field appearance="outline" floatLabel="always" class="findinput">
-                        <mat-label>Buscar</mat-label>
-                        <mat-icon class="text-muted" matPrefix>search</mat-icon>
-                        <input matInput (keyup)="applyFilter2($event)" type="text">
-                    </mat-form-field>
-                    <span fxFlex></span>
-                    <mat-form-field appearance="outline" color="primary" class="findinput">
-                        <mat-label>Filtro</mat-label>
-                        <mat-select [(ngModel)]="currentFilter" (selectionChange)="applyFilter()">
-                            <mat-option value="current">Mes actual</mat-option>
-                            <mat-option value="last">Mes anterior</mat-option>
-                            <mat-option value="month">Seleccionar Mes</mat-option>
-                        </mat-select>
-                    </mat-form-field>
+          <mat-form-field appearance="outline" floatLabel="always" class="findinput">
+            <mat-label>Buscar</mat-label>
+            <mat-icon class="text-muted" matPrefix>search</mat-icon>
+            <input matInput (keyup)="applyFilter2($event)" type="text">
+          </mat-form-field>
+          <span fxFlex></span>
+          <mat-form-field appearance="outline" color="primary" class="findinput">
+            <mat-label>Filtro</mat-label>
+            <mat-select [(ngModel)]="currentFilter" (selectionChange)="applyFilter()">
+              <mat-option value="current">Mes actual</mat-option>
+              <mat-option value="last">Mes anterior</mat-option>
+              <mat-option value="month">Seleccionar Mes</mat-option>
+            </mat-select>
+          </mat-form-field>
 
-                    <mat-select (selectionChange)="applyFilter()" [ngStyle]="{'display': currentFilter === 'month' ? 'inline': 'none'}" class="dateinput" [(ngModel)]="this.month">
-                        <mat-option [value]="1">Enero</mat-option>
-                        <mat-option [value]="2">Febrero</mat-option>
-                        <mat-option [value]="3">Marzo</mat-option>
-                        <mat-option [value]="4">Abril</mat-option>
-                        <mat-option [value]="5">Mayo</mat-option>
-                        <mat-option [value]="6">Junio</mat-option>
-                        <mat-option [value]="7">Julio</mat-option>
-                        <mat-option [value]="8">Agosto</mat-option>
-                        <mat-option [value]="9">Septiembre</mat-option>
-                        <mat-option [value]="10">Octubre</mat-option>
-                        <mat-option [value]="11">Noviembre</mat-option>
-                        <mat-option [value]="12">Diciembre</mat-option>
-                    </mat-select>
-                    <mat-select (selectionChange)="applyFilter()" [ngStyle]="{'display': currentFilter === 'month' ? 'inline': 'none'}" *ngIf="currentFilter === 'month'" class="dateinput" [(ngModel)]="this.year">
-                        <mat-option *ngFor="let y of [2020, 2021, 2022, 2023, 2024, 2025, 2026, 2027, 2028, 2029, 2030, 2031, 2032, 2033,2034,2035,2036,2037,2038,2039,2040]" [value]="y">{{ y }}</mat-option>
-                    </mat-select>
-                </div>
-                <button *ngIf="!smallScreen" mat-fab color="primary" class="fab mat-elevation-z10" (click)="newOrder()">
+          <mat-select (selectionChange)="applyFilter()"
+            [ngStyle]="{'display': currentFilter === 'month' ? 'inline': 'none'}" class="dateinput"
+            [(ngModel)]="this.month">
+            <mat-option [value]="1">Enero</mat-option>
+            <mat-option [value]="2">Febrero</mat-option>
+            <mat-option [value]="3">Marzo</mat-option>
+            <mat-option [value]="4">Abril</mat-option>
+            <mat-option [value]="5">Mayo</mat-option>
+            <mat-option [value]="6">Junio</mat-option>
+            <mat-option [value]="7">Julio</mat-option>
+            <mat-option [value]="8">Agosto</mat-option>
+            <mat-option [value]="9">Septiembre</mat-option>
+            <mat-option [value]="10">Octubre</mat-option>
+            <mat-option [value]="11">Noviembre</mat-option>
+            <mat-option [value]="12">Diciembre</mat-option>
+          </mat-select>
+          <mat-select (selectionChange)="applyFilter()"
+            [ngStyle]="{'display': currentFilter === 'month' ? 'inline': 'none'}" *ngIf="currentFilter === 'month'"
+            class="dateinput" [(ngModel)]="this.year">
+            <mat-option
+              *ngFor="let y of [2020, 2021, 2022, 2023, 2024, 2025, 2026, 2027, 2028, 2029, 2030, 2031, 2032, 2033,2034,2035,2036,2037,2038,2039,2040]"
+              [value]="y">{{ y }}</mat-option>
+          </mat-select>
+        </div>
+        <button *ngIf="!smallScreen" mat-fab color="primary" class="fab mat-elevation-z10" (click)="newOrder()">
           <mat-icon>add</mat-icon><span class="extended-fab-button__text">Venta</span>
         </button>
-                <div *ngIf="orders !== undefined" class="allspace" data-simplebar>
+        <div *ngIf="sales !== undefined" class="allspace" data-simplebar>
 
-                    <table mat-table matSort matTableResponsive [dataSource]="dataSource" multiTemplateDataRows class="mat-elevation-z2 noborder-table ">
-                        <ng-container matColumnDef="image">
-                            <th mat-header-cell *matHeaderCellDef></th>
-                            <td mat-cell *matCellDef="let element">
-                                <mat-icon color="primary" class="material-icons-outlined">receipt_long</mat-icon>
-                            </td>
-                        </ng-container>
-                        <ng-container matColumnDef="noBill">
-                            <th mat-header-cell *matHeaderCellDef> No. Factura </th>
-                            <td mat-cell *matCellDef="let element"> {{element.noBill}} </td>
-                        </ng-container>
-                        <ng-container matColumnDef="createdAt">
-                            <th mat-header-cell *matHeaderCellDef> Fecha </th>
-                            <td mat-cell *matCellDef="let element"> {{element.date | date: 'dd/MM/yyyy HH:mm' }} </td>
-                        </ng-container>
-                        <ng-container matColumnDef="nit">
-                            <th mat-header-cell *matHeaderCellDef> Nit </th>
-                            <td mat-cell *matCellDef="let element">
-                                {{element.nit}}
-                            </td>
-                        </ng-container>
-                        <ng-container matColumnDef="name">
-                            <th mat-header-cell *matHeaderCellDef> Nombre </th>
-                            <td mat-cell *matCellDef="let element">
-                                {{element.name}}
-                            </td>
-                        </ng-container>
-                        <ng-container matColumnDef="phone">
-                            <th mat-header-cell *matHeaderCellDef> Teléfono </th>
-                            <td mat-cell *matCellDef="let element">
-                                {{element.phone}}
-                            </td>
-                        </ng-container>
-                        <!-- <ng-container matColumnDef="details">
-                <th mat-header-cell *matHeaderCellDef> Detalles </th>
-                <td mat-cell *matCellDef="let element"> {{element.details}} </td>
-              </ng-container> -->
-                        <ng-container matColumnDef="state">
-                            <th mat-header-cell *matHeaderCellDef> Estado</th>
-                            <td mat-cell *matCellDef="let element">
-                                <mat-chip-list>
-                                    <mat-chip *ngIf="element.state === 'ORDEN'">
-                                        Creada
-                                    </mat-chip>
-                                    <mat-chip *ngIf="element.state === 'DESPACHO'" selected color="accent">
-                                        Despachada
-                                    </mat-chip>
-                                    <mat-chip *ngIf="element.state === 'ENVIO'" selected color="primary">
-                                        Enviada
-                                    </mat-chip>
-                                    <mat-chip *ngIf="element.state === 'ENTREGA'" selected color="warn">
-                                        Entragada
-                                    </mat-chip>
-                                    <mat-chip *ngIf="element.state === 'FIN'" selected color="warn">
-                                        Finalizada
-                                    </mat-chip>
-                                </mat-chip-list>
-                            </td>
-                        </ng-container>
-                        <ng-container matColumnDef="total">
-                            <th mat-header-cell *matHeaderCellDef> Total </th>
-                            <td mat-cell *matCellDef="let element"> Q {{element.total | number: '.2'}} </td>
-                        </ng-container>
-                        <ng-container matColumnDef="options">
-                            <th mat-header-cell *matHeaderCellDef> </th>
-                            <td mat-cell *matCellDef="let element">
-                                <button mat-icon-button [matMenuTriggerFor]="menu">
+          <table mat-table matSort matTableResponsive [dataSource]="dataSource" multiTemplateDataRows
+            class="mat-elevation-z2 noborder-table ">
+            <ng-container matColumnDef="image">
+              <th mat-header-cell *matHeaderCellDef></th>
+              <td mat-cell *matCellDef="let element">
+                <mat-icon color="primary" class="material-icons-outlined">receipt_long</mat-icon>
+              </td>
+            </ng-container>
+            <ng-container matColumnDef="noBill">
+              <th mat-header-cell *matHeaderCellDef> No. Factura </th>
+              <td mat-cell *matCellDef="let element"> {{element.noBill}} </td>
+            </ng-container>
+            <ng-container matColumnDef="date">
+              <th mat-header-cell *matHeaderCellDef> Fecha </th>
+              <td mat-cell *matCellDef="let element"> {{element.date | date: 'dd/MM/yyyy HH:mm' }} </td>
+            </ng-container>
+            <ng-container matColumnDef="nit">
+              <th mat-header-cell *matHeaderCellDef> Nit </th>
+              <td mat-cell *matCellDef="let element">
+                {{element._customer.nit}}
+              </td>
+            </ng-container>
+            <ng-container matColumnDef="name">
+              <th mat-header-cell *matHeaderCellDef> Nombre </th>
+              <td mat-cell *matCellDef="let element">
+                {{element._customer.name}}
+              </td>
+            </ng-container>
+            <ng-container matColumnDef="phone">
+              <th mat-header-cell *matHeaderCellDef> Teléfono </th>
+              <td mat-cell *matCellDef="let element">
+                {{element._customer.phone}}
+              </td>
+            </ng-container>
+            <ng-container matColumnDef="paid">
+              <th mat-header-cell *matHeaderCellDef> Estado</th>
+              <td mat-cell *matCellDef="let element">
+                <mat-chip-list>
+                  <mat-chip *ngIf="!element.paid" selected color="accent">
+                    Pendiente
+                  </mat-chip>
+                  <mat-chip *ngIf="element.paid" selected color="warn">
+                    Pagada
+                  </mat-chip>
+                </mat-chip-list>
+              </td>
+            </ng-container>
+            <ng-container matColumnDef="total">
+              <th mat-header-cell *matHeaderCellDef> Total </th>
+              <td mat-cell *matCellDef="let element"> Q {{element.total | number: '.2'}} </td>
+            </ng-container>
+            <ng-container matColumnDef="options">
+              <th mat-header-cell *matHeaderCellDef> </th>
+              <td mat-cell *matCellDef="let element">
+                <button mat-icon-button [matMenuTriggerFor]="menu">
                   <mat-icon>info</mat-icon>
                 </button>
-                                <mat-menu #menu="matMenu">
-                                    <button mat-menu-item (click)="selectOrder(element)" color="warn">
-                    <mat-icon class="material-icons-outlined">person_search</mat-icon> Consultar Cliente
-                  </button>
-                                    <button mat-menu-item (click)="selectOrder(element)" color="warn">
+                <mat-menu #menu="matMenu">
+                  <button mat-menu-item color="warn">
                     <mat-icon class="material-icons-outlined">account_balance_wallet</mat-icon> Consultar Balance
                   </button>
-                                    <button mat-menu-item (click)="editOrder(element)" *ngIf="ordersp && ordersp.includes('update')" [disabled]="element.state !== 'ORDEN' && element.state !== 'DESPACHO'" color="warn">
-                    <mat-icon class="material-icons-outlined">edit</mat-icon> Editar Orden
+                  <button mat-menu-item (click)="editOrder(element)" *ngIf="salesp && salesp.includes('update')"
+                    [disabled]="element.paid" color="warn">
+                    <mat-icon class="material-icons-outlined">edit</mat-icon> Editar Venta
                   </button>
-                                    <mat-divider></mat-divider>
-                                    <button mat-menu-item *ngIf="ordersp && ordersp.includes('delete')" [disabled]="element.state !== 'ORDEN' && element.state !== 'DESPACHO'" color="warn" (click)="delete(element)">
-                    <mat-icon class="material-icons-outlined">block</mat-icon> Anular Orden
+                  <mat-divider></mat-divider>
+                  <button mat-menu-item *ngIf="salesp && salesp.includes('delete')"
+                    [disabled]="element.paid" color="warn"
+                    (click)="delete(element)">
+                    <mat-icon class="material-icons-outlined">block</mat-icon> Anular Venta
                   </button>
-                                </mat-menu>
-                            </td>
-                        </ng-container>
+                </mat-menu>
+              </td>
+            </ng-container>
 
-                        <!-- Expanded Content Column - The detail row is made up of this one column that spans across all columns -->
-                        <!-- <ng-container matColumnDef="expandedDetail">
-                                <td mat-cell *matCellDef="let element" [attr.colspan]="columnsToDisplay.length">
-                                <div class="example-element-detail" [@detailExpand]="element == expandedElement ? 'expanded' : 'collapsed'">
-                                    <div class="example-element-description">
-                                        Editar Cliente
-
-                                    </div>
-                                </div>
-                                </td>
-                            </ng-container> -->
-
-                        <tr mat-header-row *matHeaderRowDef="columnsToDisplay2"></tr>
-                        <tr mat-row *matRowDef="let element; columns: columnsToDisplay2;" class="example-element-row">
-                        </tr>
-                        <!-- <tr mat-row *matRowDef="let element; columns: columnsToDisplay2;"
-                                class="example-element-row"
-                                [class.example-expanded-row]="expandedElement === element"
-                                (click)="expandedElement = expandedElement === element ? null : element">
-                            </tr> -->
-                        <!-- <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="example-detail-row"></tr> -->
-                    </table>
-                </div>
-                <div fxLayout="column wrap" fxLayoutAlign="center center" class="padding-15 loader-screen" *ngIf="orders === undefined">
-                    <mat-progress-spinner mode="indeterminate" diameter="60" color="warn"></mat-progress-spinner>
-                </div>
-                <!-- </div> -->
-            </div>
+            <tr mat-header-row *matHeaderRowDef="columnsToDisplay2"></tr>
+            <tr mat-row *matRowDef="let element; columns: columnsToDisplay2;" class="example-element-row">
+            </tr>
+          </table>
         </div>
+        <div fxLayout="column wrap" fxLayoutAlign="center center" class="padding-15 loader-screen"
+          *ngIf="sales === undefined">
+          <mat-progress-spinner mode="indeterminate" diameter="60" color="warn"></mat-progress-spinner>
+        </div>
+        <!-- </div> -->
+      </div>
     </div>
+  </div>
 </div>

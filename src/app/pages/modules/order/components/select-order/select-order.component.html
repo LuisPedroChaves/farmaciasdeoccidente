@@ -1,6 +1,8 @@
 <div class="module-container" *ngIf="selectedOrder !== undefined" data-simplebar>
-  <button mat-fab color="warn" class="fab mat-elevation-z10">
-    <mat-icon>done</mat-icon><span class="extended-fab-button__text"> Marcar Entrega</span>
+  <button *ngIf="selectedOrder.timeSend && return === 'delivery' && selectedOrder.state !== 'ENTREGA'" (click)="delivery()"  mat-fab color="warn" class="fab mat-elevation-z10">
+    <mat-icon *ngIf="!loading">done</mat-icon><span *ngIf="!loading" class="extended-fab-button__text"> Marcar Entrega</span>
+    <mat-progress-spinner *ngIf="loading"  mode="indeterminate" diameter="60" color="primary">
+    </mat-progress-spinner>
   </button>
   <div class="new-header" fxLayout="row wrap" fxLayoutAlign="start center">
     <button mat-icon-button class="close-button" [routerLink]="'/' + return">
@@ -46,9 +48,6 @@
           </mat-chip>
           <mat-chip *ngIf="selectedOrder.state === 'ENTREGA'" selected color="warn">
             Entragada
-          </mat-chip>
-          <mat-chip *ngIf="selectedOrder.state === 'FIN'" selected color="warn">
-            Finalizada
           </mat-chip>
         </mat-chip-list>
         <mat-chip-list *ngIf="selectedOrder._delivery" class="teacher">
@@ -123,6 +122,42 @@
             <div *ngIf="!selectedOrder._delivery" fxLayout="column wrap" fxLayoutAlign="center center" class="joblist">
               <mat-icon class="text-muted material-icons-outlined" color="primary">alt_route</mat-icon>
               <span class="text-muted">Orden sin ruta asignada</span>
+            </div>
+            <div *ngIf="selectedOrder.timeDelivery" fxLayout="column wrap">
+              <mat-list style="padding-top: 0;">
+                <mat-list-item class="assigned-job mat-elevation-z4">
+                  <mat-icon mat-list-icon class="material-icons-outlined whitebg" color="warn">check_circle
+                  </mat-icon>
+                  <h4 mat-line>Entrega </h4>
+                  <span mat-line class="text-muted">Fecha y hora:
+                    {{selectedOrder.timeDelivery | date: 'dd/MM/yyyy HH:mm'}}</span>
+                  <small mat-line class="text-muted">Tiempo de entrega:</small>
+                  <small mat-line class="text-muted">{{ getDays(selectedOrder.date, selectedOrder.timeDelivery) }}
+                    días,</small>
+                  <small mat-line class="text-muted">{{ getHours(selectedOrder.date, selectedOrder.timeDelivery) }}
+                    horas,</small>
+                  <small mat-line class="text-muted">{{ getMinutes(selectedOrder.date, selectedOrder.timeDelivery) }}
+                    minutos.</small>
+                </mat-list-item>
+              </mat-list>
+            </div>
+            <div *ngIf="selectedOrder.timeSend" fxLayout="column wrap">
+              <mat-list style="padding-top: 0;">
+                <mat-list-item class="assigned-job mat-elevation-z4">
+                  <mat-icon mat-list-icon class="material-icons-outlined whitebg" color="primary">send
+                  </mat-icon>
+                  <h4 mat-line>Envío </h4>
+                  <span mat-line class="text-muted">Fecha y hora:
+                    {{selectedOrder.timeSend | date: 'dd/MM/yyyy HH:mm'}}</span>
+                  <small mat-line class="text-muted">Tiempo de envío:</small>
+                  <small mat-line class="text-muted">{{ getDays(selectedOrder.date, selectedOrder.timeSend) }}
+                    días,</small>
+                  <small mat-line class="text-muted">{{ getHours(selectedOrder.date, selectedOrder.timeSend) }}
+                    horas,</small>
+                  <small mat-line class="text-muted">{{ getMinutes(selectedOrder.date, selectedOrder.timeSend) }}
+                    minutos.</small>
+                </mat-list-item>
+              </mat-list>
             </div>
             <div *ngIf="selectedOrder.timeDispatch" fxLayout="column wrap">
               <mat-list style="padding-top: 0;">

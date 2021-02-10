@@ -6,6 +6,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { OrderItem } from '../../../../../core/models/Order';
 import { OrderService } from '../../../../../core/services/httpServices/order.service';
 import * as moment from 'moment';
+import { ConfirmationDialogComponent } from 'src/app/pages/shared-components/confirmation-dialog/confirmation-dialog.component';
 
 @Component({
   selector: 'app-select-order',
@@ -18,6 +19,7 @@ export class SelectOrderComponent implements OnInit {
 
   selectedOrder: OrderItem;
   return = 'orders';
+  loading = false;
 
   avatars = [
     { index: 0, image: '/assets/images/avatars/01.png' },
@@ -38,9 +40,9 @@ export class SelectOrderComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.activatedRoute.params.subscribe( (params) => {
+    this.activatedRoute.params.subscribe((params) => {
       this.orderService.getOrder(params.id).subscribe(data => {
-        this.selectedOrder  = data.order;
+        this.selectedOrder = data.order;
       });
       this.return = params.return;
     });
@@ -64,26 +66,6 @@ export class SelectOrderComponent implements OnInit {
     return Math.floor((date2.getTime() - date1.getTime()) / 86400000).toFixed(2);
   }
 
-  // addJob() {
-  //   const dialogRef = this.dialog.open(AssignJobComponent, {
-  //     width: this.smallScreen === true ? '100%' : '500px',
-  //     data: { jobs: this.jobs, campus: this.campus, degree: this.form.controls._degree.value },
-  //     panelClass: ['farmacia-dialog', 'farmacia' ],
-  //   });
-
-  //   dialogRef.afterClosed().subscribe(result => {
-  //     if (result !== undefined) {
-  //       this.employeejobs.push(result);
-  //     }
-  //   });
-  // }
-
-
-  // removeJob(index) {
-  //   this.employeejobs.splice(index, 1);
-  // }
-
-
   private markFormGroupTouched(formGroup: FormGroup): void {
     (Object as any).values(formGroup.controls).forEach(control => {
       control.markAsTouched();
@@ -94,24 +76,29 @@ export class SelectOrderComponent implements OnInit {
     });
   }
 
-  // addDegree() {
-  //   const dialogRef = this.dialog.open(AddDegreeComponent, {
-  //     width: this.smallScreen ? '100%' : '350px',
-  //     data: { },
-  //     disableClose: true,
-  //     panelClass: ['farmacia-dialog' , 'farmacia'],
-  //   });
+  delivery() {
+    const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
+      width: '350px',
+      data: { title: 'Entregar Orden', message: '¿Confirma que desea marcar la orden ' + this.selectedOrder.noOrder + ' como entregada?' },
+      disableClose: true,
+      panelClass: ['farmacia-dialog', 'farmacia'],
+    });
 
-  //   dialogRef.afterClosed().subscribe(result => {
-  //     if (result !== undefined) {
-  //       if (result === true) {
-
-  //         this.employeeService.getDegrees().subscribe(data => {
-  //           this.degrees = data.degrees;
-  //         });
-  //       }
-  //     }
-  //   });
-  // }
+    dialogRef.afterClosed().subscribe(result => {
+      if (result !== undefined) {
+        if (result === true) {
+          this.loading = true;
+          this.selectedOrder.state = 'ENTREGA';
+          this.orderService.updateOrderState(this.selectedOrder).subscribe(data => {
+            this.toasty.success('Orden entregada exitosamente');
+            this.router.navigate(['/delivery']);
+          }, error => {
+            this.loading = false;
+            this.toasty.error('Error al entregar la orden');
+          });
+        }
+      }
+    });
+  }
 
 }

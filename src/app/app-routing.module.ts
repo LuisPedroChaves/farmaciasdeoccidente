@@ -63,7 +63,7 @@ const routes: Routes = [
         canActivate: [CheckTokenGuard]
       },
       {
-        path: 'statements', pathMatch: 'full',  loadChildren: () => import('./pages/modules/statements/statements.module').then(m => m.StatementsModule),
+        path: 'statements/:id/:return', pathMatch: 'full',  loadChildren: () => import('./pages/modules/statements/statements.module').then(m => m.StatementsModule),
         canActivate: [CheckTokenGuard]
       },
     ]
@@ -93,7 +93,7 @@ const routes: Routes = [
         canActivate: [CheckTokenGuard]
       },
       {
-        path: 'statements', pathMatch: 'full',  loadChildren: () => import('./pages/modules/statements/statements.module').then(m => m.StatementsModule),
+        path: 'statements/:id/:return', pathMatch: 'full',  loadChildren: () => import('./pages/modules/statements/statements.module').then(m => m.StatementsModule),
         canActivate: [CheckTokenGuard]
       },
     ]
