@@ -8,6 +8,7 @@ export interface OrderItem {
     _customer?: CustomerItem,
     _user: UserItem,
     _delivery?: UserItem,
+    _userDeleted?: UserItem,
     noOrder: string,
     noBill: string,
     nit: string,
@@ -25,4 +26,6 @@ export interface OrderItem {
     timeDispatch?: string,
     timeSend?: string,
     timeDelivery?: string,
+    textDeleted?: string,
+    deleted?: boolean
 }

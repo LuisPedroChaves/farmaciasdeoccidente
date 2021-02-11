@@ -40,7 +40,7 @@ export class OrdersComponent implements OnInit, AfterContentInit, OnDestroy {
 
   dataSource = new MatTableDataSource();
   columnsToDisplay = ['noOrder', 'noBill', 'createdAt', 'nit', 'name', 'phone', 'address', 'payment', 'state', 'total', 'options'];
-  columnsToDisplay2 = ['image', 'noOrder', 'noBill', 'createdAt', 'nit', 'name', 'phone', 'address',  'payment', 'state', 'total', 'options'];
+  columnsToDisplay2 = ['image', 'noOrder', 'noBill', 'createdAt', 'nit', 'name', 'phone', 'address', 'payment', 'state', 'total', 'options'];
   expandedElement: OrderItem | null;
   // HOOK FUNCTIONS //////////////////////////////////////////////////////////////////////////////////////////
   constructor(
@@ -156,25 +156,24 @@ export class OrdersComponent implements OnInit, AfterContentInit, OnDestroy {
   delete(order: OrderItem) {
     const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
       width: '350px',
-      data: { title: 'Eliminar Orden', message: '¿Confirma que desea eliminar la orden  ' + order.noOrder + '?'},
+      data: { title: 'Eliminar Orden', message: '¿Confirma que desea eliminar la orden  ' + order.noOrder + '?', description: true },
       disableClose: true,
-      panelClass: ['farmacia-dialog', 'farmacia' ],
+      panelClass: ['farmacia-dialog', 'farmacia'],
     });
 
     dialogRef.afterClosed().subscribe(result => {
       if (result !== undefined) {
-        if (result === true) {
-          // this.loading = true;
-          this.orderService.deleteOrder(order).subscribe(data => {
-            this.toasty.success('Orden eliminada exitosamente');
-            const filter = { month: this.month, year: this.year, _cellar: this.currentCellar._id };
-            this.orderService.loadData(filter);
-            // this.loading = false;
-          }, error => {
-            // this.loading = false;
-            this.toasty.error('Error al eliminar el orden');
-          });
-        }
+        // this.loading = true;
+        order.textDeleted = result;
+        this.orderService.deleteOrder(order).subscribe(data => {
+          this.toasty.success('Orden eliminada exitosamente');
+          const filter = { month: this.month, year: this.year, _cellar: this.currentCellar._id };
+          this.orderService.loadData(filter);
+          // this.loading = false;
+        }, error => {
+          // this.loading = false;
+          this.toasty.error('Error al eliminar la orden');
+        });
       }
     });
   }

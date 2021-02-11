@@ -83,6 +83,14 @@ const routes: Routes = [
         path: 'users', pathMatch: 'full', loadChildren: () => import('./pages/modules/users/users.module').then(m => m.UsersModule),
         canActivate: [CheckTokenGuard]
       },
+      {
+        path: 'orders', pathMatch: 'full',  loadChildren: () => import('./pages/modules/orders-admin/orders-admin.module').then(m => m.OrdersAdminModule),
+        canActivate: [CheckTokenGuard]
+      },
+      {
+        path: 'order/:id/:return', pathMatch: 'full',  loadChildren: () => import('./pages/modules/order/order.module').then(m => m.OrderModule),
+        canActivate: [CheckTokenGuard]
+      },
       // {
       //   // tslint:disable-next-line: max-line-length
       //   path: 'employees', pathMatch: 'full', loadChildren: () => import('./pages/modules/employees/employees.module').then(m => m.EmployeesModule),

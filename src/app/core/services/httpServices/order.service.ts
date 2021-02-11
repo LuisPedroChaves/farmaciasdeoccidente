@@ -50,6 +50,10 @@ export class OrderService implements IDataService<OrderItem[]> {
     }
   }
 
+  getOrders({month, year}): Observable<any> {
+    return this.http.get(this.apiConfigService.API_ORDER + '/?month=' + month + '&year=' + year);
+  }
+
   getDispatches(_cellar: string): Observable<any> {
     return this.http.get(this.apiConfigService.API_ORDER + '/dispatches/' + _cellar);
   }
@@ -79,6 +83,7 @@ export class OrderService implements IDataService<OrderItem[]> {
   }
 
   deleteOrder(u: OrderItem): Observable<any> {
-    return this.http.delete(this.apiConfigService.API_ORDER + '/' + u._id);
+    u._userDeleted = this.userID;
+    return this.http.put(this.apiConfigService.API_ORDER + '/delete/' + u._id, u);
   }
 }

@@ -36,7 +36,8 @@ export class EditOrderComponent implements OnInit, AfterContentInit, OnDestroy {
     options: CustomerItem[] = [];
     filteredOptions: Observable<CustomerItem[]>;
 
-  constructor(public dialogRef: MatDialogRef<EditOrderComponent>,
+  constructor(
+    public dialogRef: MatDialogRef<EditOrderComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
     public dialog: MatDialog,
     public orderService: OrderService,
@@ -109,7 +110,7 @@ export class EditOrderComponent implements OnInit, AfterContentInit, OnDestroy {
   saveClient() {
     if (this.form.invalid) { return; }
     this.loading = true;
-    const order: OrderItem = {...this.form.value, _id: this.data.order._id};
+    const order: OrderItem = {...this.form.value, _id: this.data.order._id, _cellar: this.data.order._cellar._id};
     this.orderService.updateOrder(order).subscribe(data => {
       if (data.ok === true) {
         this.toasty.success('Orden editada exitosamente');

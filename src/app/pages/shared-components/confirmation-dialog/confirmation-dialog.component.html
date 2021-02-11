@@ -4,6 +4,12 @@
 <div class="message" fxLayout="row wrap" fxLayoutAlign="center center" *ngIf="data.message">
     {{ data.message }}
 </div>
+<div *ngIf="data.description" fxLayout="row wrap" fxLayoutAlign="center center">
+    <mat-form-field  appearance="outline" color="primary" class="width-all">
+        <mat-label>Motivo</mat-label>
+        <textarea matInput [(ngModel)]="textArea" rows="4" placeholder="Describe los motivos de la eliminación"></textarea>
+    </mat-form-field>
+</div>
 <div class="alert" fxLayout="row wrap"  *ngIf="data.alert">
     <div fxFlex="40px" fxLayoutAlign="start center">
         <mat-icon class="material-icons-outlined">report_problem</mat-icon>
@@ -23,5 +29,6 @@
 <div fxLayout="row wrap" class="options">
     <button mat-button color="primary" (click)="dialogRef.close()">Cancelar</button>
     <span fxFlex></span>
-    <button mat-stroked-button color="primary"  (click)="dialogRef.close(true)">Aceptar</button>
+    <button mat-stroked-button *ngIf="data.description"  color="primary" [disabled]="textArea === ''"  (click)="dialogRef.close(textArea)">Aceptar</button>
+    <button mat-stroked-button *ngIf="!data.description"  color="primary" (click)="dialogRef.close(true)">Aceptar</button>
 </div>
