@@ -7,6 +7,7 @@ import { SharedComponentsModule } from '../../shared-components/shared-component
 import { SalesRoutes } from './sales.routing';
 import { EditSaleComponent } from './components/edit-sale/edit-sale.component';
 import { PaySaleComponent } from './components/pay-sale/pay-sale.component';
+import { CoreModule } from '../../../core/core.module';
 
 
 
@@ -15,7 +16,8 @@ import { PaySaleComponent } from './components/pay-sale/pay-sale.component';
   imports: [
     CommonModule,
     RouterModule.forChild(SalesRoutes),
-    SharedComponentsModule
+    SharedComponentsModule,
+    CoreModule
   ]
 })
 export class SalesModule { }

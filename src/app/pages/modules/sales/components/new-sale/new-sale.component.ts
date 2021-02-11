@@ -4,9 +4,7 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Observable, Subscription } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
 import { CustomerItem } from 'src/app/core/models/Customer';
-import { OrderItem } from 'src/app/core/models/Order';
 import { CustomerService } from 'src/app/core/services/httpServices/customer.service';
-import { OrderService } from 'src/app/core/services/httpServices/order.service';
 import { ToastyService } from 'src/app/core/services/internal/toasty.service';
 import { UserItem } from '../../../../../core/models/User';
 import { SaleService } from '../../../../../core/services/httpServices/sale.service';
@@ -34,7 +32,7 @@ export class NewSaleComponent implements OnInit {
     limitCredit: new FormControl(null, [Validators.required]),
     limitDaysCredit: new FormControl(null, [Validators.required]),
     _seller: new FormControl(null, [Validators.required]),
-    date: new FormControl(null, [Validators.required]),
+    date: new FormControl(new Date(), [Validators.required]),
     noBill: new FormControl(null, [Validators.required]),
     total: new FormControl('', [Validators.required]),
   });

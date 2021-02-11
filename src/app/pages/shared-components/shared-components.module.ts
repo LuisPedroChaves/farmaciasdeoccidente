@@ -113,7 +113,7 @@ import { MatTableResponsiveModule } from '../modules/mat-table-responsive/mat-ta
     MatTooltipModule
   ]
   ,providers: [
-    {provide: MAT_DATE_LOCALE, useValue:'es-GT'}
+    {provide: MAT_DATE_LOCALE, useValue:'es-MX'}
   ]
 })
 export class SharedComponentsModule { }
