@@ -56,7 +56,7 @@ export class CustomersRoutesComponent implements OnInit, AfterContentInit, OnDes
       }
     });
     this.customersSubscription = this.customerService.readData().subscribe(data => {
-      this.customers = data;
+      this.customers = data.filter(customer => !customer.code);
       this.dataSource = new MatTableDataSource(this.customers);
     });
   }

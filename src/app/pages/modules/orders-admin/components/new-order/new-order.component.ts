@@ -61,7 +61,7 @@ export class NewOrderComponent implements OnInit, AfterContentInit, OnDestroy {
   ngOnInit(): void {
     this.startTimer();
     this.customersSubscription = this.customerService.readData().subscribe(data => {
-      this.customers = data;
+      this.customers = data.filter(customer => !customer.code);
       const cf: CustomerItem = { _id: null, name: '', address: null, nit: 'CF', phone: null, town: null, department: null, company: null, transport: null, limitCredit: null, limitDaysCredit: null };
       this.options = [...this.customers];
       this.options.push(cf);

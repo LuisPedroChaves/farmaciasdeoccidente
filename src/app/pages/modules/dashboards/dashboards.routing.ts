@@ -13,7 +13,7 @@ export const DashboardsRoutes: Routes = [
     },
     {
         path: 'factory',
-        component: DashboardFactoryComponent
+        component: DashboardFactoryComponent,
     },
     {
         path: 'delivery',

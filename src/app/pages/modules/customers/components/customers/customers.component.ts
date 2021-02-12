@@ -33,8 +33,8 @@ export class CustomersComponent implements OnInit {
   customersp: string[];
 
   dataSource = new MatTableDataSource();
-  columnsToDisplay = ['name', 'nit', 'phone', 'address', 'town', 'department', 'company', 'transport', 'limitDaysCredit', 'limitCredit', '_seller'];
-  columnsToDisplay2 = ['image', 'name', 'nit', 'phone', 'address', 'town', 'department', 'company', 'transport', 'limitDaysCredit', 'limitCredit', '_seller'];
+  columnsToDisplay = ['code', 'name', 'nit', 'phone', 'address', 'town', 'department', 'company', 'transport', 'limitDaysCredit', 'limitCredit', '_seller'];
+  columnsToDisplay2 = ['image', 'code', 'name', 'nit', 'phone', 'address', 'town', 'department', 'company', 'transport', 'limitDaysCredit', 'limitCredit', '_seller'];
   expandedElement: CustomerItem | null;
 
   constructor(
@@ -72,6 +72,8 @@ export class CustomersComponent implements OnInit {
   newCostumer() {
     const dialogRef = this.dialog.open(NewCustomersComponent, {
       width: this.smallScreen ? '100%' : '800px',
+      minHeight: '78vh',
+      maxHeight: '78vh',
       data: { customersp: this.customersp },
       disableClose: true,
       panelClass: ['farmacia-dialog', 'farmacia' ],

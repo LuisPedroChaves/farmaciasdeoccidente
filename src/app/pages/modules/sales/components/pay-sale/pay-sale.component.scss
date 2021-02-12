@@ -7,7 +7,6 @@
 }
 .balance-space {
     height: 200px;
-    background-color: rgba(0,0,0,0.1);
 }
 
 .width-all {
@@ -17,5 +16,15 @@
 .pay-row { width: 100%; border-bottom: 1px solid rgba(0,0,0,0.05); }
 .pay-row:hover { background-color: rgba(0,0,0,0.05); }
 .heightpadding { padding-top: 10px; padding-bottom: 10px }
-.paid { background-color: rgb(0, 132, 255); color: white; padding: 5px; border-radius: 3px; }
 .pending { background-color: rgb(167, 82, 82); color: white; padding: 5px; border-radius: 3px; }
+.section {
+    padding: 0px 15px;
+}
+.assigned-job {
+    margin-bottom: 5px;
+    border-radius: 10px;
+    background-color: white;
+    .whitebg {
+        background-color: white!important;
+    }
+}

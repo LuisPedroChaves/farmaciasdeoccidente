@@ -16,7 +16,7 @@ export interface SaleItem {
 
 export interface SaleBalanceItem {
     _id?: string,
-    date: string,
+    date: string | Date,
     receipt: string,
     document: string,
     payment: string,

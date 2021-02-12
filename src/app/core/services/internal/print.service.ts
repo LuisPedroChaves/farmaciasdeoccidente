@@ -31,8 +31,9 @@ export class PrintService {
 
   print(body: any) {
     const printpage = {
+      pageSize: 'A6',
       pageOrientation: 'portrait',
-      pageMargins: [ 40, 40, 40, 70 ],
+      pageMargins: [ 20, 20, 20, 35 ],
       content: [],
       styles:  this.style
     };

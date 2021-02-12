@@ -94,6 +94,8 @@ export class StatementsComponent implements OnInit {
   pay(sale: SaleItem) {
     const dialogRef = this.dialog.open(PaySaleComponent, {
       width: '500px',
+      minHeight: '85vh',
+      maxHeight: '78vh',
       disableClose: true,
       data: { sale },
       panelClass: ['farmacia-dialog', 'farmacia'],

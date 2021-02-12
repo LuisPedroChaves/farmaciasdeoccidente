@@ -73,7 +73,13 @@
             </ng-container>
             <ng-container matColumnDef="date">
               <th mat-header-cell *matHeaderCellDef> Fecha </th>
-              <td mat-cell *matCellDef="let element"> {{element.date | timeFormat : 'DD/MM/YYYY hh:mm' : 'es-GT' }} </td>
+              <td mat-cell *matCellDef="let element"> {{element.date | date: 'dd/MM/yyyy' }} </td>
+            </ng-container>
+            <ng-container matColumnDef="code">
+              <th mat-header-cell *matHeaderCellDef> Código </th>
+              <td mat-cell *matCellDef="let element">
+                {{element._customer.code}}
+              </td>
             </ng-container>
             <ng-container matColumnDef="nit">
               <th mat-header-cell *matHeaderCellDef> Nit </th>
@@ -120,11 +126,11 @@
                   <button mat-menu-item color="warn">
                     <mat-icon class="material-icons-outlined">account_balance_wallet</mat-icon> Consultar Balance
                   </button>
-                  <button mat-menu-item (click)="editOrder(element)" *ngIf="salesp && salesp.includes('update')"
+                  <!-- <button mat-menu-item (click)="editOrder(element)" *ngIf="salesp && salesp.includes('update')"
                     [disabled]="element.paid" color="warn">
                     <mat-icon class="material-icons-outlined">edit</mat-icon> Editar Venta
                   </button>
-                  <mat-divider></mat-divider>
+                  <mat-divider></mat-divider> -->
                   <button mat-menu-item *ngIf="salesp && salesp.includes('delete')"
                     [disabled]="element.paid" color="warn"
                     (click)="delete(element)">

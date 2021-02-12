@@ -3,7 +3,7 @@
     <button mat-icon-button class="close-button" [routerLink]="'/' + return">
       <mat-icon>close</mat-icon>
     </button>
-    <h2 color="accent" class="ma-0 info-row T">{{ selectedCustomer.nit }} - {{ selectedCustomer.name }}</h2>
+    <h2 color="accent" class="ma-0 info-row T">{{ selectedCustomer.code }} - {{ selectedCustomer.name }}</h2>
   </div>
   <div class="container-form">
     <div class="section" fxLayout="row wrap" fxLayoutAlign="start center">
@@ -19,7 +19,10 @@
           <h1 class="ma-0">{{selectedCustomer.company}}</h1>
         </div>
         <div class="input-section">
-          <h2 class="ma-0 text-muted">{{selectedCustomer.phone}}</h2>
+          <h2 class="ma-0 text-muted">Nit: {{selectedCustomer.nit}}</h2>
+        </div>
+        <div class="input-section">
+          <h2 class="ma-0 text-muted">Tel: {{selectedCustomer.phone}}</h2>
         </div>
         <div class="input-section">
           <h2 class="ma-0 text-muted">{{selectedCustomer.transport}}</h2>
@@ -103,9 +106,9 @@
                       </mat-icon>
                       <h4 mat-line>{{r.noBill}} </h4>
                       <small mat-line class="text-muted">{{ r._cellar.name }}</small>
-                      <span mat-line class="text-muted">Fecha y hora:</span>
+                      <span mat-line class="text-muted">Fecha:</span>
                       <span mat-line class="text-muted">
-                        {{r.date | date: 'dd/MM/yyyy HH:mm'}}
+                        {{r.date | date: 'dd/MM/yyyy'}}
                       </span>
                       <mat-chip-list mat-line>
                         <mat-chip *ngIf="!r.timeAvaliable">
@@ -170,9 +173,9 @@
                       </mat-icon>
                       <h4 mat-line>{{r.noBill}} </h4>
                       <small mat-line class="text-muted">{{ r._cellar.name }}</small>
-                      <span mat-line class="text-muted">Fecha y hora:</span>
+                      <span mat-line class="text-muted">Fecha:</span>
                       <span mat-line class="text-muted">
-                        {{r.date | date: 'dd/MM/yyyy HH:mm'}}
+                        {{r.date | date: 'dd/MM/yyyy'}}
                       </span>
                       <h2>Q{{ r.total | number: '.2' }}</h2>
                     </mat-list-item>

@@ -61,6 +61,11 @@ export class UserService implements IDataService<UserItem[]>  {
     return this.http.post(this.apiConfigService.API_USER, u);
   }
 
+  loginAdmin(u: any): Observable<any> {
+    // const jsonParms = JSON.stringify(u);
+    return this.http.post(this.apiConfigService.API_USER + '/login', u);
+  }
+
   updateUser(u: UserItem): Observable<any> {
     // const jsonParms = JSON.stringify(u);
     return this.http.put(this.apiConfigService.API_USER + '/' + u._id, u);

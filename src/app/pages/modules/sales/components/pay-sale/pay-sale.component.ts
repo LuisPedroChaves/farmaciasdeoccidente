@@ -10,7 +10,9 @@ import { SaleService } from '../../../../../core/services/httpServices/sale.serv
 })
 export class PaySaleComponent implements OnInit {
 
-  newPay: SaleBalanceItem = { _id: '', date: '', receipt: '', document: '', payment: 'EFECTIVO', amount: null };
+  smallScreen = window.innerWidth < 960 ? true : false;
+
+  newPay: SaleBalanceItem = { _id: '', date: new Date(), receipt: '', document: '', payment: 'EFECTIVO', amount: null };
   error = false;
 
   constructor(
@@ -36,7 +38,7 @@ export class PaySaleComponent implements OnInit {
       this.error = true;
     } else {
       this.data.sale.balance.push(this.newPay);
-      this.newPay = { _id: '', date: '', receipt: '', document: '', payment: 'EFECTIVO', amount: null };
+      this.newPay = { _id: '', date: new Date(), receipt: '', document: '', payment: 'EFECTIVO', amount: null };
       this.saleService.updateSale(this.data.sale).subscribe(data => {
         if (data.ok === true) {
           this.data.sale.balance = data.sale.balance;

@@ -23,8 +23,8 @@ export class ReceivablesComponent implements OnInit {
   recivables: CustomerItem[];
 
   dataSource = new MatTableDataSource();
-  columnsToDisplay = ['nit', 'name', 'company', 'phone', 'address', 'town', 'department', '_seller', 'limitDaysCredit', 'limitCredit', 'state', 'balance' ];
-  columnsToDisplay2 = ['image', 'nit', 'name', 'company', 'phone', 'address', 'town', 'department', '_seller', 'limitDaysCredit', 'limitCredit', 'state', 'balance'];
+  columnsToDisplay = ['code', 'nit', 'name', 'company', 'phone', 'address', 'town', 'department', '_seller', 'limitDaysCredit', 'limitCredit', 'state', 'balance' ];
+  columnsToDisplay2 = ['image', 'code', 'nit', 'name', 'company', 'phone', 'address', 'town', 'department', '_seller', 'limitDaysCredit', 'limitCredit', 'state', 'balance'];
   expandedElement: CustomerItem | null;
   // HOOK FUNCTIONS //////////////////////////////////////////////////////////////////////////////////////////
   constructor(
@@ -52,7 +52,7 @@ export class ReceivablesComponent implements OnInit {
   }
 
   sortDesc(a, b) {
-    return a.balance > b.balance ? -1 : b.balance > a.balance ? 1 : 0;
+    return parseFloat(a.balance) > parseFloat(b.balance) ? -1 : parseFloat(b.balance) > parseFloat(a.balance) ? 1 : 0;
   }
 
   applyFilter(event: Event) {

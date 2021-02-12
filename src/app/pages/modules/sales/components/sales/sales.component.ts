@@ -40,8 +40,8 @@ export class SalesComponent implements OnInit, AfterContentInit, OnDestroy {
   salesp: string[] = [];
 
   dataSource = new MatTableDataSource();
-  columnsToDisplay = [ 'noBill', 'date', 'nit', 'name', 'phone', 'paid', 'total', 'options'];
-  columnsToDisplay2 = ['image',  'noBill', 'date', 'nit', 'name', 'phone', 'paid', 'total', 'options'];
+  columnsToDisplay = [ 'noBill', 'date', 'code', 'nit', 'name', 'phone', 'paid', 'total', 'options'];
+  columnsToDisplay2 = ['image',  'noBill', 'date', 'code', 'nit', 'name', 'phone', 'paid', 'total', 'options'];
   expandedElement: SaleItem | null;
 
   constructor(
@@ -153,29 +153,29 @@ export class SalesComponent implements OnInit, AfterContentInit, OnDestroy {
   }
 
   delete(sale: SaleItem) {
-    // const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
-    //   width: '350px',
-    //   data: { title: 'Eliminar Orden', message: '¿Confirma que desea eliminar la orden  ' + order.noOrder + '?'},
-    //   disableClose: true,
-    //   panelClass: ['farmacia-dialog', 'farmacia' ],
-    // });
+    const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
+      width: '350px',
+      data: { title: 'Eliminar Venta', message: '¿Confirma que desea eliminar la venta  ' + sale.noBill + '?', isLogin: true},
+      disableClose: true,
+      panelClass: ['farmacia-dialog', 'farmacia' ],
+    });
 
-    // dialogRef.afterClosed().subscribe(result => {
-    //   if (result !== undefined) {
-    //     if (result === true) {
-    //       // this.loading = true;
-    //       this.saleService.deleteOrder(order).subscribe(data => {
-    //         this.toasty.success('Orden eliminada exitosamente');
-    //         const filter = { month: this.month, year: this.year, _cellar: this.currentCellar._id };
-    //         this.saleService.loadData(filter);
-    //         // this.loading = false;
-    //       }, error => {
-    //         // this.loading = false;
-    //         this.toasty.error('Error al eliminar el orden');
-    //       });
-    //     }
-    //   }
-    // });
+    dialogRef.afterClosed().subscribe(result => {
+      if (result !== undefined) {
+        if (result === true) {
+          // this.loading = true;
+          this.saleService.deleteSale(sale).subscribe(data => {
+            this.toasty.success('Venta eliminada exitosamente');
+            const filter = { month: this.month, year: this.year, _cellar: this.currentCellar._id };
+            this.saleService.loadData(filter);
+            // this.loading = false;
+          }, error => {
+            // this.loading = false;
+            this.toasty.error('Error al eliminar la venta');
+          });
+        }
+      }
+    });
   }
 
 }

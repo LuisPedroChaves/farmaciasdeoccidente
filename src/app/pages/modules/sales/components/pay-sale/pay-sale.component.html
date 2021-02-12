@@ -1,113 +1,124 @@
-<div  class="farmacia">
-    <header class="header" fxLayout="row wrap" fxLayoutAlign="start center">
-        <h3 style="margin: 0">Abonos</h3>
-        <span fxFlex></span>
-        <button mat-icon-button (click)="dialogRef.close(false)">
-            <mat-icon>close</mat-icon>
-        </button>
-    </header>
-    <mat-divider></mat-divider>
-    <div class="basic-purchase-info" fxLayout="row wrap">
-        <div fxFlex="100" fxLayout="row wrap" fxLayoutAlign="start center">
-            <h2 style="margin: 0">{{ data.sale.noBill }}</h2>
-            <span fxFlex></span>
-            <span><b>{{ data.sale._seller.name }}</b></span>
-        </div>
-        <div fxFlex="100" fxLayout="row wrap" fxLayoutAlign="start center">
-            <span>{{ data.sale.date | date: 'dd/MM/yyyy HH:mm' }}</span>
-        </div>
-        <div fxFlex="100" fxLayout="row wrap" fxLayoutAlign="start center" style="margin-top:10px">
-            <span style="font-size: 12px; font-weight: 600;" [ngClass]="{'paid': data.sale.paid === true, 'pending': data.sale.paid === false}">
-                {{data.sale.paid === true ? 'PAGADO': 'PENDIENTE'}}
-            </span>
-        </div>
+<div class="farmacia">
+  <header class="header" fxLayout="row wrap" fxLayoutAlign="start center">
+    <h3 style="margin: 0">Abonos</h3>
+    <span fxFlex></span>
+    <button mat-icon-button (click)="dialogRef.close(false)">
+      <mat-icon>close</mat-icon>
+    </button>
+  </header>
+  <mat-divider></mat-divider>
+  <div class="basic-purchase-info" fxLayout="row wrap">
+    <div fxFlex="100" fxLayout="row wrap" fxLayoutAlign="start center">
+      <h2 style="margin: 0">{{ data.sale.noBill }}</h2>
+      <span fxFlex></span>
+      <span><b>{{ data.sale._seller.name }}</b></span>
     </div>
-    <mat-divider></mat-divider>
-    <div style="padding: 10px; padding-left: 15px;">
-        {{ data.sale._cellar.name }}
+    <div fxFlex="100" fxLayout="row wrap" fxLayoutAlign="start center">
+      <span>{{ data.sale.date | date: 'dd/MM/yyyy' }}</span>
+      <span fxFlex></span>
+      <span>{{ data.sale._cellar.name }}</span>
     </div>
-    <div fxLayout="row wrap" *ngIf="data.sale.paid === false" fxLayoutAlign="start center" style="padding: 10px; padding-left: 15px; padding-right: 15px;">
-        <div fxFlex="33" class="inputpaddin">
-            <mat-form-field class="width-all" color="primary">
-                <mat-label>Fecha</mat-label>
-                <input matInput [disabled]="data.sale.paid" [matDatepicker]="picker" [(ngModel)]="newPay.date">
-                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-                <mat-datepicker #picker></mat-datepicker>
-            </mat-form-field>
-        </div>
-        <div fxFlex="33" class="inputpaddin">
-            <mat-form-field fxFlex color="primary" class="width-all">
-                <mat-label>Documento</mat-label>
-                <input matInput type="text" [disabled]="data.sale.paid" [(ngModel)]="newPay.document" placeholder="Ingrese el numero de documento">
-            </mat-form-field>
-        </div>
-        <div fxFlex="33" class="inputpaddin">
-            <mat-form-field fxFlex color="primary" class="width-all">
-                <mat-label>Recibo</mat-label>
-                <input matInput type="text" [disabled]="data.sale.paid" [(ngModel)]="newPay.receipt" placeholder="Ingrese el numero de recibo">
-            </mat-form-field>
-        </div>
-        <div fxFlex="40" class="inputpaddin">
-            <mat-form-field fxFlex  color="primary" class="width-all">
-                <mat-label>Forma de Pago</mat-label>
-                <mat-select [(ngModel)]="newPay.payment">
-                    <mat-option value="EFECTIVO">Efectivo</mat-option>
-                    <mat-option value="TARJETA">Tarjeta</mat-option>
-                    <mat-option value="CHEQUE">Cheque</mat-option>
-                    <mat-option value="TRANSFERENCIA">Transferencia</mat-option>
-                    <mat-option value="DEPOSITO">Depósito</mat-option>
-                </mat-select>
-            </mat-form-field>
-        </div>
-        <div fxFlex="40" class="inputpaddin">
-            <mat-form-field fxFlex color="primary" class="width-all">
-                <mat-label>Monto</mat-label>
-                <span matPrefix>Q.</span>
-                <input matInput [disabled]="data.sale.paid" [(ngModel)]="newPay.amount" type="text" placeholder="Ingrese el monto">
-            </mat-form-field>
-        </div>
-        <div fxFlex="nogrow">
-            <button [disabled]="data.sale.paid" (click)="addPay()" mat-mini-fab color="primary">
-                <mat-icon>add</mat-icon>
-            </button>
-        </div>
-        <div fxFlex="100">
-            <span style="font-size: 10px;" *ngIf="this.error === true">El monto no puede ser 0 ni mayor al saldo restante</span>
-        </div>
+    <div fxFlex="100" fxLayout="row wrap" fxLayoutAlign="start center" style="margin-top:10px">
+      <mat-chip-list>
+        <mat-chip *ngIf="!data.sale.paid">
+          PENDIENTE
+        </mat-chip>
+        <mat-chip *ngIf="data.sale.paid" selected color="warn">
+          PAGADO
+        </mat-chip>
+      </mat-chip-list>
     </div>
-    <div class="balance-space" data-simplebar>
-        <div *ngFor="let b of data.sale.balance" class="pay-row" fxLayout="row wrap" fxLayoutAlign="start center">
-            <div fxFlex="25" class="inputpaddin heightpadding">
-                {{ b.date | date: 'dd/MM/yyyy HH:mm' }}
-            </div>
-
-            <div fxFlex="20" class="inputpaddin heightpadding">
-                {{ b.document }}
-            </div>
-            <div fxFlex="20" class="inputpaddin heightpadding">
-                {{ b.paymentType ? b.paymentType : '-' }}
-            </div>
-            <div fxFlex="20" class="inputpaddin heightpadding">
-                Q. {{ b.amount }}
-            </div>
-            <div fxFlex="10" class="inputpaddin heightpadding">
-                <button mat-icon-button (click)="remove(b)">
-                    <mat-icon class="material-icons-outlined option-button-1">cancel</mat-icon>
-                </button>
-            </div>
+  </div>
+  <mat-divider></mat-divider>
+  <div fxLayout="row wrap" *ngIf="data.sale.paid === false" fxLayoutAlign="start center"
+    style="padding: 10px; padding-left: 15px; padding-right: 15px;">
+    <div fxFlex="33%" fxFlex.xs="100%" class="inputpaddin">
+      <mat-form-field class="width-all" color="primary">
+        <mat-label>Fecha</mat-label>
+        <input matInput [disabled]="data.sale.paid" [matDatepicker]="picker" [(ngModel)]="newPay.date">
+        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+      </mat-form-field>
+    </div>
+    <div fxFlex="33%" fxFlex.xs="100%" class="inputpaddin">
+      <mat-form-field fxFlex color="primary" class="width-all">
+        <mat-label>Documento</mat-label>
+        <input matInput type="text" [disabled]="data.sale.paid" [(ngModel)]="newPay.document"
+          placeholder="Ingrese el numero de documento">
+      </mat-form-field>
+    </div>
+    <div fxFlex="33%" fxFlex.xs="100%" class="inputpaddin">
+      <mat-form-field fxFlex color="primary" class="width-all">
+        <mat-label>Recibo</mat-label>
+        <input matInput type="text" [disabled]="data.sale.paid" [(ngModel)]="newPay.receipt"
+          placeholder="Ingrese el numero de recibo">
+      </mat-form-field>
+    </div>
+    <div fxFlex="40%" fxFlex.xs="100%" class="inputpaddin">
+      <mat-form-field fxFlex color="primary" class="width-all">
+        <mat-label>Forma de Pago</mat-label>
+        <mat-select [(ngModel)]="newPay.payment">
+          <mat-option value="EFECTIVO">Efectivo</mat-option>
+          <mat-option value="TARJETA">Tarjeta</mat-option>
+          <mat-option value="CHEQUE">Cheque</mat-option>
+          <mat-option value="TRANSFERENCIA">Transferencia</mat-option>
+          <mat-option value="DEPOSITO">Depósito</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+    <div fxFlex="40%" fxFlex.xs="80%" class="inputpaddin">
+      <mat-form-field fxFlex color="primary" class="width-all">
+        <mat-label>Monto</mat-label>
+        <span matPrefix>Q.</span>
+        <input matInput [disabled]="data.sale.paid" [(ngModel)]="newPay.amount" type="text"
+          placeholder="Ingrese el monto">
+      </mat-form-field>
+    </div>
+    <div fxFlex="nogrow">
+      <button [disabled]="data.sale.paid" (click)="addPay()" mat-mini-fab color="primary">
+        <mat-icon>add</mat-icon>
+      </button>
+    </div>
+    <div fxFlex="100%">
+      <span style="font-size: 10px;" *ngIf="this.error === true" class="pending">El monto no puede ser 0 ni mayor al
+        saldo restante</span>
+    </div>
+  </div>
+  <div style="padding: 6px; padding-left: 15px;">
+    <span fxFlex></span>
+    <span>Total abonado: &nbsp;&nbsp;&nbsp;&nbsp; Q.{{ getTotalBalance() | number: '.2' }}</span>
+  </div>
+  <div style="padding: 6px; padding-left: 15px;">
+    <span fxFlex></span>
+    <span>Total de la venta: &nbsp;&nbsp;&nbsp;&nbsp; Q.{{ data.sale.total | number: '.2' }}</span>
+  </div>
+  <div style="padding: 6px; padding-left: 15px;">
+    <span fxFlex></span>
+    <span><b>Saldo Restante: &nbsp;&nbsp;&nbsp;&nbsp; Q.{{ +data.sale.total - +getTotalBalance() | number: '.2' }}</b></span>
+  </div>
+  <div class="section balance-space" fxLayout="row wrap">
+    <div fxFlex fxLayout="row wrap">
+      <div [fxFlex]="smallScreen ? 100 : ''" class="input-section">
+        <div *ngIf="data.sale.balance.length === 0" fxLayout="column wrap" fxLayoutAlign="center center"
+          class="joblist">
+          <mat-icon class="text-muted material-icons-outlined" color="primary">money_off</mat-icon>
+          <span class="text-muted">No hay abonos ingresados</span>
         </div>
+        <div *ngIf="data.sale.balance.length > 0" fxLayout="column wrap">
+          <mat-list *ngFor="let r of data.sale.balance" style="padding-top: 0;">
+            <mat-list-item class="assigned-job mat-elevation-z4">
+              <h4 mat-line>{{r.date | date: 'dd/MM/yyyy'}} </h4>
+              <small mat-line *ngIf="r.document"  class="text-muted">Documento:</small>
+              <small mat-line *ngIf="r.document"  class="text-muted">{{ r.document }}</small>
+              <small mat-line *ngIf="r.receipt"  class="text-muted">Recibo:</small>
+              <small mat-line *ngIf="r.receipt"  class="text-muted">{{ r.receipt }}</small>
+              <small mat-line class="text-muted">Pago: {{ r.payment }}</small>
+              <h2 style="margin: 0px !important;">Q{{ r.amount | number: '.2' }}</h2>
+              <button mat-icon-button (click)="remove(r)"><mat-icon>close</mat-icon></button>
+            </mat-list-item>
+          </mat-list>
+        </div>
+      </div>
     </div>
-    <div style="padding: 6px; padding-left: 15px;">
-        <span fxFlex></span>
-        <span>Total abonado: &nbsp;&nbsp;&nbsp;&nbsp; Q. {{ getTotalBalance() }}</span>
-    </div>
-    <div style="padding: 6px; padding-left: 15px;">
-        <span fxFlex></span>
-        <span>Total de la compra: &nbsp;&nbsp;&nbsp;&nbsp; Q. {{ data.sale.total }}</span>
-    </div>
-    <div style="padding: 6px; padding-left: 15px;">
-        <span fxFlex></span>
-        <span><b>Saldo Restante: &nbsp;&nbsp;&nbsp;&nbsp; Q. {{ +data.sale.total - +getTotalBalance() }}</b></span>
-    </div>
-
+  </div>
 </div>

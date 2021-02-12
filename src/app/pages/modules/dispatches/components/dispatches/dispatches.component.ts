@@ -98,7 +98,7 @@ export class DispatchesComponent implements OnInit, OnDestroy {
     body.push({
       style: 'subheader',
       table: {
-        widths: ['*', 250],
+        widths: ['*'],
         headerRows: 1,
         body: [
           [
@@ -109,25 +109,37 @@ export class DispatchesComponent implements OnInit, OnDestroy {
                 headerRows: 1,
                 body: [
                   [{ text: 'Farmacias de Occidente', style: 'header' }],
-                  [{ text: 'Dirección...', style: 'text9' }],
-                  [{ text: 'Nit: ...', style: 'text9' }],
+                  [{ text: 'Dirección: ' + this.currentCellar.address, style: 'text9' }],
+                  [{ text: 'Nit: 8838044-0', style: 'text9' }],
                 ]
               }
-            },
+            }
+          ], [{}]
+        ]
+      },
+      layout: 'headerLineOnly'
+    });
+    body.push({
+      style: 'subheader',
+      table: {
+        widths: ['*'],
+        headerRows: 1,
+        body: [
+          [
             {
               layout: 'noBorders',
               table: {
                 widths: ['*'],
                 headerRows: 1,
                 body: [
-                  [{ text: 'ORDEN DE ENVÍO', style: ['text11', 'boldtext', 'right'] }],
-                  [{ text: 'No.' + order.noOrder, style: ['text10', 'right'] }],
-                  [{ text: 'Factura: \n' + order.noBill, style: ['text8', 'right'] }],
-                  [{ text: 'Fecha: ' + moment(order.date).format('DD-MMM-YYYY hh:mm:ss'), style: ['text8', 'right'] }],
+                  [{ text: 'ORDEN DE ENVÍO', style: ['text11', 'boldtext'] }],
+                  [{ text: 'No.' + order.noOrder, style: ['text10'] }],
+                  [{ text: 'Factura: \n' + order.noBill, style: ['text8'] }],
+                  [{ text: 'Fecha: ' + moment(order.date).format('DD-MMM-YYYY hh:mm:ss'), style: ['text8'] }],
                 ]
               }
             }
-          ], [{}, {}]
+          ], [{}]
         ]
       },
       layout: 'headerLineOnly'
@@ -136,7 +148,7 @@ export class DispatchesComponent implements OnInit, OnDestroy {
     body.push({
       style: 'subheader',
       table: {
-        widths: ['*', '*'],
+        widths: ['*'],
         headerRows: 1,
         body: [
           [
@@ -149,53 +161,16 @@ export class DispatchesComponent implements OnInit, OnDestroy {
                   [{ text: 'NIT:', style: 'text9' }, { text: order.nit, style: 'text9' }],
                   [{ text: 'Nombre:', style: 'text9' }, { text: order.name, style: 'text9' }],
                   [{ text: 'Dirección:', style: 'text9' }, { text: order.address + ' ' + order.town + ' ' + order.department, style: 'text9' }],
-                ]
-              }
-            },
-            {
-              layout: 'noBorders',
-              table: {
-                widths: [100, 'auto'],
-                headerRows: 1,
-                body: [
                   [{ text: 'Método de pago: ', style:'text9' }, { text: order.payment, style:'text9' }],
                   [{ text: 'Teléfono: ', style:'text9' }, { text: order.phone, style:'text9' }],
+                  [{ text: 'Total (Q): ', style:'text9' }, { text: order.total, style:'text9' }],
                 ]
               }
             }
-          ], [{}, {}]
+          ], [{}]
         ]
       },
       layout: 'headerLineOnly'
-    });
-    body.push({ text: '\n' });
-
-    // DETALLE
-    const ArrayToPrint: any[] = [];
-    const printColumns: any[] = [
-      // { text: 'Cantidad', style: 'cellHeader' },
-      { text: 'Descripción', style: 'cellHeader' },
-      // { text: 'Precio Unitario con IVA (Q.)', style: 'cellHeader' },
-      // { text: 'Descuentos (Q.)', style: 'cellHeader' },
-      { text: 'Total (Q.)', style: 'cellHeader' },
-      // { text: 'Impuestos', style: 'cellHeader' },
-    ];
-    ArrayToPrint.push(printColumns);
-
-    const row: any[] = [
-      order.details,
-      order.total
-    ];
-    ArrayToPrint.push(row);
-
-
-    body.push({
-      style: 'cells',
-      table: {
-        widths: ['*', 50],
-        headerRows: 1,
-        body: ArrayToPrint
-      }
     });
     body.push({ text: '\n' });
     body.push({

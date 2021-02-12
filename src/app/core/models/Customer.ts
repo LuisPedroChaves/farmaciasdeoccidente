@@ -9,6 +9,7 @@ export interface CustomerItem {
  	town: string,
  	department: string,
  	company: string,
+ 	code?: string,
  	transport: string,
  	limitCredit: number,
 	 limitDaysCredit: number,

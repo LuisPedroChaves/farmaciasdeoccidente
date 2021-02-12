@@ -27,6 +27,7 @@ export class NewSaleComponent implements OnInit {
     address: new FormControl(null, [Validators.required]),
     town: new FormControl(null,),
     department: new FormControl('Huehuetenango',),
+    code: new FormControl('', [Validators.required]),
     company: new FormControl(null,),
     transport: new FormControl(null,),
     limitCredit: new FormControl(null, [Validators.required]),
@@ -61,11 +62,11 @@ export class NewSaleComponent implements OnInit {
 
   ngOnInit(): void {
     this.customersSubscription = this.customerService.readData().subscribe(data => {
-      this.customers = data;
+      this.customers = data.filter(customer => customer.code);
       this.options = [...this.customers];
     });
 
-    this.filteredOptions = this.form.controls.nit.valueChanges.pipe(startWith(''), map(value => this._filter(value)));
+    this.filteredOptions = this.form.controls.code.valueChanges.pipe(startWith(''), map(value => this._filter(value)));
 
     this.usersSubscription = this.userService.readData().subscribe(data => {
       this.sellers = data.filter(user => user._role.type === 'SELLER');
@@ -89,12 +90,13 @@ export class NewSaleComponent implements OnInit {
     this.form.controls.address.setValue('');
     this.form.controls.town.setValue('');
     this.form.controls.department.setValue('Huehuetenango');
+    this.form.controls.code.setValue('');
     this.form.controls.company.setValue('');
     this.form.controls.transport.setValue('');
     this.form.controls.limitCredit.setValue('');
     this.form.controls.limitDaysCredit.setValue('');
     this.form.controls._seller.setValue('');
-    this.form.controls.date.setValue('');
+    this.form.controls.date.setValue(new Date());
     this.form.controls.noBill.setValue('');
     this.form.controls.total.setValue('');
 
@@ -107,10 +109,11 @@ export class NewSaleComponent implements OnInit {
   findThis(value) {
     if (value !== 'cf') {
       this.orderFind = false;
-      const index = this.customers.findIndex(c => c.nit === value);
+      const index = this.customers.findIndex(c => c.code === value);
       if (index > -1) {
         this.loading = true;
         this.orderFind = true;
+        this.form.controls.nit.setValue(this.customers[index].nit);
         this.form.controls.name.setValue(this.customers[index].name);
         this.form.controls.phone.setValue(this.customers[index].phone);
         this.form.controls.address.setValue(this.customers[index].address);
@@ -129,6 +132,7 @@ export class NewSaleComponent implements OnInit {
         });
       }
     } else {
+      this.form.controls.nit.setValue('');
       this.form.controls.name.setValue('');
       this.form.controls.phone.setValue('');
       this.form.controls.address.setValue('');
@@ -145,7 +149,7 @@ export class NewSaleComponent implements OnInit {
   private _filter(value: string): CustomerItem[] {
     if (value) {
       const filterValue = value.toLowerCase();
-      return this.options.filter(option => option.nit.toLowerCase().includes(filterValue));
+      return this.options.filter(option => option.code.toLowerCase().includes(filterValue));
     } else {
       return [];
     }
@@ -153,6 +157,10 @@ export class NewSaleComponent implements OnInit {
 
   saveSale() {
     if (this.form.invalid) { return; }
+    if (this.form.get('total').value > this.credit) {
+      this.toasty.error('No hay suficiente crédito disponible');
+      return;
+    }
     this.loading = true;
     this.form.get('_cellar').setValue(this.data.currentCellar);
     const sale: any = { ...this.form.value };
