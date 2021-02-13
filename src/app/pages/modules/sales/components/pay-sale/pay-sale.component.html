@@ -30,7 +30,7 @@
     </div>
   </div>
   <mat-divider></mat-divider>
-  <div fxLayout="row wrap" *ngIf="data.sale.paid === false" fxLayoutAlign="start center"
+  <div fxLayout="row wrap" *ngIf="data.sale.paid === false && currentUser.type === 'ADMIN'" fxLayoutAlign="start center"
     style="padding: 10px; padding-left: 15px; padding-right: 15px;">
     <div fxFlex="33%" fxFlex.xs="100%" class="inputpaddin">
       <mat-form-field class="width-all" color="primary">
@@ -114,7 +114,7 @@
               <small mat-line *ngIf="r.receipt"  class="text-muted">{{ r.receipt }}</small>
               <small mat-line class="text-muted">Pago: {{ r.payment }}</small>
               <h2 style="margin: 0px !important;">Q{{ r.amount | number: '.2' }}</h2>
-              <button mat-icon-button (click)="remove(r)"><mat-icon>close</mat-icon></button>
+              <button mat-icon-button *ngIf="currentUser.type === 'ADMIN'"  (click)="remove(r)"><mat-icon>close</mat-icon></button>
             </mat-list-item>
           </mat-list>
         </div>

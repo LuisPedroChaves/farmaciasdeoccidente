@@ -123,7 +123,7 @@
                   <mat-icon>info</mat-icon>
                 </button>
                 <mat-menu #menu="matMenu">
-                  <button mat-menu-item color="warn">
+                  <button mat-menu-item (click)="pay(element)"  color="warn">
                     <mat-icon class="material-icons-outlined">account_balance_wallet</mat-icon> Consultar Balance
                   </button>
                   <!-- <button mat-menu-item (click)="editOrder(element)" *ngIf="salesp && salesp.includes('update')"

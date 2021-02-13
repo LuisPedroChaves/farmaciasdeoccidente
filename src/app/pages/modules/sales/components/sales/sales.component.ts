@@ -16,6 +16,7 @@ import { EditSaleComponent } from '../edit-sale/edit-sale.component';
 import { ConfirmationDialogComponent } from 'src/app/pages/shared-components/confirmation-dialog/confirmation-dialog.component';
 import { SaleItem } from '../../../../../core/models/Sale';
 import { SaleService } from '../../../../../core/services/httpServices/sale.service';
+import { PaySaleComponent } from '../pay-sale/pay-sale.component';
 
 @Component({
   selector: 'app-sales',
@@ -78,9 +79,21 @@ export class SalesComponent implements OnInit, AfterContentInit, OnDestroy {
     this.sessionsubscription?.unsubscribe();
   }
 
-  // selectOrder(order: OrderItem) {
-  //   this.router.navigate(['/order', order._id, 'orders']);
-  // }
+  pay(sale: SaleItem) {
+    const dialogRef = this.dialog.open(PaySaleComponent, {
+      width: '500px',
+      minHeight: '85vh',
+      maxHeight: '78vh',
+      disableClose: true,
+      data: { sale },
+      panelClass: ['farmacia-dialog', 'farmacia'],
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result !== undefined) {
+      }
+    });
+  }
 
   applyFilter(filterValue?: string) {
     if (filterValue) {
