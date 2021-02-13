@@ -1,5 +1,9 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { Store } from '@ngrx/store';
+import { Subscription } from 'rxjs';
+import { filter } from 'rxjs/operators';
+import { AppState } from 'src/app/core/store/app.reducer';
 import { SaleBalanceItem } from '../../../../../core/models/Sale';
 import { SaleService } from '../../../../../core/services/httpServices/sale.service';
 
@@ -15,12 +19,20 @@ export class PaySaleComponent implements OnInit {
   newPay: SaleBalanceItem = { _id: '', date: new Date(), receipt: '', document: '', payment: 'EFECTIVO', amount: null };
   error = false;
 
+  sessionsubscription: Subscription;
+  currentUser: any;
+
   constructor(
     public dialogRef: MatDialogRef<PaySaleComponent>,
-              @Inject(MAT_DIALOG_DATA) public data: any, public saleService: SaleService
+    @Inject(MAT_DIALOG_DATA) public data: any,
+    public store: Store<AppState>,
+    public saleService: SaleService
   ) { }
 
   ngOnInit(): void {
+    this.sessionsubscription = this.store.select('session').pipe(filter(session => session !== null)).subscribe(session => {
+      this.currentUser = session.currentUser;
+    });
   }
 
   getTotalBalance() {
