@@ -157,7 +157,8 @@ export class NewSaleComponent implements OnInit {
 
   saveSale() {
     if (this.form.invalid) { return; }
-    if (this.form.get('total').value > this.credit) {
+    this.credit = parseFloat(this.credit.toFixed(2));
+    if (parseFloat(this.form.get('total').value) > this.credit) {
       this.toasty.error('No hay suficiente crédito disponible');
       return;
     }

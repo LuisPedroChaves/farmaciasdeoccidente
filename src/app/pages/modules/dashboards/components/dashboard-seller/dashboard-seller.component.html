@@ -30,22 +30,18 @@
               <th mat-header-cell *matHeaderCellDef> Código </th>
               <td mat-cell *matCellDef="let element"> {{element.code}} </td>
             </ng-container>
-
             <ng-container matColumnDef="nit">
               <th mat-header-cell *matHeaderCellDef> Nit </th>
               <td mat-cell *matCellDef="let element"> {{element.nit}} </td>
             </ng-container>
-
             <ng-container matColumnDef="name">
               <th mat-header-cell *matHeaderCellDef> Nombre </th>
               <td mat-cell *matCellDef="let element"> {{element.name}} </td>
             </ng-container>
-
             <ng-container matColumnDef="company">
               <th mat-header-cell *matHeaderCellDef> Empresa </th>
               <td mat-cell *matCellDef="let element"> {{element.company}} </td>
             </ng-container>
-
             <ng-container matColumnDef="phone">
               <th mat-header-cell *matHeaderCellDef> Teléfono </th>
               <td mat-cell *matCellDef="let element"> {{element.phone}} </td>
@@ -61,55 +57,6 @@
             <ng-container matColumnDef="department">
               <th mat-header-cell *matHeaderCellDef> Departamento </th>
               <td mat-cell *matCellDef="let element"> {{element.department}} </td>
-            </ng-container>
-            <ng-container matColumnDef="limitDaysCredit">
-              <th mat-header-cell *matHeaderCellDef> Días de Crédito </th>
-              <td mat-cell *matCellDef="let element"> {{element.limitDaysCredit}} </td>
-            </ng-container>
-            <ng-container matColumnDef="limitCredit">
-              <th mat-header-cell *matHeaderCellDef> Limite de Crédito </th>
-              <td mat-cell *matCellDef="let element"> Q{{element.limitCredit | number: '.2'}} </td>
-            </ng-container>
-            <ng-container matColumnDef="state">
-              <th mat-header-cell *matHeaderCellDef> Estado </th>
-              <td mat-cell *matCellDef="let element">
-                <mat-chip-list>
-                  <mat-chip *ngIf="!element.timeAvaliable" selected color="accent">
-                    Tiempo vencido
-                  </mat-chip>
-                  <mat-chip *ngIf="element.timeAvaliable" selected color="warn">
-                    Tiempo vigente
-                  </mat-chip>
-                </mat-chip-list>
-              </td>
-            </ng-container>
-            <ng-container matColumnDef="balance">
-              <th mat-header-cell *matHeaderCellDef> Saldo </th>
-              <td mat-cell *matCellDef="let element">
-                <span *ngIf="element.limitCredit > element.balance">Q{{element.balance | number: '.2'}}</span>
-                <span *ngIf="element.limitCredit <= element.balance"
-                  style="color:brown;">Q{{element.balance | number: '.2'}}</span>
-              </td>
-            </ng-container>
-            <ng-container matColumnDef="phone">
-              <th mat-header-cell *matHeaderCellDef> Teléfono </th>
-              <td mat-cell *matCellDef="let element"> {{element.phone}} </td>
-            </ng-container>
-            <ng-container matColumnDef="address">
-              <th mat-header-cell *matHeaderCellDef> Dirección </th>
-              <td mat-cell *matCellDef="let element"> {{element.address}} </td>
-            </ng-container>
-            <ng-container matColumnDef="town">
-              <th mat-header-cell *matHeaderCellDef> Municipio </th>
-              <td mat-cell *matCellDef="let element"> {{element.town}} </td>
-            </ng-container>
-            <ng-container matColumnDef="department">
-              <th mat-header-cell *matHeaderCellDef> Departamento </th>
-              <td mat-cell *matCellDef="let element"> {{element.department}} </td>
-            </ng-container>
-            <ng-container matColumnDef="_seller">
-              <th mat-header-cell *matHeaderCellDef> Vendedor </th>
-              <td mat-cell *matCellDef="let element"> {{element._seller.name}} </td>
             </ng-container>
             <ng-container matColumnDef="limitDaysCredit">
               <th mat-header-cell *matHeaderCellDef> Días de Crédito </th>
