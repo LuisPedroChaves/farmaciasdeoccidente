@@ -1,182 +1,61 @@
 import { Component, OnInit, ViewChild, AfterContentInit, OnDestroy } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
-import { MatSort } from '@angular/material/sort';
 import { Subscription } from 'rxjs';
-import { Store } from '@ngrx/store';
-import { AppState } from 'src/app/core/store/app.reducer';
 import { EventBusService } from '../../../../../core/services/internal/event-bus.service';
 import { ConfigService } from '../../../../../core/services/config/config.service';
-import { OrderService } from '../../../../../core/services/httpServices/order.service';
-import { OrderItem } from '../../../../../core/models/Order';
-import { filter } from 'rxjs/operators';
-import { CellarItem } from '../../../../../core/models/Cellar';
-import { ConfirmationDialogComponent } from 'src/app/pages/shared-components/confirmation-dialog/confirmation-dialog.component';
-import { ToastyService } from '../../../../../core/services/internal/toasty.service';
 import { Router } from '@angular/router';
-import { NewOrderComponent } from '../../../orders/components/new-order/new-order.component';
-import { EditOrderComponent } from '../../../orders/components/edit-order/edit-order.component';
+import { CustomerItem } from 'src/app/core/models/Customer';
+import { CustomerService } from 'src/app/core/services/httpServices/customer.service';
 
 @Component({
   selector: 'app-dashboard-seller',
   templateUrl: './dashboard-seller.component.html',
   styleUrls: ['./dashboard-seller.component.scss']
 })
-export class DashboardSellerComponent implements OnInit, AfterContentInit, OnDestroy {
-
-  @ViewChild(MatSort, { static: true }) sort: MatSort;
+export class DashboardSellerComponent implements OnInit {
 
   smallScreen = window.innerWidth < 960 ? true : false;
+  loading = false;
 
   sessionsubscription: Subscription;
 
-  orders: OrderItem[];
-  currentCellar: CellarItem;
-
-  month = new Date().getMonth() + 1;
-  year = new Date().getFullYear();
-  currentFilter = 'current';
-
-  ordersp: string[] = [];
+  recivables: CustomerItem[];
 
   dataSource = new MatTableDataSource();
-  columnsToDisplay = ['noOrder', 'noBill', 'createdAt', 'nit', 'name', 'phone', 'address', 'payment', 'state', 'total', 'options'];
-  columnsToDisplay2 = ['image', 'noOrder', 'noBill', 'createdAt', 'nit', 'name', 'phone', 'address',  'payment', 'state', 'total', 'options'];
-  expandedElement: OrderItem | null;
+  columnsToDisplay = ['code', 'nit', 'name', 'company', 'phone', 'address', 'town', 'department', '_seller', 'limitDaysCredit', 'limitCredit', 'state', 'balance'];
+  columnsToDisplay2 = ['image', 'code', 'nit', 'name', 'company', 'phone', 'address', 'town', 'department', '_seller', 'limitDaysCredit', 'limitCredit', 'state', 'balance'];
+  expandedElement: CustomerItem | null;
 
   constructor(
-    public store: Store<AppState>,
     public eventBus: EventBusService,
     public config: ConfigService,
     public dialog: MatDialog,
-    public orderService: OrderService,
-    public toasty: ToastyService,
-    public router: Router
-  ) {
-    this.orderService.readData().subscribe(data => {
-      this.orders = data;
-      this.dataSource = new MatTableDataSource<OrderItem>(this.orders);
-    });
+    public router: Router,
+    public customerService: CustomerService
+  ) { }
 
-  }
   ngOnInit(): void {
-    this.sessionsubscription = this.store.select('session').pipe(filter(session => session !== null)).subscribe(session => {
-      if (session.permissions !== null) {
-        const b = session.permissions.filter(pr => pr.name === 'orders');
-        this.ordersp = b.length > 0 ? b[0].options : [];
-      }
+    this.loading = true;
+    this.customerService.getRecivables().subscribe(data => {
+      this.recivables = data.customers;
+      this.recivables = this.recivables.sort(this.sortDesc);
+      this.dataSource = new MatTableDataSource(this.recivables);
+      this.loading = false;
     });
-    this.currentCellar = JSON.parse(localStorage.getItem('currentstore'));
-
-  }
-  ngAfterContentInit() {
-    const filter = { month: this.month, year: this.year, _cellar: this.currentCellar._id };
-    this.orderService.loadData(filter);
   }
 
-  ngOnDestroy() {
-    this.sessionsubscription?.unsubscribe();
+  selectCustomer(customer: CustomerItem) {
+    this.router.navigate(['statements', customer._id, 'seller']);
   }
 
-  selectOrder(order: OrderItem) {
-    this.router.navigate(['/order', order._id, 'orders']);
+  sortDesc(a, b) {
+    return parseFloat(a.balance) > parseFloat(b.balance) ? -1 : parseFloat(b.balance) > parseFloat(a.balance) ? 1 : 0;
   }
 
-  applyFilter(filterValue?: string) {
-    if (filterValue) {
-
-      this.dataSource.filter = filterValue.trim().toLowerCase();
-      if (this.currentFilter === 'last') {
-        if (new Date().getMonth() === 0) {
-          this.month = 12;
-        } else {
-          this.month = new Date().getMonth();
-
-        }
-      }
-      if (this.currentFilter === 'current') { this.month = new Date().getMonth() + 1; }
-      const filters = { month: this.month, year: this.year, _cellar: this.currentCellar._id };
-      this.orderService.loadData(filters);
-    } else {
-      if (this.currentFilter === 'last') {
-        if (new Date().getMonth() === 0) {
-          this.month = 12;
-        } else {
-          this.month = new Date().getMonth();
-
-        }
-      }
-      if (this.currentFilter === 'current') { this.month = new Date().getMonth() + 1; }
-      const filters = { month: this.month, year: this.year, _cellar: this.currentCellar._id };
-      this.orderService.loadData(filters);
-    }
-  }
-
-
-  applyFilter2(event: Event) {
+  applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
     this.dataSource.filter = filterValue.trim().toLowerCase();
   }
 
-  newOrder() {
-    const dialogRef = this.dialog.open(NewOrderComponent, {
-      width: this.smallScreen ? '100%' : '800px',
-      minHeight: '78vh',
-      maxHeight: '78vh',
-      data: { ordersp: this.ordersp, currentCellar: this.currentCellar },
-      disableClose: true,
-      panelClass: ['farmacia-dialog', 'farmacia'],
-    });
-
-    dialogRef.afterClosed().subscribe(result => {
-      if (result !== undefined) {
-        const filter = { month: this.month, year: this.year, _cellar: this.currentCellar._id };
-        this.orderService.loadData(filter);
-      }
-    });
-  }
-
-  editOrder(order: OrderItem) {
-    const dialogRef = this.dialog.open(EditOrderComponent, {
-      width: this.smallScreen ? '100%' : '800px',
-      data: { order: order, ordersp: this.ordersp },
-      disableClose: true,
-      panelClass: ['farmacia-dialog', 'farmacia'],
-    });
-
-    dialogRef.afterClosed().subscribe(result => {
-      if (result !== undefined) {
-        const filter = { month: this.month, year: this.year, _cellar: this.currentCellar._id };
-        this.orderService.loadData(filter);
-      }
-    });
-  }
-
-  delete(order: OrderItem) {
-    const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
-      width: '350px',
-      data: { title: 'Eliminar Orden', message: '¿Confirma que desea eliminar la orden  ' + order.noOrder + '?'},
-      disableClose: true,
-      panelClass: ['farmacia-dialog', 'farmacia' ],
-    });
-
-    dialogRef.afterClosed().subscribe(result => {
-      if (result !== undefined) {
-        if (result === true) {
-          // this.loading = true;
-          this.orderService.deleteOrder(order).subscribe(data => {
-            this.toasty.success('Orden eliminada exitosamente');
-            const filter = { month: this.month, year: this.year, _cellar: this.currentCellar._id };
-            this.orderService.loadData(filter);
-            // this.loading = false;
-          }, error => {
-            // this.loading = false;
-            this.toasty.error('Error al eliminar el orden');
-          });
-        }
-      }
-    });
-  }
-
 }
-

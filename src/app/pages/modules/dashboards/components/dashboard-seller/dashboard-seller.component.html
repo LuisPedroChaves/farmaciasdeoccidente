@@ -1,168 +1,111 @@
 <div [ngClass]="{ 'app': !smallScreen, 'app-sm': smallScreen } ">
-    <div class="section-content farmacia">
-        <div>
-            <header class="module-header colorBarra" [ngClass]="{'padding-25': !smallScreen, 'padding-15': smallScreen }" fxLayoutAlign="start center" fxLayout="row wrap">
-                <h4 class="product-font module-title ht">Catálogo de Clientes</h4> &nbsp;&nbsp;&nbsp;&nbsp;
-            </header>
-            <mat-divider></mat-divider>
-            <div fxLayout="row wrap" class="module-container " data-simplebar>
-                <!-- <div class="container-strech"> -->
-                <div fxLayout="row wrap" fxLayoutAlign="start center" class="costumers-header">
-                    <mat-form-field appearance="outline" floatLabel="always" class="findinput">
-                        <mat-label>Buscar</mat-label>
-                        <mat-icon class="text-muted" matPrefix>search</mat-icon>
-                        <input matInput (keyup)="applyFilter2($event)" type="text">
-                    </mat-form-field>
-                    <span fxFlex></span>
-
-
-                    <mat-select (selectionChange)="applyFilter()" [ngStyle]="{'display': currentFilter === 'month' ? 'inline': 'none'}" class="dateinput" [(ngModel)]="this.month">
-                        <mat-option [value]="1">Enero</mat-option>
-                        <mat-option [value]="2">Febrero</mat-option>
-                        <mat-option [value]="3">Marzo</mat-option>
-                        <mat-option [value]="4">Abril</mat-option>
-                        <mat-option [value]="5">Mayo</mat-option>
-                        <mat-option [value]="6">Junio</mat-option>
-                        <mat-option [value]="7">Julio</mat-option>
-                        <mat-option [value]="8">Agosto</mat-option>
-                        <mat-option [value]="9">Septiembre</mat-option>
-                        <mat-option [value]="10">Octubre</mat-option>
-                        <mat-option [value]="11">Noviembre</mat-option>
-                        <mat-option [value]="12">Diciembre</mat-option>
-                    </mat-select>
-                    <mat-select (selectionChange)="applyFilter()" [ngStyle]="{'display': currentFilter === 'month' ? 'inline': 'none'}" *ngIf="currentFilter === 'month'" class="dateinput" [(ngModel)]="this.year">
-                        <mat-option *ngFor="let y of [2020, 2021, 2022, 2023, 2024, 2025, 2026, 2027, 2028, 2029, 2030, 2031, 2032, 2033,2034,2035,2036,2037,2038,2039,2040]" [value]="y">{{ y }}</mat-option>
-                    </mat-select>
-                </div>
-                <mat-divider></mat-divider>
-                <div *ngIf="orders !== undefined" class="allspace" data-simplebar>
-
-                    <table mat-table matSort matTableResponsive [dataSource]="dataSource" multiTemplateDataRows class="mat-elevation-z2 noborder-table ">
-                        <ng-container matColumnDef="image">
-                            <th mat-header-cell *matHeaderCellDef></th>
-                            <td mat-cell *matCellDef="let element" fxHide.xs>
-                                <mat-icon color="primary" class="material-icons-outlined">receipt_long</mat-icon>
-                            </td>
-                        </ng-container>
-                        <ng-container matColumnDef="noOrder">
-                            <th mat-header-cell *matHeaderCellDef> No. Orden </th>
-                            <td mat-cell *matCellDef="let element"> {{element.noOrder}} </td>
-                        </ng-container>
-                        <ng-container matColumnDef="noBill">
-                            <th mat-header-cell *matHeaderCellDef> No. Factura </th>
-                            <td mat-cell *matCellDef="let element"> {{element.noBill}} </td>
-                        </ng-container>
-                        <ng-container matColumnDef="createdAt">
-                            <th mat-header-cell *matHeaderCellDef> Fecha </th>
-                            <td mat-cell *matCellDef="let element"> {{element.date | date: 'dd/MM/yyyy HH:mm' }} </td>
-                        </ng-container>
-                        <ng-container matColumnDef="nit">
-                            <th mat-header-cell *matHeaderCellDef> Nit </th>
-                            <td mat-cell *matCellDef="let element">
-                                {{element.nit}}
-                            </td>
-                        </ng-container>
-                        <ng-container matColumnDef="name">
-                            <th mat-header-cell *matHeaderCellDef> Nombre </th>
-                            <td mat-cell *matCellDef="let element">
-                                {{element.name}}
-                            </td>
-                        </ng-container>
-                        <ng-container matColumnDef="phone">
-                            <th mat-header-cell *matHeaderCellDef> Teléfono </th>
-                            <td mat-cell *matCellDef="let element">
-                                {{element.phone}}
-                            </td>
-                        </ng-container>
-                        <ng-container matColumnDef="address">
-                            <th mat-header-cell *matHeaderCellDef> Dirección </th>
-                            <td mat-cell *matCellDef="let element">
-                                {{element.address}} {{element.town}} {{element.department}}
-                            </td>
-                        </ng-container>
-                        <!-- <ng-container matColumnDef="details">
-                <th mat-header-cell *matHeaderCellDef> Detalles </th>
-                <td mat-cell *matCellDef="let element"> {{element.details}} </td>
-              </ng-container> -->
-                        <ng-container matColumnDef="payment">
-                            <th mat-header-cell *matHeaderCellDef> Método de Pago </th>
-                            <td mat-cell *matCellDef="let element"> {{element.payment}} </td>
-                        </ng-container>
-                        <ng-container matColumnDef="state">
-                            <th mat-header-cell *matHeaderCellDef> Estado</th>
-                            <td mat-cell *matCellDef="let element">
-                                <mat-chip-list>
-                                    <mat-chip *ngIf="element.state === 'ORDEN'">
-                                        Creada
-                                    </mat-chip>
-                                    <mat-chip *ngIf="element.state === 'DESPACHO'" selected color="accent">
-                                        Despachada
-                                    </mat-chip>
-                                    <mat-chip *ngIf="element.state === 'ENVIO'" selected color="primary">
-                                        Enviada
-                                    </mat-chip>
-                                    <mat-chip *ngIf="element.state === 'ENTREGA'" selected color="warn">
-                                        Entragada
-                                    </mat-chip>
-                                    <mat-chip *ngIf="element.state === 'FIN'" selected color="warn">
-                                        Finalizada
-                                    </mat-chip>
-                                </mat-chip-list>
-                            </td>
-                        </ng-container>
-                        <ng-container matColumnDef="total">
-                            <th mat-header-cell *matHeaderCellDef> Total </th>
-                            <td mat-cell *matCellDef="let element"> Q {{element.total | number: '.2'}} </td>
-                        </ng-container>
-                        <ng-container matColumnDef="options">
-                            <th mat-header-cell *matHeaderCellDef> </th>
-                            <td mat-cell *matCellDef="let element">
-                                <button class="T" mat-button [matMenuTriggerFor]="menu">
-                  <mat-icon>info</mat-icon>Información
-                </button>
-                                <mat-menu #menu="matMenu">
-                                    <button mat-menu-item (click)="selectOrder(element)" color="warn">
-                    <mat-icon class="material-icons-outlined">preview</mat-icon> Consultar Orden
-                  </button>
-                                    <button mat-menu-item (click)="editOrder(element)" *ngIf="ordersp && ordersp.includes('update')" [disabled]="element.state !== 'ORDEN' && element.state !== 'DESPACHO'" color="warn">
-                    <mat-icon class="material-icons-outlined">edit</mat-icon> Editar Orden
-                  </button>
-                                    <mat-divider></mat-divider>
-                                    <button mat-menu-item *ngIf="ordersp && ordersp.includes('delete')" [disabled]="element.state !== 'ORDEN' && element.state !== 'DESPACHO'" color="warn" (click)="delete(element)">
-                    <mat-icon class="material-icons-outlined">block</mat-icon> Anular Orden
-                  </button>
-                                </mat-menu>
-                            </td>
-                        </ng-container>
-
-                        <!-- Expanded Content Column - The detail row is made up of this one column that spans across all columns -->
-                        <!-- <ng-container matColumnDef="expandedDetail">
-                                <td mat-cell *matCellDef="let element" [attr.colspan]="columnsToDisplay.length">
-                                <div class="example-element-detail" [@detailExpand]="element == expandedElement ? 'expanded' : 'collapsed'">
-                                    <div class="example-element-description">
-                                        Editar Cliente
-
-                                    </div>
-                                </div>
-                                </td>
-                            </ng-container> -->
-
-                        <tr mat-header-row *matHeaderRowDef="columnsToDisplay2"></tr>
-                        <tr mat-row *matRowDef="let element; columns: columnsToDisplay2;" class="example-element-row">
-                        </tr>
-                        <!-- <tr mat-row *matRowDef="let element; columns: columnsToDisplay2;"
-                                class="example-element-row"
-                                [class.example-expanded-row]="expandedElement === element"
-                                (click)="expandedElement = expandedElement === element ? null : element">
-                            </tr> -->
-                        <!-- <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="example-detail-row"></tr> -->
-                    </table>
-                </div>
-                <div fxLayout="column wrap" fxLayoutAlign="center center" class="padding-15 loader-screen" *ngIf="orders === undefined">
-                    <mat-progress-spinner mode="indeterminate" diameter="60" color="warn"></mat-progress-spinner>
-                </div>
-                <!-- </div> -->
-            </div>
+  <div class="section-content farmacia">
+    <div>
+      <header class="module-header colorBarra" [ngClass]="{'padding-25': !smallScreen, 'padding-15': smallScreen }"
+        fxLayoutAlign="start center" fxLayout="row wrap">
+        <h4 class="product-font module-title ht">Catálogo de Clientes</h4> &nbsp;&nbsp;&nbsp;&nbsp;
+      </header>
+      <mat-divider></mat-divider>
+      <div fxLayout="row wrap" class="module-container " data-simplebar>
+        <!-- <div class="container-strech"> -->
+        <div fxLayout="row wrap" fxLayoutAlign="start center" class="costumers-header">
+          <mat-form-field appearance="outline" floatLabel="always" class="findinput">
+            <mat-label>Buscar</mat-label>
+            <mat-icon class="text-muted" matPrefix>search</mat-icon>
+            <input matInput (keyup)="applyFilter($event)" type="text">
+          </mat-form-field>
         </div>
+        <mat-divider></mat-divider>
+        <div *ngIf="recivables !== undefined" class="allspace" data-simplebar>
+
+          <table mat-table matSort matTableResponsive [dataSource]="dataSource" multiTemplateDataRows
+            class="mat-elevation-z2 noborder-table ">
+            <ng-container matColumnDef="image">
+              <th mat-header-cell *matHeaderCellDef></th>
+              <td mat-cell *matCellDef="let element" fxHide.xs>
+                <mat-icon color="primary" class="material-icons-outlined">person</mat-icon>
+              </td>
+            </ng-container>
+            <ng-container matColumnDef="code">
+                <th mat-header-cell *matHeaderCellDef> Código </th>
+                <td mat-cell *matCellDef="let element"> {{element.code}} </td>
+              </ng-container>
+
+              <ng-container matColumnDef="nit">
+                <th mat-header-cell *matHeaderCellDef> Nit </th>
+                <td mat-cell *matCellDef="let element"> {{element.nit}} </td>
+              </ng-container>
+
+              <ng-container matColumnDef="name">
+                <th mat-header-cell *matHeaderCellDef> Nombre </th>
+                <td mat-cell *matCellDef="let element"> {{element.name}} </td>
+              </ng-container>
+
+              <ng-container matColumnDef="company">
+                <th mat-header-cell *matHeaderCellDef> Empresa </th>
+                <td mat-cell *matCellDef="let element"> {{element.company}} </td>
+              </ng-container>
+
+              <ng-container matColumnDef="phone">
+                <th mat-header-cell *matHeaderCellDef> Teléfono </th>
+                <td mat-cell *matCellDef="let element"> {{element.phone}} </td>
+              </ng-container>
+              <ng-container matColumnDef="address">
+                <th mat-header-cell *matHeaderCellDef> Dirección </th>
+                <td mat-cell *matCellDef="let element"> {{element.address}} </td>
+              </ng-container>
+              <ng-container matColumnDef="town">
+                <th mat-header-cell *matHeaderCellDef> Municipio </th>
+                <td mat-cell *matCellDef="let element"> {{element.town}} </td>
+              </ng-container>
+              <ng-container matColumnDef="department">
+                <th mat-header-cell *matHeaderCellDef> Departamento </th>
+                <td mat-cell *matCellDef="let element"> {{element.department}} </td>
+              </ng-container>
+              <ng-container matColumnDef="_seller">
+                <th mat-header-cell *matHeaderCellDef> Vendedor </th>
+                <td mat-cell *matCellDef="let element"> {{element._seller.name}} </td>
+              </ng-container>
+              <ng-container matColumnDef="limitDaysCredit">
+                <th mat-header-cell *matHeaderCellDef> Días de Crédito </th>
+                <td mat-cell *matCellDef="let element"> {{element.limitDaysCredit}} </td>
+              </ng-container>
+              <ng-container matColumnDef="limitCredit">
+                <th mat-header-cell *matHeaderCellDef> Limite de Crédito </th>
+                <td mat-cell *matCellDef="let element"> Q{{element.limitCredit | number: '.2'}} </td>
+              </ng-container>
+              <ng-container matColumnDef="state">
+                <th mat-header-cell *matHeaderCellDef> Estado </th>
+                <td mat-cell *matCellDef="let element">
+                  <mat-chip-list>
+                    <mat-chip *ngIf="!element.timeAvaliable" selected color="accent">
+                      Tiempo vencido
+                    </mat-chip>
+                    <mat-chip *ngIf="element.timeAvaliable" selected color="warn">
+                      Tiempo vigente
+                    </mat-chip>
+                  </mat-chip-list>
+                </td>
+              </ng-container>
+              <ng-container matColumnDef="balance">
+                <th mat-header-cell *matHeaderCellDef> Saldo </th>
+                <td mat-cell *matCellDef="let element">
+                    <span *ngIf="element.limitCredit > element.balance">Q{{element.balance | number: '.2'}}</span>
+                    <span *ngIf="element.limitCredit <= element.balance" style="color:brown;">Q{{element.balance | number: '.2'}}</span>
+                  </td>
+              </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="columnsToDisplay2"></tr>
+            <tr mat-row *matRowDef="let element; columns: columnsToDisplay2;" class="example-element-row" (click)="selectCustomer(element)">
+            </tr>
+          </table>
+        </div>
+        <div fxLayout="column wrap" fxLayoutAlign="center center" class="padding-15 loader-screen"
+          *ngIf="recivables === undefined">
+          <mat-progress-spinner mode="indeterminate" diameter="60" color="warn"></mat-progress-spinner>
+        </div>
+        <!-- </div> -->
+      </div>
     </div>
+  </div>
 </div>

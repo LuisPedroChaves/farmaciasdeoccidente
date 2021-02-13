@@ -26,7 +26,7 @@ export class ReceivablesComponent implements OnInit {
   columnsToDisplay = ['code', 'nit', 'name', 'company', 'phone', 'address', 'town', 'department', '_seller', 'limitDaysCredit', 'limitCredit', 'state', 'balance' ];
   columnsToDisplay2 = ['image', 'code', 'nit', 'name', 'company', 'phone', 'address', 'town', 'department', '_seller', 'limitDaysCredit', 'limitCredit', 'state', 'balance'];
   expandedElement: CustomerItem | null;
-  // HOOK FUNCTIONS //////////////////////////////////////////////////////////////////////////////////////////
+
   constructor(
     public eventBus: EventBusService,
     public config: ConfigService,
