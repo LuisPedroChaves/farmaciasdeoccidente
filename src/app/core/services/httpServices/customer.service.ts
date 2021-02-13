@@ -52,6 +52,10 @@ export class CustomerService implements IDataService<CustomerItem[]> {
     return this.http.get(this.apiConfigService.API_CUSTOMER + '/recivables');
   }
 
+  getRecivablesBySeller(id: string): Observable<any> {
+    return this.http.get(this.apiConfigService.API_CUSTOMER + '/recivablesBySeller/' + id);
+  }
+
   getStatements(id: string): Observable<any> {
     return this.http.get(this.apiConfigService.API_CUSTOMER + '/statements/' + id);
   }

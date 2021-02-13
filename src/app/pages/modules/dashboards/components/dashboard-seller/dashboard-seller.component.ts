@@ -7,6 +7,9 @@ import { ConfigService } from '../../../../../core/services/config/config.servic
 import { Router } from '@angular/router';
 import { CustomerItem } from 'src/app/core/models/Customer';
 import { CustomerService } from 'src/app/core/services/httpServices/customer.service';
+import { Store } from '@ngrx/store';
+import { AppState } from 'src/app/core/store/app.reducer';
+import { filter } from 'rxjs/operators';
 
 @Component({
   selector: 'app-dashboard-seller',
@@ -23,11 +26,12 @@ export class DashboardSellerComponent implements OnInit {
   recivables: CustomerItem[];
 
   dataSource = new MatTableDataSource();
-  columnsToDisplay = ['code', 'nit', 'name', 'company', 'phone', 'address', 'town', 'department', '_seller', 'limitDaysCredit', 'limitCredit', 'state', 'balance'];
-  columnsToDisplay2 = ['image', 'code', 'nit', 'name', 'company', 'phone', 'address', 'town', 'department', '_seller', 'limitDaysCredit', 'limitCredit', 'state', 'balance'];
+  columnsToDisplay = ['code', 'nit', 'name', 'company', 'phone', 'address', 'town', 'department', 'limitDaysCredit', 'limitCredit', 'state', 'balance'];
+  columnsToDisplay2 = ['image', 'code', 'nit', 'name', 'company', 'phone', 'address', 'town', 'department', 'limitDaysCredit', 'limitCredit', 'state', 'balance'];
   expandedElement: CustomerItem | null;
 
   constructor(
+    public store: Store<AppState>,
     public eventBus: EventBusService,
     public config: ConfigService,
     public dialog: MatDialog,
@@ -37,11 +41,13 @@ export class DashboardSellerComponent implements OnInit {
 
   ngOnInit(): void {
     this.loading = true;
-    this.customerService.getRecivables().subscribe(data => {
-      this.recivables = data.customers;
-      this.recivables = this.recivables.sort(this.sortDesc);
-      this.dataSource = new MatTableDataSource(this.recivables);
-      this.loading = false;
+    this.sessionsubscription = this.store.select('session').pipe(filter(session => session !== null)).subscribe(session => {
+      this.customerService.getRecivablesBySeller(session.currentUser.id).subscribe(data => {
+        this.recivables = data.customers;
+        this.recivables = this.recivables.sort(this.sortDesc);
+        this.dataSource = new MatTableDataSource(this.recivables);
+        this.loading = false;
+      });
     });
   }
 
