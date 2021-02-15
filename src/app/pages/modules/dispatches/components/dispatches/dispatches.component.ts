@@ -10,6 +10,7 @@ import { CellarItem } from 'src/app/core/models/Cellar';
 import { OrderService } from '../../../../../core/services/httpServices/order.service';
 import * as moment from 'moment';
 import { PrintService } from '../../../../../core/services/internal/print.service';
+import { filter } from 'rxjs/operators';
 
 @Component({
   selector: 'app-dispatches',
@@ -25,7 +26,7 @@ export class DispatchesComponent implements OnInit, OnDestroy {
   dispatches: OrderItem[];
   currentCellar: CellarItem;
 
-  dispatchessp: string[] = [];
+  dispatchesp: string[] = [];
 
   loading = false;
   saving = false;
@@ -42,13 +43,12 @@ export class DispatchesComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    // this.sessionsubscription = this.store.select('session').pipe(filter( session => session !== null)).subscribe( session => {
-    //     if (session.permissions !== null) {
-    //       const b = session.permissions.filter(pr => pr.name === 'dispatches');
-    //       this.dispatchessp = b.length > 0 ? b[0].options : [];
-    //       console.log("🚀 ~ file: dispatches.component.ts ~ line 47 ~ DispatchesComponent ~ this.sessionsubscription=this.store.select ~ this.dispatchessp", this.dispatchessp)
-    //     }
-    // });
+    this.sessionsubscription = this.store.select('session').pipe(filter( session => session !== null)).subscribe( session => {
+        if (session.permissions !== null) {
+          const b = session.permissions.filter(pr => pr.name === 'dispatches');
+          this.dispatchesp = b.length > 0 ? b[0].options : [];
+        }
+    });
     this.currentCellar = JSON.parse(localStorage.getItem('currentstore'));
     this.loadDispatchs();
   }

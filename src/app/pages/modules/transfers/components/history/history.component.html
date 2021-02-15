@@ -48,7 +48,7 @@
                 [value]="y">{{ y }}</mat-option>
             </mat-select>
           </div>
-          <div *ngIf="orders !== undefined" class="allspace" data-simplebar>
+          <div *ngIf="orders !== undefined && (internalOrdersp && internalOrdersp.includes('read'))" class="allspace" data-simplebar>
 
             <table mat-table matSort matTableResponsive [dataSource]="dataSource" multiTemplateDataRows
               class="mat-elevation-z2 noborder-table ">

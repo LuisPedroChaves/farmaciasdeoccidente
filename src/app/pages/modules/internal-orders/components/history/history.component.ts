@@ -1,6 +1,10 @@
 import { Component, OnInit, AfterContentInit } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
+import { Store } from '@ngrx/store';
+import { Subscription } from 'rxjs';
+import { filter } from 'rxjs/operators';
 import { CellarItem } from 'src/app/core/models/Cellar';
+import { AppState } from 'src/app/core/store/app.reducer';
 import { InternalOrderItem } from '../../../../../core/models/InternalOrder';
 import { InternalOrderService } from '../../../../../core/services/httpServices/internal-order.service';
 
@@ -25,7 +29,11 @@ export class HistoryComponent implements OnInit, AfterContentInit {
   columnsToDisplay2 = ['image', 'noOrder', 'date', '_destination', '_user', 'timeInit', 'timeDispatch', 'timeDelivery', '_delivery', 'state'];
   expandedElement: InternalOrderItem | null;
 
+  sessionsubscription: Subscription;
+  internalOrdersp: string[] = [];
+
   constructor(
+    public store: Store<AppState>,
     public internalOrderService: InternalOrderService
   ) {
     this.internalOrderService.readData().subscribe(data => {
@@ -35,6 +43,12 @@ export class HistoryComponent implements OnInit, AfterContentInit {
   }
 
   ngOnInit(): void {
+    this.sessionsubscription = this.store.select('session').pipe(filter( session => session !== null)).subscribe( session => {
+      if (session.permissions !== null) {
+        const b = session.permissions.filter(pr => pr.name === 'internalOrders');
+        this.internalOrdersp = b.length > 0 ? b[0].options : [];
+      }
+  });
     this.currentCellar = JSON.parse(localStorage.getItem('currentstore'));
   }
 

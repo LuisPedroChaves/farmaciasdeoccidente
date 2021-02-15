@@ -6,7 +6,7 @@
         <h2 *ngIf="!smallScreen" class="product-font ma-0 T1">Traslados Entrantes</h2>
         <span fxFlex></span>
       </div>
-      <div *ngIf="loading === false && pendientes !== undefined">
+      <div *ngIf="loading === false && pendientes !== undefined && (internalOrdersp && internalOrdersp.includes('read'))">
         <div fxLayoutAlign="end center" class="totals" fxLayout="row wrap">
           <div fxFlex fxLayout="column wrap" class="view">
             <div fxLayout="row wrap" class="V">
@@ -72,10 +72,10 @@
                       </mat-chip-list>
                     </div>
                     <div fxFlex class="ellipsis-text cell">
-                      <button mat-icon-button (click)="accept(a)">
+                      <button mat-icon-button *ngIf="internalOrdersp && internalOrdersp.includes('update')"  (click)="accept(a)">
                         <mat-icon color="warn">check_circle</mat-icon>
                       </button>
-                      <button mat-icon-button (click)="reject(a)">
+                      <button mat-icon-button *ngIf="internalOrdersp && internalOrdersp.includes('update')"  (click)="reject(a)">
                         <mat-icon>highlight_off</mat-icon>
                       </button>
                     </div>
@@ -127,7 +127,7 @@
                       </mat-chip-list>
                     </div>
                     <div fxFlex class="ellipsis-text cell">
-                      <button mat-icon-button (click)="dispatch(a)">
+                      <button mat-icon-button *ngIf="internalOrdersp && internalOrdersp.includes('update')" (click)="dispatch(a)">
                         <mat-icon color="primary">archive</mat-icon>
                       </button>
                     </div>

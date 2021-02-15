@@ -1,6 +1,6 @@
 <div [ngClass]="{ 'app': !smallScreen, 'app-sm': smallScreen } ">
     <div class="section-content">
-      <button *ngIf="!smallScreen" mat-fab color="primary" class="fab mat-elevation-z10" (click)="newCostumer()">
+      <button *ngIf="!smallScreen && (customersp && customersp.includes('create'))" mat-fab color="primary" class="fab mat-elevation-z10" (click)="newCostumer()">
         <mat-icon>add</mat-icon><span class="extended-fab-button__text">Cliente</span>
       </button>
       <div>
@@ -28,7 +28,7 @@
                 <input (keyup)="applyFilter($event)" matInput type="text">
               </mat-form-field>
             </div>
-            <div class="costumers-header" *ngIf="customers !== undefined">
+            <div class="costumers-header" *ngIf="customers !== undefined  && (customersp && customersp.includes('read'))">
               <!-- *****Tabla responsiva agregar: matSort matTableResponsive -------------- e importar el módulo en sharedCompnents y tambien en el style SCSS -->
               <table mat-table matSort matTableResponsive [dataSource]="dataSource" multiTemplateDataRows
                 class="mat-elevation-z2 noborder-table ">

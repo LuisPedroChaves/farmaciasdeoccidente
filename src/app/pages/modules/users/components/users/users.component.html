@@ -28,7 +28,7 @@
                             <app-new-user *ngIf="tab === 'new-user' && roles !== undefined" [roles]="roles" [smallScreen]="smallScreen"></app-new-user>
                             <app-user-details *ngIf="tab === 'user-details' && currentUser !== undefined && roles !== undefined" [roles]="roles" [currentUser]="currentUser" [smallScreen]="smallScreen"></app-user-details>
                             <app-role-list *ngIf="tab === 'rolelist'" [roles]="roles"></app-role-list>
-                            <app-role-edit *ngIf="tab === 'edit-role' && currentRole !== undefined" [currentRole]="currentRole" [smallScreen]="smallScreen"></app-role-edit>
+                            <app-role-edit *ngIf="tab === 'edit-role' && currentRole !== undefined" [currentRole]="currentRole" [smallScreen]="smallScreen" [currentPermissions]="'PHARMA'"></app-role-edit>
                             <app-new-role *ngIf="tab === 'new-role'" [smallScreen]="smallScreen"></app-new-role>
                         </div>
                     </mat-sidenav-content>

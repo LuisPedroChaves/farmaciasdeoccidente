@@ -1,9 +1,13 @@
 import { AfterContentInit, Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
+import { Store } from '@ngrx/store';
+import { Subscription } from 'rxjs';
+import { filter } from 'rxjs/operators';
 import { CellarItem } from 'src/app/core/models/Cellar';
 import { CellarService } from 'src/app/core/services/httpServices/cellar.service';
 import { ToastyService } from 'src/app/core/services/internal/toasty.service';
+import { AppState } from 'src/app/core/store/app.reducer';
 import { ConfirmationDialogComponent } from 'src/app/pages/shared-components/confirmation-dialog/confirmation-dialog.component';
 
 @Component({
@@ -28,7 +32,11 @@ export class DashboardFactoryComponent implements OnInit, AfterContentInit {
   productCount: number = 50;
   employeesCount: number = 100;
 
+  sessionSubscription: Subscription;
+  isAdmin = false;
+
   constructor(
+    public store: Store<AppState>,
     private cellarService: CellarService,
     private toasty: ToastyService,
     public dialog: MatDialog,
@@ -36,6 +44,13 @@ export class DashboardFactoryComponent implements OnInit, AfterContentInit {
   ) { }
 
   ngOnInit(): void {
+    this.sessionSubscription = this.store.select('session').pipe(filter( session => session !== null )).subscribe(session => {
+      if (session.currentUser) {
+        if (session.currentUser.type === 'ADMIN') {
+          this.isAdmin = true;
+        }
+      }
+    });
         // this.dashboardService.readData().subscribe(data => {
     //   this.counts = data;
     //   if (this.counts !== undefined) {

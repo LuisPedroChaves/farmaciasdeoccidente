@@ -10,7 +10,7 @@
       <div fxLayout="row wrap" fxLayoutAlign="start center" style="margin-top: 8px;">
         <div fxFlex fxLayout="row wrap">
           <div fxFlex="80%" fxFlex.xs="100%">
-              <app-shipments></app-shipments>
+              <app-shipments *ngIf="deliveriesp && deliveriesp.includes('read')"></app-shipments>
             </div>
             <div fxFlex="20%" fxFlex.xs="100%">
             <h2 class="product-font ma-0 T1">Repartidores</h2>

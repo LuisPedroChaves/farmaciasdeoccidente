@@ -1,8 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
+import { Store } from '@ngrx/store';
+import { Subscription } from 'rxjs';
+import { filter } from 'rxjs/operators';
 import { CellarItem } from 'src/app/core/models/Cellar';
 import { InternalOrderService } from 'src/app/core/services/httpServices/internal-order.service';
 import { ToastyService } from 'src/app/core/services/internal/toasty.service';
+import { AppState } from 'src/app/core/store/app.reducer';
 import { ConfirmationDialogComponent } from 'src/app/pages/shared-components/confirmation-dialog/confirmation-dialog.component';
 import { InternalOrderItem } from '../../../../../core/models/InternalOrder';
 
@@ -22,13 +26,23 @@ export class IncomingComponent implements OnInit {
   enRuta: InternalOrderItem[];
   currentCellar: CellarItem;
 
+  sessionsubscription: Subscription;
+  internalOrdersp: string[] = [];
+
   constructor(
+    public store: Store<AppState>,
     public dialog: MatDialog,
     public internalOrderService: InternalOrderService,
     public toasty: ToastyService
   ) { }
 
   ngOnInit(): void {
+    this.sessionsubscription = this.store.select('session').pipe(filter( session => session !== null)).subscribe( session => {
+      if (session.permissions !== null) {
+        const b = session.permissions.filter(pr => pr.name === 'internalOrders');
+        this.internalOrdersp = b.length > 0 ? b[0].options : [];
+      }
+  });
     this.currentCellar = JSON.parse(localStorage.getItem('currentstore'));
     this.loadInternalsOrders();
   }

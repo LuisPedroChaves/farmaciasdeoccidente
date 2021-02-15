@@ -69,18 +69,18 @@
                     Tipo
                 </div>
                 <div class="info">
-                    {{ currentCellar.description }}
+                    {{ currentCellar.type }}
                 </div>
             </div>
             <div class="info-row" *ngIf="editMode === true">
                 <div class="info">
                     <mat-label>Tipo</mat-label>
                     <mat-radio-group aria-labelledby="example-radio-group-label" class="example-radio-group" [(ngModel)]="currentCellarPlaceholder.type">
-                        <mat-radio-button class="example-radio-button" [value]="0">
-                            Fábrica
+                        <mat-radio-button class="example-radio-button" value="BODEGA">
+                            Bodega
                         </mat-radio-button>
-                        <mat-radio-button class="example-radio-button" [value]="1">
-                            Punto de Venta
+                        <mat-radio-button class="example-radio-button" value="FARMACIA">
+                            Farmacia
                         </mat-radio-button>
                     </mat-radio-group>
                 </div>
@@ -103,7 +103,7 @@
                 </div>
             </div>
             <br>
-            <div class="info-row" *ngIf="editMode === false">
+            <div class="info-row" *ngIf="editMode === false && isAdmin">
                 <div class="info-title">
                     Cambiar información
                 </div>

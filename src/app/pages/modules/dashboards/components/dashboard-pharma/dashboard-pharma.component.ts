@@ -5,6 +5,10 @@ import { ToastyService } from '../../../../../core/services/internal/toasty.serv
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { ConfirmationDialogComponent } from 'src/app/pages/shared-components/confirmation-dialog/confirmation-dialog.component';
+import { Subscription } from 'rxjs';
+import { Store } from '@ngrx/store';
+import { AppState } from 'src/app/core/store/app.reducer';
+import { filter } from 'rxjs/operators';
 
 @Component({
   selector: 'app-dashboard-pharma',
@@ -28,7 +32,11 @@ export class DashboardPharmaComponent implements OnInit, AfterContentInit {
   productCount: number = 50;
   employeesCount: number = 100;
 
+  sessionSubscription: Subscription;
+  isAdmin = false;
+
   constructor(
+    public store: Store<AppState>,
     private cellarService: CellarService,
     private toasty: ToastyService,
     public dialog: MatDialog,
@@ -36,6 +44,13 @@ export class DashboardPharmaComponent implements OnInit, AfterContentInit {
   ) { }
 
   ngOnInit(): void {
+    this.sessionSubscription = this.store.select('session').pipe(filter( session => session !== null )).subscribe(session => {
+      if (session.currentUser) {
+        if (session.currentUser.type === 'ADMIN') {
+          this.isAdmin = true;
+        }
+      }
+    });
     // this.dashboardService.readData().subscribe(data => {
     //   this.counts = data;
     //   if (this.counts !== undefined) {

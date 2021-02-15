@@ -9,7 +9,7 @@
   </header>
   <div class="padding-list">
     <div class="courselist" fxLayout="row wrap" data-simplebar>
-      <div *ngIf="dispatches.length > 0"  fxFlex="100" fxLayout="row wrap">
+      <div *ngIf="dispatches.length > 0 && (dispatchesp && dispatchesp.includes('read'))"  fxFlex="100" fxLayout="row wrap">
         <div *ngFor="let c of  (dispatches | filter: searchText : ['nit', 'name', 'phone'])" fxFlex.gt-lg="25" fxFlex.gt-md="33" fxFlex.gt-sm="50" fxFlex.gt-xs="50"
           fxFlex="100" class="jobcard user">
           <div class="job-card mat-elevation-z2" fxLayout="row wrap" fxLayoutAlign="start center">
@@ -27,12 +27,12 @@
               <div class="overflow-visible">{{c.details}}</div>
               <div fxFlex="0 0 auto" class="action-blurb">&nbsp;|&nbsp;</div>
             </div>
-            <div fxFlex="100" fxLayout="row wrap" fxLayoutAlign="center center">
+            <div *ngIf="dispatchesp && dispatchesp.includes('create')"  fxFlex="100" fxLayout="row wrap" fxLayoutAlign="center center">
               <mat-form-field appearance="outline" color="primary" class="width-all">
                 <mat-label>No. de factura</mat-label>
                 <input [(ngModel)]="c.noBill" type="text" matInput  autocomplete="false"   placeholder="Ingrese el número de factura">
               </mat-form-field>
-              <button mat-button (click)="updateOrder(c)" class="info-row" color="warn">
+              <button mat-button  (click)="updateOrder(c)" class="info-row" color="warn">
                 <mat-icon>archive</mat-icon>
                 Despachar
               </button>

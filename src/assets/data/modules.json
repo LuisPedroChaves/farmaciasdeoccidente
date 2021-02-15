@@ -1,7 +1,7 @@
 [
     { "name": "order", "label": "Ordenes", "parent": "PHARMA", "level": 1, "options": ["read", "update", "delete", "create"] },
     { "name": "orders", "label": "Ordenes", "parent": "order", "level": 2, "options": ["read", "update", "delete", "create"] },
-    { "name": "dispatches", "label": "Despachos", "parent": "order", "level": 2, "options": ["read", "update", "delete", "create"] },
+    { "name": "dispatches", "label": "Despachos", "parent": "order", "level": 2, "options": ["read", "create"] },
     { "name": "deliveries", "label": "Rutas y Entregas", "parent": "order", "level": 2, "options": ["read", "update", "delete", "create"] },
     { "name": "customersRoutes", "label": "Clientes", "parent": "PHARMA", "level": 1, "options": ["read", "update", "delete", "create"] },
     { "name": "internalOrders", "label": "Pedidos a bodegas", "parent": "PHARMA", "level": 1, "options": ["read", "update", "delete", "create"] },

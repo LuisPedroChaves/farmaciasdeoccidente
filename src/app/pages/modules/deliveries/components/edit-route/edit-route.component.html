@@ -128,7 +128,7 @@
   </div>
   <mat-divider></mat-divider>
   <div fxLayout="row" class="header">
-      <button mat-stroked-button *ngIf="!loading" [disabled]="route.state !== 'INICIO'"   color="warn" class="product-font" (click)="delete()">
+      <button mat-stroked-button *ngIf="!loading && (data.deliveriesp && data.deliveriesp.includes('delete'))" [disabled]="route.state !== 'INICIO'"   color="warn" class="product-font" (click)="delete()">
         <mat-icon class="material-icons-outlined svg-in-button">delete</mat-icon>
         {{ smallScreen ? '':'Eliminar Ruta'}}
     </button>
@@ -136,7 +136,7 @@
     <button mat-button *ngIf="!loading" (click)="dialogRef.close()" class="info-row">
       CANCELAR
     </button>
-    <button mat-button *ngIf="!loading && route.state === 'INICIO'" (click)="saveRoute()" [disabled]="this.route.details.length === 0"
+    <button mat-button *ngIf="!loading && route.state === 'INICIO' && (data.deliveriesp && data.deliveriesp.includes('update'))" (click)="saveRoute()" [disabled]="this.route.details.length === 0"
       color="primary">
       GUARDAR CAMBIOS
     </button>

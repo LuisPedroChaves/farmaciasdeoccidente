@@ -14,6 +14,7 @@ import { EditRouteComponent } from '../../../deliveries/components/edit-route/ed
 import { CellarItem } from 'src/app/core/models/Cellar';
 import { InternalOrderService } from '../../../../../core/services/httpServices/internal-order.service';
 import { InternalOrderItem } from '../../../../../core/models/InternalOrder';
+import { filter } from 'rxjs/operators';
 
 @Component({
   selector: 'app-delivery-details',
@@ -46,6 +47,8 @@ export class DeliveryDetailsComponent implements OnInit {
   year = new Date().getFullYear();
   currentFilter = 'current';
 
+  deliveriesp: string[] = [];
+
   constructor(
     public store: Store<AppState>,
     public activatedRoute: ActivatedRoute,
@@ -62,6 +65,12 @@ export class DeliveryDetailsComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.sessionsubscription = this.store.select('session').pipe(filter( session => session !== null)).subscribe( session => {
+      if (session.permissions !== null) {
+        const b = session.permissions.filter(pr => pr.name === 'deliveries');
+        this.deliveriesp = b.length > 0 ? b[0].options : [];
+      }
+  });
     this.activatedRoute.params.subscribe((params) => {
       this.userService.getUser(params.id).subscribe(data => {
         this.selectedUser = data.user;
@@ -89,7 +98,7 @@ export class DeliveryDetailsComponent implements OnInit {
     }
     const dialogRef = this.dialog.open(EditRouteComponent, {
       width: this.smallScreen ? '100%' : '960px',
-      data: { route: route },
+      data: { route: route, deliveriesp: this.deliveriesp },
       disableClose: true,
       panelClass: ['farmacia-dialog', 'farmacia'],
     });

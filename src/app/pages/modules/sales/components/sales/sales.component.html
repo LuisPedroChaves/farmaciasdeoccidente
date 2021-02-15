@@ -54,10 +54,10 @@
               [value]="y">{{ y }}</mat-option>
           </mat-select>
         </div>
-        <button *ngIf="!smallScreen" mat-fab color="primary" class="fab mat-elevation-z10" (click)="newOrder()">
+        <button *ngIf="!smallScreen && (salesp && salesp.includes('create'))" mat-fab color="primary" class="fab mat-elevation-z10" (click)="newOrder()">
           <mat-icon>add</mat-icon><span class="extended-fab-button__text">Venta</span>
         </button>
-        <div *ngIf="sales !== undefined" class="allspace" data-simplebar>
+        <div *ngIf="sales !== undefined && (salesp && salesp.includes('read'))" class="allspace" data-simplebar>
 
           <table mat-table matSort matTableResponsive [dataSource]="dataSource" multiTemplateDataRows
             class="mat-elevation-z2 noborder-table ">
