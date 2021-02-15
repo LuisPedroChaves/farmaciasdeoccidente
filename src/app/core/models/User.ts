@@ -1,5 +1,7 @@
 import { RoleItem } from './Role';
 import { CellarItem } from './Cellar';
+import { RouteItem } from './Route';
+import { InternalOrderItem } from './InternalOrder';
 
 export interface UserItem {
     _id?: string;
@@ -10,4 +12,6 @@ export interface UserItem {
 	password?: string,
 	imageIndex: number,
 	email: string,
+    activeRoutes?: RouteItem[],
+    internalOrders?: InternalOrderItem[]
 }

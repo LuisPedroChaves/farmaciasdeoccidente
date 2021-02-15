@@ -1,11 +1,12 @@
 import { Component, Input, OnInit, OnDestroy, AfterContentInit } from '@angular/core';
 import { Subscription } from 'rxjs';
-import { ControlEvent } from 'src/app/core/models/ControlEvent';
 import { ConfigService } from 'src/app/core/services/config/config.service';
 import { UserService } from 'src/app/core/services/httpServices/user.service';
 import { EventBusService } from 'src/app/core/services/internal/event-bus.service';
 import { UserItem } from 'src/app/core/models/User';
 import { Router } from '@angular/router';
+import { RouteService } from '../../../../../core/services/httpServices/route.service';
+import { InternalOrderService } from '../../../../../core/services/httpServices/internal-order.service';
 
 @Component({
   selector: 'app-delivery-list',
@@ -23,13 +24,24 @@ export class DeliveryListComponent implements OnInit, AfterContentInit, OnDestro
     public eventBus: EventBusService,
     public config: ConfigService,
     public userService: UserService,
-    public router: Router
+    public router: Router,
+    public routeService: RouteService,
+    public internalOrderSevce: InternalOrderService
   ) { }
 
   ngOnInit(): void {
     this.usersSubscription = this.userService.readData().subscribe(data => {
       this.users = data;
       this.users = this.users.filter(user => user._role.type === 'DELIVERY');
+      this.users = this.users.map(user => {
+        this.routeService.getActives(user._id).subscribe(data => {
+          user.activeRoutes = data.actives;
+        });
+        this.internalOrderSevce.getDelivery(user._id).subscribe(data => {
+          user.internalOrders = data.internalOrders;
+        });
+        return user;
+      });
     });
   }
 

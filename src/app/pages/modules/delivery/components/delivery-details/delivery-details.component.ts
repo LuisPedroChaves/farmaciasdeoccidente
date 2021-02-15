@@ -12,6 +12,8 @@ import { RouteService } from '../../../../../core/services/httpServices/route.se
 import { RouteItem } from '../../../../../core/models/Route';
 import { EditRouteComponent } from '../../../deliveries/components/edit-route/edit-route.component';
 import { CellarItem } from 'src/app/core/models/Cellar';
+import { InternalOrderService } from '../../../../../core/services/httpServices/internal-order.service';
+import { InternalOrderItem } from '../../../../../core/models/InternalOrder';
 
 @Component({
   selector: 'app-delivery-details',
@@ -26,6 +28,7 @@ export class DeliveryDetailsComponent implements OnInit {
 
   selectedUser: UserItem;
   activeRoutes: RouteItem[];
+  internalOrders: InternalOrderItem[];
   routes: RouteItem[];
   currentCellar: CellarItem;
 
@@ -50,7 +53,8 @@ export class DeliveryDetailsComponent implements OnInit {
     public toasty: ToastyService,
     public dialog: MatDialog,
     public userService: UserService,
-    public routeService: RouteService
+    public routeService: RouteService,
+    public internalOrderService: InternalOrderService
   ) {
     this.routeService.readData().subscribe(data => {
       this.routes = data;
@@ -70,6 +74,9 @@ export class DeliveryDetailsComponent implements OnInit {
   loadRoutes() {
     this.routeService.getActives(this.selectedUser._id).subscribe(data => {
       this.activeRoutes = data.actives;
+    });
+    this.internalOrderService.getDelivery(this.selectedUser._id).subscribe(data => {
+      this.internalOrders = data.internalOrders;
     });
     const filter = { month: this.month, year: this.year, _user: this.selectedUser._id, _cellar: this.currentCellar._id };
     this.routeService.loadData(filter);

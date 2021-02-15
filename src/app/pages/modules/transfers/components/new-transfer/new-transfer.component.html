@@ -9,7 +9,6 @@
     <mat-divider></mat-divider>
     <form [formGroup]="form" autocomplete="off">
         <div class="clientspace" data-simplebar>
-
             <div fxLayout="row wrap" fxLayoutAlign="start center" style="margin-top: 30px;">
                 <div fxFlex="50px"></div>
                 <div fxFlex="50px" fxHide.xs>
@@ -19,36 +18,15 @@
                 <div fxFlex fxLayout="row wrap">
                     <div fxFlex="50%" fxFlex.xs="100%" class="inputpadding">
                         <mat-form-field appearance="outline" color="primary" class="width-all">
-                            <mat-label>No. Traslado</mat-label>
-                            <input formControlName="town" type="text" matInput placeholder="Ingrese el municipio">
+                            <mat-label>No. de Traslado</mat-label>
+                            <input formControlName="noOrder" type="text" matInput placeholder="Ingrese el número de pédido">
                         </mat-form-field>
                     </div>
                     <div fxFlex="50%" fxFlex.xs="100%" class="inputpadding">
                         <mat-form-field color="primary" class="width-all" appearance="outline">
                             <mat-label>Destino</mat-label>
-                            <mat-select formControlName="department">
-                                <mat-option value="Alta Verapaz">Alta Verapaz</mat-option>
-                                <mat-option value="Baja Verapaz">Baja Verapaz</mat-option>
-                                <mat-option value="Chimaltenango">Chimaltenango</mat-option>
-                                <mat-option value="Chiquimula">Chiquimula</mat-option>
-                                <mat-option value="Petén">Petén</mat-option>
-                                <mat-option value="El Progreso">El Progreso</mat-option>
-                                <mat-option value="Quiché">Quiché</mat-option>
-                                <mat-option value="Escuintla">Escuintla</mat-option>
-                                <mat-option value="Guatemala">Guatemala</mat-option>
-                                <mat-option value="Huehuetenango">Huehuetenango</mat-option>
-                                <mat-option value="Izabal">Izabal</mat-option>
-                                <mat-option value="Jalapa">Jalapa</mat-option>
-                                <mat-option value="Jutiapa">Jutiapa</mat-option>
-                                <mat-option value="Quetzaltenango">Quetzaltenango</mat-option>
-                                <mat-option value="Retalhuleu">Retalhuleu</mat-option>
-                                <mat-option value="Sacatepéquez">Sacatepéquez</mat-option>
-                                <mat-option value="San Marcos">San Marcos</mat-option>
-                                <mat-option value="Santa Rosa">Santa Rosa</mat-option>
-                                <mat-option value="Sololá">Sololá</mat-option>
-                                <mat-option value="Suchitepéquez">Suchitepéquez</mat-option>
-                                <mat-option value="Totonicapán">Totonicapán</mat-option>
-                                <mat-option value="Zacapa">Zacapa</mat-option>
+                            <mat-select formControlName="_destination">
+                                <mat-option *ngFor="let c of cellars"  [value]="c._id" [disabled]="c._id === data.currentCellar._id">{{ c.name }}</mat-option>
                             </mat-select>
                         </mat-form-field>
                     </div>
@@ -60,7 +38,6 @@
                 <div fxFlex="50px" fxHide.xs>
                     <mat-icon color="accent" class="material-icons-outlined grayicon">rate_review
                     </mat-icon>
-
                 </div>
                 <div fxFlex fxLayout="row wrap">
                     <div fxFlex="100" class="inputpadding">
@@ -83,7 +60,7 @@
     CANCELAR
   </button>
         <span fxFlex></span>
-        <button mat-button *ngIf="!loading" (click)="saveClient()" [disabled]="this.form.invalid" color="primary">
+        <button mat-button *ngIf="!loading" (click)="saveInternalOrder()" [disabled]="this.form.invalid" color="primary">
     GUARDAR
   </button>
         <mat-progress-spinner *ngIf="loading" mode="indeterminate" diameter="30" color="warn"></mat-progress-spinner>

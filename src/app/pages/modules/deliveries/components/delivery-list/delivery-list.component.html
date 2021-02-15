@@ -2,19 +2,33 @@
 </div>
 <div fxLayout="column wrap" class="padding-15" *ngIf="users !== undefined">
 
-    <div *ngFor="let u of users" fxFlex.gt-lg="25" fxFlex.gt-md="33" fxFlex.gt-sm="50" fxFlex.gt-xs="50" fxFlex="100" class="usercard user">
-        <div matRipple class="cursor-pointer user-card mat-elevation-z2" (click)="selectDelivery(u)" fxLayout="row wrap" fxLayoutAlign="start center">
-            <div fxFlex="60px">
-                <img [src]="getImage(u.imageIndex)" alt="" class="avataruser">
-            </div>
-            <div fxFlex fxLayout="column wrap" class="ellipsis-text">
-                <h4 class="ma-0 product-font">{{u.name}}</h4>
-                <span class="text-muted">{{u.username}}</span>
-            </div>
-        </div>
+  <div *ngFor="let u of users" fxFlex.gt-lg="25" fxFlex.gt-md="33" fxFlex.gt-sm="50" fxFlex.gt-xs="50" fxFlex="100"
+    class="usercard user">
+    <div matRipple class="cursor-pointer user-card mat-elevation-z2" (click)="selectDelivery(u)" fxLayout="row wrap"
+      fxLayoutAlign="start center">
+      <div fxFlex="60px">
+        <img [src]="getImage(u.imageIndex)" alt="" class="avataruser">
+      </div>
+      <div fxFlex fxLayout="column wrap" class="ellipsis-text">
+        <h4 class="ma-0 product-font">{{u.name}}</h4>
+        <br>
+        <mat-chip-list>
+          <mat-chip *ngIf="u.activeRoutes && u.internalOrders && (u.activeRoutes.length + u.internalOrders.length) > 0">
+            <mat-icon class="material-icons-outlined" style="margin-right: 5px;">electric_moped</mat-icon>
+            En ruta
+          </mat-chip>
+          <mat-chip
+            *ngIf="u.activeRoutes && u.internalOrders && (u.activeRoutes.length + u.internalOrders.length) === 0"
+            selected color="warn">
+            <mat-icon class="material-icons-outlined" style="margin-right: 5px;">where_to_vote</mat-icon>
+            Disponible
+          </mat-chip>
+        </mat-chip-list>
+      </div>
     </div>
+  </div>
 </div>
 
 <div fxLayout="column wrap" fxLayoutAlign="center center" class="padding-15 loader-screen" *ngIf="users === undefined">
-    <mat-progress-spinner mode="indeterminate" diameter="60" color="warn"></mat-progress-spinner>
+  <mat-progress-spinner mode="indeterminate" diameter="60" color="warn"></mat-progress-spinner>
 </div>

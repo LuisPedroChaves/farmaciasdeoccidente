@@ -1,1 +1,142 @@
-<h1>EN PROCESO...</h1>
+<div [ngClass]="{ 'app': !smallScreen, 'app-sm': smallScreen } ">
+    <div class="section-content farmacia">
+      <div>
+        <div fxLayout="row wrap" class="module-container " data-simplebar>
+          <!-- <div class="container-strech"> -->
+          <div fxLayout="row wrap" fxLayoutAlign="start center" class="costumers-header">
+            <button *ngIf="smallScreen" class="new-button-sm" mat-icon-button (click)="newOrder()">
+              <svg class="svg-24 svg-in-button" viewBox="0 0 24 24">
+                <path fill="currentColor" d="M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z" />
+              </svg>
+            </button>
+            <mat-form-field appearance="outline" floatLabel="always" class="findinput">
+              <mat-label>Buscar</mat-label>
+              <mat-icon class="text-muted" matPrefix>search</mat-icon>
+              <input matInput (keyup)="applyFilter2($event)" type="text">
+            </mat-form-field>
+            <span fxFlex></span>
+            <mat-form-field appearance="outline" color="primary" class="findinput">
+              <mat-label>Filtro</mat-label>
+              <mat-select [(ngModel)]="currentFilter" (selectionChange)="applyFilter()">
+                <mat-option value="current">Mes actual</mat-option>
+                <mat-option value="last">Mes anterior</mat-option>
+                <mat-option value="month">Seleccionar Mes</mat-option>
+              </mat-select>
+            </mat-form-field>
+
+            <mat-select (selectionChange)="applyFilter()"
+              [ngStyle]="{'display': currentFilter === 'month' ? 'inline': 'none'}" class="dateinput"
+              [(ngModel)]="this.month">
+              <mat-option [value]="1">Enero</mat-option>
+              <mat-option [value]="2">Febrero</mat-option>
+              <mat-option [value]="3">Marzo</mat-option>
+              <mat-option [value]="4">Abril</mat-option>
+              <mat-option [value]="5">Mayo</mat-option>
+              <mat-option [value]="6">Junio</mat-option>
+              <mat-option [value]="7">Julio</mat-option>
+              <mat-option [value]="8">Agosto</mat-option>
+              <mat-option [value]="9">Septiembre</mat-option>
+              <mat-option [value]="10">Octubre</mat-option>
+              <mat-option [value]="11">Noviembre</mat-option>
+              <mat-option [value]="12">Diciembre</mat-option>
+            </mat-select>
+            <mat-select (selectionChange)="applyFilter()"
+              [ngStyle]="{'display': currentFilter === 'month' ? 'inline': 'none'}" *ngIf="currentFilter === 'month'"
+              class="dateinput" [(ngModel)]="this.year">
+              <mat-option
+                *ngFor="let y of [2020, 2021, 2022, 2023, 2024, 2025, 2026, 2027, 2028, 2029, 2030, 2031, 2032, 2033,2034,2035,2036,2037,2038,2039,2040]"
+                [value]="y">{{ y }}</mat-option>
+            </mat-select>
+          </div>
+          <div *ngIf="orders !== undefined" class="allspace" data-simplebar>
+
+            <table mat-table matSort matTableResponsive [dataSource]="dataSource" multiTemplateDataRows
+              class="mat-elevation-z2 noborder-table ">
+              <ng-container matColumnDef="image">
+                <th mat-header-cell *matHeaderCellDef></th>
+                <td mat-cell *matCellDef="let element">
+                  <mat-icon color="primary" class="material-icons-outlined">send</mat-icon>
+                </td>
+              </ng-container>
+              <ng-container matColumnDef="noOrder">
+                <th mat-header-cell *matHeaderCellDef> No. Traslado </th>
+                <td mat-cell *matCellDef="let element"> {{element.noOrder}} </td>
+              </ng-container>
+              <ng-container matColumnDef="date">
+                <th mat-header-cell *matHeaderCellDef> Fecha </th>
+                <td mat-cell *matCellDef="let element"> {{element.date | date: 'dd/MM/yyyy HH:mm' }} </td>
+              </ng-container>
+              <ng-container matColumnDef="_destination">
+                <th mat-header-cell *matHeaderCellDef> Destino </th>
+                <td mat-cell *matCellDef="let element"> {{element._destination.name}} </td>
+              </ng-container>
+              <ng-container matColumnDef="_user">
+                <th mat-header-cell *matHeaderCellDef> Usuario </th>
+                <td mat-cell *matCellDef="let element">
+                  {{element._user.name}}
+                </td>
+              </ng-container>
+              <ng-container matColumnDef="timeInit">
+                <th mat-header-cell *matHeaderCellDef> Aceptación </th>
+                <td mat-cell *matCellDef="let element">
+                    <span *ngIf="element.timeInit">{{element.timeInit | date: 'dd/MM/yyyy HH:mm' }}</span>
+                    <span *ngIf="!element.timeInit">-</span>
+                  </td>
+              </ng-container>
+              <ng-container matColumnDef="timeDispatch">
+                <th mat-header-cell *matHeaderCellDef> Despacho </th>
+                <td mat-cell *matCellDef="let element">
+                    <span *ngIf="element.timeDispatch">{{element.timeDispatch | date: 'dd/MM/yyyy HH:mm' }}</span>
+                    <span *ngIf="!element.timeDispatch">-</span>
+                  </td>
+              </ng-container>
+              <ng-container matColumnDef="timeDelivery">
+                <th mat-header-cell *matHeaderCellDef> Entrega </th>
+                <td mat-cell *matCellDef="let element">
+                    <span *ngIf="element.timeDelivery">{{element.timeDelivery | date: 'dd/MM/yyyy HH:mm' }}</span>
+                    <span *ngIf="!element.timeDelivery">-</span>
+                  </td>
+              </ng-container>
+              <ng-container matColumnDef="_delivery">
+                <th mat-header-cell *matHeaderCellDef> Repartidor </th>
+                <td mat-cell *matCellDef="let element">
+                  <span *ngIf="element._delivery">{{element._delivery.name}}</span>
+                  <span *ngIf="!element._delivery">-</span>
+                </td>
+              </ng-container>
+              <ng-container matColumnDef="state">
+                <th mat-header-cell *matHeaderCellDef> Estado</th>
+                <td mat-cell *matCellDef="let element">
+                  <mat-chip-list>
+                    <mat-chip *ngIf="element.state === 'ENVIO'">
+                      Creada
+                    </mat-chip>
+                    <mat-chip *ngIf="element.state === 'CONFIRMACION'" selected color="primary">
+                        Confirmada
+                      </mat-chip>
+                    <mat-chip *ngIf="element.state === 'RECHAZO'" selected color="primary">
+                        Rechazada
+                      </mat-chip>
+                      <mat-chip *ngIf="element.state === 'DESPACHO'" selected color="accent">
+                        Despachada
+                      </mat-chip>
+                    <mat-chip *ngIf="element.state === 'ENTREGA'" selected color="warn">
+                      Entragada
+                    </mat-chip>
+                  </mat-chip-list>
+                </td>
+              </ng-container>
+              <tr mat-header-row *matHeaderRowDef="columnsToDisplay2"></tr>
+              <tr mat-row *matRowDef="let element; columns: columnsToDisplay2;" class="example-element-row">
+              </tr>
+            </table>
+          </div>
+          <div fxLayout="column wrap" fxLayoutAlign="center center" class="padding-15 loader-screen"
+            *ngIf="orders === undefined">
+            <mat-progress-spinner mode="indeterminate" diameter="60" color="warn"></mat-progress-spinner>
+          </div>
+          <!-- </div> -->
+        </div>
+      </div>
+    </div>
+  </div>

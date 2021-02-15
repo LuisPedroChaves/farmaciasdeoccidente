@@ -42,6 +42,9 @@ export class ApiConfigService {
   // Sales
   public API_SALE = this.API_URL + '/sale';
 
+  // Internal Orders
+  public API_INTERNAL_ORDER = this.API_URL + '/internalOrder';
+
   /* #endregion */
 
 }

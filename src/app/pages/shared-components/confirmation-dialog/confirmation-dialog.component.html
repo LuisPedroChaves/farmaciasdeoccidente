@@ -18,10 +18,17 @@
 
   <mat-form-field class="width-all">
     <mat-label>Contraseña</mat-label>
-    <input matInput [(ngModel)]="pass" (keyup.enter)="login()"  type="password" placeholder="Ingresar contraseña" type="password">
+    <input matInput [(ngModel)]="pass" (keyup.enter)="login()" type="password" placeholder="Ingresar contraseña"
+      type="password">
   </mat-form-field>
-  <!-- <mat-checkbox color="warn">Recordar</mat-checkbox> -->
 </mat-card-content>
+<mat-form-field *ngIf="data.isDelivery" color="primary" class="width-all" appearance="outline">
+  <mat-label>Repartidor</mat-label>
+  <mat-select [(ngModel)]="delivery">
+    <mat-option [value]="null">Sin Repartidor</mat-option>
+    <mat-option *ngFor="let d of deliveries" [value]="d._id">{{ d.name }}</mat-option>
+  </mat-select>
+</mat-form-field>
 <div class="alert" fxLayout="row wrap" *ngIf="data.alert">
   <div fxFlex="40px" fxLayoutAlign="start center">
     <mat-icon class="material-icons-outlined">report_problem</mat-icon>
@@ -43,8 +50,10 @@
   <span fxFlex></span>
   <button mat-stroked-button *ngIf="data.description" color="primary" [disabled]="textArea === ''"
     (click)="dialogRef.close(textArea)">Aceptar</button>
+  <button mat-stroked-button *ngIf="data.isDelivery" color="primary"
+    (click)="dialogRef.close(delivery)">Aceptar</button>
   <button mat-stroked-button *ngIf="data.isLogin" color="primary" [disabled]="user === '' || pass === ''"
     (click)="login()">Aceptar</button>
-  <button mat-stroked-button *ngIf="!data.description && !data.isLogin" color="primary"
+  <button mat-stroked-button *ngIf="!data.description && !data.isLogin && !data.isDelivery" color="primary"
     (click)="dialogRef.close(true)">Aceptar</button>
 </div>
