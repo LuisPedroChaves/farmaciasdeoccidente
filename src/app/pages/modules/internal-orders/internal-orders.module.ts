@@ -9,11 +9,12 @@ import { IncomingComponent } from './components/incoming/incoming.component';
 import { OutgoingComponent } from './components/outgoing/outgoing.component';
 import { HistoryComponent } from './components/history/history.component';
 import { NewInternalOorderComponent } from './components/new-internal-oorder/new-internal-oorder.component';
+import { IncomingScreenComponent } from './components/incoming-screen/incoming-screen.component';
 
 
 
 @NgModule({
-  declarations: [InternalOrdersComponent, IncomingComponent, OutgoingComponent, HistoryComponent, NewInternalOorderComponent],
+  declarations: [InternalOrdersComponent, IncomingComponent, OutgoingComponent, HistoryComponent, NewInternalOorderComponent, IncomingScreenComponent],
   imports: [
     CommonModule,
     RouterModule.forChild(InternalOrdersRoutes),

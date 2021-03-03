@@ -22,6 +22,12 @@
             </div>
             <div *ngIf="!smallScreen" class="iconspace2"><span>Historial</span></div>
         </div>
+        <div *ngIf="internalOrdersp.includes('read')" [ngClass]="{'active-tab': this.tab === 'incomingScreen'}" (click)="changeTab('incomingScreen')" class="option cursor-pointer" matRipple fxLayout="column wrap" fxLayoutAlign="start center">
+            <div class="iconspace">
+                <mat-icon inline="false" class="material-icons-outlined" color="primary">ballot</mat-icon>
+            </div>
+            <div *ngIf="!smallScreen" class="iconspace2"><span>Monitor</span></div>
+        </div>
     </div>
     <div [ngClass]="{'space':!smallScreen, 'space-sm':smallScreen}">
         <router-outlet></router-outlet>
