@@ -1,22 +1,21 @@
 <div [ngClass]="{ 'app': !smallScreen, 'app-sm': smallScreen } ">
-  <div class="section-content">
-    <div>
-      <header class="module-header" [ngClass]="{'padding-25': !smallScreen, 'padding-15': smallScreen }"
-        fxLayoutAlign="start center" fxLayout="row wrap">
-        <h1 class="product-font ma-0 module-title">Rutas {{ smallScreen ? '': 'y Entregas'}}</h1>
-        <span fxFlex></span>
-      </header>
-      <mat-divider></mat-divider>
-      <div fxLayout="row wrap" fxLayoutAlign="start center" style="margin-top: 8px;">
-        <div fxFlex fxLayout="row wrap">
-          <div fxFlex="80%" fxFlex.xs="100%">
-              <app-shipments *ngIf="deliveriesp && deliveriesp.includes('read')"></app-shipments>
+    <div class="section-content">
+        <div>
+            <header class="module-header" [ngClass]="{'padding-25': !smallScreen, 'padding-15': smallScreen }" fxLayoutAlign="start center" fxLayout="row wrap">
+                <h1 class="product-font ma-0 module-title">Rutas {{ smallScreen ? '': 'y Entregas'}}</h1>
+                <span fxFlex></span>
+            </header>
+            <mat-divider></mat-divider>
+            <div fxLayout="row wrap" fxLayoutAlign="start center" style="margin-top: 8px;">
+                <div fxFlex fxLayout="row wrap">
+                    <div fxFlex="80%" fxFlex.xs="100%">
+                        <app-shipments *ngIf="deliveriesp && deliveriesp.includes('read')"></app-shipments>
+                    </div>
+                    <div fxFlex="20%" fxFlex.xs="100%">
+                        <h2 class="product-font ma-0 T1">Repartidores</h2>
+                        <app-delivery-list></app-delivery-list>
+                    </div>
+                </div>
             </div>
-            <div fxFlex="20%" fxFlex.xs="100%">
-            <h2 class="product-font ma-0 T1">Repartidores</h2>
-            <app-delivery-list></app-delivery-list>
-          </div>
         </div>
-      </div>
     </div>
-  </div>
