@@ -119,11 +119,11 @@ const routes: Routes = [
   }
 ];
 export const appRoutingProviders: any[] = [];
-export const routing: ModuleWithProviders<any> = RouterModule.forRoot(routes);
+export const routing: ModuleWithProviders<any> = RouterModule.forRoot(routes, { relativeLinkResolution: 'legacy' });
 
 @NgModule({
   imports: [
-    RouterModule.forRoot(routes)
+    RouterModule.forRoot(routes, { relativeLinkResolution: 'legacy' })
   ],
   exports: [RouterModule]
 })
