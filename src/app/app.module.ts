@@ -1,5 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
+import { ModuleWithProviders, NgModule } from '@angular/core';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AppRoutingModule } from './app-routing.module';
 import { SharedComponentsModule } from './pages/shared-components/shared-components.module';
@@ -22,9 +22,14 @@ import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { appReducers } from './core/store/app.reducer';
 import { effectsArray } from './core/store/effects';
 
-// Guards
+// guards
 import { AuthGuard } from './core/auth/auth.guard';
 import { AuthAdminGuard } from './core/auth/auth-admin.guard';
+
+// sockets
+import { SocketIoModule, SocketIoConfig } from 'ngx-socket-io';
+import { RouterModule } from '@angular/router';
+const config: SocketIoConfig = { url: environment.root, options: {} };
 
 @NgModule({
   declarations: [
@@ -42,7 +47,10 @@ import { AuthAdminGuard } from './core/auth/auth-admin.guard';
     // ngrx
     StoreModule.forRoot(appReducers),
     EffectsModule.forRoot(effectsArray),
-    StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: environment.production}),
+    StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: environment.production }),
+
+    // sockets
+    SocketIoModule.forRoot(config),
 
     // app modules
     CoreModule,

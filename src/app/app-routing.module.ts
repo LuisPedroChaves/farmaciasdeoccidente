@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { ModuleWithProviders, NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { AuthGuard } from './core/auth/auth.guard';
 import { CheckTokenGuard } from './core/auth/check-token.guard';
@@ -118,6 +118,8 @@ const routes: Routes = [
     redirectTo: 'session/not-found'
   }
 ];
+export const appRoutingProviders: any[] = [];
+export const routing: ModuleWithProviders<any> = RouterModule.forRoot(routes);
 
 @NgModule({
   imports: [
@@ -125,4 +127,5 @@ const routes: Routes = [
   ],
   exports: [RouterModule]
 })
+
 export class AppRoutingModule { }

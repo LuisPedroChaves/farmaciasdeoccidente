@@ -6,6 +6,8 @@ import { filter } from 'rxjs/operators';
 import { AppState } from 'src/app/core/store/app.reducer';
 import { SaleBalanceItem } from '../../../../../core/models/Sale';
 import { SaleService } from '../../../../../core/services/httpServices/sale.service';
+import { UploadFileService } from '../../../../../core/services/httpServices/upload-file.service';
+import { ToastyService } from '../../../../../core/services/internal/toasty.service';
 
 @Component({
   selector: 'app-pay-sale',
@@ -26,13 +28,30 @@ export class PaySaleComponent implements OnInit {
     public dialogRef: MatDialogRef<PaySaleComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
     public store: Store<AppState>,
-    public saleService: SaleService
+    public saleService: SaleService,
+    public uploadFileService: UploadFileService,
+    public toasty: ToastyService
   ) { }
 
   ngOnInit(): void {
     this.sessionsubscription = this.store.select('session').pipe(filter(session => session !== null)).subscribe(session => {
       this.currentUser = session.currentUser;
     });
+  }
+
+  upload(file: File, balance: any) {
+    if (!file) {
+      return;
+    }
+
+    this.uploadFileService.uploadFile(file, 'saleBalances', balance._id)
+      .then((resp: any) => {
+        this.toasty.success('Archivo guardado exitosamente');
+        balance.file = resp.newNameFile;
+      })
+      .catch(err => {
+        this.toasty.error('Error al cargar el archivo');
+      });
   }
 
   getTotalBalance() {

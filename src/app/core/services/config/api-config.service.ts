@@ -45,6 +45,10 @@ export class ApiConfigService {
   // Internal Orders
   public API_INTERNAL_ORDER = this.API_URL + '/internalOrder';
 
+  // Upload Files
+  public API_UPLOAD = this.API_URL + '/upload';
+  public API_READ = this.API_URL + '/readFIle';
+
   /* #endregion */
 
 }

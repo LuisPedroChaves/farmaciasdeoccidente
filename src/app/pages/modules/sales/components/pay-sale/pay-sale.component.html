@@ -94,7 +94,8 @@
   </div>
   <div style="padding: 6px; padding-left: 15px;">
     <span fxFlex></span>
-    <span><b>Saldo Restante: &nbsp;&nbsp;&nbsp;&nbsp; Q.{{ +data.sale.total - +getTotalBalance() | number: '.2' }}</b></span>
+    <span><b>Saldo Restante: &nbsp;&nbsp;&nbsp;&nbsp;
+        Q.{{ +data.sale.total - +getTotalBalance() | number: '.2' }}</b></span>
   </div>
   <div class="section balance-space" fxLayout="row wrap">
     <div fxFlex fxLayout="row wrap">
@@ -105,16 +106,28 @@
           <span class="text-muted">No hay abonos ingresados</span>
         </div>
         <div *ngIf="data.sale.balance.length > 0" fxLayout="column wrap">
-          <mat-list *ngFor="let r of data.sale.balance" style="padding-top: 0;">
+          <mat-list *ngFor="let r of data.sale.balance" style="padding-top: 10px;">
             <mat-list-item class="assigned-job mat-elevation-z4">
               <h4 mat-line>{{r.date | date: 'dd/MM/yyyy'}} </h4>
-              <small mat-line *ngIf="r.document"  class="text-muted">Documento:</small>
-              <small mat-line *ngIf="r.document"  class="text-muted">{{ r.document }}</small>
-              <small mat-line *ngIf="r.receipt"  class="text-muted">Recibo:</small>
-              <small mat-line *ngIf="r.receipt"  class="text-muted">{{ r.receipt }}</small>
+              <small mat-line class="text-muted">Documento:</small>
+              <small mat-line class="text-muted">{{ r.document }}</small>
+              <small mat-line class="text-muted">Recibo:</small>
+              <small mat-line class="text-muted">{{ r.receipt }}</small>
               <small mat-line class="text-muted">Pago: {{ r.payment }}</small>
+              <mat-form-field mat-line>
+                <ngx-mat-file-input #removableInput [(ngModel)]="r.file" placeholder="Ingrese un archivo"
+                  (change)="upload($event.target.files[0], r)">
+                </ngx-mat-file-input>
+                <button mat-icon-button matSuffix *ngIf="!removableInput.empty" (click)="removableInput.clear($event)">
+                  <mat-icon>clear</mat-icon>
+                </button>
+              </mat-form-field>
+              <a mat-button color="warn" mat-line *ngIf="r.file" [href]="r.file | file" target="_blank">Abrir
+                archivo</a>
               <h2 style="margin: 0px !important;">Q{{ r.amount | number: '.2' }}</h2>
-              <button mat-icon-button *ngIf="currentUser.type === 'ADMIN'"  (click)="remove(r)"><mat-icon>close</mat-icon></button>
+              <button mat-icon-button *ngIf="currentUser.type === 'ADMIN'" (click)="remove(r)">
+                <mat-icon>close</mat-icon>
+              </button>
             </mat-list-item>
           </mat-list>
         </div>
