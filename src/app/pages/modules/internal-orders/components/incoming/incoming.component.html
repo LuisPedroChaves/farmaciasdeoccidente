@@ -1,197 +1,206 @@
+<button *ngIf="(internalOrdersp && internalOrdersp.includes('create'))" mat-fab color="primary"
+  class="fab mat-elevation-z10" (click)="newInternalOrder()">
+  <mat-icon>add</mat-icon><span class="extended-fab-button__text">Pedido</span>
+</button>
 <mat-sidenav-container fxFlex="100" [ngClass]="{'space':!smallScreen, 'space-sm':smallScreen}">
-
-    <mat-sidenav-content fxFlex [ngClass]="{'accounts-space':!smallScreen, 'accounts-space-sm':smallScreen}" data-simplebar>
-        <div class="header" fxLayout="row wrap" fxLayoutAlign="start center">
-            <h2 *ngIf="!smallScreen" class="product-font ma-0 T1">Pedidos Entrantes</h2>
-            <span fxFlex></span>
-        </div>
-        <div *ngIf="loading === false && pendientes !== undefined && (internalOrdersp && internalOrdersp.includes('read'))">
-            <div fxLayoutAlign="end center" class="totals" fxLayout="row wrap">
-                <div fxFlex fxLayout="column wrap" class="view">
-                    <div fxLayout="row wrap" class="V">
-                        Visualización
-                    </div>
-                    <div fxLayout="row wrap">
-                        <button [matTooltip]="expanded === true ? 'Contraer todo':'Expandir todo'" class="filterbutton" mat-icon-button (click)="expanded = !expanded;">
+  <mat-sidenav-content fxFlex [ngClass]="{'accounts-space':!smallScreen, 'accounts-space-sm':smallScreen}"
+    data-simplebar>
+    <div class="header" fxLayout="row wrap" fxLayoutAlign="start center">
+      <h2 *ngIf="!smallScreen" class="product-font ma-0 T1">Traslados pendientes, en proceso y en ruta</h2>
+      <span fxFlex></span>
+    </div>
+    <div *ngIf="loading === false && pendientes !== undefined && (internalOrdersp && internalOrdersp.includes('read'))">
+      <div fxLayoutAlign="end center" class="totals" fxLayout="row wrap">
+        <div fxFlex fxLayout="column wrap" class="view">
+          <div fxLayout="row wrap" class="V">
+            Visualización
+          </div>
+          <div fxLayout="row wrap">
+            <button [matTooltip]="expanded === true ? 'Contraer todo':'Expandir todo'" class="filterbutton"
+              mat-icon-button (click)="expanded = !expanded;">
               <mat-icon class="material-icons-outlined" color="accent">
                 {{expanded === true ? 'unfold_less':'unfold_more'}}</mat-icon>
             </button>
-                    </div>
-                </div>
-                <div fxFlex="20" fxLayout="column wrap" class="ammounttitle V">
-                    <h1 class="ma-0 pasive"> {{ pendientes.length }}</h1>
-                    <small>Suma de Pendientes</small>
-                </div>
-                <div fxFlex="20" fxLayout="column wrap" class="ammounttitle V">
-                    <h1 class="ma-0 V">{{ enProceso.length }}</h1>
-                    <small>Suma en Proceso</small>
-                </div>
-                <div fxFlex="20" fxLayout="column wrap" class="ammounttitle V">
-                    <h1 class="ma-0 active"> {{ enRuta.length }}</h1>
-                    <small>Suma en Ruta</small>
-                </div>
-            </div>
-            <mat-accordion class="example-headers-align" multi>
-                <mat-expansion-panel [expanded]="expanded">
-                    <mat-expansion-panel-header>
-                        <mat-panel-title>
-                            <h3 class="ma-0 product-font pasive"><b>Pendientes</b></h3>
-                        </mat-panel-title>
-                        <mat-panel-description class="pasive">
-                            <b>{{pendientes.length}}</b>
-                            <mat-icon>pending
-                                <svg class="svg-24" viewBox="0 0 24 24">
+          </div>
+        </div>
+        <div fxFlex="20" fxLayout="column wrap" class="ammounttitle V">
+          <h1 class="ma-0 pasive"> {{ pendientes.length }}</h1>
+          <small>Suma de Pendientes</small>
+        </div>
+        <div fxFlex="20" fxLayout="column wrap" class="ammounttitle V">
+          <h1 class="ma-0 V">{{ enProceso.length }}</h1>
+          <small>Suma en Proceso</small>
+        </div>
+        <div fxFlex="20" fxLayout="column wrap" class="ammounttitle V">
+          <h1 class="ma-0 active"> {{ enRuta.length }}</h1>
+          <small>Suma en Ruta</small>
+        </div>
+      </div>
+      <mat-accordion class="example-headers-align" multi>
+        <mat-expansion-panel [expanded]="expanded">
+          <mat-expansion-panel-header>
+            <mat-panel-title>
+              <h3 class="ma-0 product-font pasive"><b>Pendientes</b></h3>
+            </mat-panel-title>
+            <mat-panel-description class="pasive">
+              <b>{{pendientes.length}}</b>
+              <mat-icon>pending
+                <svg class="svg-24" viewBox="0 0 24 24">
                 </svg>
-                            </mat-icon>
-                        </mat-panel-description>
-                    </mat-expansion-panel-header>
-                    <mat-divider></mat-divider>
-                    <div class="spaceaccounts">
-                        <div fxLayout="row wrap">
-                            <div fxFlex="100" class="accountrow" fxLayout="row wrap" fxLayoutAlign="start center">
-                                <div fxFlex="10" class="ellipsis-text cell text-muted">No. Pedido</div>
-                                <div fxFlex class="ellipsis-text cell">Fecha</div>
-                                <div fxFlex class="ellipsis-text cell">Origen</div>
-                                <div fxFlex class="ellipsis-text cell">Usuario</div>
-                                <div fxFlex class="ellipsis-text cell">Estado</div>
-                                <div fxFlex class="ellipsis-text cell">Opciones</div>
-                            </div>
-                            <ng-container *ngFor="let a of pendientes">
-                                <div fxFlex="100" class="accountrow" fxLayout="row wrap" fxLayoutAlign="start center">
-                                    <div fxFlex="10" class="ellipsis-text cell text-muted">{{ a.noOrder }}</div>
-                                    <div fxFlex class="ellipsis-text cell">{{ a.date | date: 'dd/MM/yyyy HH:mm' }}</div>
-                                    <div fxFlex class="ellipsis-text cell">{{ a._cellar.name }}</div>
-                                    <div fxFlex class="ellipsis-text cell">{{ a._user.name }}</div>
-                                    <div fxFlex class="ellipsis-text cell">
-                                        <mat-chip-list>
-                                            <mat-chip>
-                                                Pendiente
-                                            </mat-chip>
-                                        </mat-chip-list>
-                                    </div>
-                                    <div fxFlex class="ellipsis-text cell">
-                                        <button mat-icon-button *ngIf="internalOrdersp && internalOrdersp.includes('update')" (click)="accept(a)">
-                      <mat-icon color="warn">check_circle</mat-icon>
+              </mat-icon>
+            </mat-panel-description>
+          </mat-expansion-panel-header>
+          <mat-divider></mat-divider>
+          <div class="spaceaccounts">
+            <div fxLayout="row wrap">
+              <div fxFlex="100" class="accountrow" fxLayout="row wrap" fxLayoutAlign="start center">
+                <div fxFlex="10" class="ellipsis-text cell text-muted">No. Pedido</div>
+                <div fxFlex class="ellipsis-text cell">Fecha</div>
+                <div fxFlex class="ellipsis-text cell">Destino</div>
+                <div fxFlex class="ellipsis-text cell">Usuario</div>
+                <div fxFlex class="ellipsis-text cell">Estado</div>
+                <div fxFlex class="ellipsis-text cell">Opciones</div>
+              </div>
+              <ng-container *ngFor="let a of pendientes">
+                <div fxFlex="100" class="accountrow" fxLayout="row wrap" fxLayoutAlign="start center">
+                  <div fxFlex="10" class="ellipsis-text cell text-muted">{{ a.noOrder }}</div>
+                  <div fxFlex class="ellipsis-text cell">{{ a.date | date: 'dd/MM/yyyy HH:mm' }}</div>
+                  <div fxFlex class="ellipsis-text cell">{{ a._destination.name }}</div>
+                  <div fxFlex class="ellipsis-text cell">{{ a._user.name }}</div>
+                  <div fxFlex class="ellipsis-text cell">
+                    <mat-chip-list>
+                      <mat-chip>
+                        Pendiente
+                      </mat-chip>
+                    </mat-chip-list>
+                  </div>
+                  <div fxFlex class="ellipsis-text cell">
+                    <button mat-icon-button *ngIf="internalOrdersp && internalOrdersp.includes('update')"
+                      (click)="accept(a)" matTooltip="Aceptar">
+                      <mat-icon>task_alt</mat-icon>
                     </button>
-                                        <button mat-icon-button *ngIf="internalOrdersp && internalOrdersp.includes('update')" (click)="reject(a)">
+                    <button mat-icon-button *ngIf="internalOrdersp && internalOrdersp.includes('update')"
+                      (click)="reject(a)" matTooltip="Rechazar">
                       <mat-icon>highlight_off</mat-icon>
                     </button>
-                                    </div>
-                                </div>
-                                <div *ngIf="a.details" fxFlex="100" class="accountrow" fxLayout="row wrap" fxLayoutAlign="start center">
-                                    Nota:<br> {{ a.details }}
-                                </div>
-                            </ng-container>
-                        </div>
-                    </div>
-                </mat-expansion-panel>
-                <mat-expansion-panel [expanded]="expanded">
-                    <mat-expansion-panel-header>
-                        <mat-panel-title>
-                            <h3 class="ma-0 product-font V"><b>En Proceso</b></h3>
-                        </mat-panel-title>
-                        <mat-panel-description class="V">
-                            <b>{{ enProceso.length }}</b>
-                            <mat-icon>pending_actions
-                                <svg style="width:24px;height:24px" viewBox="0 0 24 24">
+                  </div>
+                </div>
+                <div *ngIf="a.details" fxFlex="100" class="accountrow" fxLayout="row wrap" fxLayoutAlign="start center">
+                  Nota:<br> {{ a.details }}
+                </div>
+              </ng-container>
+            </div>
+          </div>
+        </mat-expansion-panel>
+        <mat-expansion-panel [expanded]="expanded">
+          <mat-expansion-panel-header>
+            <mat-panel-title>
+              <h3 class="ma-0 product-font V"><b>En Proceso</b></h3>
+            </mat-panel-title>
+            <mat-panel-description class="V">
+              <b>{{ enProceso.length }}</b>
+              <mat-icon>pending_actions
+                <svg style="width:24px;height:24px" viewBox="0 0 24 24">
                 </svg>
-                            </mat-icon>
-                        </mat-panel-description>
-                    </mat-expansion-panel-header>
-                    <mat-divider></mat-divider>
-                    <div class="spaceaccounts">
-                        <div fxLayout="row wrap">
-                            <div fxFlex="100" class="accountrow" fxLayout="row wrap" fxLayoutAlign="start center">
-                                <div fxFlex="10" class="ellipsis-text cell text-muted">No. Pedido</div>
-                                <div fxFlex class="ellipsis-text cell">Fecha</div>
-                                <div fxFlex class="ellipsis-text cell">Origen</div>
-                                <div fxFlex class="ellipsis-text cell">Usuario</div>
-                                <div fxFlex class="ellipsis-text cell">Aceptación</div>
-                                <div fxFlex class="ellipsis-text cell">Estado</div>
-                                <div fxFlex class="ellipsis-text cell">Opciones</div>
-                            </div>
-                            <ng-container *ngFor="let a of enProceso">
-                                <div fxFlex="100" class="accountrow" fxLayout="row wrap" fxLayoutAlign="start center">
-                                    <div fxFlex="10" class="ellipsis-text cell text-muted">{{ a.noOrder }}</div>
-                                    <div fxFlex class="ellipsis-text cell">{{ a.date | date: 'dd/MM/yyyy HH:mm' }}</div>
-                                    <div fxFlex class="ellipsis-text cell">{{ a._cellar.name }}</div>
-                                    <div fxFlex class="ellipsis-text cell">{{ a._user.name }}</div>
-                                    <div fxFlex class="ellipsis-text cell">{{ a.timeInit | date: 'dd/MM/yyyy HH:mm' }}</div>
-                                    <div fxFlex class="ellipsis-text cell">
-                                        <mat-chip-list>
-                                            <mat-chip selected color="primary">
-                                                Acaptado
-                                            </mat-chip>
-                                        </mat-chip-list>
-                                    </div>
-                                    <div fxFlex class="ellipsis-text cell">
-                                        <button mat-icon-button *ngIf="internalOrdersp && internalOrdersp.includes('update')" (click)="dispatch(a)">
-                      <mat-icon color="primary">archive</mat-icon>
+              </mat-icon>
+            </mat-panel-description>
+          </mat-expansion-panel-header>
+          <mat-divider></mat-divider>
+          <div class="spaceaccounts">
+            <div fxLayout="row wrap">
+              <div fxFlex="100" class="accountrow" fxLayout="row wrap" fxLayoutAlign="start center">
+                <div fxFlex="10" class="ellipsis-text cell text-muted">No. Pedido</div>
+                <div fxFlex class="ellipsis-text cell">Fecha</div>
+                <div fxFlex class="ellipsis-text cell">Destino</div>
+                <div fxFlex class="ellipsis-text cell">Usuario</div>
+                <div fxFlex class="ellipsis-text cell">Aceptación</div>
+                <div fxFlex class="ellipsis-text cell">Estado</div>
+                <div fxFlex class="ellipsis-text cell">Opciones</div>
+              </div>
+              <ng-container *ngFor="let a of enProceso">
+                <div fxFlex="100" class="accountrow" fxLayout="row wrap" fxLayoutAlign="start center">
+                  <div fxFlex="10" class="ellipsis-text cell text-muted">{{ a.noOrder }}</div>
+                  <div fxFlex class="ellipsis-text cell">{{ a.date | date: 'dd/MM/yyyy HH:mm' }}</div>
+                  <div fxFlex class="ellipsis-text cell">{{ a._destination.name }}</div>
+                  <div fxFlex class="ellipsis-text cell">{{ a._user.name }}</div>
+                  <div fxFlex class="ellipsis-text cell">{{ a.timeInit | date: 'dd/MM/yyyy HH:mm' }}</div>
+                  <div fxFlex class="ellipsis-text cell">
+                    <mat-chip-list>
+                      <mat-chip selected color="primary">
+                        Acaptado
+                      </mat-chip>
+                    </mat-chip-list>
+                  </div>
+                  <div fxFlex class="ellipsis-text cell">
+                    <button mat-icon-button *ngIf="internalOrdersp && internalOrdersp.includes('update')"
+                      (click)="dispatch(a)" matTooltip="Despachar">
+                      <mat-icon>move_to_inbox</mat-icon>
                     </button>
-                                    </div>
-                                </div>
-                                <div *ngIf="a.details" fxFlex="100" class="accountrow" fxLayout="row wrap" fxLayoutAlign="start center">
-                                    Nota:<br> {{ a.details }}
-                                </div>
-                            </ng-container>
-                        </div>
-                    </div>
-                </mat-expansion-panel>
-                <mat-expansion-panel [expanded]="expanded">
-                    <mat-expansion-panel-header>
-                        <mat-panel-title>
-                            <h3 class="ma-0 product-font active"><b>En Ruta</b></h3>
-                        </mat-panel-title>
-                        <mat-panel-description class="active">
-                            <b>{{enRuta.length}}</b>
-                            <mat-icon>where_to_vote</mat-icon>
-                        </mat-panel-description>
-                    </mat-expansion-panel-header>
-                    <mat-divider></mat-divider>
-                    <div class="spaceaccounts">
-                        <div fxLayout="row wrap">
-                            <div fxFlex="100" class="accountrow" fxLayout="row wrap" fxLayoutAlign="start center">
-                                <div fxFlex="10" class="ellipsis-text cell text-muted">No. Pedido</div>
-                                <div fxFlex class="ellipsis-text cell">Fecha</div>
-                                <div fxFlex class="ellipsis-text cell">Origen</div>
-                                <div fxFlex class="ellipsis-text cell">Usuario</div>
-                                <div fxFlex class="ellipsis-text cell">Despacho</div>
-                                <div fxFlex class="ellipsis-text cell">Repartidor</div>
-                                <div fxFlex class="ellipsis-text cell">Estado</div>
-                            </div>
-                            <ng-container *ngFor="let a of enRuta">
-                                <div fxFlex="100" class="accountrow" fxLayout="row wrap" fxLayoutAlign="start center">
-                                    <div fxFlex="10" class="ellipsis-text cell text-muted">{{ a.noOrder }}</div>
-                                    <div fxFlex class="ellipsis-text cell">{{ a.date | date: 'dd/MM/yyyy HH:mm' }}</div>
-                                    <div fxFlex class="ellipsis-text cell">{{ a._cellar.name }}</div>
-                                    <div fxFlex class="ellipsis-text cell">{{ a._user.name }}</div>
-                                    <div fxFlex class="ellipsis-text cell">{{ a.timeDispatch | date: 'dd/MM/yyyy HH:mm' }}</div>
-                                    <div fxFlex class="ellipsis-text cell">
-                                        <span *ngIf="a._delivery"> {{ a._delivery.name }}</span>
-                                        <span *ngIf="!a._delivery"> -</span>
-                                    </div>
-                                    <div fxFlex class="ellipsis-text cell">
-                                        <mat-chip-list>
-                                            <mat-chip selected color="warn">
-                                                Despachado
-                                            </mat-chip>
-                                        </mat-chip-list>
-                                    </div>
-                                </div>
-                                <div *ngIf="a.details" fxFlex="100" class="accountrow" fxLayout="row wrap" fxLayoutAlign="start center">
-                                    Nota:<br> {{ a.details }}
-                                </div>
-                            </ng-container>
-                        </div>
-                    </div>
-                </mat-expansion-panel>
-            </mat-accordion>
-        </div>
+                  </div>
+                </div>
+                <div *ngIf="a.details" fxFlex="100" class="accountrow" fxLayout="row wrap" fxLayoutAlign="start center">
+                  Nota:<br> {{ a.details }}
+                </div>
+              </ng-container>
+            </div>
+          </div>
+        </mat-expansion-panel>
+        <mat-expansion-panel [expanded]="expanded">
+          <mat-expansion-panel-header>
+            <mat-panel-title>
+              <h3 class="ma-0 product-font active"><b>En Ruta</b></h3>
+            </mat-panel-title>
+            <mat-panel-description class="active">
+              <b>{{enRuta.length}}</b>
+              <mat-icon>where_to_vote</mat-icon>
+            </mat-panel-description>
+          </mat-expansion-panel-header>
+          <mat-divider></mat-divider>
+          <div class="spaceaccounts">
+            <div fxLayout="row wrap">
+              <div fxFlex="100" class="accountrow" fxLayout="row wrap" fxLayoutAlign="start center">
+                <div fxFlex="10" class="ellipsis-text cell text-muted">No. Pedido</div>
+                <div fxFlex class="ellipsis-text cell">Fecha</div>
+                <div fxFlex class="ellipsis-text cell">Destino</div>
+                <div fxFlex class="ellipsis-text cell">Usuario</div>
+                <div fxFlex class="ellipsis-text cell">Despacho</div>
+                <div fxFlex class="ellipsis-text cell">Repartidor</div>
+                <div fxFlex class="ellipsis-text cell">Estado</div>
+              </div>
+              <ng-container *ngFor="let a of enRuta">
+                <div fxFlex="100" class="accountrow" fxLayout="row wrap" fxLayoutAlign="start center">
+                  <div fxFlex="10" class="ellipsis-text cell text-muted">{{ a.noOrder }}</div>
+                  <div fxFlex class="ellipsis-text cell">{{ a.date | date: 'dd/MM/yyyy HH:mm' }}</div>
+                  <div fxFlex class="ellipsis-text cell">{{ a._destination.name }}</div>
+                  <div fxFlex class="ellipsis-text cell">{{ a._user.name }}</div>
+                  <div fxFlex class="ellipsis-text cell">{{ a.timeDispatch | date: 'dd/MM/yyyy HH:mm' }}</div>
+                  <div fxFlex class="ellipsis-text cell">
+                    <span *ngIf="a._delivery"> {{ a._delivery.name }}</span>
+                    <span *ngIf="!a._delivery"> -</span>
+                  </div>
+                  <div fxFlex class="ellipsis-text cell">
+                    <mat-chip-list>
+                      <mat-chip selected color="warn">
+                        Despachado
+                      </mat-chip>
+                    </mat-chip-list>
+                  </div>
+                </div>
+                <div *ngIf="a.details" fxFlex="100" class="accountrow" fxLayout="row wrap" fxLayoutAlign="start center">
+                  Nota:<br> {{ a.details }}
+                </div>
+              </ng-container>
+            </div>
+          </div>
+        </mat-expansion-panel>
+      </mat-accordion>
+    </div>
 
-        <div *ngIf="loading === true || pendientes === undefined" class="loadingspace" fxLayout="row wrap" fxLayoutAlign="center center">
-            <mat-progress-spinner mode="indeterminate" diameter="40" color="primary"></mat-progress-spinner>
-        </div>
+    <div *ngIf="loading === true || pendientes === undefined" class="loadingspace" fxLayout="row wrap"
+      fxLayoutAlign="center center">
+      <mat-progress-spinner mode="indeterminate" diameter="40" color="primary"></mat-progress-spinner>
+    </div>
 
-    </mat-sidenav-content>
+  </mat-sidenav-content>
 
 </mat-sidenav-container>

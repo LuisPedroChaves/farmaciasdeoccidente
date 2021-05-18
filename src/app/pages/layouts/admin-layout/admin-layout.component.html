@@ -32,6 +32,16 @@
                     <mat-icon color="accent" mat-list-icon class="material-icons-outlined">{{ m.icon }}</mat-icon>
                     <h4 mat-line>{{ m.name }}</h4>
                 </mat-list-item>
+                <div class="bottomStick">
+                    <mat-list-item *ngIf="wsService.socketStatus" class="menu-items">
+                      <mat-icon color="warn" mat-list-icon>sensors</mat-icon>
+                      <h4 mat-line>En línea</h4>
+                    </mat-list-item>
+                    <mat-list-item *ngIf="!wsService.socketStatus" class="menu-items">
+                      <mat-icon style="color: rgba(233, 21, 21, 0.75) !important;" mat-list-icon>sensors_off</mat-icon>
+                      <h4 mat-line>Sin conexión</h4>
+                    </mat-list-item>
+                  </div>
             </mat-nav-list>
         </mat-sidenav>
         <router-outlet></router-outlet>

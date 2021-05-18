@@ -9,7 +9,7 @@ import { InternalOrderService } from 'src/app/core/services/httpServices/interna
 import { ToastyService } from 'src/app/core/services/internal/toasty.service';
 import { AppState } from 'src/app/core/store/app.reducer';
 import { ConfirmationDialogComponent } from 'src/app/pages/shared-components/confirmation-dialog/confirmation-dialog.component';
-import { NewTransferComponent } from '../new-transfer/new-transfer.component';
+import { NewRequestComponent } from '../new-request/new-request.component';
 
 @Component({
   selector: 'app-outgoing',
@@ -27,6 +27,7 @@ export class OutgoingComponent implements OnInit {
   currentCellar: CellarItem;
 
   sessionsubscription: Subscription;
+  outgoingSubscription: Subscription;
   internalOrdersp: string[] = [];
 
   constructor(
@@ -45,6 +46,24 @@ export class OutgoingComponent implements OnInit {
     });
     this.currentCellar = JSON.parse(localStorage.getItem('currentstore'));
     this.loadInternalsOrders();
+
+    this.outgoingSubscription = this.internalOrderService.getUpdateOutgoing().subscribe((internalOrder: InternalOrderItem) => {
+      if (internalOrder.type === 'TRASLADO') {
+        if (internalOrder.state === 'DESPACHO') {
+          this.recibidos.push(internalOrder);
+          this.enviados = this.enviados.filter(p => {
+            return p._id !== internalOrder._id
+          });
+        } else if(internalOrder.state !== 'ENTREGA') {
+          const index = this.enviados.findIndex(e => e._id === internalOrder._id);
+          if (index !== -1) {
+            this.enviados[index] = internalOrder;
+          } else {
+            this.enviados.push(internalOrder);
+          }
+        }
+      }
+    });
   }
 
   loadInternalsOrders() {
@@ -66,33 +85,35 @@ export class OutgoingComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(result => {
       if (result !== undefined) {
-        // this.loading = true;
+        this.loading = true;
         internalOrder.state = 'ENTREGA';
         this.internalOrderService.updateInternalOrderState(internalOrder).subscribe(data => {
           this.toasty.success('Traslado aceptado exitosamente');
-          this.loadInternalsOrders();
-          // this.loading = false;
+          this.recibidos = this.recibidos.filter(p => {
+            return p._id !== internalOrder._id
+          });
+          this.loading = false;
         }, error => {
-          // this.loading = false;
+          this.loading = false;
           this.toasty.error('Error al aceptar el traslado');
         });
       }
     });
   }
 
-  newOrder() {
-    const dialogRef = this.dialog.open(NewTransferComponent, {
+  newRequest() {
+    const dialogRef = this.dialog.open(NewRequestComponent, {
       width: this.smallScreen ? '100%' : '600px',
       data: { currentCellar: this.currentCellar },
       disableClose: true,
       panelClass: ['farmacia-dialog', 'farmacia'],
     });
 
-    dialogRef.afterClosed().subscribe(result => {
-      if (result !== undefined) {
-        this.loadInternalsOrders();
-      }
-    });
+    // dialogRef.afterClosed().subscribe(result => {
+    //   if (result !== undefined) {
+    //     this.loadInternalsOrders();
+    //   }
+    // });
   }
 
   delete(internalOrder: InternalOrderItem) {
@@ -105,13 +126,15 @@ export class OutgoingComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(result => {
       if (result !== undefined) {
-        // this.loading = true;
+        this.loading = true;
         this.internalOrderService.deleteInternalOrder(internalOrder).subscribe(data => {
           this.toasty.success('Traslado eliminado exitosamente');
-          this.loadInternalsOrders();
-          // this.loading = false;
+          this.enviados = this.enviados.filter(p => {
+            return p._id !== data.internalOrder._id
+          });
+          this.loading = false;
         }, error => {
-          // this.loading = false;
+          this.loading = false;
           this.toasty.error('Error al eliminar el traslado');
         });
       }

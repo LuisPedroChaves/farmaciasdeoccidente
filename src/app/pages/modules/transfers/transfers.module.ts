@@ -9,11 +9,12 @@ import { IncomingComponent } from './components/incoming/incoming.component';
 import { OutgoingComponent } from './components/outgoing/outgoing.component';
 import { HistoryComponent } from './components/history/history.component';
 import { NewTransferComponent } from './components/new-transfer/new-transfer.component';
+import { NewRequestComponent } from './components/new-request/new-request.component';
 
 
 
 @NgModule({
-  declarations: [TransfersComponent, IncomingComponent, OutgoingComponent, HistoryComponent, NewTransferComponent],
+  declarations: [TransfersComponent, IncomingComponent, OutgoingComponent, HistoryComponent, NewTransferComponent, NewRequestComponent],
   imports: [
     CommonModule,
     RouterModule.forChild(TransfersRoutes),

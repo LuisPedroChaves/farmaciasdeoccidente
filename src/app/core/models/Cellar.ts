@@ -5,4 +5,5 @@ export interface CellarItem {
     address: string,
     description: string,
 	type: string,
+    sala?: boolean
 }

@@ -5,6 +5,7 @@ import { HttpClient } from '@angular/common/http';
 import { ApiConfigService } from '../config/api-config.service';
 import { map } from 'rxjs/operators';
 import { InternalOrderItem } from '../../models/InternalOrder';
+import { WebsocketService } from './websocket.service';
 
 @Injectable({
   providedIn: 'root'
@@ -18,7 +19,8 @@ export class InternalOrderService implements IDataService<InternalOrderItem[]> {
 
   constructor(
     public http: HttpClient,
-    public apiConfigService: ApiConfigService
+    public apiConfigService: ApiConfigService,
+    public websocketS: WebsocketService
   ) { }
 
   loadData({month, year, _cellar, type}) {
@@ -55,12 +57,24 @@ export class InternalOrderService implements IDataService<InternalOrderItem[]> {
     return this.http.get(this.apiConfigService.API_INTERNAL_ORDER + '/actives/' + _delivery);
   }
 
-  getOutgoing(_cellar: string, type: string): Observable<any> {
-    return this.http.get(this.apiConfigService.API_INTERNAL_ORDER + '/outgoing/' + _cellar + '?type=' + type);
+  getOutgoing(_destination: string, type: string): Observable<any> {
+    return this.http.get(this.apiConfigService.API_INTERNAL_ORDER + '/outgoing/' + _destination + '?type=' + type);
   }
 
-  getIncoming(_destination: string, type: string): Observable<any> {
-    return this.http.get(this.apiConfigService.API_INTERNAL_ORDER + '/incoming/' + _destination + '?type=' + type);
+  getNewIncoming() {
+    return this.websocketS.listen('newInternalOrder');
+  }
+
+  getUpdateIncoming() {
+    return this.websocketS.listen('updateIncoming');
+  }
+
+  getUpdateOutgoing() {
+    return this.websocketS.listen('updateOutgoing');
+  }
+
+  getIncoming(_cellar: string, type: string): Observable<any> {
+    return this.http.get(this.apiConfigService.API_INTERNAL_ORDER + '/incoming/' + _cellar + '?type=' + type);
   }
 
   createInternalOrder(u: InternalOrderItem): Observable<any> {

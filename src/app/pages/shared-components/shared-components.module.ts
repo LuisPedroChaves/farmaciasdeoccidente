@@ -27,22 +27,25 @@ import { MatChipsModule } from '@angular/material/chips';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatRippleModule } from '@angular/material/core';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatBadgeModule } from '@angular/material/badge';
 
 /* FLEX ----------------------*/
 import { FlexLayoutModule, CoreModule } from '@angular/flex-layout';
-import { NewCellarComponent } from './new-cellar/new-cellar.component';
 
 
 /* STYLE ----------------------*/
 import { ToastaModule } from 'ngx-toasta';
-import { ConfirmationDialogComponent } from './confirmation-dialog/confirmation-dialog.component';
 import { MatTableResponsiveModule } from '../modules/mat-table-responsive/mat-table-responsive.module';
 
 /* FILE ----------------------*/
 import { MaterialFileInputModule } from 'ngx-material-file-input';
 
+/* COMPONENTS ----------------------*/
+import { NewCellarComponent } from './new-cellar/new-cellar.component';
+import { ConfirmationDialogComponent } from './confirmation-dialog/confirmation-dialog.component';
+import { NotificationsComponent } from './notifications/notifications.component';
 @NgModule({
-  declarations: [NewCellarComponent, ConfirmationDialogComponent],
+  declarations: [NewCellarComponent, ConfirmationDialogComponent, NotificationsComponent],
   imports: [
     CommonModule,
     FormsModule,
@@ -57,6 +60,7 @@ import { MaterialFileInputModule } from 'ngx-material-file-input';
     MaterialFileInputModule,
 
     // material
+    MatBadgeModule,
     MatTableModule,
     MatButtonModule,
     MatCardModule,
@@ -96,6 +100,7 @@ import { MaterialFileInputModule } from 'ngx-material-file-input';
     MaterialFileInputModule,
 
     // material
+    MatBadgeModule,
     MatTableModule,
     MatButtonModule,
     MatCardModule,
@@ -120,7 +125,12 @@ import { MaterialFileInputModule } from 'ngx-material-file-input';
     MatChipsModule,
     MatAutocompleteModule,
     MatRippleModule,
-    MatTooltipModule
+    MatTooltipModule,
+
+    // components
+    NewCellarComponent,
+    ConfirmationDialogComponent,
+    NotificationsComponent
   ]
   , providers: [
     { provide: MAT_DATE_LOCALE, useValue: 'es' }

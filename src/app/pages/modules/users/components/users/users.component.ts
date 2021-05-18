@@ -31,7 +31,6 @@ export class UsersComponent implements OnInit, OnDestroy, AfterContentInit {
   constructor(
     public eventBus: EventBusService,
     public config: ConfigService,
-    //TODO: public store: Store<AppState>
     public roleService: RoleService,
     ) {
 

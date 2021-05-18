@@ -14,6 +14,6 @@ export const InternalOrdersRoutes: Routes = [{
     { path: 'incoming', component: IncomingComponent },
     { path: 'outgoing', component: OutgoingComponent },
     { path: 'history', component: HistoryComponent },
-    { path: '', redirectTo: 'incoming' }
+    { path: '', redirectTo: 'outgoing' }
   ]
 }];

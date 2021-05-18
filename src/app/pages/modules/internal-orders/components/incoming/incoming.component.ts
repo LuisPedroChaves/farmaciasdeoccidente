@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Store } from '@ngrx/store';
 import { Subscription } from 'rxjs';
@@ -9,13 +9,14 @@ import { ToastyService } from 'src/app/core/services/internal/toasty.service';
 import { AppState } from 'src/app/core/store/app.reducer';
 import { ConfirmationDialogComponent } from 'src/app/pages/shared-components/confirmation-dialog/confirmation-dialog.component';
 import { InternalOrderItem } from '../../../../../core/models/InternalOrder';
+import { NewInternalOorderComponent } from '../new-internal-oorder/new-internal-oorder.component';
 
 @Component({
   selector: 'app-incoming',
   templateUrl: './incoming.component.html',
   styleUrls: ['./incoming.component.scss']
 })
-export class IncomingComponent implements OnInit {
+export class IncomingComponent implements OnInit, OnDestroy {
 
   smallScreen = window.innerWidth < 960 ? true : false;
   loading = false;
@@ -27,6 +28,7 @@ export class IncomingComponent implements OnInit {
   currentCellar: CellarItem;
 
   sessionsubscription: Subscription;
+  incomingSubscription: Subscription;
   internalOrdersp: string[] = [];
 
   constructor(
@@ -45,6 +47,32 @@ export class IncomingComponent implements OnInit {
   });
     this.currentCellar = JSON.parse(localStorage.getItem('currentstore'));
     this.loadInternalsOrders();
+
+    this.incomingSubscription = this.internalOrderService.getUpdateIncoming().subscribe((internalOrder: InternalOrderItem) => {
+      if (internalOrder.type === 'PEDIDO') {
+        switch (internalOrder.state) {
+          case 'ENVIO':
+            this.pendientes.push(internalOrder);
+            break;
+          case 'CONFIRMACION':
+            this.enProceso.push(internalOrder);
+            break;
+          case 'DESPACHO':
+            this.enRuta.push(internalOrder);
+            break;
+
+          default:
+            this.enRuta = this.enRuta.filter(e => {
+              return e._id !== internalOrder._id
+            });
+            break;
+        }
+      }
+    });
+  }
+
+  ngOnDestroy(): void {
+    this.incomingSubscription.unsubscribe();
   }
 
   loadInternalsOrders() {
@@ -67,14 +95,16 @@ export class IncomingComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(result => {
       if (result !== undefined) {
-        // this.loading = true;
+        this.loading = true;
         internalOrder.state = 'CONFIRMACION';
         this.internalOrderService.updateInternalOrderState(internalOrder).subscribe(data => {
           this.toasty.success('Pedido aceptado exitosamente');
-          this.loadInternalsOrders();
-          // this.loading = false;
+          this.pendientes = this.pendientes.filter(p => {
+            return p._id !== internalOrder._id
+          });
+          this.loading = false;
         }, error => {
-          // this.loading = false;
+          this.loading = false;
           this.toasty.error('Error al aceptar el pedido');
         });
       }
@@ -91,14 +121,16 @@ export class IncomingComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(result => {
       if (result !== undefined) {
-        // this.loading = true;
+        this.loading = true;
         internalOrder.state = 'RECHAZO';
         this.internalOrderService.updateInternalOrderState(internalOrder).subscribe(data => {
           this.toasty.success('Pedido rechazado exitosamente');
-          this.loadInternalsOrders();
-          // this.loading = false;
+          this.pendientes = this.pendientes.filter(p => {
+            return p._id !== internalOrder._id
+          });
+          this.loading = false;
         }, error => {
-          // this.loading = false;
+          this.loading = false;
           this.toasty.error('Error al rechazar el pedido');
         });
       }
@@ -118,17 +150,28 @@ export class IncomingComponent implements OnInit {
         if (result !== null) {
           internalOrder._delivery = result;
         }
-        // this.loading = true;
+        this.loading = true;
         internalOrder.state = 'DESPACHO';
         this.internalOrderService.updateInternalOrderState(internalOrder).subscribe(data => {
           this.toasty.success('Pedido despachado exitosamente');
-          this.loadInternalsOrders();
-          // this.loading = false;
+          this.enProceso = this.enProceso.filter(p => {
+            return p._id !== internalOrder._id
+          });
+          this.loading = false;
         }, error => {
-          // this.loading = false;
+          this.loading = false;
           this.toasty.error('Error al despachar el pedido');
         });
       }
+    });
+  }
+
+  newInternalOrder() {
+    const dialogRef = this.dialog.open(NewInternalOorderComponent, {
+      width: this.smallScreen ? '100%' : '600px',
+      data: { currentCellar: this.currentCellar },
+      disableClose: true,
+      panelClass: ['farmacia-dialog', 'farmacia'],
     });
   }
 }

@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { CellarItem } from 'src/app/core/models/Cellar';
-import { NewInternalOorderComponent } from '../new-internal-oorder/new-internal-oorder.component';
 import { InternalOrderItem } from '../../../../../core/models/InternalOrder';
 import { InternalOrderService } from '../../../../../core/services/httpServices/internal-order.service';
 import { ConfirmationDialogComponent } from 'src/app/pages/shared-components/confirmation-dialog/confirmation-dialog.component';
@@ -10,6 +9,7 @@ import { Subscription } from 'rxjs';
 import { Store } from '@ngrx/store';
 import { AppState } from 'src/app/core/store/app.reducer';
 import { filter } from 'rxjs/operators';
+import { NewRequestComponent } from '../new-request/new-request.component';
 
 @Component({
   selector: 'app-outgoing',
@@ -22,12 +22,13 @@ export class OutgoingComponent implements OnInit {
   loading = false;
   expanded = true;
 
-enviados: InternalOrderItem[];
-recibidos: InternalOrderItem[];
-currentCellar: CellarItem;
+  enviados: InternalOrderItem[];
+  recibidos: InternalOrderItem[];
+  currentCellar: CellarItem;
 
-sessionsubscription: Subscription;
-internalOrdersp: string[] = [];
+  sessionsubscription: Subscription;
+  outgoingSubscription: Subscription;
+  internalOrdersp: string[] = [];
 
   constructor(
     public store: Store<AppState>,
@@ -37,15 +38,32 @@ internalOrdersp: string[] = [];
   ) { }
 
   ngOnInit(): void {
-    this.sessionsubscription = this.store.select('session').pipe(filter( session => session !== null)).subscribe( session => {
+    this.sessionsubscription = this.store.select('session').pipe(filter(session => session !== null)).subscribe(session => {
       if (session.permissions !== null) {
         const b = session.permissions.filter(pr => pr.name === 'internalOrders');
         this.internalOrdersp = b.length > 0 ? b[0].options : [];
-        console.log("🚀 ~ file: outgoing.component.ts ~ line 44 ~ OutgoingComponent ~ this.sessionsubscription=this.store.select ~ internalOrdersp", this.internalOrdersp)
       }
-  });
+    });
     this.currentCellar = JSON.parse(localStorage.getItem('currentstore'));
     this.loadInternalsOrders();
+
+    this.outgoingSubscription = this.internalOrderService.getUpdateOutgoing().subscribe((internalOrder: InternalOrderItem) => {
+      if (internalOrder.type === 'PEDIDO') {
+        if (internalOrder.state === 'DESPACHO') {
+          this.recibidos.push(internalOrder);
+          this.enviados = this.enviados.filter(p => {
+            return p._id !== internalOrder._id
+          });
+        } else if (internalOrder.state !== 'ENTREGA') {
+          const index = this.enviados.findIndex(e => e._id === internalOrder._id);
+          if (index !== -1) {
+            this.enviados[index] = internalOrder;
+          } else {
+            this.enviados.push(internalOrder);
+          }
+        }
+      }
+    });
   }
 
   loadInternalsOrders() {
@@ -67,14 +85,16 @@ internalOrdersp: string[] = [];
 
     dialogRef.afterClosed().subscribe(result => {
       if (result !== undefined) {
-        // this.loading = true;
+        this.loading = true;
         internalOrder.state = 'ENTREGA';
         this.internalOrderService.updateInternalOrderState(internalOrder).subscribe(data => {
           this.toasty.success('Pedido aceptado exitosamente');
-          this.loadInternalsOrders();
-          // this.loading = false;
+          this.recibidos = this.recibidos.filter(p => {
+            return p._id !== internalOrder._id
+          });
+          this.loading = false;
         }, error => {
-          // this.loading = false;
+          this.loading = false;
           this.toasty.error('Error al aceptar el pedido');
         });
       }
@@ -82,18 +102,18 @@ internalOrdersp: string[] = [];
   }
 
   newOrder() {
-    const dialogRef = this.dialog.open(NewInternalOorderComponent, {
+    const dialogRef = this.dialog.open(NewRequestComponent, {
       width: this.smallScreen ? '100%' : '600px',
       data: { currentCellar: this.currentCellar },
       disableClose: true,
       panelClass: ['farmacia-dialog', 'farmacia'],
     });
 
-    dialogRef.afterClosed().subscribe(result => {
-      if (result !== undefined) {
-        this.loadInternalsOrders();
-      }
-    });
+    // dialogRef.afterClosed().subscribe(result => {
+    //   if (result !== undefined) {
+    //     this.loadInternalsOrders();
+    //   }
+    // });
   }
 
   delete(internalOrder: InternalOrderItem) {
@@ -106,13 +126,15 @@ internalOrdersp: string[] = [];
 
     dialogRef.afterClosed().subscribe(result => {
       if (result !== undefined) {
-        // this.loading = true;
+        this.loading = true;
         this.internalOrderService.deleteInternalOrder(internalOrder).subscribe(data => {
           this.toasty.success('Pedido eliminado exitosamente');
-          this.loadInternalsOrders();
-          // this.loading = false;
+          this.enviados = this.enviados.filter(p => {
+            return p._id !== data.internalOrder._id
+          });
+          this.loading = false;
         }, error => {
-          // this.loading = false;
+          this.loading = false;
           this.toasty.error('Error al eliminar el pedido');
         });
       }

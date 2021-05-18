@@ -5,6 +5,7 @@ import { Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
 import { AppState } from 'src/app/core/store/app.reducer';
 import * as actions from '../../../core/store/actions';
+import { WebsocketService } from '../../../core/services/httpServices/websocket.service';
 const SMALL_WIDTH_BREAKPOINT = 960;
 
 @Component({
@@ -39,7 +40,8 @@ export class AdminLayoutComponent implements OnInit, OnDestroy {
   constructor(
     zone: NgZone,
     public store: Store<AppState>,
-    public router: Router
+    public router: Router,
+    public wsService: WebsocketService
   ) {
     // tslint:disable-next-line: deprecation
     this.mediaMatcher.addListener(mql => zone.run(() => {

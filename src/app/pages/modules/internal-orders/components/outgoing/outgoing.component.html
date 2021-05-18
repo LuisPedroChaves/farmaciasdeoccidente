@@ -1,11 +1,11 @@
-<button *ngIf="!smallScreen && (internalOrdersp && internalOrdersp.includes('create'))" mat-fab color="primary" class="fab mat-elevation-z10" (click)="newOrder()">
-  <mat-icon>add</mat-icon><span class="extended-fab-button__text">Pedido</span>
+<button *ngIf="(internalOrdersp && internalOrdersp.includes('create'))" mat-fab color="primary" class="fab mat-elevation-z10" (click)="newOrder()">
+  <mat-icon>add</mat-icon><span class="extended-fab-button__text">Solicitar Pedido</span>
 </button>
 <mat-sidenav-container fxFlex="100" [ngClass]="{'space':!smallScreen, 'space-sm':smallScreen}">
   <mat-sidenav-content fxFlex [ngClass]="{'accounts-space':!smallScreen, 'accounts-space-sm':smallScreen}"
     data-simplebar>
     <div class="header" fxLayout="row wrap" fxLayoutAlign="start center">
-      <h2 *ngIf="!smallScreen" class="product-font ma-0 T1">Pedidos Salientes</h2>
+      <h2 *ngIf="!smallScreen" class="product-font ma-0 T1">Solicitudes de pedidos</h2>
       <span fxFlex></span>
     </div>
     <div *ngIf="loading === false && recibidos !== undefined">
@@ -24,18 +24,18 @@
         </div>
         <div fxFlex="20" fxLayout="column wrap" class="ammounttitle active">
           <h1 class="ma-0 active"> {{ recibidos.length }}</h1>
-          <small>Recibidos</small>
+          <small>Pedidos recibidos</small>
         </div>
         <div fxFlex="20" fxLayout="column wrap" class="ammounttitle pasive">
           <h1 class="ma-0 pasive">{{ enviados.length }}</h1>
-          <small>Enviados</small>
+          <small>Solicitudes enviadas</small>
         </div>
       </div>
       <mat-accordion class="example-headers-align" multi>
         <mat-expansion-panel [expanded]="expanded">
           <mat-expansion-panel-header>
             <mat-panel-title>
-              <h3 class="ma-0 product-font V"><b>Recibidos</b></h3>
+              <h3 class="ma-0 product-font V"><b>Confirmar envios recibidos</b></h3>
             </mat-panel-title>
             <mat-panel-description class="active">
               <b>{{ recibidos.length }}</b>
@@ -51,7 +51,7 @@
               <div fxFlex="100" class="accountrow" fxLayout="row wrap" fxLayoutAlign="start center">
                 <div fxFlex="10" class="ellipsis-text cell text-muted">No. Pedido</div>
                 <div fxFlex class="ellipsis-text cell">Fecha</div>
-                <div fxFlex class="ellipsis-text cell">Destino</div>
+                <div fxFlex class="ellipsis-text cell">Sucursal</div>
                 <div fxFlex class="ellipsis-text cell">Usuario</div>
                 <div fxFlex class="ellipsis-text cell">Despacho</div>
                 <div fxFlex class="ellipsis-text cell">Repartidor</div>
@@ -62,7 +62,7 @@
                 <div fxFlex="100" class="accountrow" fxLayout="row wrap" fxLayoutAlign="start center">
                   <div fxFlex="10" class="ellipsis-text cell text-muted">{{ a.noOrder }}</div>
                   <div fxFlex class="ellipsis-text cell">{{ a.date | date: 'dd/MM/yyyy HH:mm' }}</div>
-                  <div fxFlex class="ellipsis-text cell">{{ a._destination.name }}</div>
+                  <div fxFlex class="ellipsis-text cell">{{ a._cellar.name }}</div>
                   <div fxFlex class="ellipsis-text cell">{{ a._user.name }}</div>
                   <div fxFlex class="ellipsis-text cell">{{ a.timeDispatch | date: 'dd/MM/yyyy HH:mm' }}</div>
                   <div fxFlex class="ellipsis-text cell">
@@ -77,8 +77,8 @@
                     </mat-chip-list>
                   </div>
                   <div fxFlex class="ellipsis-text cell">
-                    <button mat-icon-button *ngIf="internalOrdersp && internalOrdersp.includes('update')" (click)="finish(a)">
-                      <mat-icon color="warn">check_circle</mat-icon>
+                    <button mat-icon-button *ngIf="internalOrdersp && internalOrdersp.includes('update')" (click)="finish(a)" matTooltip="Marcar como recibido">
+                      <mat-icon>task_alt</mat-icon>
                     </button>
                   </div>
                 </div>
@@ -92,7 +92,7 @@
         <mat-expansion-panel [expanded]="expanded">
           <mat-expansion-panel-header>
             <mat-panel-title>
-              <h3 class="ma-0 product-font V"><b>Enviados</b></h3>
+              <h3 class="ma-0 product-font V"><b>Solicitudes enviadas</b></h3>
             </mat-panel-title>
             <mat-panel-description class="pasive">
               <b>{{ enviados.length }}</b>
@@ -108,7 +108,7 @@
               <div fxFlex="100" class="accountrow" fxLayout="row wrap" fxLayoutAlign="start center">
                 <div fxFlex="10" class="ellipsis-text cell text-muted">No. Pedido</div>
                 <div fxFlex class="ellipsis-text cell">Fecha</div>
-                <div fxFlex class="ellipsis-text cell">Destino</div>
+                <div fxFlex class="ellipsis-text cell">Sucursal</div>
                 <div fxFlex class="ellipsis-text cell">Usuario</div>
                 <div fxFlex class="ellipsis-text cell">Aceptación</div>
                 <div fxFlex class="ellipsis-text cell">Estado</div>
@@ -118,7 +118,7 @@
                 <div fxFlex="100" class="accountrow" fxLayout="row wrap" fxLayoutAlign="start center">
                   <div fxFlex="10" class="ellipsis-text cell text-muted">{{ a.noOrder }}</div>
                   <div fxFlex class="ellipsis-text cell">{{ a.date | date: 'dd/MM/yyyy HH:mm' }}</div>
-                  <div fxFlex class="ellipsis-text cell">{{ a._destination.name }}</div>
+                  <div fxFlex class="ellipsis-text cell">{{ a._cellar.name }}</div>
                   <div fxFlex class="ellipsis-text cell">{{ a._user.name }}</div>
                   <div fxFlex class="ellipsis-text cell">
                     <span *ngIf="a.timeInit">

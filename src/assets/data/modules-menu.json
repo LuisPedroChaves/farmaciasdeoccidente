@@ -51,7 +51,7 @@
         "state": "transfers",
         "name": "Traslados",
         "type": "link",
-        "icon": "local_shipping",
+        "icon": "moped",
         "iconType": "icon",
         "order": 4
     },

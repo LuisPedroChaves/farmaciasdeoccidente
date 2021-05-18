@@ -6,6 +6,7 @@ import { Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
 import { CellarItem } from 'src/app/core/models/Cellar';
 import { CellarService } from 'src/app/core/services/httpServices/cellar.service';
+import { WebsocketService } from 'src/app/core/services/httpServices/websocket.service';
 import { ToastyService } from 'src/app/core/services/internal/toasty.service';
 import { AppState } from 'src/app/core/store/app.reducer';
 import { ConfirmationDialogComponent } from 'src/app/pages/shared-components/confirmation-dialog/confirmation-dialog.component';
@@ -41,17 +42,18 @@ export class DashboardFactoryComponent implements OnInit, AfterContentInit {
     private toasty: ToastyService,
     public dialog: MatDialog,
     private router: Router,
+    public wsService: WebsocketService
   ) { }
 
   ngOnInit(): void {
-    this.sessionSubscription = this.store.select('session').pipe(filter( session => session !== null )).subscribe(session => {
+    this.sessionSubscription = this.store.select('session').pipe(filter(session => session !== null)).subscribe(session => {
       if (session.currentUser) {
         if (session.currentUser.type === 'ADMIN') {
           this.isAdmin = true;
         }
       }
     });
-        // this.dashboardService.readData().subscribe(data => {
+    // this.dashboardService.readData().subscribe(data => {
     //   this.counts = data;
     //   if (this.counts !== undefined) {
     //     this.clientCount = this.counts.clientes;

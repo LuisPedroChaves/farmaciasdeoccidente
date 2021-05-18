@@ -1,5 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { ModuleWithProviders, NgModule } from '@angular/core';
+import { NgModule } from '@angular/core';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AppRoutingModule } from './app-routing.module';
 import { SharedComponentsModule } from './pages/shared-components/shared-components.module';
@@ -28,7 +28,6 @@ import { AuthAdminGuard } from './core/auth/auth-admin.guard';
 
 // sockets
 import { SocketIoModule, SocketIoConfig } from 'ngx-socket-io';
-import { RouterModule } from '@angular/router';
 const config: SocketIoConfig = { url: environment.root, options: {} };
 
 @NgModule({

@@ -4,9 +4,8 @@ import { Subscription } from 'rxjs';
 import { NewCellarComponent } from '../../../../shared-components/new-cellar/new-cellar.component';
 import { CellarItem } from 'src/app/core/models/Cellar';
 import { CellarService } from '../../../../../core/services/httpServices/cellar.service';
-import { CurrentCellarService } from '../../../../../core/services/internal/current-cellar.service';
 import { Router } from '@angular/router';
-import { ToastyService } from '../../../../../core/services/internal/toasty.service';
+import { WebsocketService } from 'src/app/core/services/httpServices/websocket.service';
 const SMALL_WIDTH_BREAKPOINT = 960;
 
 @Component({
@@ -26,8 +25,8 @@ export class DashboardComponent implements OnInit, AfterContentInit, OnDestroy {
     zone: NgZone,
     public dialog: MatDialog,
     public cellarService: CellarService,
-    private currentCellarService: CurrentCellarService,
     private router: Router,
+    public wsService: WebsocketService
   ) {
     this.mediaMatcher.addListener(mql => zone.run(() => {
       this.mediaMatcher = matchMedia(`(max-width: ${SMALL_WIDTH_BREAKPOINT}px)`);
@@ -59,7 +58,9 @@ export class DashboardComponent implements OnInit, AfterContentInit, OnDestroy {
 
   accessToCellar(c: CellarItem) {
     localStorage.setItem('currentstore', JSON.stringify(c));
-    this.router.navigate(['/']);
+    this.wsService.loginCellar(c).then(() => {
+      this.router.navigate(['/']);
+    });
   }
 
   newCellar() {

@@ -23,6 +23,7 @@ export class NewInternalOorderComponent implements OnInit, AfterContentInit, OnD
     noOrder: new FormControl(null, [Validators.required]),
     details: new FormControl(null),
     type: new FormControl('PEDIDO',),
+    state: new FormControl('CONFIRMACION',),
   });
 
   // Sucursales tipo bodega
@@ -38,7 +39,7 @@ export class NewInternalOorderComponent implements OnInit, AfterContentInit, OnD
 
   ngOnInit(): void {
     this.cellarsSubscription = this.cellarService.readData().subscribe(data => {
-      this.cellars = data.filter(cellar => cellar.type === 'BODEGA');
+      this.cellars = data;
     });
   }
 

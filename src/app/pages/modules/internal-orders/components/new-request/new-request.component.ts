@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit, AfterContentInit, OnDestroy } from '@angular/core';
+import { AfterContentInit, Component, Inject, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Subscription } from 'rxjs';
@@ -9,21 +9,20 @@ import { InternalOrderService } from 'src/app/core/services/httpServices/interna
 import { ToastyService } from 'src/app/core/services/internal/toasty.service';
 
 @Component({
-  selector: 'app-new-transfer',
-  templateUrl: './new-transfer.component.html',
-  styleUrls: ['./new-transfer.component.scss']
+  selector: 'app-new-request',
+  templateUrl: './new-request.component.html',
+  styleUrls: ['./new-request.component.scss']
 })
-export class NewTransferComponent implements OnInit, AfterContentInit, OnDestroy {
+export class NewRequestComponent implements OnInit, AfterContentInit, OnDestroy {
 
   loading = false;
 
   form = new FormGroup({
-    _cellar: new FormControl(null),
-    _destination: new FormControl(null, [Validators.required]),
+    _cellar: new FormControl(null, [Validators.required]),
+    _destination: new FormControl(null),
     noOrder: new FormControl(null, [Validators.required]),
     details: new FormControl(null),
-    type: new FormControl('TRASLADO',),
-    state: new FormControl('CONFIRMACION',),
+    type: new FormControl('PEDIDO',),
   });
 
   // Sucursales tipo bodega
@@ -31,7 +30,7 @@ export class NewTransferComponent implements OnInit, AfterContentInit, OnDestroy
   cellars: CellarItem[];
 
   constructor(
-    public dialogRef: MatDialogRef<NewTransferComponent>, @Inject(MAT_DIALOG_DATA) public data: any,
+    public dialogRef: MatDialogRef<NewRequestComponent>, @Inject(MAT_DIALOG_DATA) public data: any,
     public internalOrderService: InternalOrderService,
     public toasty: ToastyService,
     public cellarService: CellarService
@@ -39,7 +38,7 @@ export class NewTransferComponent implements OnInit, AfterContentInit, OnDestroy
 
   ngOnInit(): void {
     this.cellarsSubscription = this.cellarService.readData().subscribe(data => {
-      this.cellars = data;
+      this.cellars = data.filter(cellar => cellar.type === 'BODEGA');
     });
   }
 
@@ -54,20 +53,20 @@ export class NewTransferComponent implements OnInit, AfterContentInit, OnDestroy
   saveInternalOrder() {
     if (this.form.invalid) { return; }
     this.loading = true;
-    this.form.get('_cellar').setValue(this.data.currentCellar);
-    const internalOrder: InternalOrderItem = { ...this.form.value };
+    this.form.get('_destination').setValue(this.data.currentCellar);
+    const internalOrder: InternalOrderItem = {...this.form.value};
     this.internalOrderService.createInternalOrder(internalOrder).subscribe(data => {
       if (data.ok === true) {
-        this.toasty.success('Traslado creado exitosamente');
+        this.toasty.success('Pedido creado exitosamente');
         this.dialogRef.close('ok');
         this.loading = false;
       } else {
         this.loading = false;
-        this.toasty.error('Error al crear el Traslado');
+        this.toasty.error('Error al crear el pedido');
       }
     }, err => {
       this.loading = false;
-      this.toasty.error('Error al crear el Traslado');
+      this.toasty.error('Error al crear el pedido');
     });
   }
 

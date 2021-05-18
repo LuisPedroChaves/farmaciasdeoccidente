@@ -13,7 +13,7 @@ import { AppState } from 'src/app/core/store/app.reducer';
 export class TransfersComponent implements OnInit {
 
   smallScreen = window.innerWidth < 960 ? true : false;
-  tab: string;
+  tab = 'incoming';
 
   sessionsubscription: Subscription;
 
@@ -25,16 +25,18 @@ export class TransfersComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.sessionsubscription = this.store.select('session').pipe(filter( session => session !== null)).subscribe( session => {
+    this.sessionsubscription = this.store.select('session').pipe(filter(session => session !== null)).subscribe(session => {
       if (session.permissions !== null) {
         const b = session.permissions.filter(pr => pr.name === 'transfers');
         this.transfersp = b.length > 0 ? b[0].options : [];
       }
-  });
+    });
+    this.tab = this.router.url;
   }
 
   changeTab(url: string) {
     this.router.navigate(['/transfers', url]);
+    this.tab = url;
   }
 
 }

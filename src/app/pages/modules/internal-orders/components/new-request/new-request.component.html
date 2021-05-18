@@ -1,0 +1,68 @@
+<div class="farmacia">
+    <header fxLayout="row wrap" fxLayoutAlign="center center" class="header">
+        <h2 style="margin: 0;" class="h2">Nueva solicitud de Pedido</h2>
+        <span fxFlex></span>
+        <button mat-icon-button *ngIf="!loading" (click)="dialogRef.close()">
+    <mat-icon>close</mat-icon>
+  </button>
+    </header>
+    <mat-divider></mat-divider>
+    <form [formGroup]="form" autocomplete="off">
+        <div class="clientspace" data-simplebar>
+            <div fxLayout="row wrap" fxLayoutAlign="start center" style="margin-top: 30px;">
+                <div fxFlex="50px"></div>
+                <div fxFlex="50px" fxHide.xs>
+                    <mat-icon color="accent" class="material-icons-outlined grayicon">place
+                    </mat-icon>
+                </div>
+                <div fxFlex fxLayout="row wrap">
+                    <div fxFlex="50%" fxFlex.xs="100%" class="inputpadding">
+                        <mat-form-field appearance="outline" color="primary" class="width-all">
+                            <mat-label>No. de Pedido</mat-label>
+                            <input formControlName="noOrder" type="text" matInput placeholder="Ingrese el número de pédido">
+                        </mat-form-field>
+                    </div>
+                    <div fxFlex="50%" fxFlex.xs="100%" class="inputpadding">
+                        <mat-form-field color="primary" class="width-all" appearance="outline">
+                            <mat-label>Sucursal</mat-label>
+                            <mat-select formControlName="_cellar">
+                                <mat-option *ngFor="let c of cellars"  [value]="c._id" [disabled]="c._id === data.currentCellar._id">{{ c.name }}</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                </div>
+                <div fxFlex="50px"></div>
+            </div>
+            <div fxLayout="row wrap" fxLayoutAlign="start center" style="margin-top: 8px;">
+                <div fxFlex="50px"></div>
+                <div fxFlex="50px" fxHide.xs>
+                    <mat-icon color="accent" class="material-icons-outlined grayicon">rate_review
+                    </mat-icon>
+                </div>
+                <div fxFlex fxLayout="row wrap">
+                    <div fxFlex="100" class="inputpadding">
+                        <mat-form-field appearance="outline" color="primary" class="width-all">
+                            <mat-label>Nota</mat-label>
+                            <textarea matInput formControlName="details" rows="6" cols="75" placeholder="Describe los detalles del pedido"></textarea>
+                        </mat-form-field>
+                    </div>
+                </div>
+                <div fxFlex="50px"></div>
+            </div>
+            <div fxLayout="row wrap">
+                <div fxFlex="100px" fxHide.xs></div>
+            </div>
+        </div>
+    </form>
+    <mat-divider></mat-divider>
+    <div fxLayout="row" class="header">
+        <button mat-button *ngIf="!loading" (click)="dialogRef.close()" class="info-row">
+    CANCELAR
+  </button>
+        <span fxFlex></span>
+        <button mat-button *ngIf="!loading" (click)="saveInternalOrder()" [disabled]="this.form.invalid" color="primary">
+    GUARDAR
+  </button>
+        <mat-progress-spinner *ngIf="loading" mode="indeterminate" diameter="30" color="warn"></mat-progress-spinner>
+    </div>
+</div>

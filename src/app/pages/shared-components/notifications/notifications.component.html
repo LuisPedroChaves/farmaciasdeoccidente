@@ -1,0 +1,18 @@
+<div class="notifications-panel">
+    <header class="panel-header" fxLayout="row" fxLayoutAlign="start center">
+        <mat-icon>notifications</mat-icon><span>Notificaciones</span>
+    </header>
+    <mat-nav-list *ngIf="notifications.length > 0" class="item-list" data-simplebar>
+        <mat-list-item class="item" *ngFor="let n of notifications" (click)="go(n)">
+            <mat-icon mat-list-icon>{{n.matIcon}}</mat-icon>
+            <h4 mat-line>{{n.title}}</h4>
+            <p mat-line class="mat-text-muted text-md">
+                {{n.description}}
+            </p>
+        </mat-list-item>
+    </mat-nav-list>
+    <div *ngIf="notifications.length <= 0" fxLayout="column" fxLayoutAlign="center center" class="item-list">
+        <mat-icon class="noitem">notifications_off</mat-icon>
+        <h4 class="noitem">No hay notificaciones</h4>
+    </div>
+</div>

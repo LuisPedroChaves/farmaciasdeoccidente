@@ -17,8 +17,8 @@ export class ToastyService {
       title: title ? title : '',
       msg: message,
       showClose: true,
-      timeout: 60000,
-      theme: theme ? theme : 'default',
+      timeout: 3000,
+      theme: 'default',
     };
 
     switch (type) {
