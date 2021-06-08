@@ -70,7 +70,7 @@
                       color="warn">electric_moped</mat-icon>
                     <h4 mat-line>Ruta no. {{ a.noRoute }}</h4>
                     <h4 mat-line>{{ a.details.length }} Ordenes</h4>
-                    <span mat-line class="text-muted">{{ a._cellar.name }}</span>
+                    <span mat-line *ngIf="a._cellar" class="text-muted">{{ a._cellar.name }}</span>
                     <span mat-line class="text-muted">Hora y fecha: {{a.date | date: 'dd/MM/yyyy HH:mm' }}</span>
                     <mat-chip-list>
                       <mat-chip *ngIf="a.state === 'INICIO'" selected color="primary">

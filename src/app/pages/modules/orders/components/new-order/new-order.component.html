@@ -111,7 +111,7 @@
                     </mat-icon>
                 </div>
                 <div fxFlex fxLayout="row wrap">
-                    <div fxFlex="50%" fxFlex.xs="100%" class="inputpadding">
+                    <div fxFlex="33.33%" fxFlex.xs="100%" class="inputpadding">
                         <mat-form-field appearance="outline" color="primary" class="width-all">
                             <mat-label>Método de pago</mat-label>
                             <mat-select formControlName="payment">
@@ -124,7 +124,13 @@
                             </mat-select>
                         </mat-form-field>
                     </div>
-                    <div fxFlex="50%" fxFlex.xs="100%" class="inputpadding">
+                    <div fxFlex="33.33%" fxFlex.xs="100%" class="inputpadding">
+                        <mat-form-field appearance="outline" color="primary" class="width-all">
+                            <mat-label>Código del vendedor</mat-label>
+                            <input formControlName="sellerCode" type="text" matInput placeholder="Ingrese el código del vendedor">
+                        </mat-form-field>
+                    </div>
+                    <div fxFlex="33.33%" fxFlex.xs="100%" class="inputpadding">
                         <mat-form-field appearance="outline" color="primary" class="width-all">
                             <mat-label>Total</mat-label>
                             <span matPrefix><b>Q.</b></span>

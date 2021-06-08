@@ -1,7 +1,14 @@
 <div class="module-container" *ngIf="selectedOrder !== undefined" data-simplebar>
-  <button *ngIf="selectedOrder.timeSend && return === 'delivery' && selectedOrder.state !== 'ENTREGA'" (click)="delivery()"  mat-fab color="warn" class="fab mat-elevation-z10">
-    <mat-icon *ngIf="!loading">done</mat-icon><span *ngIf="!loading" class="extended-fab-button__text"> Marcar Entrega</span>
-    <mat-progress-spinner *ngIf="loading"  mode="indeterminate" diameter="60" color="primary">
+  <button *ngIf="selectedOrder.timeSend && return === 'delivery' && selectedOrder.state !== 'ENTREGA' && selectedOrder.state !== 'DEVOLUCION'"
+    (click)="delivery()" mat-fab color="warn" class="fab mat-elevation-z10">
+    <mat-icon *ngIf="!loading">done</mat-icon><span *ngIf="!loading" class="extended-fab-button__text">Entrega</span>
+    <mat-progress-spinner *ngIf="loading" mode="indeterminate" diameter="60" color="primary">
+    </mat-progress-spinner>
+  </button>
+  <button *ngIf="selectedOrder.timeSend && return === 'delivery' && selectedOrder.state !== 'ENTREGA' && selectedOrder.state !== 'DEVOLUCION'"
+    (click)="devolucion()" mat-fab color="accent" class="fab2">
+    <mat-icon *ngIf="!loading">close</mat-icon><span *ngIf="!loading" class="extended-fab-button__text">Devolución</span>
+    <mat-progress-spinner *ngIf="loading" mode="indeterminate" diameter="60" color="primary">
     </mat-progress-spinner>
   </button>
   <div class="new-header" fxLayout="row wrap" fxLayoutAlign="start center">
@@ -39,7 +46,7 @@
         <mat-chip-list *ngIf="selectedOrder.deleted">
           <mat-chip style="background-color:brown; color: white;">
             Eliminada
-        </mat-chip>
+          </mat-chip>
         </mat-chip-list>
         <mat-chip-list *ngIf="!selectedOrder.deleted">
           <mat-chip *ngIf="selectedOrder.state === 'ORDEN'">
@@ -53,6 +60,9 @@
           </mat-chip>
           <mat-chip *ngIf="selectedOrder.state === 'ENTREGA'" selected color="warn">
             Entregada
+          </mat-chip>
+          <mat-chip *ngIf="selectedOrder.state === 'DEVOLUCION'" selected color="warn">
+            Devuelta
           </mat-chip>
         </mat-chip-list>
         <mat-chip-list *ngIf="selectedOrder._delivery" class="teacher">
@@ -79,12 +89,13 @@
         <div fxFlex fxLayout="row wrap">
 
           <div fxFlex="100" class="input-section">
-            <!-- <b class="size-fact">No.Orden: </b> -->
             <h3 class="ma-0"> <span class="ma-0 text-muted">No.Orden:</span> {{selectedOrder.noOrder}}</h3>
           </div>
           <div fxFlex="100" class="input-section">
-            <!-- <b class="size-fact">No. de Factura: </b> -->
             <h3 class="ma-0"> <span class="ma-0 text-muted">No. de Factura:</span> {{selectedOrder.noBill}}</h3>
+          </div>
+          <div fxFlex="100" class="input-section">
+            <h3 class="ma-0"> <span class="ma-0 text-muted">Código de vendedor:</span> {{selectedOrder.sellerCode}}</h3>
           </div>
         </div>
       </div>
@@ -107,16 +118,13 @@
           <mat-icon class="material-icons-outlined text-muted" color="primary">article</mat-icon>
         </div>
         <div fxFlex fxLayout="row wrap">
-
           <div fxFlex="100" class="input-section">
             <b>Detalles: </b> {{selectedOrder.details}}
           </div>
         </div>
       </div>
     </div>
-
     <br>
-
     <div class="card">
       <div class="section" fxLayout="row wrap">
         <h2 color="primary" class="product-font ma-0 T">Estado de la Orden</h2>
@@ -144,11 +152,16 @@
             <div *ngIf="selectedOrder.timeDelivery" fxLayout="column wrap">
               <mat-list style="padding-top: 0;">
                 <mat-list-item class="assigned-job mat-elevation-z4">
-                  <mat-icon mat-list-icon class="material-icons-outlined whitebg" color="warn">check_circle
+                  <mat-icon  mat-list-icon *ngIf="selectedOrder.state === 'ENTREGA'"  class="material-icons-outlined whitebg" color="warn">check_circle
                   </mat-icon>
-                  <h4 mat-line>Entrega </h4>
+                  <mat-icon  mat-list-icon *ngIf="selectedOrder.state === 'DEVOLUCION'"  class="material-icons-outlined whitebg" color="warn">assignment_return
+                  </mat-icon>
+                  <h4 mat-line *ngIf="selectedOrder.state === 'ENTREGA'">Entrega </h4>
+                  <h4 mat-line *ngIf="selectedOrder.state === 'DEVOLUCION'">Devolución</h4>
                   <span mat-line class="text-muted">Fecha y hora:
                     {{selectedOrder.timeDelivery | date: 'dd/MM/yyyy HH:mm'}}</span>
+                    <small mat-line *ngIf="selectedOrder.state === 'DEVOLUCION'" class="text-muted">Motivo:</small>
+                    <small mat-line *ngIf="selectedOrder.state === 'DEVOLUCION'" class="text-muted">{{ selectedOrder.textReturned }}</small>
                   <small mat-line class="text-muted">Tiempo de entrega:</small>
                   <small mat-line class="text-muted">{{ getDays(selectedOrder.date, selectedOrder.timeDelivery) }}
                     días,</small>

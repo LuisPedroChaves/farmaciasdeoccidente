@@ -19,6 +19,7 @@ export interface OrderItem {
     department: string,
     details: string,
     payment: string,
+    sellerCode?: string,
     total: number,
     state: string,
     date: string,
@@ -26,6 +27,7 @@ export interface OrderItem {
     timeDispatch?: string,
     timeSend?: string,
     timeDelivery?: string,
+    textReturned?: string,
     textDeleted?: string,
     deleted?: boolean
 }

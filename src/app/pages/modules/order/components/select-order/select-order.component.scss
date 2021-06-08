@@ -132,14 +132,31 @@ $blue: #045195;
 
 .fab {
     position: fixed;
-    right: 30px;
+    right: 10px;
     bottom: 10px;
     z-index: 5;
     width: unset;
-    padding: 0 50px;
+    padding: 0 25px;
     border-radius: 29px;
     .mat-icon {
-        margin-right: 10px;
+        margin-right: 5px;
+    }
+    .extended-fab-button__text {
+        font-weight: 300;
+        letter-spacing: .1em;
+        text-transform: uppercase;
+    }
+}
+.fab2 {
+    position: fixed;
+    left: 10px;
+    bottom: 10px;
+    z-index: 5;
+    width: unset;
+    padding: 0 25px;
+    border-radius: 29px;
+    .mat-icon {
+        margin-right: 5px;
     }
     .extended-fab-button__text {
         font-weight: 300;

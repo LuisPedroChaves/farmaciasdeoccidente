@@ -20,16 +20,14 @@ export class DashboardGuard implements CanActivate {
                 default:
                     break;
             }
-        }else {
-            const type = JSON.parse(localStorage.getItem('farmaciasDO-session')).type;
-            switch (type) {
-                case 'DELIVERY':
-                    this.router.navigate(['/delivery']);
-                case 'SELLER':
-                    this.router.navigate(['/seller']);
-                default:
-                    break;
+        } else {
+            const TYPE = JSON.parse(localStorage.getItem('farmaciasDO-session')).type;
+            const SWITCH = {
+                'DELIVERY': () => this.router.navigate(['/delivery']),
+                'SELLER': () =>   this.router.navigate(['/seller']),
+                'ADMIN': () =>   this.router.navigate(['/admin']),
             }
+            SWITCH[TYPE]();
             return false;
         }
 

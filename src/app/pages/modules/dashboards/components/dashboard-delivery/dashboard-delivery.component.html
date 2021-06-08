@@ -1,11 +1,12 @@
 <div [ngClass]="{ 'app': !smallScreen, 'app-sm': smallScreen } ">
   <div class="section-content">
     <div>
-      <header class="module-header colorBarra" [ngClass]="{'padding-25': !smallScreen, 'padding-15': smallScreen }" fxLayoutAlign="start center" fxLayout="row wrap">
+      <header class="module-header colorBarra" [ngClass]="{'padding-25': !smallScreen, 'padding-15': smallScreen }"
+        fxLayoutAlign="start center" fxLayout="row wrap">
         <h2 class="product-font  module-title ht"> Rutas Pendientes</h2>
         <span fxFlex></span>
-    </header>
-    <mat-divider class="colorBarra"></mat-divider>
+      </header>
+      <mat-divider class="colorBarra"></mat-divider>
       <div *ngIf="!loading" fxLayout="row wrap">
         <div class="padding-list mat-elevation-z4 module-container">
           <button (click)="loadRoutes()" mat-fab class="fab mat-elevation-z10">
@@ -24,27 +25,46 @@
                   <div fxFlex="100" fxLayout="row wrap" class="ellipsis-tex course-info">
                     <span class="text-muted">Total: {{c.details.length}} entregas</span>
                     <span fxFlex></span>
-                    <span class="text-muted">{{ c._cellar.name }}</span>
+                    <span *ngIf="c._cellar" class="text-muted">{{ c._cellar.name }}</span>
                   </div>
                   <div fxFlex="90" class="margenC">
                     <div *ngIf="c.details.length > 0" fxLayout="column wrap">
                       <mat-list
                         *ngFor="let o of  (c.details | filter: searchText : ['noBill', 'nit', 'name', 'phone', 'address', 'town', 'department'])"
-                        style="padding-top: 0;" class="divider" [ngClass]="{'inactive': o._order.state === 'ENTREGA'}">
-                        <mat-list-item matRipple (click)="selectOrder(o._order)"
+                        style="padding-top: 0;" class="divider"
+                        [ngClass]="{'inactive': (o._order &&   (o._order.state === 'ENTREGA' || o._order.state === 'DEVOLUCION')) || (o._internalOrder && o._internalOrder.state === 'ENTREGA')}">
+                        <mat-list-item matRipple *ngIf="o._order" (click)="selectOrder(o._order)"
                           class="assigned-job mat-elevation-z4 cursor-pointer">
-                          <mat-icon mat-list-icon *ngIf="o._order.state !== 'ENTREGA'"
+                          <mat-icon mat-list-icon
+                            *ngIf="o._order.state !== 'ENTREGA' && o._order.state !== 'DEVOLUCION'"
                             class="material-icons-outlined whitebg" color="primary">
                             receipt_long</mat-icon>
                           <mat-icon mat-list-icon *ngIf="o._order.state === 'ENTREGA'"
                             class="material-icons-outlined whitebg" color="warn">
                             check_circle</mat-icon>
+                          <mat-icon mat-list-icon *ngIf="o._order.state === 'DEVOLUCION'"
+                            class="material-icons-outlined whitebg" color="accent">
+                            assignment_return</mat-icon>
                           <h4 mat-line>#{{ o._order.noOrder }} <span fxFlex></span> Factura: {{ o._order.noBill }}
                           </h4>
                           <small mat-line class="text-muted">{{o._order.name}} </small>
                           <h4 mat-line>{{o._order.address}} </h4>
                           <h6 mat-line>{{ o._order.town }}, {{ o._order.department }}
                           </h6>
+                        </mat-list-item>
+                        <mat-list-item *ngIf="o._internalOrder" class="assigned-job mat-elevation-z4 cursor-pointer">
+                          <mat-icon mat-list-icon *ngIf="o._internalOrder.state === 'DESPACHO'"
+                            class="material-icons-outlined whitebg" color="accent">
+                            send</mat-icon>
+                          <mat-icon mat-list-icon *ngIf="o._internalOrder.state === 'ENTREGA'"
+                            class="material-icons-outlined whitebg" color="warn">
+                            send</mat-icon>
+                          <h4 mat-line>#{{ o._internalOrder.noOrder }} <span fxFlex></span>
+                            {{ o._internalOrder.type }}</h4>
+                          <h6 mat-line>Origen:
+                            {{o._internalOrder._cellar.name }}</h6>
+                          <h6 mat-line>Destino:
+                            {{o._internalOrder._destination.name }}</h6>
                         </mat-list-item>
                       </mat-list>
                     </div>

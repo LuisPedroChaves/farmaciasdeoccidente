@@ -39,8 +39,8 @@ export class OrdersComponent implements OnInit, AfterContentInit, OnDestroy {
   ordersp: string[] = [];
 
   dataSource = new MatTableDataSource();
-  columnsToDisplay = ['noOrder', 'noBill', 'createdAt', 'nit', 'name', 'phone', 'address', 'payment', 'state', 'total', 'options'];
-  columnsToDisplay2 = ['image', 'noOrder', 'noBill', 'createdAt', 'nit', 'name', 'phone', 'address', 'payment', 'state', 'total', 'options'];
+  columnsToDisplay = ['noOrder', 'noBill', 'createdAt', 'nit', 'name', 'phone', 'address', 'sellerCode', 'payment', 'state', 'total', 'options'];
+  columnsToDisplay2 = ['image', 'noOrder', 'noBill', 'createdAt', 'nit', 'name', 'phone', 'address', 'sellerCode', 'payment', 'state', 'total', 'options'];
   expandedElement: OrderItem | null;
   // HOOK FUNCTIONS //////////////////////////////////////////////////////////////////////////////////////////
   constructor(

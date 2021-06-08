@@ -28,6 +28,7 @@ export class NewOrderComponent implements OnInit, AfterContentInit, OnDestroy {
     department: new FormControl('Huehuetenango', ),
     details: new FormControl(null, [Validators.required]),
     payment: new FormControl('EFECTIVO', ),
+    sellerCode: new FormControl(''),
     total: new FormControl('', [Validators.required]),
     state: new FormControl('ORDEN', ),
     timeOrder: new FormControl(0, ),

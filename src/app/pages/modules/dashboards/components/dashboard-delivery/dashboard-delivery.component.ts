@@ -58,7 +58,9 @@ export class DashboardDeliveryComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.sessionsubscription = this.store.select('session').pipe(filter(session => session !== null)).subscribe(session => {
-      this.selectedUser = session.currentUser.user;
+      if (session.currentUser) {
+        this.selectedUser = session.currentUser.user;
+      }
       // if (session.permissions !== null) {
       //   const b = session.permissions.filter(pr => pr.name === 'orders');
       //   this.ordersp = b.length > 0 ? b[0].options : [];

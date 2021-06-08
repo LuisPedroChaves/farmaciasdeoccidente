@@ -42,15 +42,20 @@
           <div *ngIf="route.details.length > 0" fxLayout="column wrap">
             <mat-list *ngFor="let c of  route.details" style="padding-top: 0;">
               <mat-list-item class="assigned-job mat-elevation-z4">
-                <mat-icon mat-list-icon *ngIf="c._order.state !== 'ENTREGA' && route.state !== 'RECHAZADA'"
+                <mat-icon mat-list-icon *ngIf="c._order.state !== 'ENTREGA' && c._order.state !== 'DEVOLUCION' && route.state !== 'RECHAZADA'"
                 class="material-icons-outlined whitebg" color="primary">
                 receipt_long</mat-icon>
               <mat-icon mat-list-icon *ngIf="c._order.state === 'ENTREGA' && route.state !== 'RECHAZADA'"
                 class="material-icons-outlined whitebg" color="warn">
                 check_circle</mat-icon>
+              <mat-icon mat-list-icon *ngIf="c._order.state === 'DEVOLUCION' && route.state !== 'RECHAZADA'"
+                class="material-icons-outlined whitebg" color="accent">
+                assignment_return</mat-icon>
                 <h4 mat-line>#{{ c._order.noOrder }} <span fxFlex></span>  Factura: {{ c._order.noBill }}</h4>
                 <small mat-line class="text-muted">{{c._order.address}} </small>
                 <small mat-line class="text-muted">{{ c._order.town }}, {{ c._order.department }} </small>
+                <small mat-line *ngIf="c._order.state === 'DEVOLUCION' && route.state !== 'RECHAZADA'" class="text-muted"><b>Devolución:</b></small>
+                <small mat-line *ngIf="c._order.state === 'DEVOLUCION' && route.state !== 'RECHAZADA'" class="text-muted">{{ c._order.textReturned }}</small>
                 <button mat-icon-button (click)="removeOrder(c._order)" *ngIf="route.state === 'INICIO'">
                   <mat-icon>close</mat-icon>
                 </button>

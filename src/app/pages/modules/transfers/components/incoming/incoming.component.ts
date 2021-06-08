@@ -141,16 +141,16 @@ export class IncomingComponent implements OnInit, OnDestroy {
   dispatch(internalOrder: InternalOrderItem) {
     const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
       width: '350px',
-      data: { title: 'Despachar Traslado', message: '¿Confirma que desea despachar el traslado  ' + internalOrder.noOrder + '?', isDelivery: true },
+      data: { title: 'Despachar Traslado', message: '¿Confirma que desea despachar el traslado  ' + internalOrder.noOrder + '?', isDelivery: false },
       disableClose: true,
       panelClass: ['farmacia-dialog', 'farmacia'],
     });
 
     dialogRef.afterClosed().subscribe(result => {
       if (result !== undefined) {
-        if (result !== null) {
-          internalOrder._delivery = result;
-        }
+        // if (result !== null) {
+        //   internalOrder._delivery = result;
+        // }
         this.loading = true;
         internalOrder.state = 'DESPACHO';
         this.internalOrderService.updateInternalOrderState(internalOrder).subscribe(data => {

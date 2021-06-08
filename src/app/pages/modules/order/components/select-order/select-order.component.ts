@@ -101,4 +101,28 @@ export class SelectOrderComponent implements OnInit {
     });
   }
 
+  devolucion() {
+    const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
+      width: '350px',
+      data: { title: 'Devolver Orden', message: '¿Confirma que desea devolver la orden  ' + this.selectedOrder.noOrder + '?', description: true },
+      disableClose: true,
+      panelClass: ['farmacia-dialog', 'farmacia'],
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result !== undefined) {
+        this.loading = true;
+        this.selectedOrder.textReturned = result;
+        this.selectedOrder.state = 'DEVOLUCION';
+        this.orderService.updateOrderState(this.selectedOrder).subscribe(data => {
+          this.toasty.success('Orden marcada como devolución');
+          this.router.navigate(['/delivery']);
+        }, error => {
+          this.loading = false;
+          this.toasty.error('Error al devolver la orden');
+        });
+      }
+    });
+  }
+
 }

@@ -24,6 +24,7 @@ export class PrintService {
     right: { alignment: 'right' },
     center: { alignment: 'center' },
     cellHeader: { fontSize: 8, fillColor: '#D6D6D6', bold: true },
+    cellMetrics: { fontSize: 8, bold: true, marginButton: '10px' },
     cells: { fontSize: 8 }
   };
 
@@ -33,9 +34,9 @@ export class PrintService {
     const printpage = {
       pageSize: 'A6',
       pageOrientation: 'portrait',
-      pageMargins: [ 20, 20, 20, 35 ],
+      pageMargins: [20, 20, 20, 35],
       content: [],
-      styles:  this.style
+      styles: this.style
     };
     printpage.content = body;
     setTimeout(t => {
@@ -46,7 +47,7 @@ export class PrintService {
   printLandscape(body: any) {
     const printpage = {
       pageOrientation: 'landscape',
-      pageMargins: [ 20, 20, 20, 20 ],
+      pageMargins: [20, 20, 20, 20],
       content: [],
       styles: this.style
     };
@@ -59,9 +60,9 @@ export class PrintService {
   downloadPDF(body: any, name: string) {
     const printpage = {
       pageOrientation: 'portrait',
-      pageMargins: [ 15, 15, 15, 15 ],
+      pageMargins: [15, 15, 15, 15],
       content: [],
-      styles:  this.style
+      styles: this.style
     };
     printpage.content = body;
     setTimeout(t => {
@@ -72,9 +73,9 @@ export class PrintService {
   downloadPDFLandscape(body: any, name: string) {
     const printpage = {
       pageOrientation: 'landscape',
-      pageMargins: [ 15, 15, 15, 15 ],
+      pageMargins: [15, 15, 15, 15],
       content: [],
-      styles:  this.style
+      styles: this.style
     };
     printpage.content = body;
     setTimeout(t => {
@@ -84,7 +85,7 @@ export class PrintService {
 
 
   generateColumns(names: string[]): any[] {
-    const columns:any = [];
+    const columns: any = [];
     names.forEach(n => {
       columns.push({ text: n, style: 'cellHeader' });
     });

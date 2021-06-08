@@ -50,9 +50,9 @@ export class OrderService implements IDataService<OrderItem[]> {
     }
   }
 
-  getOrders({month, year}): Observable<any> {
-    return this.http.get(this.apiConfigService.API_ORDER + '/?month=' + month + '&year=' + year);
-  }
+  // getOrders({month, year}): Observable<any> {
+  //   return this.http.get(this.apiConfigService.API_ORDER + '/?month=' + month + '&year=' + year);
+  // }
 
   getDispatches(_cellar: string): Observable<any> {
     return this.http.get(this.apiConfigService.API_ORDER + '/dispatches/' + _cellar);
@@ -60,6 +60,10 @@ export class OrderService implements IDataService<OrderItem[]> {
 
   getRoutes(_cellar: string): Observable<any> {
     return this.http.get(this.apiConfigService.API_ORDER + '/routes/' + _cellar);
+  }
+
+  getAdminRoutes(): Observable<any> {
+    return this.http.get(this.apiConfigService.API_ORDER + '/adminRoutes/');
   }
 
   getOrder(id: string): Observable<any> {

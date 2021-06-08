@@ -31,10 +31,10 @@ export class AdminLayoutComponent implements OnInit, OnDestroy {
   currentStore: any;
   menuItems = [
     { state: '/admin', name: 'Sucursales', type: 'link', icon: 'store', order: 1 },
-    { state: 'users', name: 'Usuarios', type: 'link', icon: 'people', order: 2 },
+    { state: 'deliveries', name: 'Rutas y entregas', type: 'link', icon: 'electric_moped', order: 2 },
     { state: 'orders', name: 'Ordenes', type: 'link', icon: 'receipt_long', order: 3 },
-    // { state: 'employees', name: 'Empleados', type: 'link', icon: 'groups', order: 3 },
-    { state: 'receivables', name: 'Cuentas por cobrar', type: 'link', icon: 'request_quote', order: 4, },
+    { state: 'receivables', name: 'Cuentas por cobrar', type: 'link', icon: 'request_quote', order: 4 },
+    { state: 'users', name: 'Usuarios', type: 'link', icon: 'people', order: 5 },
   ];
 
   constructor(
