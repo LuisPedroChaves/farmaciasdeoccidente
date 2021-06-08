@@ -93,7 +93,7 @@ export class AppLayoutComponent implements OnInit, OnDestroy, AfterContentInit {
     ]).subscribe(data => {
       if (data[0].role.type === 'ADMIN') {
         this.http.get<MenuItem[]>('/assets/data/modules.json').subscribe((result: any) => {
-          this.myrole = result;
+          this.myrole = result.filter(r => r.parent !== 'ADMIN');
           this.showNotifications(this.myrole);
           this.store.dispatch(actions.setMyRole({ myroles: this.myrole }));
           this.calculateMenu(data[1], this.myrole);
