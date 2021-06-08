@@ -80,11 +80,11 @@ const routes: Routes = [
         canActivate: [CheckTokenGuard]
       },
       {
-        path: 'deliveries', loadChildren: () => import('./pages/admin-modules/deliveries/deliveries.module').then(m => m.DeliveriesModule),
+        path: 'adminDeliveries', loadChildren: () => import('./pages/admin-modules/deliveries/deliveries.module').then(m => m.DeliveriesModule),
         canActivate: [CheckTokenGuard]
       },
       {
-        path: 'orders', pathMatch: 'full',  loadChildren: () => import('./pages/admin-modules/orders/orders.module').then(m => m.OrdersModule),
+        path: 'adminOrders', pathMatch: 'full',  loadChildren: () => import('./pages/admin-modules/orders/orders.module').then(m => m.OrdersModule),
         canActivate: [CheckTokenGuard]
       },
       {
