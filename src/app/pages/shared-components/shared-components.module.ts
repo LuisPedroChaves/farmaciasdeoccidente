@@ -44,8 +44,9 @@ import { MaterialFileInputModule } from 'ngx-material-file-input';
 import { NewCellarComponent } from './new-cellar/new-cellar.component';
 import { ConfirmationDialogComponent } from './confirmation-dialog/confirmation-dialog.component';
 import { NotificationsComponent } from './notifications/notifications.component';
+import { UpdateNotificationsComponent } from './update-notifications/update-notifications.component';
 @NgModule({
-  declarations: [NewCellarComponent, ConfirmationDialogComponent, NotificationsComponent],
+  declarations: [NewCellarComponent, ConfirmationDialogComponent, NotificationsComponent, UpdateNotificationsComponent],
   imports: [
     CommonModule,
     FormsModule,

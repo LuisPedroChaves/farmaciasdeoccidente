@@ -10,6 +10,9 @@ import { ChildrenItems, MenuItem } from 'src/app/core/models/Menu';
 import { PermissionItem } from 'src/app/core/models/Role';
 import { MenuService } from 'src/app/core/services/httpServices/menu.service';
 import { RoleService } from 'src/app/core/services/httpServices/role.service';
+import { HttpClient } from '@angular/common/http';
+import { UpdateNotificationsComponent } from 'src/app/pages/shared-components/update-notifications/update-notifications.component';
+import { MatDialog } from '@angular/material/dialog';
 const SMALL_WIDTH_BREAKPOINT = 960;
 
 @Component({
@@ -20,6 +23,7 @@ const SMALL_WIDTH_BREAKPOINT = 960;
 export class AdminLayoutComponent implements OnInit, OnDestroy {
 
   public mediaMatcher: MediaQueryList = window.matchMedia(`(max-width: ${SMALL_WIDTH_BREAKPOINT}px)`);
+  smallScreen = window.innerWidth < 960 ? true : false;
   url: string;
 
   @ViewChild('sidemenu', { static: false }) sidemenu;
@@ -43,6 +47,8 @@ export class AdminLayoutComponent implements OnInit, OnDestroy {
     public wsService: WebsocketService,
     public roleService: RoleService,
     public menuService: MenuService,
+    public http: HttpClient,
+    public dialog: MatDialog
   ) {
     // tslint:disable-next-line: deprecation
     this.mediaMatcher.addListener(mql => zone.run(() => {
@@ -73,8 +79,20 @@ export class AdminLayoutComponent implements OnInit, OnDestroy {
       this.menuService.initMenu()
     ]).subscribe(data => {
       this.myrole = data[0].role.permissions;
-      this.calculateMenu(data[1], this.myrole);
+      if (this.myrole.length === 0) {
+        //TODO: DELETE ESTE APARTADO DESPUES DE PASAR A PRODUCCIÓN
+        this.http.get<MenuItem[]>('/assets/data/modules.json').subscribe((result: any) => {
+          this.myrole = result.filter(r => r.parent === 'ADMIN');
+          this.calculateMenu(data[1], this.myrole);
+        });
+      } else {
+        this.calculateMenu(data[1], this.myrole);
+      }
     });
+
+    if (!localStorage.getItem('updateNotification') || localStorage.getItem('updateNotification') !== '1') {
+      this.showUpdate();
+    }
   }
 
   ngOnDestroy() {
@@ -86,6 +104,22 @@ export class AdminLayoutComponent implements OnInit, OnDestroy {
     if (this.mediaMatcher.matches) {
       this.sidemenu.close();
     }
+  }
+
+  showUpdate() {
+    const dialogRef = this.dialog.open(UpdateNotificationsComponent, {
+      width: this.smallScreen ? '100%' : '600px',
+      height: this.smallScreen ? '100%' : '600px',
+      data: {},
+      disableClose: true,
+      panelClass: ['farmacia-dialog', 'farmacia'],
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result !== undefined) {
+        localStorage.setItem('updateNotification', '1');
+      }
+    });
   }
 
   calculateMenu(menu: MenuItem[], permissions: PermissionItem[]) {
