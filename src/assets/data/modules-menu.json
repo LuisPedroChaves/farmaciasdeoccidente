@@ -70,5 +70,45 @@
         "icon": "person_search",
         "iconType": "icon",
         "order": 7
+    },
+    {
+        "state": "/admin",
+        "name": "Sucursales",
+        "type": "link",
+        "icon": "store",
+        "iconType": "icon",
+        "order": 1
+    },
+    {
+        "state": "adminDeliveries",
+        "name": "Rutas y entregas",
+        "type": "link",
+        "icon": "electric_moped",
+        "iconType": "icon",
+        "order": 2
+    },
+    {
+        "state": "adminOrders",
+        "name": "Ordenes",
+        "type": "link",
+        "icon": "receipt_long",
+        "iconType": "icon",
+        "order": 3
+    },
+    {
+        "state": "receivables",
+        "name": "Cuentas por cobrar",
+        "type": "link",
+        "icon": "request_quote",
+        "iconType": "icon",
+        "order": 4
+    },
+    {
+        "state": "users",
+        "name": "Usuarios",
+        "type": "link",
+        "icon": "people",
+        "iconType": "icon",
+        "order": 5
     }
 ]

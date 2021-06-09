@@ -1,11 +1,18 @@
 import { Component, NgZone, OnInit, ViewChild, OnDestroy } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { Subscription } from 'rxjs';
+import { combineLatest, Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
 import { AppState } from 'src/app/core/store/app.reducer';
 import * as actions from '../../../core/store/actions';
 import { WebsocketService } from '../../../core/services/httpServices/websocket.service';
+import { ChildrenItems, MenuItem } from 'src/app/core/models/Menu';
+import { PermissionItem } from 'src/app/core/models/Role';
+import { MenuService } from 'src/app/core/services/httpServices/menu.service';
+import { RoleService } from 'src/app/core/services/httpServices/role.service';
+import { HttpClient } from '@angular/common/http';
+import { UpdateNotificationsComponent } from 'src/app/pages/shared-components/update-notifications/update-notifications.component';
+import { MatDialog } from '@angular/material/dialog';
 const SMALL_WIDTH_BREAKPOINT = 960;
 
 @Component({
@@ -16,6 +23,7 @@ const SMALL_WIDTH_BREAKPOINT = 960;
 export class AdminLayoutComponent implements OnInit, OnDestroy {
 
   public mediaMatcher: MediaQueryList = window.matchMedia(`(max-width: ${SMALL_WIDTH_BREAKPOINT}px)`);
+  smallScreen = window.innerWidth < 960 ? true : false;
   url: string;
 
   @ViewChild('sidemenu', { static: false }) sidemenu;
@@ -28,20 +36,19 @@ export class AdminLayoutComponent implements OnInit, OnDestroy {
   dir = 'ltr';
   sidePanelOpened;
   currentPanel: string;
-  currentStore: any;
-  menuItems = [
-    { state: '/admin', name: 'Sucursales', type: 'link', icon: 'store', order: 1 },
-    { state: 'deliveries', name: 'Rutas y entregas', type: 'link', icon: 'electric_moped', order: 2 },
-    { state: 'orders', name: 'Ordenes', type: 'link', icon: 'receipt_long', order: 3 },
-    { state: 'receivables', name: 'Cuentas por cobrar', type: 'link', icon: 'request_quote', order: 4 },
-    { state: 'users', name: 'Usuarios', type: 'link', icon: 'people', order: 5 },
-  ];
+  menuItems: MenuItem[] = [];
+  myrole: PermissionItem[];
+  loading = false;
 
   constructor(
     zone: NgZone,
     public store: Store<AppState>,
     public router: Router,
-    public wsService: WebsocketService
+    public wsService: WebsocketService,
+    public roleService: RoleService,
+    public menuService: MenuService,
+    public http: HttpClient,
+    public dialog: MatDialog
   ) {
     // tslint:disable-next-line: deprecation
     this.mediaMatcher.addListener(mql => zone.run(() => {
@@ -66,18 +73,79 @@ export class AdminLayoutComponent implements OnInit, OnDestroy {
     ).subscribe((event: NavigationEnd) => {
       this.runOnRouteChange();
     });
+    this.loading = true;
+    combineLatest([
+      this.roleService.getMyRole(),
+      this.menuService.initMenu()
+    ]).subscribe(data => {
+      this.myrole = data[0].role.permissions;
+      if (this.myrole.length === 0) {
+        //TODO: DELETE ESTE APARTADO DESPUES DE PASAR A PRODUCCIÓN
+        this.http.get<MenuItem[]>('/assets/data/modules.json').subscribe((result: any) => {
+          this.myrole = result.filter(r => r.parent === 'ADMIN');
+          this.calculateMenu(data[1], this.myrole);
+        });
+      } else {
+        this.calculateMenu(data[1], this.myrole);
+      }
+    });
+
+    if (!localStorage.getItem('updateNotification') || localStorage.getItem('updateNotification') !== '1') {
+      this.showUpdate();
+    }
   }
 
   ngOnDestroy() {
     this.sessionSubscription?.unsubscribe();
+    this.routeNavigation.unsubscribe();
   }
 
   runOnRouteChange(): void {
-    // if (this.smallScreen) {
-    //   this.sidenav.close();
-    //   this.collapsedBar = false;
-    // }
+    if (this.mediaMatcher.matches) {
+      this.sidemenu.close();
+    }
   }
+
+  showUpdate() {
+    const dialogRef = this.dialog.open(UpdateNotificationsComponent, {
+      width: this.smallScreen ? '100%' : '600px',
+      height: this.smallScreen ? '100%' : '600px',
+      data: {},
+      disableClose: true,
+      panelClass: ['farmacia-dialog', 'farmacia'],
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result !== undefined) {
+        localStorage.setItem('updateNotification', '1');
+      }
+    });
+  }
+
+  calculateMenu(menu: MenuItem[], permissions: PermissionItem[]) {
+    const parents = permissions.filter(p => p.level === 1);
+    let bandera = false;
+    parents.forEach(p => {
+      const childrens = permissions.filter(mp => mp.parent === p.name);
+      const parentEquivalent: MenuItem = menu.filter(m => m.state === p.name)[0];
+      if (childrens.length > 0) {
+        parentEquivalent.children = [];
+        childrens.forEach(c => {
+          const childmenu: ChildrenItems = menu.filter(mc => mc.state === c.name)[0];
+          parentEquivalent.children.push(childmenu);
+        });
+      }
+      if (bandera === false) {
+        if (parentEquivalent.state !== '/admin') {
+          this.router.navigate(['admin/' + parentEquivalent.state]);
+        }
+        bandera = true;
+        this.loading = false;
+      }
+      this.menuItems.push(parentEquivalent);
+    });
+  }
+
 
   showPanel(panelopen?: string) {
     if (panelopen) {
