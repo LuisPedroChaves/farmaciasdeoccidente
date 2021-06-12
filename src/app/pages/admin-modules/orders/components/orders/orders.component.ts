@@ -74,7 +74,7 @@ export class OrdersComponent implements OnInit, AfterContentInit, OnDestroy {
   }
 
   selectOrder(order: OrderItem) {
-    this.router.navigate(['admin/order', order._id, 'admin/orders']);
+    this.router.navigate(['admin/order', order._id, 'admin/adminOrders']);
   }
 
   getTotal() {

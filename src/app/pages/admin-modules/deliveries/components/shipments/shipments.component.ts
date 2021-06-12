@@ -71,7 +71,7 @@ export class ShipmentsComponent implements OnInit, OnDestroy {
   }
 
   selectOrder(order: OrderItem) {
-    this.router.navigate(['admin/order', order._id, 'admin/deliveries']);
+    this.router.navigate(['admin/order', order._id, 'admin/adminDeliveries']);
   }
 
 }
