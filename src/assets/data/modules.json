@@ -8,7 +8,6 @@
     { "name": "transfers", "label": "Traslados", "parent": "PHARMA", "level": 1, "options": ["read", "update", "delete", "create"] },
     { "name": "sales", "label": "Ventas", "parent": "PHARMA", "level": 1, "options": ["read", "update", "delete", "create"] },
     { "name": "customers", "label": "Catálogo de clientes", "parent": "PHARMA", "level": 1, "options": ["read", "update", "delete", "create"] },
-
     { "name": "/admin", "label": "Sucursales", "parent": "ADMIN", "level": 1, "options": ["read", "update", "delete", "create"] },
     { "name": "adminDeliveries", "label": "Rutas y entregas", "parent": "ADMIN", "level": 1, "options": ["read", "update", "delete", "create"] },
     { "name": "adminOrders", "label": "Ordenes", "parent": "ADMIN", "level": 1, "options": ["read", "update", "delete", "create"] },
