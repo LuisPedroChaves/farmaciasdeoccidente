@@ -92,7 +92,7 @@ export class DeliveryDetailsComponent implements OnInit {
   }
 
   editRoute(route: RouteItem) {
-    if (route._cellar._id !== this.currentCellar._id) {
+    if (!route._cellar || route._cellar._id !== this.currentCellar._id) {
       this.toasty.error('Esta ruta no pertenece a esta sucursal');
       return;
     }

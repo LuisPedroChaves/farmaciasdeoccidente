@@ -85,7 +85,7 @@ export class EditRouteComponent implements OnInit {
 
   removeOrder(order: OrderItem) {
     this.orders.push(order);
-    const indexOrder = this.route.details.findIndex(item => item._order._id === order._id);
+    const indexOrder = this.route.details.findIndex(item => (item._order && item._order._id === order._id));
     this.route.details.splice(indexOrder, 1);
   }
 

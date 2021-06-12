@@ -201,8 +201,9 @@ export class AppLayoutComponent implements OnInit, OnDestroy, AfterContentInit {
         parentEquivalent.children = [];
         childrens.forEach(c => {
           const childmenu: ChildrenItems = menu.filter(mc => mc.state === c.name)[0];
+          parentEquivalent.children.push(childmenu);
+          //TODO: Eliminar cuando ya no lo esten utilizando por sucursal
           if (childmenu.state !== 'deliveries') {
-            parentEquivalent.children.push(childmenu);
           }
         });
       }
