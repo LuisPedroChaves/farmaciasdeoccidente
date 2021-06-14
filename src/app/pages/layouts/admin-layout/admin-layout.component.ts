@@ -79,15 +79,7 @@ export class AdminLayoutComponent implements OnInit, OnDestroy {
       this.menuService.initMenu()
     ]).subscribe(data => {
       this.myrole = data[0].role.permissions;
-      if (this.myrole.length === 0) {
-        //TODO: DELETE ESTE APARTADO DESPUES DE PASAR A PRODUCCIÓN
-        this.http.get<MenuItem[]>('/assets/data/modules.json').subscribe((result: any) => {
-          this.myrole = result.filter(r => r.parent === 'ADMIN');
-          this.calculateMenu(data[1], this.myrole);
-        });
-      } else {
-        this.calculateMenu(data[1], this.myrole);
-      }
+      this.calculateMenu(data[1], this.myrole);
     });
 
     if (!localStorage.getItem('updateNotification') || localStorage.getItem('updateNotification') !== '1') {
@@ -163,16 +155,16 @@ export class AdminLayoutComponent implements OnInit, OnDestroy {
     if (localStorage.getItem('farmaciasDO-session') !== null) {
       const user = JSON.parse(localStorage.getItem('farmaciasDO-session')).user;
       switch (user.imageIndex) {
-        case 0: return '/assets/images/avatars/01.png';
-        case 1: return '/assets/images/avatars/02.png';
-        case 2: return '/assets/images/avatars/03.png';
-        case 3: return '/assets/images/avatars/04.png';
-        case 4: return '/assets/images/avatars/05.png';
-        case 5: return '/assets/images/avatars/00M.jpg';
-        case 6: return '/assets/images/avatars/00F.jpg';
+        case 0: return 'assets/images/avatars/01.png';
+        case 1: return 'assets/images/avatars/02.png';
+        case 2: return 'assets/images/avatars/03.png';
+        case 3: return 'assets/images/avatars/04.png';
+        case 4: return 'assets/images/avatars/05.png';
+        case 5: return 'assets/images/avatars/00M.jpg';
+        case 6: return 'assets/images/avatars/00F.jpg';
       }
     } else {
-      return '/assets/images/avatars/00M.jpg';
+      return 'assets/images/avatars/00M.jpg';
     }
   }
 

@@ -31,13 +31,13 @@ export class DeliveryDetailsComponent implements OnInit {
   routes: RouteItem[];
 
   avatars = [
-    { index: 0, image: '/assets/images/avatars/01.png' },
-    { index: 1, image: '/assets/images/avatars/02.png' },
-    { index: 2, image: '/assets/images/avatars/03.png' },
-    { index: 3, image: '/assets/images/avatars/04.png' },
-    { index: 4, image: '/assets/images/avatars/05.png' },
-    { index: 5, image: '/assets/images/avatars/00M.jpg' },
-    { index: 6, image: '/assets/images/avatars/00F.jpg' },
+    { index: 0, image: 'assets/images/avatars/01.png' },
+    { index: 1, image: 'assets/images/avatars/02.png' },
+    { index: 2, image: 'assets/images/avatars/03.png' },
+    { index: 3, image: 'assets/images/avatars/04.png' },
+    { index: 4, image: 'assets/images/avatars/05.png' },
+    { index: 5, image: 'assets/images/avatars/00M.jpg' },
+    { index: 6, image: 'assets/images/avatars/00F.jpg' },
   ];
 
   month = new Date().getMonth() + 1;
