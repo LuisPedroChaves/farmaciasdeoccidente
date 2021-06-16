@@ -23,6 +23,7 @@ export class HistoryComponent implements OnInit, AfterContentInit {
   month = new Date().getMonth() + 1;
   year = new Date().getFullYear();
   currentFilter = 'current';
+  currentOrigin = 'origen';
 
   dataSource = new MatTableDataSource();
   columnsToDisplay = ['noOrder', 'date', '_destination', '_user', 'timeInit', 'timeDispatch', 'timeDelivery', '_delivery', 'state'];
@@ -53,11 +54,12 @@ export class HistoryComponent implements OnInit, AfterContentInit {
   }
 
   ngAfterContentInit() {
-    const filter = { month: this.month, year: this.year, _cellar: this.currentCellar._id, type: 'PEDIDO' };
+    const filter = { month: this.month, year: this.year, _cellar: this.currentCellar._id, type: 'PEDIDO', origin: this.currentOrigin };
     this.internalOrderService.loadData(filter);
   }
 
   applyFilter(filterValue?: string) {
+    this.orders = undefined;
     if (filterValue) {
 
       this.dataSource.filter = filterValue.trim().toLowerCase();
@@ -70,7 +72,7 @@ export class HistoryComponent implements OnInit, AfterContentInit {
         }
       }
       if (this.currentFilter === 'current') { this.month = new Date().getMonth() + 1; }
-      const filters = { month: this.month, year: this.year, _cellar: this.currentCellar._id, type: 'PEDIDO' };
+      const filters = { month: this.month, year: this.year, _cellar: this.currentCellar._id, type: 'PEDIDO', origin: this.currentOrigin };
       this.internalOrderService.loadData(filters);
     } else {
       if (this.currentFilter === 'last') {
@@ -82,7 +84,7 @@ export class HistoryComponent implements OnInit, AfterContentInit {
         }
       }
       if (this.currentFilter === 'current') { this.month = new Date().getMonth() + 1; }
-      const filters = { month: this.month, year: this.year, _cellar: this.currentCellar._id, type: 'PEDIDO' };
+      const filters = { month: this.month, year: this.year, _cellar: this.currentCellar._id, type: 'PEDIDO', origin: this.currentOrigin };
       this.internalOrderService.loadData(filters);
     }
   }

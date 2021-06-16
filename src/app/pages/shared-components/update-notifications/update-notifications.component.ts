@@ -22,11 +22,11 @@ export class UpdateNotificationsComponent implements OnInit {
       name: 'Rutas y entregas',
       details: 'Se agregaron PEDIDOS Y TRASLADOS a las rutas por sucursal.',
     },
-    // {
-    //   icon: 'send',
-    //   name: 'Pedidos y traslados',
-    //   details: 'Se ha mejorado la definición de apartados para que sea más clara y fácil de entender, ahora se pueden crear pedidos y traslados desde la sucursal de origen así como sus respectivas solicitudes a otras sucursales.',
-    // },
+    {
+      icon: 'send',
+      name: 'Pedidos y traslados',
+      details: 'Se agregó filtro en historial de pedidos y traslados para diferenciar los enviados y los recibidos.',
+    },
     // {
     //   icon: 'list_alt',
     //   name: 'Reporte de ordenes',
