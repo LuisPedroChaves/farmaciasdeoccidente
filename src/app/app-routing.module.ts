@@ -31,11 +31,7 @@ const routes: Routes = [
         canActivate: [CheckTokenGuard]
       },
       {
-        path: 'deliveries', pathMatch: 'full',  loadChildren: () => import('./pages/modules/deliveries/deliveries.module').then(m => m.DeliveriesModule),
-        canActivate: [CheckTokenGuard]
-      },
-      {
-        path: 'delivery/:id', pathMatch: 'full',  loadChildren: () => import('./pages/modules/delivery/delivery.module').then(m => m.DeliveryModule),
+        path: 'deliveries', loadChildren: () => import('./pages/modules/deliveries/deliveries.module').then(m => m.DeliveriesModule),
         canActivate: [CheckTokenGuard]
       },
       {

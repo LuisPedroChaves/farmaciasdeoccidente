@@ -19,6 +19,7 @@ import { InternalOrderService } from 'src/app/core/services/httpServices/interna
 import { NotificationItem } from 'src/app/core/models/Notification';
 import { UpdateNotificationsComponent } from 'src/app/pages/shared-components/update-notifications/update-notifications.component';
 import { MatDialog } from '@angular/material/dialog';
+import { environment } from 'src/environments/environment.prod';
 const SMALL_WIDTH_BREAKPOINT = 960;
 
 @Component({
@@ -110,7 +111,7 @@ export class AppLayoutComponent implements OnInit, OnDestroy, AfterContentInit {
       }
     });
 
-    if (!localStorage.getItem('updateNotification') || localStorage.getItem('updateNotification') !== '1') {
+    if (!localStorage.getItem('updateNotification') || localStorage.getItem('updateNotification') !== environment.version) {
       this.showUpdate();
     }
   }
@@ -135,7 +136,7 @@ export class AppLayoutComponent implements OnInit, OnDestroy, AfterContentInit {
 
     dialogRef.afterClosed().subscribe(result => {
       if (result !== undefined) {
-        localStorage.setItem('updateNotification', '1');
+        localStorage.setItem('updateNotification', environment.version);
       }
     });
   }

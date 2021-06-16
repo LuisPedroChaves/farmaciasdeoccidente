@@ -1,6 +1,6 @@
 <div class="farmacia">
   <div>
-    <h1 class="h2">
+    <h1>
       <b>Novedades</b>
       <span fxFlex></span>
       <mat-icon class="iconnew">browser_updated</mat-icon>
@@ -10,6 +10,10 @@
     <mat-list-item *ngFor="let update of updates">
       <mat-icon mat-list-icon color="primary">{{ update.icon }}</mat-icon>
       <div mat-line><b>{{update.name}}</b><br>{{update.details}}</div>
+    </mat-list-item>
+    <br>
+    <mat-list-item>
+      <div mat-line>Versión: {{version}}</div>
     </mat-list-item>
   </mat-list>
 

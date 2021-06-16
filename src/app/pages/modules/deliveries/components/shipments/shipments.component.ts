@@ -1,16 +1,16 @@
-import { AfterContentInit, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
-import { MatMenuTrigger } from '@angular/material/menu';
-import { MatBottomSheet } from '@angular/material/bottom-sheet';
 import { MatDialog } from '@angular/material/dialog';
 import { ToastyService } from '../../../../../core/services/internal/toasty.service';
-import { combineLatest } from 'rxjs/operators';
+import { combineLatest } from 'rxjs';
 import { OrderItem } from 'src/app/core/models/Order';
 import { CellarItem } from 'src/app/core/models/Cellar';
 import { Store } from '@ngrx/store';
 import { AppState } from 'src/app/core/store/app.reducer';
 import { OrderService } from 'src/app/core/services/httpServices/order.service';
+import { InternalOrderItem } from 'src/app/core/models/InternalOrder';
+import { InternalOrderService } from 'src/app/core/services/httpServices/internal-order.service';
 
 @Component({
   selector: 'app-shipments',
@@ -24,6 +24,7 @@ export class ShipmentsComponent implements OnInit, OnDestroy {
   sessionsubscription: Subscription;
 
   orders: OrderItem[];
+  internalOrders: InternalOrderItem[];
   currentCellar: CellarItem;
 
   dispatchessp: string[] = [];
@@ -48,11 +49,12 @@ export class ShipmentsComponent implements OnInit, OnDestroy {
     public dialog: MatDialog,
     public router: Router,
     public orderService: OrderService,
+    public internalOrdersService: InternalOrderService
   ) { }
 
   ngOnInit(): void {
     this.currentCellar = JSON.parse(localStorage.getItem('currentstore'));
-    this.loadOrders();
+    this.load();
   }
 
   ngOnDestroy(): void {
@@ -60,10 +62,14 @@ export class ShipmentsComponent implements OnInit, OnDestroy {
   }
 
 
-  loadOrders() {
+  load() {
     this.loading = true;
-    this.orderService.getRoutes(this.currentCellar._id).subscribe(data => {
-      this.orders = data.orders;
+    combineLatest([
+      this.orderService.getRoutes(this.currentCellar._id),
+      this.internalOrdersService.getActivesCellar(this.currentCellar._id)
+    ]).subscribe(data => {
+      this.orders = data[0].orders;
+      this.internalOrders = data[1].internalOrders;
       this.loading = false;
     });
   }

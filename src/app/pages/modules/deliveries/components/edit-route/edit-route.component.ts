@@ -1,8 +1,11 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { combineLatest } from 'rxjs';
 import { CellarItem } from 'src/app/core/models/Cellar';
+import { InternalOrderItem } from 'src/app/core/models/InternalOrder';
 import { OrderItem } from 'src/app/core/models/Order';
 import { RouteDetailItem, RouteItem } from 'src/app/core/models/Route';
+import { InternalOrderService } from 'src/app/core/services/httpServices/internal-order.service';
 import { OrderService } from 'src/app/core/services/httpServices/order.service';
 import { RouteService } from 'src/app/core/services/httpServices/route.service';
 import { ToastyService } from 'src/app/core/services/internal/toasty.service';
@@ -27,6 +30,7 @@ export class EditRouteComponent implements OnInit {
   };
 
   orders: OrderItem[] = [];
+  internalOrders: InternalOrderItem[] = [];
   currentCellar: CellarItem;
   searchText: string;
 
@@ -35,7 +39,8 @@ export class EditRouteComponent implements OnInit {
     public dialog: MatDialog,
     public orderService: OrderService,
     public routeService: RouteService,
-    public toasty: ToastyService
+    public toasty: ToastyService,
+    public internalOrdersService: InternalOrderService
   ) { }
 
   ngOnInit(): void {
@@ -46,9 +51,14 @@ export class EditRouteComponent implements OnInit {
 
   loadOrders() {
     this.loading = true;
-    this.orderService.getRoutes(this.currentCellar._id).subscribe(data => {
-      this.orders = data.orders;
+    combineLatest([
+      this.orderService.getRoutes(this.currentCellar._id),
+      this.internalOrdersService.getActivesCellar(this.currentCellar._id)
+    ]).subscribe(data => {
+      this.orders = data[0].orders;
       this.orders = this.orders.filter(user => user._delivery === null);
+      this.internalOrders = data[1].internalOrders;
+      this.internalOrders = this.internalOrders.filter(internalOrder => internalOrder._delivery === null);
       this.loading = false;
     });
   }
@@ -72,9 +82,6 @@ export class EditRouteComponent implements OnInit {
   }
 
   addOrder(order: OrderItem) {
-    if (this.route.details.find(detail => detail._order._id === order._id) || this.route.state !== 'INICIO')  {
-      return;
-    }
     let detail: RouteDetailItem = {
       _order: order
     };
@@ -83,9 +90,24 @@ export class EditRouteComponent implements OnInit {
     this.orders.splice(indexOrder, 1);
   }
 
+  addInternalOrder(internalOrder: InternalOrderItem) {
+    let detail: RouteDetailItem = {
+      _internalOrder: internalOrder
+    };
+    this.route.details.push(detail);
+    const indexOrder = this.internalOrders.findIndex(item => item._id === internalOrder._id);
+    this.internalOrders.splice(indexOrder, 1);
+  }
+
   removeOrder(order: OrderItem) {
     this.orders.push(order);
     const indexOrder = this.route.details.findIndex(item => (item._order && item._order._id === order._id));
+    this.route.details.splice(indexOrder, 1);
+  }
+
+  removeInternalOrder(internalOrder: InternalOrderItem) {
+    this.internalOrders.push(internalOrder);
+    const indexOrder = this.route.details.findIndex(item => (item._internalOrder && item._internalOrder._id === internalOrder._id));
     this.route.details.splice(indexOrder, 1);
   }
 
@@ -158,7 +180,7 @@ export class EditRouteComponent implements OnInit {
   }
 
   getTotal() {
-    return this.route.details.reduce((sum, item) => sum + item._order.total, 0).toFixed(2);
+    return this.route.details.filter(route => route._order).reduce((sum, item) => sum + item._order.total, 0).toFixed(2);
   }
 
 }

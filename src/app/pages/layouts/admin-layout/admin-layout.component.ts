@@ -13,6 +13,7 @@ import { RoleService } from 'src/app/core/services/httpServices/role.service';
 import { HttpClient } from '@angular/common/http';
 import { UpdateNotificationsComponent } from 'src/app/pages/shared-components/update-notifications/update-notifications.component';
 import { MatDialog } from '@angular/material/dialog';
+import { environment } from 'src/environments/environment.prod';
 const SMALL_WIDTH_BREAKPOINT = 960;
 
 @Component({
@@ -82,7 +83,7 @@ export class AdminLayoutComponent implements OnInit, OnDestroy {
       this.calculateMenu(data[1], this.myrole);
     });
 
-    if (!localStorage.getItem('updateNotification') || localStorage.getItem('updateNotification') !== '1') {
+    if (!localStorage.getItem('updateNotification') || localStorage.getItem('updateNotification') !== environment.version) {
       this.showUpdate();
     }
   }
@@ -109,7 +110,7 @@ export class AdminLayoutComponent implements OnInit, OnDestroy {
 
     dialogRef.afterClosed().subscribe(result => {
       if (result !== undefined) {
-        localStorage.setItem('updateNotification', '1');
+        localStorage.setItem('updateNotification', environment.version);
       }
     });
   }

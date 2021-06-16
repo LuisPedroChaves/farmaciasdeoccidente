@@ -9,9 +9,10 @@ import { ShipmentsComponent } from './components/shipments/shipments.component';
 import { CoreModule } from '../../../core/core.module';
 import { NewRouteComponent } from './components/new-route/new-route.component';
 import { EditRouteComponent } from './components/edit-route/edit-route.component';
+import { DeliveryDetailsComponent } from './components/delivery-details/delivery-details.component';
 
 @NgModule({
-  declarations: [DeliveryListComponent, DeliveriesComponent, ShipmentsComponent, NewRouteComponent, EditRouteComponent],
+  declarations: [DeliveryListComponent, DeliveriesComponent, ShipmentsComponent, NewRouteComponent, EditRouteComponent, DeliveryDetailsComponent],
   imports: [
     CommonModule,
     RouterModule.forChild(DeliveriesRoutes),

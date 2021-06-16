@@ -117,8 +117,6 @@ export class EditRouteComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(result => {
       if (result !== undefined) {
-      console.log("🚀 ~ file: edit-route.component.ts ~ line 127 ~ EditRouteComponent ~ loadOrders ~ this.internalOrders", this.internalOrders)
-      console.log("🚀 ~ file: edit-route.component.ts ~ line 127 ~ EditRouteComponent ~ loadOrders ~ this.internalOrders", this.internalOrders)
         if (result === true) {
           this.loading = true;
           this.routeService.deleteRoute(this.route).subscribe(data => {

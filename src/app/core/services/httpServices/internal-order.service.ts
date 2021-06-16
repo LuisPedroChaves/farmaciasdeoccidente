@@ -57,6 +57,10 @@ export class InternalOrderService implements IDataService<InternalOrderItem[]> {
     return this.http.get(this.apiConfigService.API_INTERNAL_ORDER + '/');
   }
 
+  getActivesCellar(_cellar: string): Observable<any> {
+    return this.http.get(this.apiConfigService.API_INTERNAL_ORDER + '/activesCellar/' + _cellar);
+  }
+
   getDelivery(_delivery: string): Observable<any> {
     return this.http.get(this.apiConfigService.API_INTERNAL_ORDER + '/actives/' + _delivery);
   }

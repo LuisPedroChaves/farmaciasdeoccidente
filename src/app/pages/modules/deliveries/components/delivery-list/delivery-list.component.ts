@@ -66,7 +66,7 @@ export class DeliveryListComponent implements OnInit, AfterContentInit, OnDestro
   }
 
   selectDelivery(delivery: UserItem) {
-    this.router.navigate(['/delivery', delivery._id]);
+    this.router.navigate(['deliveries/delivery', delivery._id]);
   }
 
 }

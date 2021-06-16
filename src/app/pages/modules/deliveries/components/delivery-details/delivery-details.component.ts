@@ -5,16 +5,16 @@ import { Store } from '@ngrx/store';
 import { Subscription } from 'rxjs';
 import { ToastyService } from 'src/app/core/services/internal/toasty.service';
 import { AppState } from 'src/app/core/store/app.reducer';
-import { UserItem } from '../../../../../core/models/User';
-import { UserService } from '../../../../../core/services/httpServices/user.service';
-import { NewRouteComponent } from '../../../deliveries/components/new-route/new-route.component';
-import { RouteService } from '../../../../../core/services/httpServices/route.service';
-import { RouteItem } from '../../../../../core/models/Route';
-import { EditRouteComponent } from '../../../deliveries/components/edit-route/edit-route.component';
 import { CellarItem } from 'src/app/core/models/Cellar';
-import { InternalOrderService } from '../../../../../core/services/httpServices/internal-order.service';
-import { InternalOrderItem } from '../../../../../core/models/InternalOrder';
 import { filter } from 'rxjs/operators';
+import { UserService } from 'src/app/core/services/httpServices/user.service';
+import { RouteService } from 'src/app/core/services/httpServices/route.service';
+import { InternalOrderService } from 'src/app/core/services/httpServices/internal-order.service';
+import { EditRouteComponent } from '../edit-route/edit-route.component';
+import { NewRouteComponent } from '../new-route/new-route.component';
+import { UserItem } from 'src/app/core/models/User';
+import { RouteItem } from 'src/app/core/models/Route';
+import { InternalOrderItem } from 'src/app/core/models/InternalOrder';
 
 @Component({
   selector: 'app-delivery-details',

@@ -41,22 +41,39 @@
           </div>
           <div *ngIf="route.details.length > 0" fxLayout="column wrap">
             <mat-list *ngFor="let c of  route.details" style="padding-top: 0;">
-              <mat-list-item *ngIf="c._order"  class="assigned-job mat-elevation-z4">
-                <mat-icon mat-list-icon *ngIf="c._order.state !== 'ENTREGA' && c._order.state !== 'DEVOLUCION' && route.state !== 'RECHAZADA'"
-                class="material-icons-outlined whitebg" color="primary">
-                receipt_long</mat-icon>
-              <mat-icon mat-list-icon *ngIf="c._order.state === 'ENTREGA' && route.state !== 'RECHAZADA'"
-                class="material-icons-outlined whitebg" color="warn">
-                check_circle</mat-icon>
-              <mat-icon mat-list-icon *ngIf="c._order.state === 'DEVOLUCION' && route.state !== 'RECHAZADA'"
-                class="material-icons-outlined whitebg" color="accent">
-                assignment_return</mat-icon>
-                <h4 mat-line>#{{ c._order.noOrder }} <span fxFlex></span>  Factura: {{ c._order.noBill }}</h4>
-                <small mat-line class="text-muted">{{c._order.address}} </small>
-                <small mat-line class="text-muted">{{ c._order.town }}, {{ c._order.department }} </small>
-                <small mat-line *ngIf="c._order.state === 'DEVOLUCION' && route.state !== 'RECHAZADA'" class="text-muted"><b>Devolución:</b></small>
-                <small mat-line *ngIf="c._order.state === 'DEVOLUCION' && route.state !== 'RECHAZADA'" class="text-muted">{{ c._order.textReturned }}</small>
-                <button mat-icon-button (click)="removeOrder(c._order)" *ngIf="route.state === 'INICIO'">
+              <mat-list-item class="assigned-job mat-elevation-z4">
+                <mat-icon mat-list-icon
+                  *ngIf="c._order && c._order.state !== 'ENTREGA' && c._order.state !== 'DEVOLUCION' && route.state !== 'RECHAZADA'"
+                  class="material-icons-outlined whitebg" color="primary">
+                  receipt_long</mat-icon>
+                <mat-icon mat-list-icon *ngIf="c._order &&c._order.state === 'ENTREGA' && route.state !== 'RECHAZADA'"
+                  class="material-icons-outlined whitebg" color="warn">
+                  check_circle</mat-icon>
+                <mat-icon mat-list-icon
+                  *ngIf="c._order &&c._order.state === 'DEVOLUCION' && route.state !== 'RECHAZADA'"
+                  class="material-icons-outlined whitebg" color="accent">
+                  assignment_return</mat-icon>
+                <h4 mat-line *ngIf="c._order">#{{ c._order.noOrder }} <span fxFlex></span> Factura:
+                  {{ c._order.noBill }}</h4>
+                <small mat-line *ngIf="c._order" class="text-muted">{{c._order.address}} </small>
+                <small mat-line *ngIf="c._order" class="text-muted">{{ c._order.town }}, {{ c._order.department }}
+                </small>
+                <button mat-icon-button *ngIf="c._order && route.state === 'INICIO'" (click)="removeOrder(c._order)">
+                  <mat-icon>close</mat-icon>
+                </button>
+                <mat-icon mat-list-icon *ngIf="c._internalOrder && c._internalOrder.state === 'DESPACHO'"
+                  class="material-icons-outlined whitebg" color="accent">
+                  send</mat-icon>
+                <mat-icon mat-list-icon *ngIf="c._internalOrder && c._internalOrder.state === 'ENTREGA'"
+                  class="material-icons-outlined whitebg" color="warn">
+                  send</mat-icon>
+                <h4 mat-line *ngIf="c._internalOrder">#{{ c._internalOrder.noOrder }} <span fxFlex></span>
+                  {{ c._internalOrder.type }}</h4>
+                <small mat-line *ngIf="c._internalOrder" class="text-muted">Origen:
+                  {{c._internalOrder._cellar.name }}</small>
+                <small mat-line *ngIf="c._internalOrder" class="text-muted">Destino:
+                  {{c._internalOrder._destination.name }}</small>
+                <button mat-icon-button *ngIf="c._internalOrder && route.state === 'INICIO'" (click)="removeInternalOrder(c._internalOrder)">
                   <mat-icon>close</mat-icon>
                 </button>
               </mat-list-item>
@@ -66,35 +83,45 @@
       </div>
       <div fxFlex fxFlex="50%" fxLayout="row wrap">
         <mat-divider [vertical]="true"></mat-divider>
-        <div *ngIf="route.state === 'INICIO'"  [fxFlex]="smallScreen ? 100 : ''" class="input-section">
+        <div *ngIf="route.state === 'INICIO'" [fxFlex]="smallScreen ? 100 : ''" class="input-section">
           <div fxLayout="column wrap">
             <div class="section" fxLayout="row wrap">
               <h2 color="primary" class="product-font ma-0 T">Ordenes pendientes de entrega</h2>
             </div><br>
           </div>
-          <div *ngIf="orders.length <= 0" fxLayout="column wrap" fxLayoutAlign="center center" class="joblist">
+          <div *ngIf="orders.length <= 0 && internalOrders.length <= 0" fxLayout="column wrap" fxLayoutAlign="center center" class="joblist">
             <mat-icon class="text-muted material-icons-outlined">receipt_long</mat-icon>
             <span class="text-muted">No hay ordenes pendientes de entrega</span>
           </div>
-          <div *ngIf="orders.length > 0" fxLayout="column wrap">
+          <div *ngIf="orders.length > 0 || internalOrders.length > 0" fxLayout="column wrap">
             <mat-form-field appearance="outline" floatLabel="always" class="findinput">
               <mat-label>Buscar Orden</mat-label>
               <mat-icon class="text-muted" matPrefix>search</mat-icon>
               <input matInput type="text" [(ngModel)]="searchText">
             </mat-form-field> &nbsp; &nbsp; &nbsp;
+            <mat-list matRipple (click)="addInternalOrder(c)"
+              *ngFor="let c of  (internalOrders | filter: searchText : ['noOrder'])"
+              style="padding-top: 0; cursor: pointer;">
+              <mat-list-item class="assigned-job mat-elevation-z4">
+                <mat-icon mat-list-icon class="material-icons-outlined whitebg" color="accent">send</mat-icon>
+                <h4 mat-line>#{{ c.noOrder }} <span fxFlex></span> {{ c.type }}</h4>
+                <small mat-line class="text-muted">Origen: {{c._cellar.name }}</small>
+                <small mat-line class="text-muted">Destino: {{c._destination.name }}</small>
+              </mat-list-item>
+            </mat-list>
             <mat-list matRipple (click)="addOrder(c)"
               *ngFor="let c of  (orders | filter: searchText : ['noBill', 'nit', 'name', 'phone', 'address', 'town', 'department'])"
               style="padding-top: 0; cursor: pointer;">
               <mat-list-item class="assigned-job mat-elevation-z4">
                 <mat-icon mat-list-icon class="material-icons-outlined whitebg" color="primary">receipt_long</mat-icon>
-                <h4 mat-line>#{{ c.noOrder }} <span fxFlex></span>  Factura: {{ c.noBill }}</h4>
+                <h4 mat-line>#{{ c.noOrder }} <span fxFlex></span> Factura: {{ c.noBill }}</h4>
                 <small mat-line class="text-muted">{{c.address}} </small>
                 <small mat-line class="text-muted">{{ c.town }}, {{ c.department }} </small>
               </mat-list-item>
             </mat-list>
           </div>
         </div>
-        <div *ngIf="route.state !== 'INICIO'"  [fxFlex]="smallScreen ? 100 : ''" class="input-section">
+        <div *ngIf="route.state !== 'INICIO'" [fxFlex]="smallScreen ? 100 : ''" class="input-section">
           <div fxLayout="column wrap">
             <div class="section" fxLayout="row wrap">
               <h2 color="primary" class="product-font ma-0 T">Detalles de la ruta</h2>
@@ -103,11 +130,10 @@
               <h2 color="primary" class="product-font ma-0 T text-muted">Total: Q{{ getTotal() }}</h2>
             </div><br>
           </div>
-          <div *ngIf="route.state === 'RUTA'"  fxLayout="column wrap" fxLayoutAlign="center center" class="joblist">
-            <button mat-button *ngIf="!loading" (click)="finishRoute()"
-            color="warn">
-            FINALIZAR RUTA
-          </button>
+          <div *ngIf="route.state === 'RUTA'" fxLayout="column wrap" fxLayoutAlign="center center" class="joblist">
+            <button mat-button *ngIf="!loading" (click)="finishRoute()" color="warn">
+              FINALIZAR RUTA
+            </button>
           </div>
           <div *ngIf="route.timeFinish" fxLayout="column wrap">
             <mat-list style="padding-top: 0;">
@@ -133,16 +159,18 @@
   </div>
   <mat-divider></mat-divider>
   <div fxLayout="row" class="header">
-      <button mat-stroked-button *ngIf="!loading && (data.deliveriesp && data.deliveriesp.includes('delete'))" [disabled]="route.state !== 'INICIO'"   color="warn" class="product-font" (click)="delete()">
-        <mat-icon class="material-icons-outlined svg-in-button">delete</mat-icon>
-        {{ smallScreen ? '':'Eliminar Ruta'}}
+    <button mat-stroked-button *ngIf="!loading && (data.deliveriesp && data.deliveriesp.includes('delete'))"
+      [disabled]="route.state !== 'INICIO'" color="warn" class="product-font" (click)="delete()">
+      <mat-icon class="material-icons-outlined svg-in-button">delete</mat-icon>
+      {{ smallScreen ? '':'Eliminar Ruta'}}
     </button>
     <span fxFlex></span>
     <button mat-button *ngIf="!loading" (click)="dialogRef.close()" class="info-row">
       CANCELAR
     </button>
-    <button mat-button *ngIf="!loading && route.state === 'INICIO' && (data.deliveriesp && data.deliveriesp.includes('update'))" (click)="saveRoute()" [disabled]="this.route.details.length === 0"
-      color="primary">
+    <button mat-button
+      *ngIf="!loading && route.state === 'INICIO' && (data.deliveriesp && data.deliveriesp.includes('update'))"
+      (click)="saveRoute()" [disabled]="this.route.details.length === 0" color="primary">
       GUARDAR CAMBIOS
     </button>
     <mat-progress-spinner *ngIf="loading" mode="indeterminate" diameter="30" color="warn"></mat-progress-spinner>

@@ -1,7 +1,10 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { combineLatest } from 'rxjs';
 import { CellarItem } from 'src/app/core/models/Cellar';
+import { InternalOrderItem } from 'src/app/core/models/InternalOrder';
 import { OrderItem } from 'src/app/core/models/Order';
+import { InternalOrderService } from 'src/app/core/services/httpServices/internal-order.service';
 import { RouteItem, RouteDetailItem } from '../../../../../core/models/Route';
 import { OrderService } from '../../../../../core/services/httpServices/order.service';
 import { RouteService } from '../../../../../core/services/httpServices/route.service';
@@ -26,6 +29,7 @@ export class NewRouteComponent implements OnInit {
   };
 
   orders: OrderItem[] = [];
+  internalOrders: InternalOrderItem[] = [];
   currentCellar: CellarItem;
   searchText: string;
 
@@ -33,7 +37,8 @@ export class NewRouteComponent implements OnInit {
     public dialogRef: MatDialogRef<NewRouteComponent>, @Inject(MAT_DIALOG_DATA) public data: any,
     public orderService: OrderService,
     public routeService: RouteService,
-    public toasty: ToastyService
+    public toasty: ToastyService,
+    public internalOrdersService: InternalOrderService
   ) { }
 
   ngOnInit(): void {
@@ -43,17 +48,19 @@ export class NewRouteComponent implements OnInit {
 
   loadOrders() {
     this.loading = true;
-    this.orderService.getRoutes(this.currentCellar._id).subscribe(data => {
-      this.orders = data.orders;
+    combineLatest([
+      this.orderService.getRoutes(this.currentCellar._id),
+      this.internalOrdersService.getActivesCellar(this.currentCellar._id)
+    ]).subscribe(data => {
+      this.orders = data[0].orders;
       this.orders = this.orders.filter(user => user._delivery === null);
+      this.internalOrders = data[1].internalOrders;
+      this.internalOrders = this.internalOrders.filter(internalOrder => internalOrder._delivery === null);
       this.loading = false;
     });
   }
 
   addOrder(order: OrderItem) {
-    if (this.newRoute.details.find(detail => detail._order._id === order._id)) {
-      return;
-    }
     let detail: RouteDetailItem = {
       _order: order
     };
@@ -62,9 +69,24 @@ export class NewRouteComponent implements OnInit {
     this.orders.splice(indexOrder, 1);
   }
 
+  addInternalOrder(internalOrder: InternalOrderItem) {
+    let detail: RouteDetailItem = {
+      _internalOrder: internalOrder
+    };
+    this.newRoute.details.push(detail);
+    const indexOrder = this.internalOrders.findIndex(item => item._id === internalOrder._id);
+    this.internalOrders.splice(indexOrder, 1);
+  }
+
   removeOrder(order: OrderItem) {
     this.orders.push(order);
-    const indexOrder = this.newRoute.details.findIndex(item => item._order._id === order._id);
+    const indexOrder = this.newRoute.details.findIndex(item => (item._order && item._order._id === order._id));
+    this.newRoute.details.splice(indexOrder, 1);
+  }
+
+  removeInternalOrder(internalOrder: InternalOrderItem) {
+    this.internalOrders.push(internalOrder);
+    const indexOrder = this.newRoute.details.findIndex(item => (item._internalOrder && item._internalOrder._id === internalOrder._id));
     this.newRoute.details.splice(indexOrder, 1);
   }
 

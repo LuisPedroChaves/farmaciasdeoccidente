@@ -1,5 +1,5 @@
 .header {
-    padding: 28px;
+    padding: 30px;
 }
 
 .clientspace {
@@ -17,18 +17,35 @@
 }
 
 .section {
-    padding: 0px 15px;
+    padding: 5px 10px;
 }
 
 .input-section {
-    padding: 0px 5px;
+    padding: 0px 30px;
 }
 
 .assigned-job {
-    margin-bottom: 5px;
+    width: 95%;
+    margin: 8px;
     border-radius: 10px;
     background-color: white;
     .whitebg {
         background-color: white!important;
     }
+}
+
+.T {
+    color: #045195;
+}
+
+.P {
+    color: #b4de32;
+}
+
+.divider {
+    margin-right: 15px;
+}
+
+.divider2 {
+    margin-left: 10px;
 }
