@@ -17,15 +17,15 @@ export class UpdateNotificationsComponent implements OnInit {
     //   name: 'Vendedores',
     //   details: 'Ahora se puede ingresar el código del vendedor al crear una nueva orden.',
     // },
-    {
-      icon: 'electric_moped',
-      name: 'Rutas y entregas',
-      details: 'Se agregaron PEDIDOS Y TRASLADOS a las rutas por sucursal.',
-    },
+    // {
+    //   icon: 'electric_moped',
+    //   name: 'Rutas y entregas',
+    //   details: 'Se agregaron PEDIDOS Y TRASLADOS a las rutas por sucursal.',
+    // },
     {
       icon: 'send',
       name: 'Pedidos y traslados',
-      details: 'Se agregó filtro en historial de pedidos y traslados para diferenciar los enviados y los recibidos.',
+      details: 'Ahora se pueden adjuntar, visualizar y descargar archivos en los pedidos y traslados.',
     },
     // {
     //   icon: 'list_alt',

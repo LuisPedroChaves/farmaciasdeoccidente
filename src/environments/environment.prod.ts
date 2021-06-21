@@ -8,6 +8,6 @@ export const environment = {
   root: 'https://backendfarmacias.azurewebsites.net',
 
   /* Version Config */
-  version: '1.6',
+  version: '1.7',
   baseurl: '/',
 };
