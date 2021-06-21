@@ -49,6 +49,25 @@
                 </div>
                 <div fxFlex="50px"></div>
             </div>
+            <div fxLayout="row wrap" fxLayoutAlign="start center" style="margin-top: 8px;">
+                <div fxFlex="50px"></div>
+                <div fxFlex="50px" fxHide.xs>
+                    <mat-icon color="accent" class="material-icons-outlined grayicon">attach_file
+                    </mat-icon>
+                </div>
+                <div fxFlex fxLayout="row wrap">
+                    <div fxFlex="100" class="inputpadding">
+                        <mat-form-field mat-line class="width-all">
+                            <ngx-mat-file-input #removableInput formControlName="file" placeholder="Ingrese un archivo">
+                            </ngx-mat-file-input>
+                            <button mat-icon-button matSuffix *ngIf="!removableInput.empty" (click)="removableInput.clear($event)">
+                              <mat-icon>clear</mat-icon>
+                            </button>
+                          </mat-form-field>
+                    </div>
+                </div>
+                <div fxFlex="50px"></div>
+            </div>
             <div fxLayout="row wrap">
                 <div fxFlex="100px" fxHide.xs></div>
             </div>

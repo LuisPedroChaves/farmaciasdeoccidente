@@ -84,10 +84,13 @@
                       (click)="reject(a)" matTooltip="Rechazar">
                       <mat-icon>highlight_off</mat-icon>
                     </button>
+                    <a mat-icon-button color="warn" mat-line *ngIf="a.file" [href]="a.file | file: 'internalOrders'" target="_blank">
+                      <mat-icon>attach_file</mat-icon> archivo
+                    </a>
                   </div>
                 </div>
                 <div *ngIf="a.details" fxFlex="100" class="accountrow" fxLayout="row wrap" fxLayoutAlign="start center">
-                  Nota:<br> {{ a.details }}
+                  <h2>{{ a.details }}</h2>
                 </div>
               </ng-container>
             </div>
@@ -137,10 +140,13 @@
                       (click)="dispatch(a)" matTooltip="Despachar">
                       <mat-icon>move_to_inbox</mat-icon>
                     </button>
+                    <a mat-icon-button color="warn" mat-line *ngIf="a.file" [href]="a.file | file: 'internalOrders'" target="_blank">
+                      <mat-icon>attach_file</mat-icon> archivo
+                    </a>
                   </div>
                 </div>
                 <div *ngIf="a.details" fxFlex="100" class="accountrow" fxLayout="row wrap" fxLayoutAlign="start center">
-                  Nota:<br> {{ a.details }}
+                  <h2>{{ a.details }}</h2>
                 </div>
               </ng-container>
             </div>
@@ -167,6 +173,7 @@
                 <div fxFlex class="ellipsis-text cell">Despacho</div>
                 <div fxFlex class="ellipsis-text cell">Repartidor</div>
                 <div fxFlex class="ellipsis-text cell">Estado</div>
+                <div fxFlex class="ellipsis-text cell">Opciones</div>
               </div>
               <ng-container *ngFor="let a of enRuta">
                 <div fxFlex="100" class="accountrow" fxLayout="row wrap" fxLayoutAlign="start center">
@@ -186,9 +193,14 @@
                       </mat-chip>
                     </mat-chip-list>
                   </div>
+                  <div fxFlex class="ellipsis-text cell">
+                    <a mat-icon-button color="warn" mat-line *ngIf="a.file" [href]="a.file | file: 'internalOrders'" target="_blank">
+                      <mat-icon>attach_file</mat-icon> archivo
+                    </a>
+                  </div>
                 </div>
                 <div *ngIf="a.details" fxFlex="100" class="accountrow" fxLayout="row wrap" fxLayoutAlign="start center">
-                  Nota:<br> {{ a.details }}
+                  <h2>{{ a.details }}</h2>
                 </div>
               </ng-container>
             </div>

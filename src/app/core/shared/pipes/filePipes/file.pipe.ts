@@ -17,17 +17,14 @@ export class FilePipe implements PipeTransform {
       return false;
     }
 
-    switch (type) {
-      case 'saleBalances':
-        url += '/saleBalances/' + archivo;
-        break;
+    const SWITCH_TYPES = {
+      'saleBalances': `${url}/saleBalances/${archivo}`,
+      'internalOrders': `${url}/internalOrders/${archivo}`,
+    };
 
-      default:
-        url = null;
-        break;
-    }
-
-    return url;
+    return SWITCH_TYPES[type]
+    ? SWITCH_TYPES[type]
+    : null;
   }
 
 }

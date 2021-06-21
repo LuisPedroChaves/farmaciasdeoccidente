@@ -26,8 +26,8 @@ export class HistoryComponent implements OnInit, AfterContentInit {
   currentOrigin = 'origen';
 
   dataSource = new MatTableDataSource();
-  columnsToDisplay = ['noOrder', 'date', '_destination', '_user', 'timeInit', 'timeDispatch', 'timeDelivery', '_delivery', 'state'];
-  columnsToDisplay2 = ['image', 'noOrder', 'date', '_destination', '_user', 'timeInit', 'timeDispatch', 'timeDelivery', '_delivery', 'state'];
+  columnsToDisplay = ['noOrder', 'date', '_destination', '_user', 'timeInit', 'timeDispatch', 'timeDelivery', '_delivery', 'state', 'file'];
+  columnsToDisplay2 = ['image', 'noOrder', 'date', '_destination', '_user', 'timeInit', 'timeDispatch', 'timeDelivery', '_delivery', 'state', 'file'];
   expandedElement: InternalOrderItem | null;
 
   sessionsubscription: Subscription;

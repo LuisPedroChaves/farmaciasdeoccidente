@@ -1,4 +1,5 @@
-<button *ngIf="(internalOrdersp && internalOrdersp.includes('create'))" mat-fab color="primary" class="fab mat-elevation-z10" (click)="newRequest()">
+<button *ngIf="(internalOrdersp && internalOrdersp.includes('create'))" mat-fab color="primary"
+  class="fab mat-elevation-z10" (click)="newRequest()">
   <mat-icon>add</mat-icon><span class="extended-fab-button__text">Solicitar Traslado</span>
 </button>
 <mat-sidenav-container fxFlex="100" [ngClass]="{'space':!smallScreen, 'space-sm':smallScreen}">
@@ -77,13 +78,18 @@
                     </mat-chip-list>
                   </div>
                   <div fxFlex class="ellipsis-text cell">
-                    <button mat-icon-button *ngIf="internalOrdersp && internalOrdersp.includes('update')"  (click)="finish(a)" matTooltip="Marcar como recibido">
+                    <button mat-icon-button *ngIf="internalOrdersp && internalOrdersp.includes('update')"
+                      (click)="finish(a)" matTooltip="Marcar como recibido">
                       <mat-icon>task_alt</mat-icon>
                     </button>
+                    <a mat-icon-button color="warn" mat-line *ngIf="a.file" [href]="a.file | file: 'internalOrders'"
+                      target="_blank">
+                      <mat-icon>attach_file</mat-icon> archivo
+                    </a>
                   </div>
                 </div>
                 <div *ngIf="a.details" fxFlex="100" class="accountrow" fxLayout="row wrap" fxLayoutAlign="start center">
-                  Nota:<br> {{ a.details }}
+                  <h2>{{ a.details }}</h2>
                 </div>
               </ng-container>
             </div>
@@ -142,13 +148,19 @@
                     </mat-chip-list>
                   </div>
                   <div fxFlex class="ellipsis-text cell">
-                    <button mat-icon-button *ngIf="(a.state === 'ENVIO' || a.state === 'RECHAZO') && (internalOrdersp && internalOrdersp.includes('delete'))" (click)="delete(a)">
+                    <button mat-icon-button
+                      *ngIf="(a.state === 'ENVIO' || a.state === 'RECHAZO') && (internalOrdersp && internalOrdersp.includes('delete'))"
+                      (click)="delete(a)">
                       <mat-icon>delete</mat-icon>
                     </button>
+                    <a mat-icon-button color="warn" mat-line *ngIf="a.file" [href]="a.file | file: 'internalOrders'"
+                      target="_blank">
+                      <mat-icon>attach_file</mat-icon> archivo
+                    </a>
                   </div>
                 </div>
                 <div *ngIf="a.details" fxFlex="100" class="accountrow" fxLayout="row wrap" fxLayoutAlign="start center">
-                  Nota:<br> {{ a.details }}
+                  <h2>{{ a.details }}</h2>
                 </div>
               </ng-container>
             </div>

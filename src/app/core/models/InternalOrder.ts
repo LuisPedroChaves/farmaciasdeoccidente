@@ -15,5 +15,6 @@ export interface InternalOrderItem {
     timeInit: string,
     timeDispatch?: string,
     timeDelivery?: string,
+    file: string,
     deleted?: boolean
 }
