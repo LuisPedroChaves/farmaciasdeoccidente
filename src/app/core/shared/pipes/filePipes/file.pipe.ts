@@ -20,6 +20,7 @@ export class FilePipe implements PipeTransform {
     const SWITCH_TYPES = {
       'saleBalances': `${url}/saleBalances/${archivo}`,
       'internalOrders': `${url}/internalOrders/${archivo}`,
+      'internalOrdersDispatch': `${url}/internalOrdersDispatch/${archivo}`,
     };
 
     return SWITCH_TYPES[type]

@@ -86,6 +86,11 @@ export class IncomingComponent implements OnInit, OnDestroy {
     });
   }
 
+  getExtfile(file: string) {
+    const nameFile = file.split('.');
+    return nameFile[nameFile.length - 1];
+  }
+
   accept(internalOrder: InternalOrderItem) {
     const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
       width: '350px',

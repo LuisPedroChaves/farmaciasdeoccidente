@@ -5,6 +5,7 @@ import { ToastyService } from '../../../core/services/internal/toasty.service';
 import { UserService } from '../../../core/services/httpServices/user.service';
 import { UserItem } from '../../../core/models/User';
 import { Subscription } from 'rxjs';
+import { UploadFileService } from 'src/app/core/services/httpServices/upload-file.service';
 
 @Component({
   selector: 'app-confirmation-dialog',
@@ -25,7 +26,8 @@ export class ConfirmationDialogComponent implements OnInit, AfterContentInit, On
   constructor(
     public dialogRef: MatDialogRef<ConfirmationDialogComponent>, @Inject(MAT_DIALOG_DATA) public data: any,
     public userService: UserService,
-    public toasty: ToastyService
+    public toasty: ToastyService,
+    public uploadFileService: UploadFileService
   ) { }
 
   ngOnInit(): void {
@@ -48,6 +50,21 @@ export class ConfirmationDialogComponent implements OnInit, AfterContentInit, On
     if (this.data.isDelivery) {
       this.usersSubscription.unsubscribe();
     }
+  }
+
+  upload(file: File, internalOrder: any) {
+    if (!file) {
+      return;
+    }
+
+    this.uploadFileService.uploadFile(file, 'internalOrdersDispatch', internalOrder._id)
+      .then((resp: any) => {
+        this.toasty.success('Archivo guardado exitosamente');
+        internalOrder.dispatchFile = resp.newNameFile;
+      })
+      .catch(err => {
+        this.toasty.error('Error al cargar el archivo');
+      });
   }
 
   login() {

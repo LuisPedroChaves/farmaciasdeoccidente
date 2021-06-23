@@ -81,7 +81,10 @@
                       <mat-icon>task_alt</mat-icon>
                     </button>
                     <a mat-icon-button color="warn" mat-line *ngIf="a.file" [href]="a.file | file: 'internalOrders'" target="_blank">
-                      <mat-icon>attach_file</mat-icon> archivo
+                      <mat-icon>attach_file</mat-icon> {{getExtfile(a.file)}}
+                    </a>&nbsp;&nbsp;&nbsp;&nbsp;
+                    <a mat-icon-button color="accent" mat-line *ngIf="a.dispatchFile" [href]="a.dispatchFile | file: 'internalOrdersDispatch'" target="_blank">
+                      <mat-icon>attach_file</mat-icon> {{getExtfile(a.dispatchFile)}}
                     </a>
                   </div>
                 </div>
@@ -149,7 +152,7 @@
                       <mat-icon>delete</mat-icon>
                     </button>
                     <a mat-icon-button color="warn" mat-line *ngIf="a.file" [href]="a.file | file: 'internalOrders'" target="_blank">
-                      <mat-icon>attach_file</mat-icon> archivo
+                      <mat-icon>attach_file</mat-icon> {{getExtfile(a.file)}}
                     </a>
                   </div>
                 </div>

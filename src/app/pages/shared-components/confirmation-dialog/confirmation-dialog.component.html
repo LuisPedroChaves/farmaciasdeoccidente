@@ -29,6 +29,14 @@
     <mat-option *ngFor="let d of deliveries" [value]="d._id">{{ d.name }}</mat-option>
   </mat-select>
 </mat-form-field>
+<mat-form-field *ngIf="data.internalOrder && !data.internalOrder.dispatchFile" class="width-all">
+  <ngx-mat-file-input #removableInput [(ngModel)]="data.internalOrder.dispatchFile" placeholder="Ingrese un archivo"
+    (change)="upload($event.target.files[0], data.internalOrder)">
+  </ngx-mat-file-input>
+  <button mat-icon-button matSuffix *ngIf="!removableInput.empty" (click)="removableInput.clear($event)">
+    <mat-icon>clear</mat-icon>
+  </button>
+</mat-form-field>
 <div class="alert" fxLayout="row wrap" *ngIf="data.alert">
   <div fxFlex="40px" fxLayoutAlign="start center">
     <mat-icon class="material-icons-outlined">report_problem</mat-icon>

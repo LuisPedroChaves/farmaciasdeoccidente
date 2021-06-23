@@ -75,6 +75,13 @@ export class IncomingComponent implements OnInit, OnDestroy {
     this.incomingSubscription.unsubscribe();
   }
 
+  getExtfile(file: string) {
+    if (typeof file === 'string') {
+      const nameFile = file.split('.');
+      return nameFile[nameFile.length - 1];
+    }
+  }
+
   loadInternalsOrders() {
     this.loading = true;
     this.internalOrderService.getIncoming(this.currentCellar._id, 'PEDIDO').subscribe(data => {
@@ -140,7 +147,7 @@ export class IncomingComponent implements OnInit, OnDestroy {
   dispatch(internalOrder: InternalOrderItem) {
     const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
       width: '350px',
-      data: { title: 'Despachar Pedido', message: '¿Confirma que desea despachar el pedido  ' + internalOrder.noOrder + '?', isDelivery: false },
+      data: { title: 'Despachar Pedido', message: '¿Confirma que desea despachar el pedido  ' + internalOrder.noOrder + '?', internalOrder },
       disableClose: true,
       panelClass: ['farmacia-dialog', 'farmacia'],
     });

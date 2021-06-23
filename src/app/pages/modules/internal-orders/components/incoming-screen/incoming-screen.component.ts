@@ -33,6 +33,7 @@ export class IncomingScreenComponent implements OnInit {
         switch (internalOrder.state) {
           case 'ENVIO':
             this.pendientes.push(internalOrder);
+            this.pendientes.sort((a, b) => this.getTime(new Date(a.date)) - this.getTime(new Date(b.date)));
             break;
           case 'CONFIRMACION':
             this.enProceso.push(internalOrder);
@@ -60,10 +61,14 @@ export class IncomingScreenComponent implements OnInit {
     });
   }
 
+  getTime(date?: Date) {
+    return date != null ? date.getTime() : 0;
+  }
+
   loadInternalsOrders() {
     this.loading = true;
     this.internalOrderService.getIncoming(this.currentCellar._id, 'PEDIDO').subscribe(data => {
-      this.pendientes = data.internalOrders.filter(order => order.state === 'ENVIO');
+      this.pendientes = data.internalOrders.filter(order => order.state === 'ENVIO').sort((a, b) => this.getTime(new Date(a.date)) - this.getTime(new Date(b.date)));
       this.enProceso = data.internalOrders.filter(order => order.state === 'CONFIRMACION');
       this.enRuta = data.internalOrders.filter(order => order.state === 'DESPACHO');
       this.loading = false;

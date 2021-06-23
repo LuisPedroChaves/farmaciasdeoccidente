@@ -58,6 +58,11 @@ export class HistoryComponent implements OnInit, AfterContentInit {
     this.internalOrderService.loadData(filter);
   }
 
+  getExtfile(file: string) {
+    const nameFile = file.split('.');
+    return nameFile[nameFile.length - 1];
+  }
+
   applyFilter(filterValue?: string) {
     this.orders = undefined;
     if (filterValue) {

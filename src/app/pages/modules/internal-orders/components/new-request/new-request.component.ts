@@ -59,7 +59,11 @@ export class NewRequestComponent implements OnInit, AfterContentInit, OnDestroy 
     this.form.get('_destination').setValue(this.data.currentCellar);
     let internalOrder: InternalOrderItem = { ...this.form.value };
     const FILE: any = internalOrder.file;
-    internalOrder.file = null;
+    if (FILE) {
+      internalOrder.file = 'archivo.temp';
+    }else {
+      internalOrder.file = null;
+    }
     this.internalOrderService.createInternalOrder(internalOrder).subscribe(data => {
       if (data.ok === true) {
         if (FILE) {
@@ -70,6 +74,7 @@ export class NewRequestComponent implements OnInit, AfterContentInit, OnDestroy 
               this.loading = false;
             })
             .catch(err => {
+              this.loading = false;
               this.toasty.error('Error al cargar el archivo');
             });
         } else {

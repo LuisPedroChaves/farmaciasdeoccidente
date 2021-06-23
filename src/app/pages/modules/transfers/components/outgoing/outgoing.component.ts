@@ -75,6 +75,11 @@ export class OutgoingComponent implements OnInit {
     });
   }
 
+  getExtfile(file: string) {
+    const nameFile = file.split('.');
+    return nameFile[nameFile.length - 1];
+  }
+
   finish(internalOrder: InternalOrderItem) {
     const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
       width: '350px',
