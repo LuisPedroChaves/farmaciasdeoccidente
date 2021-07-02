@@ -39,6 +39,10 @@ const routes: Routes = [
         canActivate: [CheckTokenGuard]
       },
       {
+        path: 'products', pathMatch: 'full',  loadChildren: () => import('./pages/modules/products/products.module').then(m => m.ProductsModule),
+        canActivate: [CheckTokenGuard]
+      },
+      {
         path: 'internalOrders',  loadChildren: () => import('./pages/modules/internal-orders/internal-orders.module').then(m => m.InternalOrdersModule),
         canActivate: [CheckTokenGuard]
       },
@@ -73,6 +77,10 @@ const routes: Routes = [
       },
       {
         path: 'reports', loadChildren: () => import('./pages/admin-modules/reports/reports.module').then(m => m.ReportsModule),
+        canActivate: [CheckTokenGuard]
+      },
+      {
+        path: 'adminProducts', loadChildren: () => import('./pages/admin-modules/products/products.module').then(m => m.ProductsModule),
         canActivate: [CheckTokenGuard]
       },
       {

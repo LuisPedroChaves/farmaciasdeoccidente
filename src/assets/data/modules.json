@@ -4,6 +4,7 @@
     { "name": "dispatches", "label": "Despachos", "parent": "order", "level": 2, "options": ["read", "create"] },
     { "name": "deliveries", "label": "Rutas y Entregas", "parent": "order", "level": 2, "options": ["read", "update", "delete", "create"] },
     { "name": "customersRoutes", "label": "Clientes", "parent": "PHARMA", "level": 1, "options": ["read", "update", "delete", "create"] },
+    { "name": "products", "label": "Productos", "parent": "PHARMA", "level": 1, "options": ["read", "update", "delete", "create"] },
     { "name": "internalOrders", "label": "Pedidos a bodegas", "parent": "PHARMA", "level": 1, "options": ["read", "update", "delete", "create"] },
     { "name": "transfers", "label": "Traslados", "parent": "PHARMA", "level": 1, "options": ["read", "update", "delete", "create"] },
     { "name": "sales", "label": "Ventas", "parent": "PHARMA", "level": 1, "options": ["read", "update", "delete", "create"] },
@@ -12,5 +13,6 @@
     { "name": "adminDeliveries", "label": "Rutas y entregas", "parent": "ADMIN", "level": 1, "options": ["read", "update", "delete", "create"] },
     { "name": "adminOrders", "label": "Ordenes", "parent": "ADMIN", "level": 1, "options": ["read", "update", "delete", "create"] },
     { "name": "receivables", "label": "Cuentas por cobrar", "parent": "ADMIN", "level": 1, "options": ["read", "update", "delete", "create"] },
+    { "name": "adminProducts", "label": "Catálogo de productos", "parent": "ADMIN", "level": 1, "options": ["read", "update", "delete", "create"] },
     { "name": "users", "label": "Usuarios", "parent": "ADMIN", "level": 1, "options": ["read", "update", "delete", "create"] }
 ]

@@ -49,6 +49,9 @@ export class ApiConfigService {
   public API_UPLOAD = this.API_URL + '/upload';
   public API_READ = this.API_URL + '/readFIle';
 
+  // Product
+  public API_PRODUCT = this.API_URL + '/product';
+
   /* #endregion */
 
 }

@@ -40,12 +40,20 @@
         "order": 2
     },
     {
+        "state": "products",
+        "name": "Productos",
+        "type": "link",
+        "icon": "medication",
+        "iconType": "icon",
+        "order": 3
+    },
+    {
         "state": "internalOrders",
         "name": "Pedidos",
         "type": "link",
         "icon": "send",
         "iconType": "icon",
-        "order": 3
+        "order": 4
     },
     {
         "state": "transfers",
@@ -53,7 +61,7 @@
         "type": "link",
         "icon": "moped",
         "iconType": "icon",
-        "order": 4
+        "order": 5
     },
     {
         "state": "sales",
@@ -61,7 +69,7 @@
         "type": "link",
         "icon": "point_of_sale",
         "iconType": "icon",
-        "order": 5
+        "order": 6
     },
     {
         "state": "customers",
@@ -104,11 +112,19 @@
         "order": 4
     },
     {
+        "state": "adminProducts",
+        "name": "Catálogo de productos",
+        "type": "link",
+        "icon": "category",
+        "iconType": "icon",
+        "order": 5
+    },
+    {
         "state": "users",
         "name": "Usuarios",
         "type": "link",
         "icon": "people",
         "iconType": "icon",
-        "order": 5
+        "order": 6
     }
 ]
