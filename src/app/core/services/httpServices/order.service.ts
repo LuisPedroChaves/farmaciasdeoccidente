@@ -20,8 +20,8 @@ export class OrderService implements IDataService<OrderItem[]> {
     public apiConfigService: ApiConfigService
   ) { }
 
-  loadData({month, year, _cellar}) {
-    this.http.get(this.apiConfigService.API_ORDER + '/' + _cellar + '?month=' + month + '&year=' + year).pipe(
+  loadData({month, year, _cellar, _user}) {
+    this.http.get(`${this.apiConfigService.API_ORDER}/${_cellar}/${_user}?month=${month}&year=${year}`).pipe(
         map((response: any) => {
           this.orderList = response.orders;
           this.orderSubject.next( this.orderList);
@@ -29,9 +29,9 @@ export class OrderService implements IDataService<OrderItem[]> {
   }
 
   getData(filter: any) {
-    const {month, year, _cellar} = filter;
+    const {month, year, _cellar, _user} = filter;
     if ( this.orderList === undefined ) {
-      this.loadData({month, year, _cellar});
+      this.loadData({month, year, _cellar, _user});
     } else {
       this.orderSubject.next( this.orderList );
     }

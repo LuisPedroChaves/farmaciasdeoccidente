@@ -16,6 +16,7 @@
       <div fxLayout="row wrap" class="module-container " data-simplebar>
         <!-- <div class="container-strech"> -->
         <div fxLayout="row wrap" fxLayoutAlign="start center" class="costumers-header">
+          <span fxFlex></span>
           <mat-card class="metric-card mat-elevation-z6">
             <mat-card-header>
               <mat-icon mat-card-avatar>tag</mat-icon>
@@ -24,7 +25,7 @@
             </mat-card-header>
             <mat-card-content class="text-center">
               <span fxFlex></span>
-              <h1 *ngIf="orders !== undefined">{{ orders.length }}</h1>
+              <h1 *ngIf="orders !== undefined">{{ getLength() }}</h1>
               <span fxFlex></span>
             </mat-card-content>
           </mat-card>
@@ -53,11 +54,22 @@
             </mat-card-content>
           </mat-card>
           <span fxFlex></span>
+        </div>
+        <div fxLayout="row wrap" fxLayoutAlign="start center" class="costumers-header">
           <mat-form-field appearance="outline" color="primary" class="findinput">
             <mat-label>Sucursal</mat-label>
             <mat-select [(ngModel)]="currentCellar" (selectionChange)="applyFilter()">
               <mat-option value="all">Mostrar todas</mat-option>
               <mat-option *ngFor="let c of cellars" [value]="c._id">
+                {{ c.name }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>&nbsp; &nbsp;
+          <mat-form-field appearance="outline" color="primary" class="findinput">
+            <mat-label>Repartidor</mat-label>
+            <mat-select [(ngModel)]="currentUser" (selectionChange)="applyFilter()">
+              <mat-option value="all">Mostrar todos</mat-option>
+              <mat-option *ngFor="let c of users" [value]="c._id">
                 {{ c.name }}
               </mat-option>
             </mat-select>
@@ -70,11 +82,6 @@
               <mat-option value="month">Seleccionar Mes</mat-option>
             </mat-select>
           </mat-form-field>&nbsp;&nbsp;
-          <mat-form-field appearance="outline" floatLabel="always" class="findinput">
-            <mat-label>Buscar</mat-label>
-            <mat-icon class="text-muted" matPrefix>search</mat-icon>
-            <input matInput (keyup)="applyFilter2($event)" type="text">
-          </mat-form-field>
           <mat-select (selectionChange)="applyFilter()"
             [ngStyle]="{'display': currentFilter === 'month' ? 'inline': 'none'}" class="dateinput"
             [(ngModel)]="this.month">
@@ -98,6 +105,12 @@
               *ngFor="let y of [2020, 2021, 2022, 2023, 2024, 2025, 2026, 2027, 2028, 2029, 2030, 2031, 2032, 2033,2034,2035,2036,2037,2038,2039,2040]"
               [value]="y">{{ y }}</mat-option>
           </mat-select>
+          <span fxFlex></span>
+          <mat-form-field appearance="outline" floatLabel="always" class="findinput">
+            <mat-label>Buscar</mat-label>
+            <mat-icon class="text-muted" matPrefix>search</mat-icon>
+            <input matInput (keyup)="applyFilter2($event)" type="text">
+          </mat-form-field>
         </div>
         <div *ngIf="orders !== undefined" class="allspace" data-simplebar>
           <table mat-table matSort matTableResponsive [dataSource]="dataSource" multiTemplateDataRows

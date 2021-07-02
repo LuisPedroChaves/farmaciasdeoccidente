@@ -1,4 +1,10 @@
-import { AfterContentInit, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import {
+  AfterContentInit,
+  Component,
+  OnDestroy,
+  OnInit,
+  ViewChild,
+} from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
@@ -7,6 +13,7 @@ import { Subscription } from 'rxjs';
 import { OrderService } from 'src/app/core/services/httpServices/order.service';
 import { ToastyService } from 'src/app/core/services/internal/toasty.service';
 import { CellarService } from 'src/app/core/services/httpServices/cellar.service';
+import { UserService } from 'src/app/core/services/httpServices/user.service';
 import { PrintService } from 'src/app/core/services/internal/print.service';
 import { NewOrderComponent } from '../new-order/new-order.component';
 import { EditOrderComponent } from '../edit-order/edit-order.component';
@@ -14,80 +21,134 @@ import { ConfirmationDialogComponent } from 'src/app/pages/shared-components/con
 import { OrderItem } from 'src/app/core/models/Order';
 import { CellarItem } from 'src/app/core/models/Cellar';
 import { TimeFormatPipe } from 'src/app/core/shared/pipes/timePipes/time-format.pipe';
+import { UserItem } from 'src/app/core/models/User';
 
 @Component({
   selector: 'app-orders',
   templateUrl: './orders.component.html',
-  styleUrls: ['./orders.component.scss']
+  styleUrls: ['./orders.component.scss'],
 })
 export class OrdersComponent implements OnInit, AfterContentInit, OnDestroy {
-
   @ViewChild(MatSort, { static: true }) sort: MatSort;
 
   smallScreen = window.innerWidth < 960 ? true : false;
   ordersSubscription: Subscription;
   cellarsSubscription: Subscription;
+  usersSubscription: Subscription;
 
   orders: OrderItem[];
   cellars: CellarItem[];
+  users: UserItem[];
 
   month = new Date().getMonth() + 1;
   year = new Date().getFullYear();
   currentFilter = 'current';
   currentCellar = 'all';
+  currentUser = 'all';
 
   dataSource = new MatTableDataSource();
-  columnsToDisplay = ['noOrder', 'noBill', 'createdAt', 'nit', 'name', 'phone', 'payment', 'state', 'total', 'sellerCode', '_user', '_cellar', 'options'];
-  columnsToDisplay2 = ['image', 'noOrder', 'noBill', 'createdAt', 'nit', 'name', 'phone', 'payment', 'state', 'total', 'sellerCode', '_user', '_cellar', 'options'];
+  columnsToDisplay = [
+    'noOrder',
+    'noBill',
+    'createdAt',
+    'nit',
+    'name',
+    'phone',
+    'payment',
+    'state',
+    'total',
+    'sellerCode',
+    '_user',
+    '_cellar',
+    'options',
+  ];
+  columnsToDisplay2 = [
+    'image',
+    'noOrder',
+    'noBill',
+    'createdAt',
+    'nit',
+    'name',
+    'phone',
+    'payment',
+    'state',
+    'total',
+    'sellerCode',
+    '_user',
+    '_cellar',
+    'options',
+  ];
   expandedElement: OrderItem | null;
 
   constructor(
     public router: Router,
     public orderService: OrderService,
     public cellarService: CellarService,
+    public userService: UserService,
     public dialog: MatDialog,
     public toasty: ToastyService,
     public printService: PrintService,
-    public timeFormat: TimeFormatPipe,
+    public timeFormat: TimeFormatPipe
   ) {
-    this.cellarsSubscription = this.cellarService.readData().subscribe(data => {
-      this.cellars = data;
-    });
-    this.ordersSubscription = this.orderService.readData().subscribe(data => {
+    this.cellarsSubscription = this.cellarService
+      .readData()
+      .subscribe((data) => {
+        this.cellars = data;
+      });
+    this.ordersSubscription = this.orderService.readData().subscribe((data) => {
       this.orders = data;
       this.dataSource = new MatTableDataSource<OrderItem>(this.orders);
     });
+    this.usersSubscription = this.userService.readData().subscribe((data) => {
+      this.users = data;
+      this.users = this.users.filter((user) => user._role.type === 'DELIVERY');
+    });
   }
 
-  ngOnInit(): void {
-  }
+  ngOnInit(): void {}
 
   ngAfterContentInit() {
-    const FILTER = { month: this.month, year: this.year, _cellar: this.currentCellar };
+    const FILTER = {
+      month: this.month,
+      year: this.year,
+      _cellar: this.currentCellar,
+      _user: this.currentUser,
+    };
     this.orderService.loadData(FILTER);
     this.cellarService.loadData();
+    this.userService.loadData();
   }
 
   ngOnDestroy(): void {
     this.ordersSubscription.unsubscribe();
     this.cellarsSubscription.unsubscribe();
+    this.usersSubscription.unsubscribe();
   }
 
   selectOrder(order: OrderItem) {
     this.router.navigate(['admin/order', order._id, 'admin/adminOrders']);
   }
 
+  getLength(): number {
+    return this.orders.filter((order) => order.state === 'ENTREGA').length;
+  }
+
   getTotal() {
-    return this.orders.reduce((sum, item) => sum + item.total, 0).toFixed(2);
+    return this.orders
+      .filter((order) => order.state === 'ENTREGA')
+      .reduce((sum, item) => sum + item.total, 0)
+      .toFixed(2);
   }
 
   groupBy(key) {
-    const OBJECT = this.orders.reduce((acc, obj) => {
-      const property = obj[key];
-      acc[property] = acc[property] || [];
-      acc[property].push(obj);
-      return acc;
-    }, {});
+    const OBJECT = this.orders
+      .filter((order) => order.state === 'ENTREGA')
+      .reduce((acc, obj) => {
+        const property = obj[key];
+        acc[property] = acc[property] || [];
+        acc[property].push(obj);
+        return acc;
+      }, {});
     return Object.keys(OBJECT).length;
   }
 
@@ -100,10 +161,15 @@ export class OrdersComponent implements OnInit, AfterContentInit, OnDestroy {
       panelClass: ['farmacia-dialog', 'farmacia'],
     });
 
-    dialogRef.afterClosed().subscribe(result => {
+    dialogRef.afterClosed().subscribe((result) => {
       if (result !== undefined) {
         const filter = { month: this.month, year: this.year };
-        const FILTER = { month: this.month, year: this.year, _cellar: this.currentCellar };
+        const FILTER = {
+          month: this.month,
+          year: this.year,
+          _cellar: this.currentCellar,
+          _user: this.currentUser,
+        };
         this.orderService.loadData(FILTER);
       }
     });
@@ -117,9 +183,14 @@ export class OrdersComponent implements OnInit, AfterContentInit, OnDestroy {
       panelClass: ['farmacia-dialog', 'farmacia'],
     });
 
-    dialogRef.afterClosed().subscribe(result => {
+    dialogRef.afterClosed().subscribe((result) => {
       if (result !== undefined) {
-        const FILTER = { month: this.month, year: this.year, _cellar: this.currentCellar };
+        const FILTER = {
+          month: this.month,
+          year: this.year,
+          _cellar: this.currentCellar,
+          _user: this.currentUser,
+        };
         this.orderService.loadData(FILTER);
       }
     });
@@ -128,42 +199,60 @@ export class OrdersComponent implements OnInit, AfterContentInit, OnDestroy {
   delete(order: OrderItem) {
     const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
       width: '350px',
-      data: { title: 'Eliminar Orden', message: '¿Confirma que desea eliminar la orden  ' + order.noOrder + '?', description: true },
+      data: {
+        title: 'Eliminar Orden',
+        message:
+          '¿Confirma que desea eliminar la orden  ' + order.noOrder + '?',
+        description: true,
+      },
       disableClose: true,
       panelClass: ['farmacia-dialog', 'farmacia'],
     });
 
-    dialogRef.afterClosed().subscribe(result => {
+    dialogRef.afterClosed().subscribe((result) => {
       if (result !== undefined) {
         // this.loading = true;
         order.textDeleted = result;
-        this.orderService.deleteOrder(order).subscribe(data => {
-          this.toasty.success('Orden eliminada exitosamente');
-          const FILTER = { month: this.month, year: this.year, _cellar: this.currentCellar };
-          this.orderService.loadData(FILTER);
-          // this.loading = false;
-        }, error => {
-          // this.loading = false;
-          this.toasty.error('Error al eliminar la orden');
-        });
+        this.orderService.deleteOrder(order).subscribe(
+          (data) => {
+            this.toasty.success('Orden eliminada exitosamente');
+            const FILTER = {
+              month: this.month,
+              year: this.year,
+              _cellar: this.currentCellar,
+              _user: this.currentUser,
+            };
+            this.orderService.loadData(FILTER);
+            // this.loading = false;
+          },
+          (error) => {
+            // this.loading = false;
+            this.toasty.error('Error al eliminar la orden');
+          }
+        );
       }
     });
   }
 
   applyFilter(filterValue?: string) {
     if (filterValue) {
-
       this.dataSource.filter = filterValue.trim().toLowerCase();
       if (this.currentFilter === 'last') {
         if (new Date().getMonth() === 0) {
           this.month = 12;
         } else {
           this.month = new Date().getMonth();
-
         }
       }
-      if (this.currentFilter === 'current') { this.month = new Date().getMonth() + 1; }
-      const FILTER = { month: this.month, year: this.year, _cellar: this.currentCellar };
+      if (this.currentFilter === 'current') {
+        this.month = new Date().getMonth() + 1;
+      }
+      const FILTER = {
+        month: this.month,
+        year: this.year,
+        _cellar: this.currentCellar,
+        _user: this.currentUser,
+      };
       this.orderService.loadData(FILTER);
     } else {
       if (this.currentFilter === 'last') {
@@ -171,15 +260,20 @@ export class OrdersComponent implements OnInit, AfterContentInit, OnDestroy {
           this.month = 12;
         } else {
           this.month = new Date().getMonth();
-
         }
       }
-      if (this.currentFilter === 'current') { this.month = new Date().getMonth() + 1; }
-      const FILTER = { month: this.month, year: this.year, _cellar: this.currentCellar };
+      if (this.currentFilter === 'current') {
+        this.month = new Date().getMonth() + 1;
+      }
+      const FILTER = {
+        month: this.month,
+        year: this.year,
+        _cellar: this.currentCellar,
+        _user: this.currentUser,
+      };
       this.orderService.loadData(FILTER);
     }
   }
-
 
   applyFilter2(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
@@ -190,13 +284,16 @@ export class OrdersComponent implements OnInit, AfterContentInit, OnDestroy {
     const body = [];
     body.push({ text: 'FARMACIAS DE OCCIDENTE S.A', style: ['header'] });
     body.push({ text: 'Reporte de ventas', style: ['subheader'] });
-    const CELLAR = this.cellars.find(c => c._id === this.currentCellar);
+    const CELLAR = this.cellars.find((c) => c._id === this.currentCellar);
     if (CELLAR) {
       body.push({ text: `Sucursal: ${CELLAR.name}`, style: ['subheader'] });
     } else {
       body.push({ text: `Sucursal: Todas`, style: ['subheader'] });
     }
-    body.push({ text: `Correspondientes al mes: ${this.month}/${this.year} `, style: ['muted', 'subheader'] });
+    body.push({
+      text: `Correspondientes al mes: ${this.month}/${this.year} `,
+      style: ['muted', 'subheader'],
+    });
     body.push({ text: '\n' });
 
     const ArrayToPrint: any[] = [];
@@ -222,21 +319,25 @@ export class OrdersComponent implements OnInit, AfterContentInit, OnDestroy {
     ];
     ArrayToPrint.push(printColumns);
     ArrayToPrint.push([
-      this.orders.length,
+      this.getLength(),
       this.groupBy('name'),
       'Q ' + this.getTotal(),
     ]);
     ArrayToPrint2.push(printColumns2);
 
     const rowArray: any[] = [];
-    this.orders.forEach(o => {
+    this.orders.forEach((o) => {
       if (o.noBill === undefined) {
-        o.noBill = '-'
+        o.noBill = '-';
       }
       if (o.sellerCode === undefined) {
-        o.sellerCode = '-'
+        o.sellerCode = '-';
       }
-      const FORMAT_DATE = this.timeFormat.transform(o.date, 'DD/MM/YYYY hh:mm', 'es');
+      const FORMAT_DATE = this.timeFormat.transform(
+        o.date,
+        'DD/MM/YYYY hh:mm',
+        'es'
+      );
       const ROW: string[] = [
         o.noOrder,
         o.noBill,
@@ -249,35 +350,61 @@ export class OrdersComponent implements OnInit, AfterContentInit, OnDestroy {
         `Q ${o.total.toFixed(2)}`,
         o.sellerCode,
         o._user.name,
-        o._cellar.name
+        o._cellar.name,
       ];
       rowArray.push(ROW);
     });
 
-    rowArray.forEach(row => {
+    rowArray.forEach((row) => {
       ArrayToPrint2.push(row);
     });
-
 
     body.push({
       style: 'cellMetrics',
       table: {
-        widths: ['*', '*', '*', '*', '*', '*', '*', '*', '*', '*', '*', '*', '*',],
+        widths: [
+          '*',
+          '*',
+          '*',
+          '*',
+          '*',
+          '*',
+          '*',
+          '*',
+          '*',
+          '*',
+          '*',
+          '*',
+          '*',
+        ],
         headerRows: 1,
-        body: ArrayToPrint
-      }
+        body: ArrayToPrint,
+      },
     });
-    body.push({text: '\n'});
+    body.push({ text: '\n' });
     body.push({
       style: 'cells',
       table: {
-        widths: ['*', '*', '*', '*', '*', '*', '*', '*', '*', '*', '*', '*', '*',],
+        widths: [
+          '*',
+          '*',
+          '*',
+          '*',
+          '*',
+          '*',
+          '*',
+          '*',
+          '*',
+          '*',
+          '*',
+          '*',
+          '*',
+        ],
         headerRows: 1,
-        body: ArrayToPrint2
-      }
+        body: ArrayToPrint2,
+      },
     });
 
     this.printService.printLandscape(body);
   }
-
 }

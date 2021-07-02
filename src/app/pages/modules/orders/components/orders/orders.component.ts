@@ -71,7 +71,7 @@ export class OrdersComponent implements OnInit, AfterContentInit, OnDestroy {
   }
 
   ngAfterContentInit() {
-    const filter = { month: this.month, year: this.year, _cellar: this.currentCellar._id };
+    const filter = { month: this.month, year: this.year, _cellar: this.currentCellar._id, _user: 'all' };
     this.orderService.loadData(filter);
   }
 
@@ -96,7 +96,7 @@ export class OrdersComponent implements OnInit, AfterContentInit, OnDestroy {
         }
       }
       if (this.currentFilter === 'current') { this.month = new Date().getMonth() + 1; }
-      const filters = { month: this.month, year: this.year, _cellar: this.currentCellar._id };
+      const filters = { month: this.month, year: this.year, _cellar: this.currentCellar._id, _user: 'all' };
       this.orderService.loadData(filters);
     } else {
       if (this.currentFilter === 'last') {
@@ -108,7 +108,7 @@ export class OrdersComponent implements OnInit, AfterContentInit, OnDestroy {
         }
       }
       if (this.currentFilter === 'current') { this.month = new Date().getMonth() + 1; }
-      const filters = { month: this.month, year: this.year, _cellar: this.currentCellar._id };
+      const filters = { month: this.month, year: this.year, _cellar: this.currentCellar._id, _user: 'all' };
       this.orderService.loadData(filters);
     }
   }
@@ -131,7 +131,7 @@ export class OrdersComponent implements OnInit, AfterContentInit, OnDestroy {
 
     dialogRef.afterClosed().subscribe(result => {
       if (result !== undefined) {
-        const filter = { month: this.month, year: this.year, _cellar: this.currentCellar._id };
+        const filter = { month: this.month, year: this.year, _cellar: this.currentCellar._id, _user: 'all' };
         this.orderService.loadData(filter);
       }
     });
@@ -147,7 +147,7 @@ export class OrdersComponent implements OnInit, AfterContentInit, OnDestroy {
 
     dialogRef.afterClosed().subscribe(result => {
       if (result !== undefined) {
-        const filter = { month: this.month, year: this.year, _cellar: this.currentCellar._id };
+        const filter = { month: this.month, year: this.year, _cellar: this.currentCellar._id, _user: 'all' };
         this.orderService.loadData(filter);
       }
     });
@@ -167,7 +167,7 @@ export class OrdersComponent implements OnInit, AfterContentInit, OnDestroy {
         order.textDeleted = result;
         this.orderService.deleteOrder(order).subscribe(data => {
           this.toasty.success('Orden eliminada exitosamente');
-          const filter = { month: this.month, year: this.year, _cellar: this.currentCellar._id };
+          const filter = { month: this.month, year: this.year, _cellar: this.currentCellar._id, _user: 'all' };
           this.orderService.loadData(filter);
           // this.loading = false;
         }, error => {
