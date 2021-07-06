@@ -104,14 +104,6 @@
         "order": 4
     },
     {
-        "state": "adminProducts",
-        "name": "Cuentas por cobrar",
-        "type": "link",
-        "icon": "request_quote",
-        "iconType": "icon",
-        "order": 4
-    },
-    {
         "state": "users",
         "name": "Usuarios",
         "type": "link",
