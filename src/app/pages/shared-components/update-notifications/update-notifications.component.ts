@@ -24,14 +24,19 @@ export class UpdateNotificationsComponent implements OnInit {
     // },
     {
       icon: 'send',
-      name: 'Pedidos y traslados',
-      details: 'Ahora se pueden adjuntar, visualizar y descargar archivos en los pedidos y traslados.',
+      name: 'Pedidos',
+      details: 'Se mejoró la interfaz de usuario para que se adapte mejor a pantallas pequeñas.',
     },
-    // {
-    //   icon: 'list_alt',
-    //   name: 'Reporte de ordenes',
-    //   details: 'Reporte de ordenes por mes y sucursales, contabilizando la cantidad de domicilios.',
-    // },
+    {
+      icon: 'send',
+      name: 'Pedidos',
+      details: 'Las bodegas pueden ingresar pedidos hacia otras sucursales.',
+    },
+    {
+      icon: 'list_alt',
+      name: 'Reporte de ordenes',
+      details: 'Reporte de ordenes por repartidor y corrección de errores.',
+    },
     {
       icon: 'construction',
       name: 'Mantenimiento',

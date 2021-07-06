@@ -74,7 +74,7 @@
                       </mat-chip>
                     </mat-chip-list>
                   </div>
-                  <div fxFlex class="ellipsis-text cell">
+                  <div fxFlex  fxFlex.md="25%" class="ellipsis-text cell">
                     <button mat-icon-button *ngIf="internalOrdersp && internalOrdersp.includes('update')"
                       (click)="accept(a)" matTooltip="Aceptar">
                       <mat-icon>task_alt</mat-icon>
@@ -134,7 +134,7 @@
                       </mat-chip>
                     </mat-chip-list>
                   </div>
-                  <div fxFlex class="ellipsis-text cell">
+                  <div fxFlex  fxFlex.md="25%" class="ellipsis-text cell">
                     <button mat-icon-button *ngIf="internalOrdersp && internalOrdersp.includes('update')"
                       (click)="dispatch(a)" matTooltip="Despachar">
                       <mat-icon>move_to_inbox</mat-icon>
@@ -195,7 +195,7 @@
                       </mat-chip>
                     </mat-chip-list>
                   </div>
-                  <div fxFlex class="ellipsis-text cell">
+                  <div fxFlex  fxFlex.md="25%" class="ellipsis-text cell">
                     <a mat-icon-button color="warn" mat-line *ngIf="a.file" [href]="a.file | file: 'internalOrders'" target="_blank">
                       <mat-icon>attach_file</mat-icon> {{getExtfile(a.file)}}
                     </a>&nbsp;&nbsp;&nbsp;&nbsp;

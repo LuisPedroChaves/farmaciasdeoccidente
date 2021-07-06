@@ -76,7 +76,7 @@
                       </mat-chip>
                     </mat-chip-list>
                   </div>
-                  <div fxFlex class="ellipsis-text cell">
+                  <div fxFlex  fxFlex.md="25%" class="ellipsis-text cell">
                     <button mat-icon-button *ngIf="internalOrdersp && internalOrdersp.includes('update')" (click)="finish(a)" matTooltip="Marcar como recibido">
                       <mat-icon>task_alt</mat-icon>
                     </button>
@@ -147,7 +147,7 @@
                       </mat-chip>
                     </mat-chip-list>
                   </div>
-                  <div fxFlex class="ellipsis-text cell">
+                  <div fxFlex  fxFlex.md="25%" class="ellipsis-text cell">
                     <button mat-icon-button *ngIf="(a.state === 'ENVIO' || a.state === 'RECHAZO') && (internalOrdersp && internalOrdersp.includes('delete'))" (click)="delete(a)">
                       <mat-icon>delete</mat-icon>
                     </button>
