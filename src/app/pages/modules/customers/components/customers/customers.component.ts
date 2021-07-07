@@ -33,7 +33,7 @@ export class CustomersComponent implements OnInit {
   customersp: string[];
 
   dataSource = new MatTableDataSource();
-  columnsToDisplay = ['code', 'name', 'nit', 'phone', 'address', 'town', 'department', 'company', 'transport', 'limitDaysCredit', 'limitCredit', '_seller'];
+  // columnsToDisplay = ['code', 'name', 'nit', 'phone', 'address', 'town', 'department', 'company', 'transport', 'limitDaysCredit', 'limitCredit', '_seller'];
   columnsToDisplay2 = ['image', 'code', 'name', 'nit', 'phone', 'address', 'town', 'department', 'company', 'transport', 'limitDaysCredit', 'limitCredit', '_seller'];
   expandedElement: CustomerItem | null;
 

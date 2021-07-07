@@ -29,7 +29,6 @@ export class ProductsComponent implements OnInit, AfterContentInit, OnDestroy {
   productsp: string[];
 
   dataSource = new MatTableDataSource();
-  headers = ['code', 'description', '_brand', 'wholesale_price', 'distributor_price', 'retail_price', 'cf_price'];
   columns = ['code', 'description', '_brand', 'wholesale_price', 'distributor_price', 'retail_price', 'cf_price'];
   currentPage = 1;
 
