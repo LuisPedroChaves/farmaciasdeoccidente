@@ -19,11 +19,13 @@ export class BrandService implements IDataService<BrandItem[]> {
     public apiConfigService: ApiConfigService
   ) {}
 
-  loadData({ page }): void {
+  loadData(): void {
     this.http
-      .get(this.apiConfigService.API_BRAND + '?page=' + page + '&size=20')
+      .get(this.apiConfigService.API_BRAND)
       .pipe(
         map((response: any) => {
+          console.log(response);
+
           this.brandList = response.brands;
           this.brandSubject.next(this.brandList);
         })
@@ -31,10 +33,9 @@ export class BrandService implements IDataService<BrandItem[]> {
       .subscribe();
   }
 
-  getData(filter: any): void {
-    const { page } = filter;
+  getData(): void {
     if (this.brandList === undefined) {
-      this.loadData({ page });
+      this.loadData();
     } else {
       this.brandSubject.next(this.brandList);
     }

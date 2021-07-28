@@ -7,24 +7,27 @@ import { map } from 'rxjs/operators';
 import { ProductItem } from '../../models/Product';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class ProductService implements IDataService<ProductItem[]> {
-
   public productList: ProductItem[];
   productSubject = new Subject<ProductItem[]>();
 
   constructor(
     public http: HttpClient,
     public apiConfigService: ApiConfigService
-  ) { }
+  ) {}
 
   loadData({ page }) {
-    this.http.get(this.apiConfigService.API_PRODUCT + '?page=' + page + '&size=20').pipe(
-      map((response: any) => {
-        this.productList = response.products;
-        this.productSubject.next(this.productList);
-      })).subscribe();
+    this.http
+      .get(this.apiConfigService.API_PRODUCT + '?page=' + page + '&size=20')
+      .pipe(
+        map((response: any) => {
+          this.productList = response.products;
+          this.productSubject.next(this.productList);
+        })
+      )
+      .subscribe();
   }
 
   getData(filter: any) {
@@ -50,15 +53,20 @@ export class ProductService implements IDataService<ProductItem[]> {
   }
 
   createProduct(product: ProductItem): Observable<any> {
+    console.log('Sending POST request');
     return this.http.post(this.apiConfigService.API_PRODUCT, product);
   }
 
   updateProduct(product: ProductItem): Observable<any> {
-    return this.http.put(`${this.apiConfigService.API_PRODUCT}/${product._id}`, product);
+    return this.http.put(
+      `${this.apiConfigService.API_PRODUCT}/${product._id}`,
+      product
+    );
   }
 
   deleteProduct(product: ProductItem): Observable<any> {
-    return this.http.delete(`${this.apiConfigService.API_PRODUCT}/${product._id}`);
+    return this.http.delete(
+      `${this.apiConfigService.API_PRODUCT}/${product._id}`
+    );
   }
-
 }
