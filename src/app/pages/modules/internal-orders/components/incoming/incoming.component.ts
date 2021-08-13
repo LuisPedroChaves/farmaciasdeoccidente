@@ -53,6 +53,7 @@ export class IncomingComponent implements OnInit, OnDestroy {
         switch (internalOrder.state) {
           case 'ENVIO':
             this.pendientes.push(internalOrder);
+            this.pendientes.sort((a, b) => this.getTime(new Date(a.date)) - this.getTime(new Date(b.date)));
             break;
           case 'CONFIRMACION':
             this.enProceso.push(internalOrder);
@@ -69,6 +70,10 @@ export class IncomingComponent implements OnInit, OnDestroy {
         }
       }
     });
+  }
+
+  getTime(date?: Date) {
+    return date != null ? date.getTime() : 0;
   }
 
   ngOnDestroy(): void {

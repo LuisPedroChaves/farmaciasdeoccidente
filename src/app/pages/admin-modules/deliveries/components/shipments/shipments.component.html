@@ -17,8 +17,10 @@
             [ngClass]="{'inactive': c._delivery}" class="jobcard user">
             <div matRipple class="job-card mat-elevation-z2" fxLayout="row wrap"
               fxLayoutAlign="start center">
-              <div fxFlex="100" fxLayout="row wrap" class="cover"
-                style="background-image: url('assets/images/covers/Writing.jpg');">
+              <div *ngIf="c.type === 'PEDIDO'" fxFlex="100" fxLayout="row wrap" class="cover"
+                style="background-image: url('assets/images/covers/internalOrder.jpg');">
+              <div *ngIf="c.type === 'TRASLADO'" fxFlex="100" fxLayout="row wrap" class="cover"
+                style="background-image: url('assets/images/covers/transfer.jpg');">
                 <h2 class="more">#{{ c.noOrder }}<br>
                   <span *ngIf="c.type === 'PEDIDO'">Pedido</span>
                   <span *ngIf="c.type === 'TRASLADO'">Traslado</span>
