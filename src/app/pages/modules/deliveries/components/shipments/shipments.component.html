@@ -11,27 +11,31 @@
   <div class="padding-list">
     <div class="courselist" fxLayout="row wrap" data-simplebar>
       <div *ngIf="internalOrders.length > 0" fxFlex="100" fxLayout="row wrap">
-        <div
-          *ngFor="let c of  (internalOrders | filter: searchText : ['noOrder'])"
-          fxFlex.gt-lg="25" fxFlex.gt-md="33" fxFlex.gt-sm="50" fxFlex.gt-xs="50" fxFlex="100"
-          [ngClass]="{'inactive': c._delivery}" class="jobcard user">
-          <div matRipple class="job-card mat-elevation-z2" fxLayout="row wrap"
-            fxLayoutAlign="start center">
-            <div fxFlex="100" fxLayout="row wrap" class="cover"
-              style="background-image: url('assets/images/covers/Writing.jpg');">
+        <div *ngFor="let c of  (internalOrders | filter: searchText : ['noOrder'])" fxFlex.gt-lg="25" fxFlex.gt-md="33"
+          fxFlex.gt-sm="50" fxFlex.gt-xs="50" fxFlex="100" [ngClass]="{'inactive': c._delivery}" class="jobcard user">
+          <div matRipple class="job-card mat-elevation-z2" fxLayout="row wrap" fxLayoutAlign="start center">
+            <div *ngIf="c.type === 'PEDIDO'" fxFlex="100" fxLayout="row wrap" class="cover"
+              style="background-image: url('assets/images/covers/internalOrder.jpg');">
               <h2 class="more">#{{ c.noOrder }}<br>
-                <span *ngIf="c.type === 'PEDIDO'">Pedido</span>
-                <span *ngIf="c.type === 'TRASLADO'">Traslado</span>
+                <span>Pedido</span>
+              </h2>
+              <span fxFlex></span>
+            </div>
+            <div *ngIf="c.type === 'TRASLADO'" fxFlex="100" fxLayout="row wrap" class="cover"
+              style="background-image: url('assets/images/covers/transfer.jpg');">
+              <h2 class="more">#{{ c.noOrder }}<br>
+                <span>Traslado</span>
               </h2>
               <span fxFlex></span>
             </div>
             <div fxFlex="100" fxLayout="column wrap" class="ellipsis-text course-info">
-               <h2 class="ma-0 product-font">Para: {{c._destination.name}}</h2>
+              <h2 class="ma-0 product-font">Para: {{c._destination.name}}</h2>
               <span class="text-muted">{{ c.timeDispatch | date: 'dd/MM/yyyy HH:mm' }}</span>
               <span class="text-muted">{{ c.details }}</span>
               <mat-chip-list class="teacher" *ngIf=" c._delivery !== null && c._delivery !== undefined">
                 <mat-chip style="max-width: 200px" [selectable]="false" [selected]="false" [disableRipple]="true">
-                  <img [src]="c._delivery.imageIndex ? avatars[c._delivery.imageIndex].image : avatars[0].image" matChipAvatar>
+                  <img [src]="c._delivery.imageIndex ? avatars[c._delivery.imageIndex].image : avatars[0].image"
+                    matChipAvatar>
                   <div class="ellipsis-text">
                     {{ c._delivery.name }}
                   </div>
@@ -62,7 +66,8 @@
               <span class="text-muted">Tel: {{ c.phone }}</span>
               <mat-chip-list class="teacher" *ngIf=" c._delivery !== null && c._delivery !== undefined">
                 <mat-chip style="max-width: 200px" [selectable]="false" [selected]="false" [disableRipple]="true">
-                  <img [src]="c._delivery.imageIndex ? avatars[c._delivery.imageIndex].image : avatars[0].image" matChipAvatar>
+                  <img [src]="c._delivery.imageIndex ? avatars[c._delivery.imageIndex].image : avatars[0].image"
+                    matChipAvatar>
                   <div class="ellipsis-text">
                     {{ c._delivery.name }}
                   </div>
