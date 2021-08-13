@@ -90,7 +90,7 @@ export class IncomingComponent implements OnInit, OnDestroy {
   loadInternalsOrders() {
     this.loading = true;
     this.internalOrderService.getIncoming(this.currentCellar._id, 'PEDIDO').subscribe(data => {
-      this.pendientes = data.internalOrders.filter(order => order.state === 'ENVIO');
+      this.pendientes = data.internalOrders.filter(order => order.state === 'ENVIO').sort((a, b) => this.getTime(new Date(a.date)) - this.getTime(new Date(b.date)));
       this.enProceso = data.internalOrders.filter(order => order.state === 'CONFIRMACION');
       this.enRuta = data.internalOrders.filter(order => order.state === 'DESPACHO');
       this.loading = false;
