@@ -1,0 +1,52 @@
+<div class="farmacia">
+  <header fxLayout="row wrap" fxLayoutAlign="center center" class="header">
+    <h2 style="margin: 0;" class="h2">FACTURA NO. 2759</h2>
+    <span fxFlex></span>
+    <button mat-icon-button (click)="dialogRef.close()">
+      <mat-icon>close</mat-icon>
+    </button>
+  </header>
+  <h4 class="product-font ma-0">Lorem ipsum dolor sit amet consectetur adipisicing elit. Cumque adipisci tempore ab
+    quam, beatae sequi rerum temporibus quas excepturi consectetur architecto quaerat iste facere laborum, sint voluptas
+    nostrum? Doloremque, minima.</h4>
+    <br>
+  <mat-divider></mat-divider>
+  <div  fxLayout="row wrap">
+    <div class="headerTable" fxFlex fxLayout="row wrap">
+      <div fxFlex class="ellipsis-text cell header-cell">Cantidad</div>
+      <div fxFlex="30%" class="ellipsis-text cell header-cell">Producto</div>
+      <div fxFlex class="ellipsis-text cell header-cell">Precio Unitario (Q)</div>
+      <div fxFlex class="ellipsis-text cell header-cell">Bono</div>
+      <div fxFlex class="ellipsis-text cell header-cell">Descuento (%)</div>
+      <div fxFlex class="ellipsis-text cell header-cell">Total (Q)</div>
+      <div fxFlex class="ellipsis-text cell header-cell">Costo Unitario (Q)</div>
+      <div fxFlex class="ellipsis-text cell header-cell">Cantidad Real</div>
+      <div fxFlex class="ellipsis-text cell header-cell">Fecha de vencimiento</div>
+    </div>
+    <div fxLayout="row wrap" class="clientspace"  *ngIf="newPurchase.products.length > 0" data-simplebar>
+      <div class="row" *ngFor="let p of newPurchase.products; let i = index" fxFlex="100" fxLayoutAlign="start center"
+        fxLayout="row wrap">
+        <div fxFlex class="ellipsis-text cell">{{p.quantity}}</div>
+        <div fxFlex="30%" class="ellipsis-text cell">{{p._product.name}}</div>
+        <div fxFlex class="ellipsis-text cell">{{p.price}}</div>
+        <div fxFlex class="ellipsis-text cell">{{p.bono}}</div>
+        <div fxFlex class="ellipsis-text cell">{{p.discount}}</div>
+        <div fxFlex class="ellipsis-text cell"><b>{{p.quantity * p.price | number: '.2'}}</b></div>
+        <div fxFlex class="ellipsis-text cell">{{p.cost | number: '.2'}}</div>
+        <div fxFlex class="ellipsis-text cell">{{p.realQuantity}}</div>
+        <div fxFlex class="ellipsis-text cell">{{p.expirationDate}}</div>
+      </div>
+    </div>
+  </div>
+  <mat-divider></mat-divider>
+  <div fxLayout="row" class="header">
+    <button mat-button (click)="dialogRef.close()" class="info-row">
+      CANCELAR
+    </button>
+    <button mat-button style="color: brown;" (click)="dialogRef.close()" class="info-row">
+      ANULAR
+    </button>
+    <span fxFlex></span>
+    <h1 class="product-font ma-0">TOTAL: Q. {{ getTotal() | number: '.2' }}</h1>
+  </div>
+</div>

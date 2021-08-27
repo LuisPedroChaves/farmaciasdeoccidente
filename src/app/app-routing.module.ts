@@ -39,10 +39,6 @@ const routes: Routes = [
         canActivate: [CheckTokenGuard]
       },
       {
-        path: 'products', pathMatch: 'full',  loadChildren: () => import('./pages/modules/products/products.module').then(m => m.ProductsModule),
-        canActivate: [CheckTokenGuard]
-      },
-      {
         path: 'internalOrders',  loadChildren: () => import('./pages/modules/internal-orders/internal-orders.module').then(m => m.InternalOrdersModule),
         canActivate: [CheckTokenGuard]
       },
@@ -56,6 +52,22 @@ const routes: Routes = [
       },
       {
         path: 'sales', pathMatch: 'full',  loadChildren: () => import('./pages/modules/sales/sales.module').then(m => m.SalesModule),
+        canActivate: [CheckTokenGuard]
+      },
+      {
+        path: 'storage', pathMatch: 'full',  loadChildren: () => import('./pages/modules/storage/storage.module').then(m => m.StorageModule),
+        canActivate: [CheckTokenGuard]
+      },
+      {
+        path: 'purchases', loadChildren: () => import('./pages/modules/purchases/purchases.module').then(m => m.PurchasesModule),
+        canActivate: [CheckTokenGuard]
+      },
+      {
+        path: 'adjusts', pathMatch: 'full',  loadChildren: () => import('./pages/modules/adjusts/adjusts.module').then(m => m.AdjustsModule),
+        canActivate: [CheckTokenGuard]
+      },
+      {
+        path: 'providers', pathMatch: 'full',  loadChildren: () => import('./pages/modules/providers/providers.module').then(m => m.ProvidersModule),
         canActivate: [CheckTokenGuard]
       },
     ]

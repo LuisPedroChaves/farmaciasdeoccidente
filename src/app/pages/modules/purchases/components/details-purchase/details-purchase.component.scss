@@ -1,0 +1,36 @@
+.header {
+    padding: 15px;
+}
+
+.clientspace {
+    height: 430px;
+    width: 100%;
+}
+
+.h2 {
+    color: #0a1958;
+}
+
+.info-row {
+    margin-bottom: 5px;
+    margin-top: 3px;
+}
+
+.headerTable {
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    padding: 0px 10px;
+
+    mat-icon {
+      visibility: hidden;
+    }
+  }
+
+  .header-cell {
+    font-size: 11px;
+    font-weight: 700;
+    color: rgba(0, 0, 0, 0.54);
+  }
+
+  .cell {
+    padding: 8px 3px;
+  }
