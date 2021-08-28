@@ -1,15 +1,12 @@
 <div [ngClass]="{ 'app': !smallScreen, 'app-sm': smallScreen } ">
   <div class="section-content">
-    <button *ngIf="!smallScreen && (productsp && productsp.includes('create'))" mat-fab color="primary"
-      class="fab mat-elevation-z10" (click)="newCostumer()">
-      <mat-icon>add</mat-icon><span class="extended-fab-button__text">Cliente</span>
-    </button>
+
     <div>
       <header class="module-header" [ngClass]="{'padding-25': !smallScreen, 'padding-15': smallScreen }"
         fxLayoutAlign="start center" fxLayout="row wrap">
         <h1 class="product-font ma-0 module-title">Productos</h1>
       </header>
-      <button mat-fab color="primary" class="fab mat-elevation-z10" (click)="newProduct()">
+      <button mat-fab color="primary" class="fab mat-elevation-z10" (click)="addNewProduct()">
         <mat-icon>add</mat-icon><span class="extended-fab-button__text">Producto</span>
       </button>
       <mat-divider></mat-divider>
@@ -19,11 +16,11 @@
         <div fxLayout="row wrap" fxLayoutAlign="start center" class="costumers-header">
           <h2 class="title1 product-font ma-0">Catálogo de Productos</h2>
           &nbsp;&nbsp;&nbsp;&nbsp;
-          <button *ngIf="smallScreen" class="new-button-sm" mat-icon-button (click)="newCostumer()">
+          <!-- <button *ngIf="smallScreen" class="new-button-sm" mat-icon-button (click)="addNewProduct()">
             <svg class="svg-24 svg-in-button" viewBox="0 0 24 24">
               <path fill="currentColor" d="M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z" />
             </svg>
-          </button>
+          </button> -->
 
           <span fxFlex></span>
           <mat-form-field appearance="outline" floatLabel="always" class="findinput">
@@ -60,19 +57,19 @@
 
             <ng-container matColumnDef="wholesale_price">
               <th mat-header-cell *matHeaderCellDef> Mayoristas </th>
-              <td mat-cell *matCellDef="let element"> {{element.wholesale_price}} </td>
+              <td mat-cell *matCellDef="let element"> Q. {{element.wholesale_price | number: '.2'}} </td>
             </ng-container>
             <ng-container matColumnDef="distributor_price">
               <th mat-header-cell *matHeaderCellDef> Distribuidor </th>
-              <td mat-cell *matCellDef="let element"> {{element.distributor_price}} </td>
+              <td mat-cell *matCellDef="let element"> Q. {{element.distributor_price | number: '.2'}} </td>
             </ng-container>
             <ng-container matColumnDef="retail_price">
               <th mat-header-cell *matHeaderCellDef> Minorista </th>
-              <td mat-cell *matCellDef="let element"> {{element.retail_price}} </td>
+              <td mat-cell *matCellDef="let element"> Q. {{element.retail_price | number: '.2'}} </td>
             </ng-container>
             <ng-container matColumnDef="cf_price">
               <th mat-header-cell *matHeaderCellDef> Consumidor final </th>
-              <td mat-cell *matCellDef="let element"> {{element.cf_price}} </td>
+              <td mat-cell *matCellDef="let element"> Q. {{element.cf_price | number: '.2'}} </td>
             </ng-container>
             <ng-container matColumnDef="options">
               <th mat-header-cell *matHeaderCellDef> </th>

@@ -20,6 +20,7 @@ import { NewProductComponent } from '../new-product/new-product.component';
 import { BrandService } from '../../../../../core/services/httpServices/brand.service';
 import { ToastyService } from '../../../../../core/services/internal/toasty.service';
 import { ConfirmationDialogComponent } from 'src/app/pages/shared-components/confirmation-dialog/confirmation-dialog.component';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-products',
@@ -57,7 +58,8 @@ export class ProductsComponent implements OnInit, AfterContentInit, OnDestroy {
     public dialog: MatDialog,
     public productService: ProductService,
     public brandService: BrandService,
-    public toasty: ToastyService
+    public toasty: ToastyService,
+    public router: Router
   ) {}
 
   ngOnInit(): void {
@@ -109,50 +111,54 @@ export class ProductsComponent implements OnInit, AfterContentInit, OnDestroy {
     this.dataSource.filter = filterValue.trim().toLowerCase();
   }
 
-  newProduct(): void {
-    const dialogRef = this.dialog.open(NewProductComponent, {
-      width: this.smallScreen ? '100%' : '800px',
-      minHeight: '78vh',
-      maxHeight: '78vh',
-      disableClose: true,
-      panelClass: ['farmacia-dialog', 'farmacia'],
-    });
+  addNewProduct(): void {
+    console.log('hello');
+    this.router.navigate(['admin/adminProducts/product', 'new']);
+  }
 
-    dialogRef.afterClosed().subscribe((result) => {
-      console.log(result);
-      if (result !== undefined) {
-        const FILTERS = {
-          page: this.currentPage,
-        };
-        this.productService.loadData(FILTERS);
-      }
-    });
+  newProduct(): void {
+    // const dialogRef = this.dialog.open(NewProductComponent, {
+    //   width: this.smallScreen ? '100%' : '850px',
+    //   minHeight: '78vh',
+    //   maxHeight: '78vh',
+    //   disableClose: true,
+    //   panelClass: ['farmacia-dialog', 'farmacia'],
+    // });
+    // dialogRef.afterClosed().subscribe((result) => {
+    //   console.log(result);
+    //   if (result !== undefined) {
+    //     const FILTERS = {
+    //       page: this.currentPage,
+    //     };
+    //     this.productService.loadData(FILTERS);
+    //   }
+    // });
   }
 
   editProduct(product: ProductItem): void {
-    const dialogRef = this.dialog.open(NewProductComponent, {
-      width: this.smallScreen ? '100%' : '800px',
-      data: { product },
-      disableClose: true,
-      panelClass: ['farmacia-dialog', 'farmacia'],
-    });
-
-    dialogRef.afterClosed().subscribe((result) => {
-      console.log(result);
-      if (result !== undefined) {
-        const FILTERS = {
-          page: this.currentPage,
-        };
-        this.productService.loadData(FILTERS);
-      }
-    });
+    // const dialogRef = this.dialog.open(NewProductComponent, {
+    //   width: this.smallScreen ? '100%' : '800px',
+    //   height: '200px',
+    //   data: { product },
+    //   disableClose: true,
+    //   panelClass: ['farmacia-dialog', 'farmacia'],
+    // });
+    // dialogRef.afterClosed().subscribe((result) => {
+    //   console.log(result);
+    //   if (result !== undefined) {
+    //     const FILTERS = {
+    //       page: this.currentPage,
+    //     };
+    //     this.productService.loadData(FILTERS);
+    //   }
+    // });
   }
 
   delProduct(product: ProductItem): void {
     const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
       width: '350px',
       data: {
-        title: 'Eliminar Orden',
+        title: 'Eliminar Producto',
         message:
           '¿Confirma que desea eliminar el producto  ' +
           product.description +

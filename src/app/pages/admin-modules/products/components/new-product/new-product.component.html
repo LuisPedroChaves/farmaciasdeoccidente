@@ -1,4 +1,26 @@
-<div class="farmacia">
+<div class="module-container" data-simplebar>
+    <div class="new-header" fxLayout="row wrap" fxLayoutAlign="start center">
+        <button mat-icon-button class="close-button" [routerLink]="'/admin/adminProducts'">
+            <mat-icon>close</mat-icon>
+        </button>
+        <h2 color="accent" class="ma-0 info-row T">Nuevo Producto</h2>
+    </div>
+    <div class="container-form">
+        <div class="job-card mat-elevation-z2" fxLayout="row wrap" fxLayoutAlign="start center">
+            <div fxFlex="100" fxLayout="row wrap" class="cover"
+                style="background-image: url('assets/images/covers/Psychology.jpg');">
+                <span fxFlex></span>
+            </div>
+            <br>
+            <div fxFlex="100" fxLayout="column wrap">
+                <app-product-form></app-product-form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- <div>
     <header fxLayout="row wrap" fxLayoutAlign="center center" class="header">
         <h2 style="margin: 0;" class="h2">Nuevo Producto</h2>
         <span fxFlex></span>
@@ -16,41 +38,31 @@
                     </mat-icon>
                 </div>
                 <div fxFlex fxLayout="row wrap">
-                    <div fxFlex="80%" fxFlex.xs="100%" class="inputpadding">
+                    <div fxFlex="50%" fxFlex.xs="100%" class="inputpadding">
                         <mat-form-field appearance="outline" color="primary" class="width-all">
                             <mat-label>Codigo</mat-label>
                             <input formControlName="code" type="text" matInput
                                 placeholder="Ingrese el codigo del producto">
                         </mat-form-field>
                     </div>
-                </div>
-                <div fxFlex="20px"></div>
+                    <div fxFlex="50%" fxFlex.xs="100%" class="inputpadding">
 
-                <div fxFlex="50px" fxHide.xs>
-                    <mat-icon color="accent" class="material-icons-outlined grayicon">bookmark</mat-icon>
-                </div>
-                <div fxFlex fxLayout="row wrap">
-                    <div fxFlex="80%" fxFlex.xs="100%" class="inputpadding">
                         <mat-form-field appearance="outline" color="primary" class="width-all">
                             <mat-label>Marca</mat-label>
-                            <!-- <input type="text" (ngModelChange)="findThis($event)" placeholder="Ingrese una marca" -->
                             <input type="text" placeholder="Ingrese una marca" aria-label="text" matInput
                                 formControlName="brand" [matAutocomplete]="auto">
                             <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete">
-                                <mat-option *ngFor="let option of filteredOptions | async" [value]="option._id">
+                                <mat-option *ngFor="let option of filteredOptions | async" [value]="option.name">
                                     <span>{{option.name}}</span>
                                 </mat-option>
                             </mat-autocomplete>
                         </mat-form-field>
                     </div>
-
                 </div>
-            </div>
-            <div fxLayout="row wrap" fxLayoutAlign="start center" style="margin-top: 8px;">
                 <div fxFlex="50px"></div>
 
-                <div fxFlex="50px"></div>
             </div>
+
             <div fxLayout="row wrap" fxLayoutAlign="start center" style="margin-top: 8px;">
                 <div fxFlex="50px"></div>
                 <div fxFlex="50px" fxHide.xs>
@@ -76,7 +88,7 @@
                     </mat-icon>
                 </div>
                 <div fxFlex fxLayout="row wrap">
-                    <div fxFlex="33%" fxFlex.xs="100%" class="inputpadding">
+                    <div fxFlex="25%" fxFlex.xs="100%" class="inputpadding">
                         <mat-form-field appearance="outline" color="primary" class="width-all">
                             <mat-label>Precio Al Por Mayor</mat-label>
                             <span matPrefix><b>Q.</b></span>
@@ -84,7 +96,7 @@
                                 placeholder="Ingrese el precio al por mayor">
                         </mat-form-field>
                     </div>
-                    <div fxFlex="33%" fxFlex.xs="100%" class="inputpadding">
+                    <div fxFlex="25%" fxFlex.xs="100%" class="inputpadding">
                         <mat-form-field appearance="outline" color="primary" class="width-all">
                             <mat-label>Precio de Distribuidor</mat-label>
                             <span matPrefix><b>Q.</b></span>
@@ -92,12 +104,20 @@
                                 placeholder="Ingrese el precio para Distribuidor">
                         </mat-form-field>
                     </div>
-                    <div fxFlex="33%" fxFlex.xs="100%" class="inputpadding">
+                    <div fxFlex="25%" fxFlex.xs="100%" class="inputpadding">
                         <mat-form-field appearance="outline" color="primary" class="width-all">
                             <mat-label>Precio Al Por Menor</mat-label>
                             <span matPrefix><b>Q.</b></span>
                             <input formControlName="retail_price" type="text" matInput
                                 placeholder="Ingrese el precio al por menor">
+                        </mat-form-field>
+                    </div>
+                    <div fxFlex="25%" fxFlex.xs="100%" class="inputpadding">
+                        <mat-form-field appearance="outline" color="primary" class="width-all">
+                            <mat-label>Precio para CF</mat-label>
+                            <span matPrefix><b>Q.</b></span>
+                            <input formControlName="cf_price" type="text" matInput
+                                placeholder="Ingrese pra Consumidor Final">
                         </mat-form-field>
                     </div>
                 </div>
@@ -119,4 +139,4 @@
         </button>
         <mat-progress-spinner *ngIf="loading" mode="indeterminate" diameter="30" color="warn"></mat-progress-spinner>
     </div>
-</div>
+</div> -->
