@@ -1,0 +1,56 @@
+.section-content {
+    height: calc(100%);
+    background-color: white;
+}
+
+.padding-25 {
+    padding: 25px;
+}
+
+.my-container {
+    width: 100%;
+    height: calc(100vh - 134px) !important;
+}
+
+.padding-15 {
+    padding: 1s5px;
+}
+
+
+table {
+    width: 100%;
+}
+
+tr.example-detail-row {
+    height: 0;
+}
+
+tr.example-element-row:not(.example-expanded-row):hover {
+    background: whitesmoke;
+    border: none !important;
+}
+
+tr.example-element-row:not(.example-expanded-row):active {
+    background: #efefef;
+    border: none !important;
+}
+
+.example-element-row td {
+    border-bottom-width: 0;
+}
+
+.costumers-header {
+    padding: 15px 15px;
+}
+
+.dateinput {
+    width: 100px;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    margin-left: 5px;
+    margin-right: 5px;
+    padding: 5px;
+}
+
+.allspace {
+    height: calc(100vh - 200px);
+}

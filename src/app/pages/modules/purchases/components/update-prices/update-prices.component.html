@@ -1,0 +1,222 @@
+<div fxFlex fxLayout="column" class="section-content">
+  <div fxLayout="row">
+    <header class="module-header p-10" [ngClass]="{'padding-25': !smallScreen, 'padding-15': smallScreen }"
+      fxLayoutAlign="start center" fxLayout="row wrap">
+      <button mat-icon-button class="close-button" [routerLink]="'/purchases'">
+        <mat-icon>close</mat-icon>
+      </button>
+      <h2 color="accent" class="ma-0 info-row T">Actualizador de precios</h2>
+    </header>
+  </div>
+  <div fxFlex fxLayout="row">
+    <div fxFlex fxFlex.xs="100%" class="section">
+      <div class="card mat-elevation-z2 my-container" data-simplebar>
+        <div class="section" fxLayout="row wrap">
+          <h2 color="primary" class="product-font ma-0">Factura no. 2568</h2>
+          <div fxFlex></div>
+          <h4 color="primary" class="product-font ma-0">Fecha: 25/07/2021</h4>
+        </div>
+        <div class="section" fxLayout="row wrap">
+          <div class="header" fxFlex="100" fxLayout="row wrap">
+            <div fxFlex="70%" class="ellipsis-text cell header-cell">Producto</div>
+            <div fxFlex></div>
+            <div fxFlex class="ellipsis-text cell header-cell">
+              <mat-icon class="material-icons-outlined cursor-pointer">swap_vert</mat-icon>
+            </div>
+            <div fxFlex="nogrow" class="ellipsis-text cell header-cell">
+            </div>
+          </div>
+          <div fxFlex="100" fxLayout="row wrap" *ngIf="newPurchase.products.length > 0">
+            <div class="row" *ngFor="let p of newPurchase.products; let i = index" fxFlex="100"
+              fxLayoutAlign="start center" fxLayout="row wrap">
+              <div fxFlex="70%" class="ellipsis-text cell">{{p._product.name}}</div>
+              <div fxFlex></div>
+              <div fxFlex class="ellipsis-text cell">{{ 3}}%</div>
+              <div fxFlex="nogrow" class="ellipsis-text cell">
+                <mat-icon class="material-icons-outlined cursor-pointer">update</mat-icon>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div fxFlex fxFlex.xs="100%" class="section">
+      <div class="card mat-elevation-z2">
+        <div class="section" fxLayout="row">
+          <div fxFlex="70%" fxLayout="column">
+            <h2 color="primary" class="product-font ma-0">12232 <br> PEDIASURE PLUS TRIPLE VAINILLA x 8 OZ Env Plastico
+            </h2>
+            <h3 color="primary" class="product-font ma-0">ABBOTT NUTRI (Cohen) </h3>
+            <div fxFlex></div>
+          </div>
+          <div fxFlex fxLayout="column">
+            <img src="https://m.media-amazon.com/images/I/71-f3JE5F8L._SX425_.jpg" alt="">
+          </div>
+        </div>
+        <div class="my-container2" data-simplebar>
+          <div class="section" fxLayout="row wrap">
+            <mat-card class="card mat-elevation-z4">
+              <mat-card-header>
+                <div mat-card-avatar>
+                  <mat-icon class="material-icons-outlined">category</mat-icon>
+                </div>
+                <mat-card-title>Unidad</mat-card-title>
+              </mat-card-header>
+              <mat-card-content>
+                <div fxFlex fxLayout="row wrap">
+                  <div fxFlex="25%" class="inputpadding">
+                    <mat-form-field appearance="outline" color="primary" class="width-all">
+                      <mat-label>Mayorista</mat-label>
+                      <input type="number" matInput placeholder="0.00" value="125.00">
+                    </mat-form-field>
+                  </div>
+                  <div fxFlex="25%" class="inputpadding">
+                    <mat-form-field appearance="outline" color="primary" class="width-all">
+                      <mat-label>Distribuidor</mat-label>
+                      <input type="number" matInput placeholder="0.00" value="130.00">
+                    </mat-form-field>
+                  </div>
+                  <div fxFlex="25%" class="inputpadding">
+                    <mat-form-field appearance="outline" color="primary" class="width-all">
+                      <mat-label>Minorista</mat-label>
+                      <input type="number" matInput placeholder="0.00" value="140.00">
+                    </mat-form-field>
+                  </div>
+                  <div fxFlex="25%" class="inputpadding">
+                    <mat-form-field appearance="outline" color="primary" class="width-all">
+                      <mat-label>Consumidor Final</mat-label>
+                      <input type="number" matInput placeholder="0.00" value="125.00">
+                    </mat-form-field>
+                  </div>
+                </div>
+              </mat-card-content>
+            </mat-card>
+          </div>
+          <div class="section" fxLayout="row wrap">
+            <mat-card class="card mat-elevation-z4">
+              <mat-card-header>
+                <div mat-card-avatar>
+                  <mat-icon class="material-icons-outlined">category</mat-icon>
+                </div>
+                <mat-card-title>Caja</mat-card-title>
+              </mat-card-header>
+              <mat-card-content>
+                <div fxFlex fxLayout="row wrap">
+                  <div fxFlex="25%" class="inputpadding">
+                    <mat-form-field appearance="outline" color="primary" class="width-all">
+                      <mat-label>Mayorista</mat-label>
+                      <input type="number" matInput placeholder="0.00" value="125.00">
+                    </mat-form-field>
+                  </div>
+                  <div fxFlex="25%" class="inputpadding">
+                    <mat-form-field appearance="outline" color="primary" class="width-all">
+                      <mat-label>Distribuidor</mat-label>
+                      <input type="number" matInput placeholder="0.00" value="130.00">
+                    </mat-form-field>
+                  </div>
+                  <div fxFlex="25%" class="inputpadding">
+                    <mat-form-field appearance="outline" color="primary" class="width-all">
+                      <mat-label>Minorista</mat-label>
+                      <input type="number" matInput placeholder="0.00" value="140.00">
+                    </mat-form-field>
+                  </div>
+                  <div fxFlex="25%" class="inputpadding">
+                    <mat-form-field appearance="outline" color="primary" class="width-all">
+                      <mat-label>Consumidor Final</mat-label>
+                      <input type="number" matInput placeholder="0.00" value="125.00">
+                    </mat-form-field>
+                  </div>
+                </div>
+              </mat-card-content>
+            </mat-card>
+          </div>
+          <div class="section" fxLayout="row wrap">
+            <mat-card class="card mat-elevation-z4">
+              <mat-card-header>
+                <div mat-card-avatar>
+                  <mat-icon class="material-icons-outlined">category</mat-icon>
+                </div>
+                <mat-card-title>Otra</mat-card-title>
+              </mat-card-header>
+              <mat-card-content>
+                <div fxFlex fxLayout="row wrap">
+                  <div fxFlex="25%" class="inputpadding">
+                    <mat-form-field appearance="outline" color="primary" class="width-all">
+                      <mat-label>Mayorista</mat-label>
+                      <input type="number" matInput placeholder="0.00" value="125.00">
+                    </mat-form-field>
+                  </div>
+                  <div fxFlex="25%" class="inputpadding">
+                    <mat-form-field appearance="outline" color="primary" class="width-all">
+                      <mat-label>Distribuidor</mat-label>
+                      <input type="number" matInput placeholder="0.00" value="130.00">
+                    </mat-form-field>
+                  </div>
+                  <div fxFlex="25%" class="inputpadding">
+                    <mat-form-field appearance="outline" color="primary" class="width-all">
+                      <mat-label>Minorista</mat-label>
+                      <input type="number" matInput placeholder="0.00" value="140.00">
+                    </mat-form-field>
+                  </div>
+                  <div fxFlex="25%" class="inputpadding">
+                    <mat-form-field appearance="outline" color="primary" class="width-all">
+                      <mat-label>Consumidor Final</mat-label>
+                      <input type="number" matInput placeholder="0.00" value="125.00">
+                    </mat-form-field>
+                  </div>
+                </div>
+              </mat-card-content>
+            </mat-card>
+          </div>
+          <div class="section" fxLayout="row wrap">
+            <mat-card class="card mat-elevation-z4">
+              <mat-card-header>
+                <div mat-card-avatar>
+                  <mat-icon class="material-icons-outlined">category</mat-icon>
+                </div>
+                <mat-card-title>Otra</mat-card-title>
+              </mat-card-header>
+              <mat-card-content>
+                <div fxFlex fxLayout="row wrap">
+                  <div fxFlex="25%" class="inputpadding">
+                    <mat-form-field appearance="outline" color="primary" class="width-all">
+                      <mat-label>Mayorista</mat-label>
+                      <input type="number" matInput placeholder="0.00" value="125.00">
+                    </mat-form-field>
+                  </div>
+                  <div fxFlex="25%" class="inputpadding">
+                    <mat-form-field appearance="outline" color="primary" class="width-all">
+                      <mat-label>Distribuidor</mat-label>
+                      <input type="number" matInput placeholder="0.00" value="130.00">
+                    </mat-form-field>
+                  </div>
+                  <div fxFlex="25%" class="inputpadding">
+                    <mat-form-field appearance="outline" color="primary" class="width-all">
+                      <mat-label>Minorista</mat-label>
+                      <input type="number" matInput placeholder="0.00" value="140.00">
+                    </mat-form-field>
+                  </div>
+                  <div fxFlex="25%" class="inputpadding">
+                    <mat-form-field appearance="outline" color="primary" class="width-all">
+                      <mat-label>Consumidor Final</mat-label>
+                      <input type="number" matInput placeholder="0.00" value="125.00">
+                    </mat-form-field>
+                  </div>
+                </div>
+              </mat-card-content>
+            </mat-card>
+          </div>
+        </div>
+        <div class="section" fxLayout="row wrap">
+          <button mat-raised-button class="close-button" style="color:brown;">
+            CANCELAR
+          </button>
+          <div fxFlex></div>
+          <button mat-raised-button color="warn" class="close-button">
+            GUARDAR PRODUCTO
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

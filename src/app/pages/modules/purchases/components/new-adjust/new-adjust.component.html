@@ -1,0 +1,45 @@
+<div class="farmacia">
+    <header fxLayout="row wrap" fxLayoutAlign="center center" class="header">
+      <h2 style="margin: 0;" class="h2">FACTURA NO. 2759</h2>
+      <span fxFlex></span>
+      <button mat-icon-button (click)="dialogRef.close()">
+        <mat-icon>close</mat-icon>
+      </button>
+    </header>
+    <h2 class="product-font ma-0">Ingreso de ajustes</h2>
+      <br>
+    <mat-divider></mat-divider>
+    <div  fxLayout="row wrap">
+      <div class="headerTable" fxFlex fxLayout="row wrap">
+        <div fxFlex class="ellipsis-text cell header-cell">Cantidad</div>
+        <div fxFlex="70%" class="ellipsis-text cell header-cell">Producto</div>
+        <div fxFlex class="ellipsis-text cell header-cell">Costo Unitario (Q)</div>
+      </div>
+      <div fxLayout="row wrap" class="clientspace"  *ngIf="newPurchase.products.length > 0" data-simplebar>
+        <div class="row" *ngFor="let p of newPurchase.products; let i = index" fxFlex="100" fxLayoutAlign="start center"
+          fxLayout="row wrap">
+          <div fxFlex  class="cell">
+            <input type="number"  [ngModelOptions]="{standalone: true}" class="cantinput" value="0">
+          </div>
+          <div fxFlex="70%" class="ellipsis-text cell">{{p._product.name}}</div>
+          <div fxFlex class="ellipsis-text cell">{{p.cost | number: '.2'}}</div>
+        </div>
+      </div>
+      <div class="inputpadding" fxFlex fxLayout="row wrap">
+        <mat-form-field appearance="outline" color="primary" class="width-all">
+          <mat-label>Detalles</mat-label>
+          <textarea matInput rows="2"  placeholder="Observaciones..."></textarea>
+        </mat-form-field>
+      </div>
+    </div>
+    <mat-divider></mat-divider>
+    <div fxLayout="row" class="header">
+      <button mat-button (click)="dialogRef.close()" class="info-row">
+        CANCELAR
+    </button>
+    <span fxFlex></span>
+      <button mat-button color="accent" class="info-row">
+        GUARDAR
+      </button>
+    </div>
+  </div>

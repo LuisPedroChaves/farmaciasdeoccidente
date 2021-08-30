@@ -10,11 +10,13 @@ import { IndexComponent } from './components/index/index.component';
 import { CurrentPurchasesComponent } from './components/current-purchases/current-purchases.component';
 import { DeletedPurchasesComponent } from './components/deleted-purchases/deleted-purchases.component';
 import { DetailsPurchaseComponent } from './components/details-purchase/details-purchase.component';
+import { UpdatePricesComponent } from './components/update-prices/update-prices.component';
+import { NewAdjustComponent } from './components/new-adjust/new-adjust.component';
 
 
 
 @NgModule({
-  declarations: [NewPurchaseComponent, IndexComponent, CurrentPurchasesComponent, DeletedPurchasesComponent, DetailsPurchaseComponent],
+  declarations: [NewPurchaseComponent, IndexComponent, CurrentPurchasesComponent, DeletedPurchasesComponent, DetailsPurchaseComponent, UpdatePricesComponent, NewAdjustComponent],
   imports: [
     CommonModule,
     RouterModule.forChild(PurchasesRoutes),
