@@ -5,6 +5,11 @@ $blue-2: #045195;
     background-color: white;
 }
 
+.my-container {
+    width: 100%;
+    height: calc(100vh - 200px) !important;
+}
+
 .padding-25 {
     padding: 25px;
 }
@@ -65,7 +70,7 @@ tr.example-element-row:not(.example-expanded-row):active {
 }
 
 .costumers-header {
-    padding: 15px 15px;
+    padding: 10px 10px;
 }
 
 .fab {

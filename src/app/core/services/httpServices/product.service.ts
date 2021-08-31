@@ -1,55 +1,35 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, Subject } from 'rxjs';
-import { IDataService } from '../config/i-data-service';
-import { ApiConfigService } from '../config/api-config.service';
+
+import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
+
+import { ApiConfigService } from '../config/api-config.service';
 import { ProductItem } from '../../models/Product';
 
 @Injectable({
   providedIn: 'root',
 })
-export class ProductService implements IDataService<ProductItem[]> {
-  public productList: ProductItem[];
-  productSubject = new Subject<ProductItem[]>();
+export class ProductService {
 
   constructor(
     public http: HttpClient,
     public apiConfigService: ApiConfigService
-  ) {}
+  ) { }
 
-  loadData({ page }) {
-    this.http
-      .get(this.apiConfigService.API_PRODUCT + '?page=' + page + '&size=20')
+
+  loadData(
+    pageNumber = 1, pageSize = 20): Observable<ProductItem[]> {
+
+    return this.http
+      .get(this.apiConfigService.API_PRODUCT, {
+        params: new HttpParams()
+          .set('page', pageNumber.toString())
+          .set('size', pageSize.toString())
+      })
       .pipe(
-        map((response: any) => {
-          this.productList = response.products;
-          this.productSubject.next(this.productList);
-        })
+        map((response: any) => response.products)
       )
-      .subscribe();
-  }
-
-  getData(filter: any) {
-    const { page } = filter;
-    if (this.productList === undefined) {
-      this.loadData({ page });
-    } else {
-      this.productSubject.next(this.productList);
-    }
-  }
-
-  readData(): Observable<ProductItem[]> {
-    return this.productSubject.asObservable();
-  }
-
-  setData() {}
-
-  invalidateData() {
-    if (this.productList === undefined) {
-    } else {
-      delete this.productList;
-    }
   }
 
   createProduct(product: ProductItem): Observable<any> {
