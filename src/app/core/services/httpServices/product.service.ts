@@ -12,6 +12,8 @@ import { ProductItem } from '../../models/Product';
 })
 export class ProductService {
 
+  TOTAL_PRODUCTS = 0;
+
   constructor(
     public http: HttpClient,
     public apiConfigService: ApiConfigService
@@ -19,16 +21,23 @@ export class ProductService {
 
 
   loadData(
-    pageNumber = 1, pageSize = 20): Observable<ProductItem[]> {
+    pageNumber: number = 1,
+    pageSize: number = 20,
+    search: string = ''
+    ): Observable<ProductItem[]> {
 
     return this.http
       .get(this.apiConfigService.API_PRODUCT, {
         params: new HttpParams()
           .set('page', pageNumber.toString())
           .set('size', pageSize.toString())
+          .set('search', search.toString())
       })
       .pipe(
-        map((response: any) => response.products)
+        map((response: any) =>{
+          this.TOTAL_PRODUCTS = response.TOTAL;
+          return  response.products;
+        })
       )
   }
 

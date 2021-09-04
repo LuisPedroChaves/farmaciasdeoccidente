@@ -1,6 +1,7 @@
 import {
   AfterViewInit,
   Component,
+  ElementRef,
   OnDestroy,
   OnInit,
   ViewChild,
@@ -8,8 +9,8 @@ import {
 import { Router } from '@angular/router';
 import { MatPaginator } from '@angular/material/paginator';
 
-import { Subscription } from 'rxjs';
-import { filter, tap } from 'rxjs/operators';
+import { fromEvent, Subscription } from 'rxjs';
+import { debounceTime, distinctUntilChanged, filter, tap } from 'rxjs/operators';
 import { Store } from '@ngrx/store';
 
 import { AppState } from 'src/app/core/store/app.reducer';
@@ -25,7 +26,7 @@ import { ToastyService } from '../../../../../core/services/internal/toasty.serv
 export class ProductsComponent implements OnInit, OnDestroy, AfterViewInit {
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
-
+  @ViewChild('search') search: ElementRef<HTMLInputElement>;
   smallScreen = window.innerWidth < 960 ? true : false;
 
   sessionsubscription: Subscription;
@@ -34,6 +35,7 @@ export class ProductsComponent implements OnInit, OnDestroy, AfterViewInit {
   dataSource: ProductsDataSource;
   columns = [
     'code',
+    'barcode',
     'description',
     '_brand',
     'wholesale_price',
@@ -65,7 +67,7 @@ export class ProductsComponent implements OnInit, OnDestroy, AfterViewInit {
       });
 
     this.dataSource = new ProductsDataSource(this.productService);
-    this.dataSource.loadProducts(this.currentPage, 20);
+    this.dataSource.loadProducts(this.currentPage, 10, '');
   }
 
   ngOnDestroy(): void {
@@ -73,17 +75,31 @@ export class ProductsComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   ngAfterViewInit(): void {
+    // server-side search
+    fromEvent(this.search.nativeElement, 'keyup')
+      .pipe(
+        debounceTime(500),
+        distinctUntilChanged(),
+        tap(() => {
+          this.paginator.pageIndex = 0;
+          this.loadProductsPage();
+        })
+      )
+      .subscribe();
+
     this.paginator.page
       .pipe(
-        tap(() => this.loadLessonsPage())
+        tap(() => this.loadProductsPage())
       )
       .subscribe();
   }
 
-  loadLessonsPage() {
+  loadProductsPage() {
     this.dataSource.loadProducts(
       this.paginator.pageIndex,
-      this.paginator.pageSize);
+      this.paginator.pageSize,
+      this.search.nativeElement.value,
+      );
   }
 
   addNewProduct(): void {

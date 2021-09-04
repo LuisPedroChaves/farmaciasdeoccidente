@@ -19,12 +19,14 @@ export class ProductsDataSource implements DataSource<ProductItem> {
 
     loadProducts(
         pageIndex: number,
-        pageSize: number) {
+        pageSize: number,
+        search: string
+        ) {
 
         this.loadingSubject.next(true);
 
         this.productService
-            .loadData(pageIndex, pageSize)
+            .loadData(pageIndex, pageSize, search)
             .pipe(
                 catchError(() => of([])),
                 finalize(() => this.loadingSubject.next(false))
