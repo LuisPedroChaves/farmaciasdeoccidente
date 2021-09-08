@@ -44,7 +44,7 @@ export class ProductsComponent implements OnInit, OnDestroy, AfterViewInit {
     'cf_price',
     'options',
   ];
-  currentPage = 1;
+  currentPage = 0;
 
   constructor(
     public store: Store<AppState>,
