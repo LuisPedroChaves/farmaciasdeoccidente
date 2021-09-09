@@ -54,5 +54,8 @@ export class ApiConfigService {
   // Brand
   public API_BRAND = this.API_URL + '/brand';
 
+  // Brand
+  public API_PROVIDER = this.API_URL + '/provider';
+
   /* #endregion */
 }
