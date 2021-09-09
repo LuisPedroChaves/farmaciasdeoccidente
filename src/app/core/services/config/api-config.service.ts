@@ -54,5 +54,11 @@ export class ApiConfigService {
   // Brand
   public API_BRAND = this.API_URL + '/brand';
 
+  // Symptom
+  public API_SYMPTOM = this.API_URL + '/symptoms';
+
+  // Substance
+  public API_SUBSTANCE = this.API_URL + '/substance';
+
   /* #endregion */
 }

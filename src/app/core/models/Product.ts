@@ -14,18 +14,18 @@ export interface ProductItem {
   retail_price: number;
   cf_price: number;
   presentations: ProductPresentationsItem[];
-  substances: ProductSubstancesItem[],
+  substances: ProductSubstancesItem[];
   symptoms: ProductSymptomsItem[];
-  exempt: boolean,
-  discontinued: boolean,
+  exempt: boolean;
+  discontinued: boolean;
 }
 
 export interface ProductPresentationsItem {
-  name: string,
-  wholesale_price: number,
-  distributor_price: number,
-  retail_price: number,
-  cf_price: number,
+  name: string;
+  wholesale_price: number;
+  distributor_price: number;
+  retail_price: number;
+  cf_price: number;
   quantity: number;
   commission: number;
 }

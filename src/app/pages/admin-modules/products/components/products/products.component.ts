@@ -10,7 +10,12 @@ import { Router } from '@angular/router';
 import { MatPaginator } from '@angular/material/paginator';
 
 import { fromEvent, Subscription } from 'rxjs';
-import { debounceTime, distinctUntilChanged, filter, tap } from 'rxjs/operators';
+import {
+  debounceTime,
+  distinctUntilChanged,
+  filter,
+  tap,
+} from 'rxjs/operators';
 import { Store } from '@ngrx/store';
 
 import { AppState } from 'src/app/core/store/app.reducer';
@@ -24,7 +29,6 @@ import { ToastyService } from '../../../../../core/services/internal/toasty.serv
   styleUrls: ['./products.component.scss'],
 })
 export class ProductsComponent implements OnInit, OnDestroy, AfterViewInit {
-
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild('search') search: ElementRef<HTMLInputElement>;
   smallScreen = window.innerWidth < 960 ? true : false;
@@ -51,7 +55,7 @@ export class ProductsComponent implements OnInit, OnDestroy, AfterViewInit {
     public productService: ProductService,
     public toasty: ToastyService,
     public router: Router
-  ) { }
+  ) {}
 
   ngOnInit(): void {
     this.sessionsubscription = this.store
@@ -68,6 +72,7 @@ export class ProductsComponent implements OnInit, OnDestroy, AfterViewInit {
 
     this.dataSource = new ProductsDataSource(this.productService);
     this.dataSource.loadProducts(this.currentPage, 10, '');
+    console.log(this.dataSource);
   }
 
   ngOnDestroy(): void {
@@ -87,23 +92,18 @@ export class ProductsComponent implements OnInit, OnDestroy, AfterViewInit {
       )
       .subscribe();
 
-    this.paginator.page
-      .pipe(
-        tap(() => this.loadProductsPage())
-      )
-      .subscribe();
+    this.paginator.page.pipe(tap(() => this.loadProductsPage())).subscribe();
   }
 
-  loadProductsPage() {
+  loadProductsPage(): void {
     this.dataSource.loadProducts(
       this.paginator.pageIndex,
       this.paginator.pageSize,
-      this.search.nativeElement.value,
-      );
+      this.search.nativeElement.value
+    );
   }
 
   addNewProduct(): void {
     this.router.navigate(['admin/adminProducts/product', 'new']);
   }
-
 }
