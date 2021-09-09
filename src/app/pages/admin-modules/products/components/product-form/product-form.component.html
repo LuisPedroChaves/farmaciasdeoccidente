@@ -13,17 +13,9 @@
                 </mat-icon>
             </div>
             <div fxFlex fxLayout="row wrap">
-                <!-- Internal Code -->
-                <div fxFlex="25%" fxFlex.xs="100%" class="inputpadding">
-                    <mat-form-field appearance="outline" color="primary" class="width-all">
-                        <mat-label>Código</mat-label>
-                        <input formControlName="code" type="text" matInput placeholder="Ingrese el codigo del producto">
-                    </mat-form-field>
-                </div>
-                <!-- END Internal Code -->
 
                 <!-- BarCode -->
-                <div fxFlex="25%" fxFlex.xs="100%" class="inputpadding">
+                <div fxFlex="50%" fxFlex.xs="100%" class="inputpadding">
                     <mat-form-field appearance="outline" color="primary" class="width-all">
                         <mat-label>Código de Barras</mat-label>
                         <input formControlName="code" type="text" matInput placeholder="Ingrese el codigo del producto">
@@ -34,9 +26,9 @@
                 <div fxFlex="50%" fxFlex.xs="100%" class="inputpadding">
                     <mat-form-field appearance="outline" color="primary" class="width-all">
                         <mat-label>Laboratorio</mat-label>
-                        <input type="text" placeholder="Ingrese una marca" aria-label="text" matInput
-                            formControlName="brand" [matAutocomplete]="auto">
-                        <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete">
+                        <input type="text" placeholder="Ingrese un laboratorio" aria-label="text" matInput
+                            formControlName="brand" [matAutocomplete]="auto1">
+                        <mat-autocomplete id="brand" autoActiveFirstOption #auto1="matAutocomplete">
                             <mat-option *ngFor="let option of filteredOptions | async" [value]="option.name">
                                 <span>{{option.name}}</span>
                             </mat-option>
@@ -46,8 +38,8 @@
                 <!-- END Brand -->
             </div>
             <div fxFlex="50px"></div>
-
         </div>
+
         <!-- Description -->
         <div fxLayout="row wrap" fxLayoutAlign="start center" style="margin-top: 8px;">
             <div fxFlex="50px"></div>
@@ -56,16 +48,25 @@
                 </mat-icon>
             </div>
             <div fxFlex fxLayout="row wrap">
-                <div fxFlex="100%" class="inputpadding">
+                <div fxFlex="50%" class="inputpadding">
                     <mat-form-field appearance="outline" color="primary" class="width-all">
-                        <mat-label>Descripción</mat-label>
-                        <input formControlName="description" type="text" matInput placeholder="Añada una descripción">
+                        <mat-label>Nombre del Medicamento</mat-label>
+                        <input formControlName="description" type="text" matInput
+                            placeholder="Añada el Nombre del Medicamento">
+                    </mat-form-field>
+                </div>
+                <div fxFlex="50%" class="inputpadding">
+                    <mat-form-field appearance="outline" color="primary" class="width-all">
+                        <mat-label>Nombre Comercial</mat-label>
+                        <input formControlName="description" type="text" matInput
+                            placeholder="Añade el Nombre Comercial del Medicamento">
                     </mat-form-field>
                 </div>
                 <div fxFlex="100%" class="inputpadding">
                     <mat-form-field appearance="outline" color="primary" class="width-all">
                         <mat-label>Programa de Salud</mat-label>
-                        <input formControlName="description" type="text" matInput placeholder="Añada una descripción">
+                        <input formControlName="description" type="text" matInput
+                            placeholder="Añada un programa de Salud">
                     </mat-form-field>
                 </div>
             </div>
@@ -73,36 +74,58 @@
         </div>
         <!-- END Description -->
 
-
-
-
+        <!-- Max and Min -->
+        <div fxLayout="row wrap" fxLayoutAlign="start center" style="margin-top: 8px;">
+            <div fxFlex="50px"></div>
+            <div fxFlex="50px" fxHide.xs>
+                <mat-icon color="accent" class="material-icons-outlined grayicon">pin
+                </mat-icon>
+            </div>
+            <div fxFlex fxLayout="row wrap">
+                <div fxFlex="50%" class="inputpadding">
+                    <mat-form-field appearance="outline" color="primary" class="width-all">
+                        <mat-label>Minimo de Medicamentos</mat-label>
+                        <input formControlName="max" type="number" matInput placeholder="Minimo de Medicamentos">
+                    </mat-form-field>
+                </div>
+                <div fxFlex="50%" class="inputpadding">
+                    <mat-form-field appearance="outline" color="primary" class="width-all">
+                        <mat-label>Maximo de Medicamentos</mat-label>
+                        <input formControlName="min" type="number" matInput placeholder="Maximo de Medicamentos">
+                    </mat-form-field>
+                </div>
+            </div>
+            <div fxFlex="50px"></div>
+        </div>
+        <!-- END Max and Min -->
 
         <!-- Substances -->
-
         <div fxLayout="row wrap" fxLayoutAlign="start center" style="margin-top: 8px;">
             <div fxFlex="50px"></div>
             <div fxFlex="50px" fxHide.xs>
-                <mat-icon color="accent" class="material-icons-outlined grayicon">local_pharmacy
+                <mat-icon color="accent" class="material-icons-outlined grayicon">bloodtype
                 </mat-icon>
             </div>
             <div fxFlex fxLayout="row wrap">
                 <div fxFlex="100%" class="inputpadding">
-                    <mat-form-field appearance="outline" color="primary" class="width-all">
-                        <mat-label>Substancias</mat-label>
-                        <mat-chip-list #chipList aria-label="Fruit selection">
-                            <mat-chip *ngFor="let fruit of fruits" [selectable]="selectable" [removable]="removable"
-                                (removed)="remove(fruit)">
-                                {{fruit}}
+                    <mat-form-field appearance="outline" class="width-all">
+                        <mat-label>Sustancias</mat-label>
+                        <mat-chip-list #chipListSubstances>
+                            <mat-chip *ngFor="let substance of substances" [removable]="removable"
+                                (removed)="removeSubstance(substance)">
+                                {{substance}}
                                 <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
                             </mat-chip>
-                            <input placeholder="Añadir substancia..." #fruitInput [formControl]="fruitCtrl"
-                                [matAutocomplete]="auto" [matChipInputFor]="chipList"
+                            <input type="text" placeholder="Ingrese una sustancia" #substanceInput aria-label="text"
+                                matInput formControlName="substances" [matAutocomplete]="auto2"
+                                [matChipInputFor]="chipListSubstances"
                                 [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
-                                (matChipInputTokenEnd)="add($event)">
+                                (matChipInputTokenEnd)="addSubstance($event)">
                         </mat-chip-list>
-                        <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selected($event)">
-                            <mat-option *ngFor="let fruit of filteredFruits | async" [value]="fruit">
-                                {{fruit}}
+                        <mat-autocomplete id="substances" autoActiveFirstOption #auto2="matAutocomplete"
+                            (optionSelected)="selectedSubstance($event)">
+                            <mat-option *ngFor="let substance of filteredSubstances | async" [value]="substance.name">
+                                <span>{{substance.name}}</span>
                             </mat-option>
                         </mat-autocomplete>
                     </mat-form-field>
@@ -110,33 +133,36 @@
             </div>
             <div fxFlex="50px"></div>
         </div>
-        <!-- End Substances -->
-        <!-- Symptoms -->
+        <!-- END Substances -->
 
+
+        <!-- symptom -->
         <div fxLayout="row wrap" fxLayoutAlign="start center" style="margin-top: 8px;">
             <div fxFlex="50px"></div>
             <div fxFlex="50px" fxHide.xs>
-                <mat-icon color="accent" class="material-icons-outlined grayicon">healing
+                <mat-icon color="accent" class="material-icons-outlined grayicon">masks
                 </mat-icon>
             </div>
             <div fxFlex fxLayout="row wrap">
                 <div fxFlex="100%" class="inputpadding">
-                    <mat-form-field appearance="outline" color="primary" class="width-all">
+                    <mat-form-field appearance="outline" class="width-all">
                         <mat-label>Sintomas</mat-label>
-                        <mat-chip-list #chipList aria-label="Fruit selection">
-                            <mat-chip *ngFor="let fruit of symptoms" [selectable]="selectable" [removable]="removable"
-                                (removed)="remove(fruit)">
-                                {{fruit}}
+                        <mat-chip-list #chipListSymptoms>
+                            <mat-chip *ngFor="let symptom of symptoms" [removable]="removable"
+                                (removed)="removeSymptoms(symptom)">
+                                {{symptom}}
                                 <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
                             </mat-chip>
-                            <input placeholder="Añadir síntomas..." #fruitInput [formControl]="fruitCtrl"
-                                [matAutocomplete]="auto" [matChipInputFor]="chipList"
+                            <input type="text" placeholder="Ingrese un Simtoma" #symptomInput aria-label="text" matInput
+                                formControlName="symptoms" [matAutocomplete]="auto3"
+                                [matChipInputFor]="chipListSymptoms"
                                 [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
-                                (matChipInputTokenEnd)="add($event)">
+                                (matChipInputTokenEnd)="addSymptom($event)">
                         </mat-chip-list>
-                        <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selected($event)">
-                            <mat-option *ngFor="let fruit of filteredFruits | async" [value]="fruit">
-                                {{fruit}}
+                        <mat-autocomplete id="symptoms" autoActiveFirstOption #auto3="matAutocomplete"
+                            (optionSelected)="selectedSymptom($event)">
+                            <mat-option *ngFor="let symptom of filteredSymptoms | async" [value]="symptom.name">
+                                <span>{{symptom.name}}</span>
                             </mat-option>
                         </mat-autocomplete>
                     </mat-form-field>
@@ -144,7 +170,10 @@
             </div>
             <div fxFlex="50px"></div>
         </div>
-        <!-- End Symptoms -->
+        <!-- END symptom -->
+
+
+
         <!-- Payments -->
 
         <div fxLayout="row wrap" fxLayoutAlign="start center" style="margin-top: 8px;">
@@ -154,59 +183,72 @@
                 </mat-icon>
             </div>
             <div fxFlex fxLayout="row wrap">
-                <div fxFlex="100" fxLayout="row wrap">
-                    <div class="row" fxFlex="100" fxLayoutAlign="space-between" fxLayout="row wrap">
-                        <div fxFlex="18" class="cell">
+                <div formArrayName="presentations"
+                    *ngFor="let presentation of presentationsForm.controls; let i = index" fxFlex="100">
+                    <div [formGroupName]="i" class="row" fxFlex="100" fxLayoutAlign="space-between" fxLayout="row wrap">
+                        <div fxFlex="30" class="cell">
                             <mat-form-field appearance="outline" color="primary" class="width-all">
-                                <mat-label>Seleccione Presentación</mat-label>
-                                <mat-select name="food">
+                                <mat-label [attr.for]="'presentation' + i">Seleccione Presentación</mat-label>
+                                <mat-select [attr.id]="'presentation' + i" formControlName="presentation"
+                                    name="presentation">
                                     <mat-option *ngFor="let presentation of Presentations" [value]="presentation.value">
                                         {{presentation.viewValue}}
                                     </mat-option>
                                 </mat-select>
                             </mat-form-field>
                         </div>
-                        <div fxFlex="18" class=" cell">
+                        <div fxFlex="30" class="cell">
                             <mat-form-field appearance="outline" color="primary" class="width-all">
-                                <mat-label>Precio Al Por Mayor</mat-label>
+                                <mat-label [attr.for]="'wholesale_price' + i">Precio Al Por Mayor</mat-label>
                                 <span matPrefix><b>Q.</b></span>
-                                <input formControlName="wholesale_price" type="text" matInput
-                                    placeholder="Ingrese el precio al por mayor">
+                                <input [attr.id]="'wholesale_price' + i" formControlName="wholesale_price" type="number"
+                                    matInput placeholder="Ingrese el precio al por mayor">
                             </mat-form-field>
                         </div>
-                        <div fxFlex="18" class=" cell">
+                        <div fxFlex="30" class=" cell">
                             <mat-form-field appearance="outline" color="primary" class="width-all">
-                                <mat-label>Precio de Distribuidor</mat-label>
+                                <mat-label [attr.for]="'distributor_price' + i">Precio de Distribuidor</mat-label>
                                 <span matPrefix><b>Q.</b></span>
-                                <input formControlName="distributor_price" type="text" matInput
-                                    placeholder="Ingrese el precio para Distribuidor">
+                                <input [attr.id]="'distributor_price' + i" formControlName="distributor_price"
+                                    type="number" matInput placeholder="Ingrese el precio para Distribuidor">
                             </mat-form-field>
                         </div>
-                        <div fxFlex="18" class=" cell">
+                        <div fxFlex="30" class=" cell">
                             <mat-form-field appearance="outline" color="primary" class="width-all">
-                                <mat-label>Precio Al Por Menor</mat-label>
+                                <mat-label [attr.for]="'retail_price' + i">Precio Al Por Menor</mat-label>
                                 <span matPrefix><b>Q.</b></span>
-                                <input formControlName="retail_price" type="text" matInput
-                                    placeholder="Ingrese el precio al por menor">
+                                <input [attr.id]="'retail_price' + i" formControlName="retail_price" type="number"
+                                    matInput placeholder="Ingrese el precio al por menor">
                             </mat-form-field>
                         </div>
-                        <div fxFlex="18" class=" cell">
+                        <div fxFlex="30" class=" cell">
                             <mat-form-field appearance="outline" color="primary" class="width-all">
-                                <mat-label>Precio para CF</mat-label>
+                                <mat-label [attr.for]="'cf_price' + i">Precio para CF</mat-label>
                                 <span matPrefix><b>Q.</b></span>
-                                <input formControlName="cf_price" type="text" matInput
+                                <input [attr.id]="'cf_price' + i" formControlName="cf_price" type="number" matInput
                                     placeholder="Ingrese pra Consumidor Final">
                             </mat-form-field>
                         </div>
-
-                        <div fxFlex="nogrow" class="ellipsis-text cell">
-                            <mat-icon class="material-icons-outlined cursor-pointer">cancel</mat-icon>
+                        <div fxFlex="30" class=" cell">
+                            <mat-form-field appearance="outline" color="primary" class="width-all">
+                                <mat-label [attr.for]="'commission' + i">Comission por Vendedor</mat-label>
+                                <span matPrefix><b>Q.</b></span>
+                                <input [attr.id]="'commission' + i" formControlName="commission" type="number" matInput
+                                    placeholder="Comisión por Vendedor">
+                            </mat-form-field>
+                        </div>
+                        <div fxFlex="100" class=" cell">
+                            <mat-divider></mat-divider>
                         </div>
                     </div>
-                    <div class="row" fxFlex fxLayout="row wrap">
-                        <div fxFlex class="ellipsis-text cell"><button mat-button color="warn"> + Agregar
-                                Presentación</button>
-                        </div>
+                    <div fxFlex="5" fxFlexAlign="center" class="ellipsis-text cell icon-cancel">
+                        <mat-icon class="material-icons-outlined cursor-pointer" (click)="removePresentation(i)">
+                            cancel</mat-icon>
+                    </div>
+                </div>
+                <div class="row" fxFlex fxLayout="row wrap" *ngIf="showButtomAddPresentations">
+                    <div fxFlex class="ellipsis-text cell ">
+                        <label class="cursor-pointer" (click)="addPresentation()"> + Agregar Presentación</label>
                     </div>
                 </div>
             </div>
@@ -218,7 +260,7 @@
         </div>
         <mat-divider></mat-divider>
         <div fxLayout="row" class="header">
-            <button mat-button *ngIf="!loading" (click)="dialogRef.close()" class="info-row">
+            <button mat-button *ngIf="!loading" [routerLink]="'/admin/adminProducts'" class="info-row">
                 CANCELAR
             </button>
             <span fxFlex></span>
