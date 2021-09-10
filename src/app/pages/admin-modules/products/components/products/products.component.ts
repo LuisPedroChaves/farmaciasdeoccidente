@@ -8,7 +8,6 @@ import {
 } from '@angular/core';
 import { Router } from '@angular/router';
 import { MatPaginator } from '@angular/material/paginator';
-
 import { fromEvent, Subscription } from 'rxjs';
 import {
   debounceTime,
@@ -29,6 +28,7 @@ import { ToastyService } from '../../../../../core/services/internal/toasty.serv
   styleUrls: ['./products.component.scss'],
 })
 export class ProductsComponent implements OnInit, OnDestroy, AfterViewInit {
+
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild('search') search: ElementRef<HTMLInputElement>;
   smallScreen = window.innerWidth < 960 ? true : false;
@@ -42,10 +42,8 @@ export class ProductsComponent implements OnInit, OnDestroy, AfterViewInit {
     'barcode',
     'description',
     '_brand',
-    'wholesale_price',
-    'distributor_price',
-    'retail_price',
-    'cf_price',
+    'healthProgram',
+    'state',
     'options',
   ];
   currentPage = 0;
