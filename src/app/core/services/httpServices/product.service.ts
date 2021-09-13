@@ -24,7 +24,7 @@ export class ProductService {
     pageNumber: number = 1,
     pageSize: number = 20,
     search: string = ''
-    ): Observable<ProductItem[]> {
+  ): Observable<ProductItem[]> {
 
     return this.http
       .get(this.apiConfigService.API_PRODUCT, {
@@ -34,9 +34,9 @@ export class ProductService {
           .set('search', search.toString())
       })
       .pipe(
-        map((response: any) =>{
+        map((response: any) => {
           this.TOTAL_PRODUCTS = response.TOTAL;
-          return  response.products;
+          return response.products;
         })
       )
   }
@@ -57,5 +57,14 @@ export class ProductService {
     return this.http.delete(
       `${this.apiConfigService.API_PRODUCT}/${product._id}`
     );
+  }
+
+  search(
+    search: string = ''
+  ): Observable<any> {
+    return this.http.get(`${this.apiConfigService.API_PRODUCT}/search`, {
+      params: new HttpParams()
+        .set('search', search.toString())
+    });
   }
 }

@@ -130,77 +130,76 @@
             </div>
         </div>
         <div fxFlex fxFlex.xs="100%" class="section">
-            <div class="card mat-elevation-z2 my-container" data-simplebar>
-                <div class="section" fxLayout="row wrap">
+            <div class="card mat-elevation-z2 my-container">
+                <div class="searchSection" fxLayout="row wrap">
                     <h2 color="primary" class="product-font ma-0">Detalle de la factura</h2>
                     <mat-form-field appearance="outline" color="warn" class="width-all">
-                        <input matInput placeholder="Buscar producto..." aria-label="State" [matAutocomplete]="auto" [formControl]="searchMoviesCtrl">
-                        <mat-autocomplete #auto="matAutocomplete">
-                            <mat-option *ngIf="isLoading" class="is-loading">Loading...</mat-option>
+                        <input matInput [matAutocomplete]="auto" [formControl]="searchProductsCtrl" placeholder="Buscar producto..." aria-label="State">
+                        <mat-autocomplete #auto="matAutocomplete" [displayWith]="getShowDescription" (optionSelected)="addRow($event.option.value)">
+                            <mat-option *ngIf="isLoading">
+                                <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+                            </mat-option>
                             <ng-container *ngIf="!isLoading">
-                                <mat-option *ngFor="let movie of filteredMovies" [value]="movie.Title">
-                                    <span><b>{{movie.code}}</b> ({{movie.description}})</span>
+                                <mat-option *ngFor="let product of filteredProducts" [value]="product">
+                                    <span><b>{{product.code}}</b> | {{product.description}} | {{ product._brand.name }}</span>
+                                    <div fxFlex></div>
+                                    <mat-chip-list style="padding-top: 8px;">
+                                        <mat-chip class="chip-color">{{ product.presentations.name }}</mat-chip>
+                                    </mat-chip-list>
                                 </mat-option>
                             </ng-container>
                         </mat-autocomplete>
                     </mat-form-field>
-
-                    <br>
-
-                    <ng-container *ngIf="errorMsg; else elseTemplate">
-                        {{errorMsg}}
-                    </ng-container>
-                    <ng-template #elseTemplate>
-                        <h5>Selected Value: {{searchMoviesCtrl.value}}</h5>
-                    </ng-template>
-                    <!-- <mat-form-field appearance="outline" color="warn" class="width-all">
-            <mat-label>Buscar producto</mat-label>
-            <input type="text" (ngModelChange)="addRow($event)" placeholder="Buscar producto..." aria-label="Number"
-              matInput [matAutocomplete]="auto">
-            <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete">
-              <mat-option *ngFor="let option of filteredOptions | async" [value]="option.nit">
-                <span>{{option.nit}}</span> |
-                <small class="mat-text-muted">{{option.name}}</small>
-              </mat-option>
-            </mat-autocomplete>
-          </mat-form-field> -->
                 </div>
-                <div class="section" fxLayout="row wrap">
-                    <div class="header" fxFlex="100" fxLayout="row wrap">
-                        <div fxFlex="9" class="ellipsis-text cell header-cell">Cantidad</div>
-                        <div fxFlex class="ellipsis-text cell header-cell">Producto</div>
-                        <div fxFlex="9" class="ellipsis-text cell header-cell">Precio Unitario (Q)</div>
-                        <div fxFlex="9" class="ellipsis-text cell header-cell">Bono</div>
-                        <div fxFlex="9" class="ellipsis-text cell header-cell">Descuento (%)</div>
-                        <div fxFlex="9" class="ellipsis-text cell header-cell">Total (Q)</div>
-                        <div fxFlex="9" class="ellipsis-text cell header-cell">Costo Unitario (Q)</div>
-                        <div fxFlex="9" class="ellipsis-text cell header-cell">Cantidad Real</div>
-                        <div fxFlex="9" class="ellipsis-text cell header-cell">Fecha de vencimiento</div>
+                <div class="section">
+                    <div class="header" fxLayout="row wrap">
+                        <div fxFlex class="ellipsis-text cell header-cell">Cantidad</div>
+                        <div fxFlex class="ellipsis-text cell header-cell">Precio Unitario (Q)</div>
+                        <div fxFlex class="ellipsis-text cell header-cell">Bono</div>
+                        <div fxFlex class="ellipsis-text cell header-cell">Descuento (%)</div>
+                        <div fxFlex class="ellipsis-text cell header-cell">Total (Q)</div>
+                        <div fxFlex class="ellipsis-text cell header-cell">Costo Unitario (Q)</div>
+                        <div fxFlex class="ellipsis-text cell header-cell">Cantidad Real</div>
+                        <div fxFlex class="ellipsis-text cell header-cell">Fecha de vencimiento</div>
                         <div fxFlex="nogrow" class="ellipsis-text cell header-cell">
                             <mat-icon class="material-icons-outlined cursor-pointer">cancel</mat-icon>
                         </div>
                     </div>
-                    <div fxFlex="100" fxLayout="row wrap" *ngIf="detailPurchase.length > 0">
-                        <div class="row" *ngFor="let p of detailPurchase; let i = index" fxFlex="100" fxLayoutAlign="start center" fxLayout="row wrap">
-                            <div fxFlex="9" class="cell">
-                                <input type="number" [(ngModel)]="p.quantity" [ngModelOptions]="{standalone: true}" class="cantinput">
-                            </div>
-                            <div fxFlex class="ellipsis-text cell">{{p._product.name}}</div>
-                            <div fxFlex="9" class=" cell"><input type="number" [(ngModel)]="p.price" [ngModelOptions]="{standalone: true}" class="cantinput"></div>
-                            <div fxFlex="9" class=" cell"><input type="number" [(ngModel)]="p.bono" [ngModelOptions]="{standalone: true}" class="cantinput"></div>
-                            <div fxFlex="9" class=" cell"><input type="number" [(ngModel)]="p.discount" [ngModelOptions]="{standalone: true}" class="cantinput"></div>
-                            <div fxFlex="9" class="ellipsis-text cell"><b>{{p.quantity * p.price | number: '.2'}}</b></div>
-                            <div fxFlex="9" class="ellipsis-text cell">{{p.cost | number: '.2'}}</div>
-                            <div fxFlex="9" class=" cell"><input type="number" [(ngModel)]="p.realQuantity" [ngModelOptions]="{standalone: true}" class="cantinput"></div>
-                            <div fxFlex="9" class=" cell"><input type="text" [(ngModel)]="p.expirationDate" [ngModelOptions]="{standalone: true}" class="cantinput"></div>
-                            <div fxFlex="nogrow" class="ellipsis-text cell">
-                                <mat-icon (click)="remove(i)" class="material-icons-outlined cursor-pointer">cancel</mat-icon>
+                    <div class="detail-container" data-simplebar>
+                        <div fxLayout="row wrap" *ngIf="detailPurchase.length > 0">
+                            <div *ngFor="let p of detailPurchase; let i = index" class="row" fxFlex="100" fxLayoutAlign="start center" fxLayout="row wrap">
+                                <div fxFlex="80" class="ellipsis-text cell"><b>{{p._product.description}}</b></div>
+                                <div fxFlex="20" fxLayoutAlign="end center">
+                                    <mat-chip-list>
+                                        <mat-chip selected color="warn">{{ p._product.presentations.name }}</mat-chip>
+                                    </mat-chip-list>
+                                </div>
+                                <div fxFlex class="cell">
+                                    <input #quantity="ngModel" (ngModelChange)="calcs(i, $event, 'quantity')" type="number" [(ngModel)]="p.quantity" [ngModelOptions]="{standalone: true}" class="cantinput" required>
+                                </div>
+                                <div fxFlex class=" cell">
+                                    <input (ngModelChange)="calcs(i, $event, 'price')" type="number" [(ngModel)]="p.price" [ngModelOptions]="{standalone: true}" class="cantinput" required>
+                                </div>
+                                <div fxFlex class=" cell"><input (ngModelChange)="calcs(i, $event, 'bonus')" type="number" [(ngModel)]="p.bonus" [ngModelOptions]="{standalone: true}" class="cantinput"></div>
+                                <div fxFlex class=" cell"><input (ngModelChange)="calcs(i, $event, 'discount')" type="number" [(ngModel)]="p.discount" [ngModelOptions]="{standalone: true}" class="cantinput"></div>
+                                <div fxFlex class="ellipsis-text cell"><b>{{p.quantity * p.price | number: '.2'}}</b></div>
+                                <div fxFlex class="ellipsis-text cell">{{ p.cost }}</div>
+                                <div fxFlex class=" cell"><input type="number" [(ngModel)]="p.realQuantity" [ngModelOptions]="{standalone: true}" class="cantinput" required></div>
+                                <div fxFlex class=" cell">
+                                    <input matInput fxFlex [matDatepicker]="picker" [(ngModel)]="p.expirationDate" [ngModelOptions]="{standalone: true}" class="cantinput">
+                                    <mat-datepicker-toggle matSuffix fxFlex="20" [for]="picker"></mat-datepicker-toggle>
+                                    <mat-datepicker #picker></mat-datepicker>
+                                </div>
+                                <div fxFlex="5" fxLayoutAlign="center center" class="cell">
+                                    <mat-icon (click)="removeRow(i)" class="material-icons-outlined cursor-pointer" style="color: brown;">
+                                        cancel</mat-icon>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    <div fxFlex="100" fxLayout="column wrap" class="noproducts" fxLayoutAlign="center center" *ngIf="detailPurchase.length <= 0">
-                        <span>No hay productos agregados</span>
-                        <span class="text-muted">Agregue productos de la lista</span>
+                        <div fxLayout="column wrap" class="noproducts" fxLayoutAlign="center center" *ngIf="detailPurchase.length <= 0">
+                            <span>No hay productos agregados</span>
+                            <span class="text-muted">Agregue productos de la lista</span>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -215,12 +214,10 @@
                             <button mat-raised-button class="close-button" style="color:brown;">
                 CANCELAR
               </button>
-                            <button mat-raised-button [disabled]="formPurchase.invalid || detailPurchase.length === 0" color="primary" class="close-button">
+                            <button mat-raised-button [disabled]="formPurchase.invalid || detailPurchase.length === 0" (click)="savePurchase()" color="warn" class="close-button">
                 CREAR
               </button>
-                            <button mat-raised-button [disabled]="formPurchase.invalid || detailPurchase.length === 0" color="warn" class="close-button">
-                APLICAR
-              </button>
+                            <h3 class="product-font ma-0">Cantidad: {{ detailPurchase.length }}</h3>
                             <span fxFlex></span>
                             <h1 class="product-font ma-0">TOTAL: Q. {{ getTotal() | number: '.2' }}</h1>
                         </div>
