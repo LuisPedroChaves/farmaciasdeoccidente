@@ -62,5 +62,8 @@ export class ApiConfigService {
   // Substance
   public API_SUBSTANCE = this.API_URL + '/substance';
 
+  // Purchase
+  public API_PURCHASE = this.API_URL + '/purchase';
+
   /* #endregion */
 }

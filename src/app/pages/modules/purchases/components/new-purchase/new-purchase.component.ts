@@ -1,14 +1,16 @@
 import { Component, OnInit, AfterContentInit, OnDestroy, } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Subscription } from 'rxjs';
+import { debounceTime, finalize, switchMap, tap } from 'rxjs/operators';
 
+import { ToastyService } from 'src/app/core/services/internal/toasty.service';
+import { CellarItem } from 'src/app/core/models/Cellar';
 import { ProviderService } from '../../../../../core/services/httpServices/provider.service';
 import { ProviderItem } from '../../../../../core/models/Provider';
-import { debounceTime, finalize, switchMap, tap } from 'rxjs/operators';
 import { ProductService } from '../../../../../core/services/httpServices/product.service';
 import { ProductItem } from '../../../../../core/models/Product';
-import { ToastyService } from 'src/app/core/services/internal/toasty.service';
-import { PurchaseDetailItem } from '../../../../../core/models/Purchase';
+import { PurchaseDetailItem, PurchaseItem } from '../../../../../core/models/Purchase';
+import { PurchaseService } from '../../../../../core/services/httpServices/purchase.service';
 
 @Component({
   selector: 'app-new-purchase',
@@ -18,6 +20,7 @@ import { PurchaseDetailItem } from '../../../../../core/models/Purchase';
 export class NewPurchaseComponent implements OnInit, AfterContentInit, OnDestroy {
 
   smallScreen = window.innerWidth < 960 ? true : false;
+  currentCellar: CellarItem;
 
   formPurchase = new FormGroup({
     _cellar: new FormControl(null),
@@ -55,6 +58,7 @@ export class NewPurchaseComponent implements OnInit, AfterContentInit, OnDestroy
     public providerService: ProviderService,
     public productService: ProductService,
     public toasty: ToastyService,
+    public purchaseService: PurchaseService
   ) { }
 
   ngOnInit(): void {
@@ -79,6 +83,7 @@ export class NewPurchaseComponent implements OnInit, AfterContentInit, OnDestroy
       .subscribe(data => {
         this.filteredProducts = data['products'];
       });
+    this.currentCellar = JSON.parse(localStorage.getItem('currentstore'));
   }
 
   ngAfterContentInit() {
@@ -154,6 +159,26 @@ export class NewPurchaseComponent implements OnInit, AfterContentInit, OnDestroy
       this.toasty.error('Algunos valores del detalle no están completos');
       return
     }
+
+    this.formPurchase.get('_cellar').setValue(this.currentCellar);
+    let purchase: PurchaseItem = {...this.formPurchase.value};
+    purchase.detail = this.detailPurchase;
+    this.purchaseService.createPurchase(purchase).subscribe(data => {
+      console.log("🚀 ~ file: new-purchase.component.ts ~ line 167 ~ NewPurchaseComponent ~ this.purchaseService.createPurchase ~ data", data)
+      if (data.ok === true) {
+        this.toasty.success('Compra creada exitosamente');
+        // this.loading = false;
+      } else {
+        // this.loading = false;
+        this.toasty.error('Error al crear la compra');
+      }
+    }, err => {
+      // this.loading = false;
+      this.toasty.error('Error al crear la compra');
+    });
+
+
+
     console.log('FIN');
 
   }

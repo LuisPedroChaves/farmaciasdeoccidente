@@ -27,7 +27,8 @@ export interface PurchaseDetailItem {
     cost: number,
     realQuantity: number,
     stockQuantity: number,
-    expirationDate: Date
+    expirationDate: Date,
+    changedPrice: number
 }
 export interface PurchaseAdjustItem {
     _user: UserItem;
