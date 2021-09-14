@@ -34,13 +34,6 @@ interface Presentation {
 export class ProductFormComponent
   implements OnInit, AfterContentInit, OnDestroy
 {
-  // Variables to TEST
-  Presentations: Presentation[] = [
-    { value: '0', viewValue: 'Unidad' },
-    { value: '1', viewValue: 'Blister' },
-    { value: '2', viewValue: 'Caja' },
-  ];
-
   showButtomAddPresentations = true;
 
   // END variables to Test
@@ -49,27 +42,23 @@ export class ProductFormComponent
   removable = true;
   separatorKeysCodes: number[] = [ENTER, COMMA];
 
+  // Substance
+  substanceSubscription: Subscription;
+  substanceItems: SubstanceItem[];
   filteredSubstances: Observable<SubstanceItem[]>;
   substancesSource: SubstanceItem[] = [];
-  // substancesSource: SubstanceItem[] = [
-  //   { _id: '1', name: 'Paracetamol' },
-  //   { _id: '2', name: 'Acetamidophenol' },
-  //   { _id: '3', name: 'Hydroxyacetanilide' },
-  //   { _id: '4', name: 'aminophenol' },
-  // ];
 
-  substances: string[] = [];
+  substances: SubstanceItem[] = [];
+  // END Substance
 
+  // Symptom
+  symptomSubscription: Subscription;
+  symptomsItems: SymptomItem[];
   filteredSymptoms: Observable<SymptomItem[]>;
   symptomsSource: SymptomItem[] = [];
-  // symptomsSource: SymptomItem[] = [
-  //   { _id: '1', name: 'Fiebre' },
-  //   { _id: '2', name: 'Tos seca' },
-  //   { _id: '3', name: 'Cansancio' },
-  //   { _id: '4', name: 'garganta irritada' },
-  //   { _id: '5', name: 'ojos llorosos' },
-  // ];
-  symptoms: string[] = [];
+
+  symptoms: SymptomItem[] = [];
+  // END Symptom
 
   @ViewChild('substanceInput') substanceInput: ElementRef<HTMLInputElement>;
   @ViewChild('symptomInput') symptomInput: ElementRef<HTMLInputElement>;
@@ -84,6 +73,7 @@ export class ProductFormComponent
     brand: new FormControl(null, [Validators.required]),
     code: new FormControl(null, [Validators.required]),
     description: new FormControl(null, [Validators.required]),
+    healthProgram: new FormControl(null),
     substances: new FormControl(null),
     symptoms: new FormControl(null),
     min: new FormControl(null, [Validators.required]),
@@ -104,14 +94,6 @@ export class ProductFormComponent
   options: BrandItem[] = [];
   filteredOptions: Observable<BrandItem[]>;
   // END brand
-  // Substance
-  substanceSubscription: Subscription;
-  substanceItems: SubstanceItem[];
-  // END Symptom
-  // Symptom
-  symptomSubscription: Subscription;
-  symptomsItems: SymptomItem[];
-  // END Symptom
 
   constructor(
     private formBuilder: FormBuilder,
@@ -134,6 +116,7 @@ export class ProductFormComponent
         description: new FormControl(this.data.product.description, [
           Validators.required,
         ]),
+        healthProgram: new FormControl(this.data.product.healthProgram),
         substances: new FormControl(this.data.product.substances),
         symptoms: new FormControl(this.data.product.symptoms),
         wholesale_price: new FormControl(this.data.product.wholesale_price, [
@@ -209,9 +192,6 @@ export class ProductFormComponent
       commission: new FormControl(null, [Validators.required]),
     });
     this.presentationsForm.push(presentationFormGroup);
-    if (this.presentationsForm.length >= this.Presentations.length) {
-      this.showButtomAddPresentations = false;
-    }
   }
 
   removePresentation(indice: number): void {
@@ -239,7 +219,7 @@ export class ProductFormComponent
     const value = (event.value || '').trim();
     // Add our substances
     if (value) {
-      this.substances.push(value);
+      this.substances.push({ name: value });
     }
     // Clear the input value
     if (event.input) {
@@ -250,33 +230,10 @@ export class ProductFormComponent
     this.form.controls.substances.setValue(null);
   }
 
-  removeSubstance(substance: string): void {
-    const index = this.substances.indexOf(substance);
-
-    if (index >= 0) {
-      this.substances.splice(index, 1);
-    }
-  }
-
-  selectedSubstance(event: MatAutocompleteSelectedEvent): void {
-    this.substances.push(event.option.viewValue);
-    this.substanceInput.nativeElement.value = '';
-    this.form.controls.substances.setValue(null);
-  }
-
-  private _filterSubstances(value: string): SubstanceItem[] {
-    if (value) {
-      const filterValue = value.toLowerCase();
-      return this.substancesSource.filter((substance) =>
-        substance.name.toLowerCase().includes(filterValue)
-      );
-    }
-  }
-
   addSymptom(event: MatChipInputEvent): void {
     const value = (event.value || '').trim();
     if (value) {
-      this.symptoms.push(value);
+      this.symptoms.push({ name: value });
     }
     // Clear the input value
     if (event.input) {
@@ -286,7 +243,32 @@ export class ProductFormComponent
     this.form.controls.symptoms.setValue(null);
   }
 
-  removeSymptoms(symptom: string): void {
+  removeSubstance(substance: SubstanceItem): void {
+    const index = this.substances.indexOf(substance);
+
+    if (index >= 0) {
+      this.substances.splice(index, 1);
+    }
+  }
+
+  selectedSubstance(event: MatAutocompleteSelectedEvent): void {
+    this.substances.push({ name: event.option.viewValue });
+    this.substanceInput.nativeElement.value = '';
+    this.form.controls.substances.setValue(null);
+  }
+
+  private _filterSubstances(value: string): SubstanceItem[] {
+    if (value) {
+      if (value.length > 2) {
+        const filterValue = value.toLowerCase();
+        return this.substancesSource.filter((substance) =>
+          substance.name.toLowerCase().includes(filterValue)
+        );
+      }
+    }
+  }
+
+  removeSymptoms(symptom: SymptomItem): void {
     const index = this.symptoms.indexOf(symptom);
     if (index >= 0) {
       this.symptoms.splice(index, 1);
@@ -294,7 +276,7 @@ export class ProductFormComponent
   }
 
   selectedSymptom(event: MatAutocompleteSelectedEvent): void {
-    this.symptoms.push(event.option.viewValue);
+    this.symptoms.push({ name: event.option.viewValue });
     this.symptomInput.nativeElement.value = '';
     this.form.controls.symptoms.setValue(null);
   }
@@ -311,5 +293,19 @@ export class ProductFormComponent
 
   saveProduct(): void {
     console.log(this.form, this.substances, this.symptoms);
+
+    if (this.form.invalid) {
+      return;
+    }
+    this.loading = true;
+    const product: ProductItem = { ...this.form.value };
+
+    product.substances = this.substances;
+    product.symptoms = this.symptoms;
+    console.log(product);
+
+    this.productService.createProduct(product).subscribe((res) => {
+      console.log(res);
+    });
   }
 }

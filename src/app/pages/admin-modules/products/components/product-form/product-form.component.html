@@ -65,7 +65,7 @@
                 <div fxFlex="100%" class="inputpadding">
                     <mat-form-field appearance="outline" color="primary" class="width-all">
                         <mat-label>Programa de Salud</mat-label>
-                        <input formControlName="description" type="text" matInput
+                        <input formControlName="healthProgram" type="text" matInput
                             placeholder="Añada un programa de Salud">
                     </mat-form-field>
                 </div>
@@ -113,7 +113,7 @@
                         <mat-chip-list #chipListSubstances>
                             <mat-chip *ngFor="let substance of substances" [removable]="removable"
                                 (removed)="removeSubstance(substance)">
-                                {{substance}}
+                                {{substance.name}}
                                 <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
                             </mat-chip>
                             <input type="text" placeholder="Ingrese una sustancia" #substanceInput aria-label="text"
@@ -150,7 +150,7 @@
                         <mat-chip-list #chipListSymptoms>
                             <mat-chip *ngFor="let symptom of symptoms" [removable]="removable"
                                 (removed)="removeSymptoms(symptom)">
-                                {{symptom}}
+                                {{symptom.name}}
                                 <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
                             </mat-chip>
                             <input type="text" placeholder="Ingrese un Simtoma" #symptomInput aria-label="text" matInput
@@ -188,13 +188,10 @@
                     <div [formGroupName]="i" class="row" fxFlex="100" fxLayoutAlign="space-between" fxLayout="row wrap">
                         <div fxFlex="30" class="cell">
                             <mat-form-field appearance="outline" color="primary" class="width-all">
-                                <mat-label [attr.for]="'presentation' + i">Seleccione Presentación</mat-label>
-                                <mat-select [attr.id]="'presentation' + i" formControlName="presentation"
-                                    name="presentation">
-                                    <mat-option *ngFor="let presentation of Presentations" [value]="presentation.value">
-                                        {{presentation.viewValue}}
-                                    </mat-option>
-                                </mat-select>
+                                <mat-label [attr.for]="'presentation' + i">Presentación</mat-label>
+                                <input matInput [attr.id]="'presentation' + i" formControlName="presentation"
+                                    type="text" name="presentation" placeholder="Ingrese el nombre de la presentación">
+
                             </mat-form-field>
                         </div>
                         <div fxFlex="30" class="cell">
