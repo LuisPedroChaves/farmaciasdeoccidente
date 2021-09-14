@@ -55,4 +55,10 @@ export class ProductService {
       `${this.apiConfigService.API_PRODUCT}/${product._id}`
     );
   }
+
+  search(search: string = ''): Observable<any> {
+    return this.http.get(`${this.apiConfigService.API_PRODUCT}/search`, {
+      params: new HttpParams().set('search', search.toString()),
+    });
+  }
 }

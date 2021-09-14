@@ -1,13 +1,14 @@
-import { Component, OnInit, AfterContentInit, OnDestroy } from '@angular/core';
-import { FormGroup, FormControl, Validators, FormArray } from '@angular/forms';
+import { Component, OnInit, AfterContentInit, OnDestroy, } from '@angular/core';
+import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Subscription } from 'rxjs';
 
-import { PurchaseItem, PurchaseDetailItem } from '../../../../../core/models/Purchase';
 import { ProviderService } from '../../../../../core/services/httpServices/provider.service';
 import { ProviderItem } from '../../../../../core/models/Provider';
-import { HttpClient } from '@angular/common/http';
 import { debounceTime, finalize, switchMap, tap } from 'rxjs/operators';
 import { ProductService } from '../../../../../core/services/httpServices/product.service';
+import { ProductItem } from '../../../../../core/models/Product';
+import { ToastyService } from 'src/app/core/services/internal/toasty.service';
+import { PurchaseDetailItem } from '../../../../../core/models/Purchase';
 
 @Component({
   selector: 'app-new-purchase',
@@ -46,48 +47,38 @@ export class NewPurchaseComponent implements OnInit, AfterContentInit, OnDestroy
   providerSubscription: Subscription;
   providers: ProviderItem[] = [];
 
-  searchMoviesCtrl = new FormControl();
-  filteredMovies: any;
+  searchProductsCtrl = new FormControl();
+  filteredProducts: ProductItem[];
   isLoading = false;
-  errorMsg: string;
 
   constructor(
     public providerService: ProviderService,
-    public productService: ProductService
+    public productService: ProductService,
+    public toasty: ToastyService,
   ) { }
 
   ngOnInit(): void {
     this.providerSubscription = this.providerService.readData().subscribe(data => {
       this.providers = data;
     });
-    this.searchMoviesCtrl.valueChanges
-    .pipe(
-      debounceTime(500),
-      tap(() => {
-        this.errorMsg = "";
-        this.filteredMovies = [];
-        this.isLoading = true;
-      }),
-      switchMap(value => this.productService.loadData(1,10, value)
-        .pipe(
-          finalize(() => {
-            this.isLoading = false
-          }),
+    this.searchProductsCtrl.valueChanges
+      .pipe(
+        debounceTime(500),
+        tap(() => {
+          this.filteredProducts = [];
+          this.isLoading = true;
+        }),
+        switchMap(value => this.productService.search(value)
+          .pipe(
+            finalize(() => {
+              this.isLoading = false
+            }),
+          )
         )
       )
-    )
-    .subscribe(data => {
-    console.log("🚀 ~ file: new-purchase.component.ts ~ line 80 ~ NewPurchaseComponent ~ ngOnInit ~ data", data)
-    this.filteredMovies = data;
-      // if (data['products'] == undefined) {
-      //   this.errorMsg = data['error'];
-      //   this.filteredMovies = [];
-      // } else {
-      //   this.errorMsg = "";
-      // }
-
-      console.log(this.filteredMovies);
-    });
+      .subscribe(data => {
+        this.filteredProducts = data['products'];
+      });
   }
 
   ngAfterContentInit() {
@@ -96,6 +87,27 @@ export class NewPurchaseComponent implements OnInit, AfterContentInit, OnDestroy
 
   ngOnDestroy() {
     this.providerSubscription?.unsubscribe();
+  }
+
+  getShowDescription(product: ProductItem): string {
+    return product ? product.description : '';
+  }
+
+  calcs(index: number, quantity: number, type: string): void {
+    const INPUTS_VALIDOS = {
+      'quantity': () => this.detailPurchase[index].realQuantity = (this.detailPurchase[index].bonus + quantity),
+      'price': () => this.detailPurchase[index].cost = quantity,
+      'bonus': () => {
+        this.detailPurchase[index].realQuantity = (this.detailPurchase[index].quantity + quantity);
+        this.detailPurchase[index].cost = ((this.detailPurchase[index].price * this.detailPurchase[index].quantity) / (this.detailPurchase[index].quantity + quantity)).toFixed(2);
+      },
+      'discount': () => {
+        const DISCOUNT = quantity / 100;
+        this.detailPurchase[index].cost = ((this.detailPurchase[index].cost - (this.detailPurchase[index].price * DISCOUNT))).toFixed(2);
+      },
+    }
+
+    INPUTS_VALIDOS[type]();
   }
 
   getTotal(): number {
@@ -108,20 +120,41 @@ export class NewPurchaseComponent implements OnInit, AfterContentInit, OnDestroy
     return total;
   }
 
-  addRow(value) {
-    console.log('HOLA ROW');
-    this.detailPurchase.push(    {
-      _product: {
-        name: ''
-      },
-      quantity: 1,
-      price: '',
-      bonus: 0,
-      discount: 0,
-      cost: 0,
-      realQuantity: 1,
-      expirationDate: null
-    });
+  addRow(product: any) {
+    this.searchProductsCtrl.setValue('');
+
+    const INDEX = this.detailPurchase.findIndex(d => (d._product._id === product._id && d._product.presentations._id === product.presentations._id));
+
+    if (INDEX > -1) {
+      this.toasty.toasty('warning', '¡El producto ya fue agregado!');
+      return;
+    } else {
+      this.detailPurchase.push({
+        _product: product,
+        quantity: 1,
+        price: '',
+        bonus: 0,
+        discount: 0,
+        cost: 0,
+        realQuantity: 1,
+        expirationDate: null
+      });
+    }
+  }
+
+  removeRow(index: number): void {
+    this.detailPurchase.splice(index, 1);
+  }
+
+  savePurchase() {
+
+    const INVALID: PurchaseDetailItem[] = this.detailPurchase.find((detail: PurchaseDetailItem) => !detail.quantity || !detail.price || !detail.realQuantity);
+
+    if (INVALID) {
+      this.toasty.error('Algunos valores del detalle no están completos');
+      return
+    }
+    console.log('FIN');
 
   }
 

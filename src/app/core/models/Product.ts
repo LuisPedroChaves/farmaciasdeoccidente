@@ -3,7 +3,7 @@ import { SubstanceItem } from './Substance';
 import { SymptomItem } from './Symptom';
 
 export interface ProductItem {
-  _id: string;
+  _id?: string;
   _brand: BrandItem;
   code: string;
   barcode: string;
@@ -21,6 +21,7 @@ export interface ProductItem {
 }
 
 export interface ProductPresentationsItem {
+  _id?: string;
   name: string;
   wholesale_price: number;
   distributor_price: number;
