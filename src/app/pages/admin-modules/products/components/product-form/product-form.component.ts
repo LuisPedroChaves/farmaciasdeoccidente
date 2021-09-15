@@ -48,7 +48,7 @@ export class ProductFormComponent
   filteredSubstances: Observable<SubstanceItem[]>;
   substancesSource: SubstanceItem[] = [];
 
-  substances: SubstanceItem[] = [];
+  substances: string[] = [];
   // END Substance
 
   // Symptom
@@ -57,7 +57,7 @@ export class ProductFormComponent
   filteredSymptoms: Observable<SymptomItem[]>;
   symptomsSource: SymptomItem[] = [];
 
-  symptoms: SymptomItem[] = [];
+  symptoms: string[] = [];
   // END Symptom
 
   @ViewChild('substanceInput') substanceInput: ElementRef<HTMLInputElement>;
@@ -70,14 +70,14 @@ export class ProductFormComponent
   }
 
   form = new FormGroup({
-    brand: new FormControl(null, [Validators.required]),
-    code: new FormControl(null, [Validators.required]),
+    _brand: new FormControl(null, [Validators.required]),
+    barcode: new FormControl(null, [Validators.required]),
     description: new FormControl(null, [Validators.required]),
     healthProgram: new FormControl(null),
     substances: new FormControl(null),
     symptoms: new FormControl(null),
-    min: new FormControl(null, [Validators.required]),
-    max: new FormControl(null, [Validators.required]),
+    // min: new FormControl(null, [Validators.required]),
+    // max: new FormControl(null, [Validators.required]),
 
     presentations: this.formBuilder.array([]),
   });
@@ -109,29 +109,16 @@ export class ProductFormComponent
     if (this.data) {
       this.product = this.data.product;
       this.form = new FormGroup({
-        brand: new FormControl(this.data.product._brand.name, [
+        _brand: new FormControl(this.data.product._brand.name, [
           Validators.required,
         ]),
-        code: new FormControl(this.data.product.code, [Validators.required]),
+        barcode: new FormControl(this.data.product.code, [Validators.required]),
         description: new FormControl(this.data.product.description, [
           Validators.required,
         ]),
         healthProgram: new FormControl(this.data.product.healthProgram),
         substances: new FormControl(this.data.product.substances),
         symptoms: new FormControl(this.data.product.symptoms),
-        wholesale_price: new FormControl(this.data.product.wholesale_price, [
-          Validators.required,
-        ]),
-        distributor_price: new FormControl(
-          this.data.product.distributor_price,
-          [Validators.required]
-        ),
-        retail_price: new FormControl(this.data.product.retail_price, [
-          Validators.required,
-        ]),
-        cf_price: new FormControl(this.data.product.cf_price, [
-          Validators.required,
-        ]),
       });
     }
 
@@ -154,7 +141,7 @@ export class ProductFormComponent
         this.substancesSource = [...this.substanceItems];
       });
 
-    this.filteredOptions = this.form.controls.brand.valueChanges.pipe(
+    this.filteredOptions = this.form.controls._brand.valueChanges.pipe(
       startWith(''),
       map((value) => this._filterBrands(value))
     );
@@ -189,6 +176,7 @@ export class ProductFormComponent
       distributor_price: new FormControl(null, [Validators.required]),
       retail_price: new FormControl(null, [Validators.required]),
       cf_price: new FormControl(null, [Validators.required]),
+      quantity: new FormControl(null, [Validators.required]),
       commission: new FormControl(null, [Validators.required]),
     });
     this.presentationsForm.push(presentationFormGroup);
@@ -219,7 +207,7 @@ export class ProductFormComponent
     const value = (event.value || '').trim();
     // Add our substances
     if (value) {
-      this.substances.push({ name: value });
+      this.substances.push(value);
     }
     // Clear the input value
     if (event.input) {
@@ -233,7 +221,7 @@ export class ProductFormComponent
   addSymptom(event: MatChipInputEvent): void {
     const value = (event.value || '').trim();
     if (value) {
-      this.symptoms.push({ name: value });
+      this.symptoms.push(value);
     }
     // Clear the input value
     if (event.input) {
@@ -243,7 +231,7 @@ export class ProductFormComponent
     this.form.controls.symptoms.setValue(null);
   }
 
-  removeSubstance(substance: SubstanceItem): void {
+  removeSubstance(substance: string): void {
     const index = this.substances.indexOf(substance);
 
     if (index >= 0) {
@@ -252,7 +240,7 @@ export class ProductFormComponent
   }
 
   selectedSubstance(event: MatAutocompleteSelectedEvent): void {
-    this.substances.push({ name: event.option.viewValue });
+    this.substances.push(event.option.viewValue);
     this.substanceInput.nativeElement.value = '';
     this.form.controls.substances.setValue(null);
   }
@@ -268,7 +256,7 @@ export class ProductFormComponent
     }
   }
 
-  removeSymptoms(symptom: SymptomItem): void {
+  removeSymptoms(symptom: string): void {
     const index = this.symptoms.indexOf(symptom);
     if (index >= 0) {
       this.symptoms.splice(index, 1);
@@ -276,7 +264,7 @@ export class ProductFormComponent
   }
 
   selectedSymptom(event: MatAutocompleteSelectedEvent): void {
-    this.symptoms.push({ name: event.option.viewValue });
+    this.symptoms.push(event.option.viewValue);
     this.symptomInput.nativeElement.value = '';
     this.form.controls.symptoms.setValue(null);
   }
@@ -300,6 +288,7 @@ export class ProductFormComponent
     this.loading = true;
     const product: ProductItem = { ...this.form.value };
 
+    product._brand = { name: this.form.value._brand };
     product.substances = this.substances;
     product.symptoms = this.symptoms;
     console.log(product);

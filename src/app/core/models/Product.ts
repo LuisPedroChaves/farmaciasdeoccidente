@@ -14,8 +14,8 @@ export interface ProductItem {
   retail_price: number;
   cf_price: number;
   presentations: ProductPresentationsItem[];
-  substances: SubstanceItem[];
-  symptoms: SymptomItem[];
+  substances: string[];
+  symptoms: string[];
   exempt: boolean;
   discontinued: boolean;
 }
