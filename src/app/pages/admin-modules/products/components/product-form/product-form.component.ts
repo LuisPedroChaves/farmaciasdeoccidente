@@ -22,6 +22,7 @@ import { SubstanceItem } from '../../../../../core/models/Substance';
 import { SymptomItem } from '../../../../../core/models/Symptom';
 import { SymptomService } from 'src/app/core/services/httpServices/symptom.service';
 import { SubstanceService } from '../../../../../core/services/httpServices/substance.service';
+import { Router } from '@angular/router';
 interface Presentation {
   value: string;
   viewValue: string;
@@ -102,7 +103,8 @@ export class ProductFormComponent
     public brandService: BrandService,
     public productService: ProductService,
     private symptomService: SymptomService,
-    private substanceService: SubstanceService
+    private substanceService: SubstanceService,
+    public router: Router
   ) {}
 
   ngOnInit(): void {
@@ -293,8 +295,24 @@ export class ProductFormComponent
     product.symptoms = this.symptoms;
     console.log(product);
 
-    this.productService.createProduct(product).subscribe((res) => {
-      console.log(res);
-    });
+    this.productService.createProduct(product).subscribe(
+      (res) => {
+        console.log(res);
+        if (res.ok) {
+          this.form.reset();
+          this.symptoms = [];
+          this.substances = [];
+          this.toasty.success('Producto Creado Exitosamente');
+          this.loading = false;
+        } else {
+          this.loading = false;
+          this.toasty.error('Error al crear producto');
+        }
+      },
+      (error) => {
+        this.loading = false;
+        this.toasty.error('Error al crear producto');
+      }
+    );
   }
 }
