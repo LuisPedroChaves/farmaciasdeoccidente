@@ -145,6 +145,7 @@
                                     <div fxFlex></div>
                                     <mat-chip-list style="padding-top: 8px;">
                                         <mat-chip class="chip-color">{{ product.presentations.name }}</mat-chip>
+                                        <mat-chip>{{ product.presentations.quantity }} ud.</mat-chip>
                                     </mat-chip-list>
                                 </mat-option>
                             </ng-container>
@@ -172,6 +173,7 @@
                                 <div fxFlex="20" fxLayoutAlign="end center">
                                     <mat-chip-list>
                                         <mat-chip selected color="warn">{{ p._product.presentations.name }}</mat-chip>
+                                        <mat-chip>{{ p._product.presentations.quantity }} ud.</mat-chip>
                                     </mat-chip-list>
                                 </div>
                                 <div fxFlex class="cell">

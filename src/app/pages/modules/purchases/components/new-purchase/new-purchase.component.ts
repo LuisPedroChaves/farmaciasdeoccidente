@@ -1,5 +1,6 @@
 import { Component, OnInit, AfterContentInit, OnDestroy, } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { debounceTime, finalize, switchMap, tap } from 'rxjs/operators';
 
@@ -20,6 +21,7 @@ import { PurchaseService } from '../../../../../core/services/httpServices/purch
 export class NewPurchaseComponent implements OnInit, AfterContentInit, OnDestroy {
 
   smallScreen = window.innerWidth < 960 ? true : false;
+  loading = false;
   currentCellar: CellarItem;
 
   formPurchase = new FormGroup({
@@ -58,7 +60,8 @@ export class NewPurchaseComponent implements OnInit, AfterContentInit, OnDestroy
     public providerService: ProviderService,
     public productService: ProductService,
     public toasty: ToastyService,
-    public purchaseService: PurchaseService
+    public purchaseService: PurchaseService,
+    private router: Router
   ) { }
 
   ngOnInit(): void {
@@ -100,11 +103,17 @@ export class NewPurchaseComponent implements OnInit, AfterContentInit, OnDestroy
 
   calcs(index: number, quantity: number, type: string): void {
     const INPUTS_VALIDOS = {
-      'quantity': () => this.detailPurchase[index].realQuantity = (this.detailPurchase[index].bonus + quantity),
+      'quantity': () => {
+        const REAL_QUANTITY: number = this.detailPurchase[index].bonus + quantity;
+        this.detailPurchase[index].realQuantity = REAL_QUANTITY;
+        this.detailPurchase[index].stockQuantity = this.calcStock(REAL_QUANTITY, this.detailPurchase[index]._product.presentations.quantity);
+      },
       'price': () => this.detailPurchase[index].cost = quantity,
       'bonus': () => {
-        this.detailPurchase[index].realQuantity = (this.detailPurchase[index].quantity + quantity);
-        this.detailPurchase[index].cost = ((this.detailPurchase[index].price * this.detailPurchase[index].quantity) / (this.detailPurchase[index].quantity + quantity)).toFixed(2);
+        const REAL_QUANTITY: number = this.detailPurchase[index].quantity + quantity;
+        this.detailPurchase[index].realQuantity = REAL_QUANTITY;
+        this.detailPurchase[index].stockQuantity = this.calcStock(REAL_QUANTITY, this.detailPurchase[index]._product.presentations.quantity);
+        this.detailPurchase[index].cost = ((this.detailPurchase[index].price * this.detailPurchase[index].quantity) / REAL_QUANTITY).toFixed(2);
       },
       'discount': () => {
         const DISCOUNT = quantity / 100;
@@ -125,6 +134,10 @@ export class NewPurchaseComponent implements OnInit, AfterContentInit, OnDestroy
     return total;
   }
 
+  calcStock(quantity: number, quantityPresentation: number): number {
+    return quantity * quantityPresentation;
+  }
+
   addRow(product: any) {
     this.searchProductsCtrl.setValue('');
 
@@ -142,6 +155,7 @@ export class NewPurchaseComponent implements OnInit, AfterContentInit, OnDestroy
         discount: 0,
         cost: 0,
         realQuantity: 1,
+        stockQuantity: this.calcStock(1, product.presentations.quantity),
         expirationDate: null
       });
     }
@@ -160,27 +174,25 @@ export class NewPurchaseComponent implements OnInit, AfterContentInit, OnDestroy
       return
     }
 
+    this.loading = true;
     this.formPurchase.get('_cellar').setValue(this.currentCellar);
-    let purchase: PurchaseItem = {...this.formPurchase.value};
+    let purchase: PurchaseItem = { ...this.formPurchase.value };
     purchase.detail = this.detailPurchase;
+    console.log("🚀 ~ file: new-purchase.component.ts ~ line 182 ~ NewPurchaseComponent ~ savePurchase ~ purchase.detail", purchase.detail)
+
     this.purchaseService.createPurchase(purchase).subscribe(data => {
-      console.log("🚀 ~ file: new-purchase.component.ts ~ line 167 ~ NewPurchaseComponent ~ this.purchaseService.createPurchase ~ data", data)
       if (data.ok === true) {
         this.toasty.success('Compra creada exitosamente');
-        // this.loading = false;
+        this.router.navigate(['/purchases']);
+        this.loading = false;
       } else {
-        // this.loading = false;
+        this.loading = false;
         this.toasty.error('Error al crear la compra');
       }
     }, err => {
-      // this.loading = false;
+      this.loading = false;
       this.toasty.error('Error al crear la compra');
     });
-
-
-
-    console.log('FIN');
-
   }
 
 }

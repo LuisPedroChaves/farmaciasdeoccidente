@@ -16,6 +16,7 @@ export interface PurchaseItem {
     payment: string,
     total: number
     file: string,
+    applied: boolean
 }
 
 export interface PurchaseDetailItem {
