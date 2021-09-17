@@ -109,16 +109,20 @@ tr.example-element-row:not(.example-expanded-row):active {
 
 $color-form-highlight: #eeeeee;
 .responsive-table {
+  margin: 0px;
+  padding: 0px 0px 0px 0px;
+
   li {
     border-radius: 3px;
-    padding: 10px 30px;
+    padding: 10px;
     display: flex;
-    justify-content: space-between;
-    margin-bottom: 25px;
+    justify-content: center;
+    margin-bottom: 15px;
   }
   .table-row {
     background-color: #ffffff;
     box-shadow: 0px 0px 9px 0px rgba(0, 0, 0, 0.1);
+    display: flexbox;
 
     &:nth-of-type(odd) {
       background: $color-form-highlight;
@@ -139,17 +143,12 @@ $color-form-highlight: #eeeeee;
     li {
       display: block;
     }
-    .col {
-      flex-basis: 100%;
-    }
+
     .col {
       display: flex;
-      padding: 10px 0;
       &:before {
         color: #6c7a89;
-        padding-right: 10px;
         content: attr(data-label);
-        flex-basis: 50%;
         text-align: right;
       }
     }
