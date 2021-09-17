@@ -1,8 +1,8 @@
 import { Component, OnInit, AfterContentInit, OnDestroy, } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { Subscription } from 'rxjs';
-import { debounceTime, finalize, switchMap, tap } from 'rxjs/operators';
+import { Observable, Subscription } from 'rxjs';
+import { debounceTime, finalize, map, startWith, switchMap, tap } from 'rxjs/operators';
 
 import { ToastyService } from 'src/app/core/services/internal/toasty.service';
 import { CellarItem } from 'src/app/core/models/Cellar';
@@ -51,6 +51,7 @@ export class NewPurchaseComponent implements OnInit, AfterContentInit, OnDestroy
 
   providerSubscription: Subscription;
   providers: ProviderItem[] = [];
+  filteredOptions: Observable<ProviderItem[]>;
 
   searchProductsCtrl = new FormControl();
   filteredProducts: ProductItem[];
@@ -68,6 +69,8 @@ export class NewPurchaseComponent implements OnInit, AfterContentInit, OnDestroy
     this.providerSubscription = this.providerService.readData().subscribe(data => {
       this.providers = data;
     });
+    this.filteredOptions = this.formPurchase.controls._provider.valueChanges.pipe(startWith(''), map(value => this._filter(value)));
+
     this.searchProductsCtrl.valueChanges
       .pipe(
         debounceTime(500),
@@ -95,6 +98,15 @@ export class NewPurchaseComponent implements OnInit, AfterContentInit, OnDestroy
 
   ngOnDestroy() {
     this.providerSubscription?.unsubscribe();
+  }
+
+  private _filter(value: string): ProviderItem[] {
+    if (value) {
+      const filterValue = value.toLowerCase();
+      return this.providers.filter(provider => provider.name.toLowerCase().includes(filterValue));
+    } else {
+      return [];
+    }
   }
 
   getShowDescription(product: ProductItem): string {
@@ -178,7 +190,6 @@ export class NewPurchaseComponent implements OnInit, AfterContentInit, OnDestroy
     this.formPurchase.get('_cellar').setValue(this.currentCellar);
     let purchase: PurchaseItem = { ...this.formPurchase.value };
     purchase.detail = this.detailPurchase;
-    console.log("🚀 ~ file: new-purchase.component.ts ~ line 182 ~ NewPurchaseComponent ~ savePurchase ~ purchase.detail", purchase.detail)
 
     this.purchaseService.createPurchase(purchase).subscribe(data => {
       if (data.ok === true) {

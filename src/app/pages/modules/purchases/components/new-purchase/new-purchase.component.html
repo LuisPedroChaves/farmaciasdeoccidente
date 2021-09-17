@@ -38,11 +38,14 @@
                             </mat-icon>
                         </div>
                         <div fxFlex class="inputpadding">
-                            <mat-form-field color="primary" class="width-all" appearance="outline">
+                            <mat-form-field appearance="outline" color="primary" class="width-all">
                                 <mat-label>Proveedor</mat-label>
-                                <mat-select formControlName="_provider">
-                                    <mat-option *ngFor="let provider of providers" [value]="provider._id">{{ provider.name }}</mat-option>
-                                </mat-select>
+                                <input matInput formControlName="_provider" [matAutocomplete]="autoProvider" type="text" placeholder="Buscar proveedor..." aria-label="Number">
+                                <mat-autocomplete autoActiveFirstOption #autoProvider="matAutocomplete">
+                                    <mat-option *ngFor="let option of filteredOptions | async" [value]="option.name">
+                                        <small class="mat-text-muted">{{option.name}}</small>
+                                    </mat-option>
+                                </mat-autocomplete>
                             </mat-form-field>
                         </div>
                         <div fxFlex="20px"></div>

@@ -116,7 +116,6 @@ export class NewOrderComponent implements OnInit, AfterContentInit, OnDestroy {
     } else {
       return [];
     }
-
   }
 
   saveClient() {
