@@ -218,6 +218,8 @@
                                     <h1 class="product-font ma-0">TOTAL: Q. {{ getTotal() | number: '.2' }}</h1>
                                 </div>
                             </div>
+                            <br>
+                            <br>
                             <mat-divider></mat-divider>
                             <div class="section" fxLayout="row wrap">
                                 <div fxFlex="100" fxLayoutAlign="center center" fxLayout="row wrap">
@@ -227,9 +229,10 @@
                                     <button mat-raised-button (click)="stepper.reset()" class="close-button" style="color:brown;">
                         CANCELAR
                                           </button>
-                                    <button mat-raised-button [disabled]="formPurchase.invalid || detailPurchase.length === 0" (click)="savePurchase()" color="warn" class="close-button">
+                                    <button *ngIf="!loading" mat-raised-button [disabled]="formPurchase.invalid || detailPurchase.length === 0" (click)="savePurchase()" color="warn" class="close-button">
                         CREAR NUEVA FACTURA
                                           </button>
+                                    <mat-progress-spinner *ngIf="loading" mode="indeterminate" diameter="30" color="warn"></mat-progress-spinner>
                                 </div>
                             </div>
                         </div>

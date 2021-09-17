@@ -66,6 +66,7 @@ export class ProductFormComponent
 
   @ViewChild('substanceInput') substanceInput: ElementRef<HTMLInputElement>;
   @ViewChild('symptomInput') symptomInput: ElementRef<HTMLInputElement>;
+  @ViewChild('barcode') barcode: ElementRef<HTMLInputElement>;
 
   // End Variables of chips
 
@@ -165,6 +166,10 @@ export class ProductFormComponent
     //   startWith(''),
     //   map((value) => this._filterPresentations(value))
     // );
+
+    setTimeout(()=>{
+      this.barcode.nativeElement.focus();
+  })
   }
 
   manageNameControl(index: number): void {
@@ -348,6 +353,7 @@ export class ProductFormComponent
           this.refreshForms();
           this.toasty.success('Producto Creado Exitosamente');
           this.loading = false;
+          this.barcode.nativeElement.focus();
         } else {
           this.loading = false;
           this.toasty.error('Error al crear producto');
