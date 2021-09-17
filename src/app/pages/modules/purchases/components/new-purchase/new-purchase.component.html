@@ -12,223 +12,221 @@
       <mat-icon>add</mat-icon>PROVEEDOR
     </button>
     </header>
-    <div fxFlex fxLayout="row">
-        <div fxFlex="25%" fxFlex.xs="100%" class="section">
-            <div class="card mat-elevation-z2">
-                <div class="section" fxLayout="row wrap">
-                    <h2 color="primary" class="product-font ma-0">Encabezado</h2>
-                </div>
-                <from [formGroup]="formPurchase" autocomplete="off">
-                    <div fxLayout="row">
-                        <div fxFlex></div>
-                        <div fxFlex="50" class="inputpadding">
-                            <mat-form-field appearance="outline" color="primary" class="width-all">
-                                <mat-label>Fecha</mat-label>
-                                <input matInput [matDatepicker]="picker" formControlName="date">
-                                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-                                <mat-datepicker #picker></mat-datepicker>
-                            </mat-form-field>
-                        </div>
-                        <div fxFlex="20px"></div>
+    <div fxLayout="row">
+        <div fxFlex>
+            <mat-horizontal-stepper #stepper>
+                <mat-step [stepControl]="formPurchase" errorMessage="Campos requeridos.">
+                    <ng-template matStepLabel>Encabezado</ng-template>
+                    <div class="card mat-elevation-z2" style="margin-top: 5px;">
+                        <form [formGroup]="formPurchase" autocomplete="off">
+                            <div fxLayout="row">
+                                <div fxFlex="20px"></div>
+                                <div fxFlex="50px" fxHide.xs fxLayoutAlign="center center">
+                                    <mat-icon color="accent" class="material-icons-outlined">business
+                                    </mat-icon>
+                                </div>
+                                <div fxFlex="75" class="inputpadding">
+                                    <mat-form-field appearance="outline" color="primary" class="width-all">
+                                        <mat-label>Proveedor</mat-label>
+                                        <input matInput formControlName="_provider" [matAutocomplete]="autoProvider" type="text" placeholder="Buscar proveedor..." aria-label="Number">
+                                        <mat-autocomplete autoActiveFirstOption #autoProvider="matAutocomplete">
+                                            <mat-option *ngFor="let option of filteredOptions | async" [value]="option.name">
+                                                <small class="mat-text-muted">{{option.name}}</small>
+                                            </mat-option>
+                                        </mat-autocomplete>
+                                    </mat-form-field>
+                                </div>
+                                <div fxFlex class="inputpadding">
+                                    <mat-form-field appearance="outline" color="primary" class="width-all">
+                                        <mat-label>Fecha</mat-label>
+                                        <input matInput [matDatepicker]="picker" formControlName="date">
+                                        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                                        <mat-datepicker #picker></mat-datepicker>
+                                    </mat-form-field>
+                                </div>
+                                <div fxFlex="20px"></div>
+                            </div>
+                            <div fxLayout="row">
+                                <div fxFlex="20px"></div>
+                                <div fxFlex="50px" fxHide.xs fxLayoutAlign="center center">
+                                    <mat-icon color="accent" class="material-icons-outlined">summarize
+                                    </mat-icon>
+                                </div>
+                                <div fxFlex class="inputpadding">
+                                    <mat-form-field appearance="outline" color="primary" class="width-all">
+                                        <mat-label>Factura</mat-label>
+                                        <input formControlName="noBill" type="text" matInput placeholder="Ingrese el No. de factura">
+                                    </mat-form-field>
+                                </div>
+                                <div fxFlex class="inputpadding">
+                                    <mat-form-field appearance="outline" color="primary" class="width-all">
+                                        <mat-label>Requicisión</mat-label>
+                                        <input formControlName="requisition" type="text" matInput placeholder="Ingrese el No. de requicisión">
+                                    </mat-form-field>
+                                </div>
+                                <div fxFlex="20px"></div>
+                            </div>
+                            <div fxLayout="row">
+                                <div fxFlex="20px"></div>
+                                <div fxFlex="50px" fxHide.xs fxLayoutAlign="center center">
+                                    <mat-icon color="accent" class="material-icons-outlined">attach_file
+                                    </mat-icon>
+                                </div>
+                                <div fxFlex class="inputpadding">
+                                    <mat-form-field appearance="outline" class="width-all">
+                                        <mat-label>
+                                            Archivo
+                                        </mat-label>
+                                        <ngx-mat-file-input #removableInput formControlName="file" placeholder="Ingrese un archivo">
+                                        </ngx-mat-file-input>
+                                        <button mat-icon-button matSuffix *ngIf="!removableInput.empty" (click)="removableInput.clear($event)">
+                                            <mat-icon>clear</mat-icon>
+                                        </button>
+                                    </mat-form-field>
+                                </div>
+                                <div fxFlex="50px" fxHide.xs fxLayoutAlign="center center">
+                                    <mat-icon color="accent" class="material-icons-outlined">payment
+                                    </mat-icon>
+                                </div>
+                                <div fxFlex="19" class="inputpadding">
+                                    <mat-button-toggle-group formControlName="payment" style="margin-top: 10px;">
+                                        <mat-button-toggle value="CONTADO">Contado</mat-button-toggle>
+                                        <mat-button-toggle value="CREDITO">Crédito</mat-button-toggle>
+                                    </mat-button-toggle-group>
+                                </div>
+                            </div>
+                            <div fxLayout="row">
+                                <div fxFlex="20px"></div>
+                                <div fxFlex="50px" fxHide.xs fxLayoutAlign="center center">
+                                    <mat-icon color="accent" class="material-icons-outlined">info
+                                    </mat-icon>
+                                </div>
+                                <div fxFlex class="inputpadding">
+                                    <mat-form-field appearance="outline" color="primary" class="width-all">
+                                        <mat-label>Detalles</mat-label>
+                                        <textarea formControlName="details" matInput rows="6" cols="75" placeholder="Observaciones..."></textarea>
+                                    </mat-form-field>
+                                </div>
+                                <div fxFlex="20px"></div>
+                            </div>
+                            <div>
+                                <div fxFlex></div>
+                                <button mat-button matStepperNext>Siguiente</button>
+                            </div>
+                        </form>
                     </div>
-                    <div fxLayout="row">
-                        <div fxFlex="20px"></div>
-                        <div fxFlex="50px" fxHide.xs fxLayoutAlign="center center">
-                            <mat-icon color="accent" class="material-icons-outlined">business
-                            </mat-icon>
-                        </div>
-                        <div fxFlex class="inputpadding">
-                            <mat-form-field appearance="outline" color="primary" class="width-all">
-                                <mat-label>Proveedor</mat-label>
-                                <input matInput formControlName="_provider" [matAutocomplete]="autoProvider" type="text" placeholder="Buscar proveedor..." aria-label="Number">
-                                <mat-autocomplete autoActiveFirstOption #autoProvider="matAutocomplete">
-                                    <mat-option *ngFor="let option of filteredOptions | async" [value]="option.name">
-                                        <small class="mat-text-muted">{{option.name}}</small>
+                </mat-step>
+                <mat-step>
+                    <ng-template matStepLabel>Detalle de la factura</ng-template>
+                    <div class="card mat-elevation-z2 my-container">
+                        <div class="searchSection" fxLayout="row wrap">
+                            <mat-form-field appearance="outline" color="warn" class="width-all">
+                                <input matInput [matAutocomplete]="auto" [formControl]="searchProductsCtrl" placeholder="Buscar producto..." aria-label="State">
+                                <mat-autocomplete #auto="matAutocomplete" [displayWith]="getShowDescription" (optionSelected)="addRow($event.option.value)">
+                                    <mat-option *ngIf="isLoading">
+                                        <mat-progress-bar mode="indeterminate"></mat-progress-bar>
                                     </mat-option>
+                                    <ng-container *ngIf="!isLoading">
+                                        <mat-option *ngFor="let product of filteredProducts" [value]="product">
+                                            <span><b>{{product.code}}</b> | {{product.description}} | {{ product._brand.name }}</span>
+                                            <div fxFlex></div>
+                                            <mat-chip-list style="padding-top: 8px;">
+                                                <mat-chip class="chip-color">{{ product.presentations.name }}</mat-chip>
+                                                <mat-chip>{{ product.presentations.quantity }} ud.</mat-chip>
+                                            </mat-chip-list>
+                                        </mat-option>
+                                    </ng-container>
                                 </mat-autocomplete>
                             </mat-form-field>
                         </div>
-                        <div fxFlex="20px"></div>
-                    </div>
-                    <div fxLayout="row">
-                        <div fxFlex="20px"></div>
-                        <div fxFlex="50px" fxHide.xs fxLayoutAlign="center center">
-                            <mat-icon color="accent" class="material-icons-outlined">summarize
-                            </mat-icon>
-                        </div>
-                        <div fxFlex class="inputpadding">
-                            <mat-form-field appearance="outline" color="primary" class="width-all">
-                                <mat-label>Factura</mat-label>
-                                <input formControlName="noBill" type="text" matInput placeholder="Ingrese el No. de factura">
-                            </mat-form-field>
-                        </div>
-                        <div fxFlex="20px"></div>
-                    </div>
-                    <div fxLayout="row">
-                        <div fxFlex="20px"></div>
-                        <div fxFlex="50px" fxHide.xs fxLayoutAlign="center center">
-                            <mat-icon color="accent" class="material-icons-outlined">tag
-                            </mat-icon>
-                        </div>
-                        <div fxFlex class="inputpadding">
-                            <mat-form-field appearance="outline" color="primary" class="width-all">
-                                <mat-label>Requicisión</mat-label>
-                                <input formControlName="requisition" type="text" matInput placeholder="Ingrese el No. de requicisión">
-                            </mat-form-field>
-                        </div>
-                        <div fxFlex="20px"></div>
-                    </div>
-                    <div fxLayout="row">
-                        <div fxFlex="20px"></div>
-                        <div fxFlex="50px" fxHide.xs fxLayoutAlign="center center">
-                            <mat-icon color="accent" class="material-icons-outlined">payment
-                            </mat-icon>
-                        </div>
-                        <div fxFlex class="inputpadding">
-                            <mat-button-toggle-group formControlName="payment">
-                                <mat-button-toggle value="CONTADO">Contado</mat-button-toggle>
-                                <mat-button-toggle value="CREDITO">Crédito</mat-button-toggle>
-                            </mat-button-toggle-group>
-                        </div>
-                        <div fxFlex="20px"></div>
-                    </div>
-                    <br>
-                    <mat-divider class=""></mat-divider>
-                    <br>
-                    <div fxLayout="row">
-                        <div fxFlex="20px"></div>
-                        <div fxFlex="50px" fxHide.xs fxLayoutAlign="center center">
-                            <mat-icon color="accent" class="material-icons-outlined">info
-                            </mat-icon>
-                        </div>
-                        <div fxFlex class="inputpadding">
-                            <mat-form-field appearance="outline" color="primary" class="width-all">
-                                <mat-label>Detalles</mat-label>
-                                <textarea formControlName="details" matInput rows="6" cols="75" placeholder="Observaciones..."></textarea>
-                            </mat-form-field>
-                        </div>
-                        <div fxFlex="20px"></div>
-                    </div>
-                    <div fxLayout="row">
-                        <div fxFlex="20px"></div>
-                        <div fxFlex="50px" fxHide.xs fxLayoutAlign="center center">
-                            <mat-icon color="accent" class="material-icons-outlined">attach_file
-                            </mat-icon>
-                        </div>
-                        <div fxFlex class="inputpadding">
-                            <mat-form-field appearance="outline" class="width-all">
-                                <mat-label>
-                                    Archivo
-                                </mat-label>
-                                <ngx-mat-file-input #removableInput formControlName="file" placeholder="Ingrese un archivo">
-                                </ngx-mat-file-input>
-                                <button mat-icon-button matSuffix *ngIf="!removableInput.empty" (click)="removableInput.clear($event)">
-                  <mat-icon>clear</mat-icon>
-                </button>
-                            </mat-form-field>
-                        </div>
-                        <div fxFlex="20px"></div>
-                    </div>
-                </from>
-            </div>
-        </div>
-        <div fxFlex fxFlex.xs="100%" class="section">
-            <div class="card mat-elevation-z2 my-container">
-                <div class="searchSection" fxLayout="row wrap">
-                    <h2 color="primary" class="product-font ma-0">Detalle de la factura</h2>
-                    <mat-form-field appearance="outline" color="warn" class="width-all">
-                        <input matInput [matAutocomplete]="auto" [formControl]="searchProductsCtrl" placeholder="Buscar producto..." aria-label="State">
-                        <mat-autocomplete #auto="matAutocomplete" [displayWith]="getShowDescription" (optionSelected)="addRow($event.option.value)">
-                            <mat-option *ngIf="isLoading">
-                                <mat-progress-bar mode="indeterminate"></mat-progress-bar>
-                            </mat-option>
-                            <ng-container *ngIf="!isLoading">
-                                <mat-option *ngFor="let product of filteredProducts" [value]="product">
-                                    <span><b>{{product.code}}</b> | {{product.description}} | {{ product._brand.name }}</span>
-                                    <div fxFlex></div>
-                                    <mat-chip-list style="padding-top: 8px;">
-                                        <mat-chip class="chip-color">{{ product.presentations.name }}</mat-chip>
-                                        <mat-chip>{{ product.presentations.quantity }} ud.</mat-chip>
-                                    </mat-chip-list>
-                                </mat-option>
-                            </ng-container>
-                        </mat-autocomplete>
-                    </mat-form-field>
-                </div>
-                <div class="section">
-                    <div class="header" fxLayout="row wrap">
-                        <div fxFlex class="ellipsis-text cell header-cell">Cantidad</div>
-                        <div fxFlex class="ellipsis-text cell header-cell">Precio Unitario (Q)</div>
-                        <div fxFlex class="ellipsis-text cell header-cell">Bono</div>
-                        <div fxFlex class="ellipsis-text cell header-cell">Descuento (%)</div>
-                        <div fxFlex class="ellipsis-text cell header-cell">Total (Q)</div>
-                        <div fxFlex class="ellipsis-text cell header-cell">Costo Unitario (Q)</div>
-                        <div fxFlex class="ellipsis-text cell header-cell">Cantidad Real</div>
-                        <div fxFlex class="ellipsis-text cell header-cell">Fecha de vencimiento</div>
-                        <div fxFlex="nogrow" class="ellipsis-text cell header-cell">
-                            <mat-icon class="material-icons-outlined cursor-pointer">cancel</mat-icon>
-                        </div>
-                    </div>
-                    <div class="detail-container" data-simplebar>
-                        <div fxLayout="row wrap" *ngIf="detailPurchase.length > 0">
-                            <div *ngFor="let p of detailPurchase; let i = index" class="row" fxFlex="100" fxLayoutAlign="start center" fxLayout="row wrap">
-                                <div fxFlex="80" class="ellipsis-text cell"><b>{{p._product.description}}</b></div>
-                                <div fxFlex="20" fxLayoutAlign="end center">
-                                    <mat-chip-list>
-                                        <mat-chip selected color="warn">{{ p._product.presentations.name }}</mat-chip>
-                                        <mat-chip>{{ p._product.presentations.quantity }} ud.</mat-chip>
-                                    </mat-chip-list>
+                        <div class="section">
+                            <div class="header" fxLayout="row wrap">
+                                <div fxFlex class="ellipsis-text cell header-cell">Cantidad</div>
+                                <div fxFlex class="ellipsis-text cell header-cell">Precio Unitario (Q)</div>
+                                <div fxFlex class="ellipsis-text cell header-cell">Bono</div>
+                                <div fxFlex class="ellipsis-text cell header-cell">Descuento (%)</div>
+                                <div fxFlex class="ellipsis-text cell header-cell">Total (Q)</div>
+                                <div fxFlex class="ellipsis-text cell header-cell">Costo Unitario (Q)</div>
+                                <div fxFlex class="ellipsis-text cell header-cell">Cantidad Real</div>
+                                <div fxFlex class="ellipsis-text cell header-cell">Fecha de vencimiento</div>
+                                <div fxFlex="nogrow" class="ellipsis-text cell header-cell">
+                                    <mat-icon class="material-icons-outlined cursor-pointer">cancel</mat-icon>
                                 </div>
-                                <div fxFlex class="cell">
-                                    <input #quantity="ngModel" (ngModelChange)="calcs(i, $event, 'quantity')" type="number" [(ngModel)]="p.quantity" [ngModelOptions]="{standalone: true}" class="cantinput" required>
+                            </div>
+                            <div class="detail-container" data-simplebar>
+                                <div fxLayout="row wrap" *ngIf="detailPurchase.length > 0">
+                                    <div *ngFor="let p of detailPurchase; let i = index" class="row" fxFlex="100" fxLayoutAlign="start center" fxLayout="row wrap">
+                                        <div fxFlex="80" class="ellipsis-text cell"><b>{{p._product.description}}</b></div>
+                                        <div fxFlex="20" fxLayoutAlign="end center">
+                                            <mat-chip-list>
+                                                <mat-chip selected color="warn">{{ p._product.presentations.name }}</mat-chip>
+                                                <mat-chip>{{ p._product.presentations.quantity }} ud.</mat-chip>
+                                            </mat-chip-list>
+                                        </div>
+                                        <div fxFlex class="cell">
+                                            <input #quantity="ngModel" (ngModelChange)="calcs(i, $event, 'quantity')" type="number" [(ngModel)]="p.quantity" [ngModelOptions]="{standalone: true}" class="cantinput" required>
+                                        </div>
+                                        <div fxFlex class=" cell">
+                                            <input (ngModelChange)="calcs(i, $event, 'price')" type="number" [(ngModel)]="p.price" [ngModelOptions]="{standalone: true}" class="cantinput" required>
+                                        </div>
+                                        <div fxFlex class=" cell"><input (ngModelChange)="calcs(i, $event, 'bonus')" type="number" [(ngModel)]="p.bonus" [ngModelOptions]="{standalone: true}" class="cantinput"></div>
+                                        <div fxFlex class=" cell"><input (ngModelChange)="calcs(i, $event, 'discount')" type="number" [(ngModel)]="p.discount" [ngModelOptions]="{standalone: true}" class="cantinput"></div>
+                                        <div fxFlex class="ellipsis-text cell"><b>{{p.quantity * p.price | number: '.2'}}</b></div>
+                                        <div fxFlex class="ellipsis-text cell">{{ p.cost }}</div>
+                                        <div fxFlex class=" cell"><input type="number" [(ngModel)]="p.realQuantity" [ngModelOptions]="{standalone: true}" class="cantinput" required></div>
+                                        <div fxFlex class=" cell">
+                                            <input matInput fxFlex [matDatepicker]="picker" [(ngModel)]="p.expirationDate" [ngModelOptions]="{standalone: true}" class="cantinput">
+                                            <mat-datepicker-toggle matSuffix fxFlex="20" [for]="picker"></mat-datepicker-toggle>
+                                            <mat-datepicker #picker></mat-datepicker>
+                                        </div>
+                                        <div fxFlex="5" fxLayoutAlign="center center" class="cell">
+                                            <mat-icon (click)="removeRow(i)" class="material-icons-outlined cursor-pointer" style="color: brown;">
+                                                cancel</mat-icon>
+                                        </div>
+                                    </div>
                                 </div>
-                                <div fxFlex class=" cell">
-                                    <input (ngModelChange)="calcs(i, $event, 'price')" type="number" [(ngModel)]="p.price" [ngModelOptions]="{standalone: true}" class="cantinput" required>
-                                </div>
-                                <div fxFlex class=" cell"><input (ngModelChange)="calcs(i, $event, 'bonus')" type="number" [(ngModel)]="p.bonus" [ngModelOptions]="{standalone: true}" class="cantinput"></div>
-                                <div fxFlex class=" cell"><input (ngModelChange)="calcs(i, $event, 'discount')" type="number" [(ngModel)]="p.discount" [ngModelOptions]="{standalone: true}" class="cantinput"></div>
-                                <div fxFlex class="ellipsis-text cell"><b>{{p.quantity * p.price | number: '.2'}}</b></div>
-                                <div fxFlex class="ellipsis-text cell">{{ p.cost }}</div>
-                                <div fxFlex class=" cell"><input type="number" [(ngModel)]="p.realQuantity" [ngModelOptions]="{standalone: true}" class="cantinput" required></div>
-                                <div fxFlex class=" cell">
-                                    <input matInput fxFlex [matDatepicker]="picker" [(ngModel)]="p.expirationDate" [ngModelOptions]="{standalone: true}" class="cantinput">
-                                    <mat-datepicker-toggle matSuffix fxFlex="20" [for]="picker"></mat-datepicker-toggle>
-                                    <mat-datepicker #picker></mat-datepicker>
-                                </div>
-                                <div fxFlex="5" fxLayoutAlign="center center" class="cell">
-                                    <mat-icon (click)="removeRow(i)" class="material-icons-outlined cursor-pointer" style="color: brown;">
-                                        cancel</mat-icon>
+                                <div fxLayout="column wrap" class="noproducts" fxLayoutAlign="center center" *ngIf="detailPurchase.length <= 0">
+                                    <span>No hay productos agregados</span>
+                                    <span class="text-muted">Agregue productos de la lista</span>
                                 </div>
                             </div>
                         </div>
-                        <div fxLayout="column wrap" class="noproducts" fxLayoutAlign="center center" *ngIf="detailPurchase.length <= 0">
-                            <span>No hay productos agregados</span>
-                            <span class="text-muted">Agregue productos de la lista</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div fxLayout="row">
-        <div fxFlex class="totalP">
-            <div class="card mat-elevation-z4">
-                <div class="section" fxLayout="row wrap">
-                    <div fxFlex="100" fxLayout="row wrap">
-                        <div fxFlex="100" fxLayoutAlign="start center" fxLayout="row wrap">
-                            <button mat-raised-button class="close-button" style="color:brown;">
-                CANCELAR
-              </button>
-                            <button mat-raised-button [disabled]="formPurchase.invalid || detailPurchase.length === 0" (click)="savePurchase()" color="warn" class="close-button">
-                CREAR
-              </button>
+                        <div fxLayout="row wrap" class="searchSection">
                             <h3 class="product-font ma-0">Cantidad: {{ detailPurchase.length }}</h3>
                             <span fxFlex></span>
                             <h1 class="product-font ma-0">TOTAL: Q. {{ getTotal() | number: '.2' }}</h1>
+                            <span fxFlex></span>
+                            <button mat-button matStepperPrevious>Anterior</button>
+                            <button mat-button matStepperNext>Siguiente</button>
                         </div>
                     </div>
-                </div>
-            </div>
+                </mat-step>
+                <mat-step>
+                    <ng-template matStepLabel>Done</ng-template>
+                    <p>You are now done.</p>
+                    <div class="card mat-elevation-z4">
+                        <div class="section" fxLayout="row wrap">
+                            <div fxFlex="100" fxLayout="row wrap">
+                                <div fxFlex="100" fxLayoutAlign="start center" fxLayout="row wrap">
+                                    <button mat-raised-button class="close-button" style="color:brown;">
+                        CANCELAR
+                      </button>
+                                    <button mat-raised-button [disabled]="formPurchase.invalid || detailPurchase.length === 0" (click)="savePurchase()" color="warn" class="close-button">
+                        CREAR
+                      </button>
+                                    <h3 class="product-font ma-0">Cantidad: {{ detailPurchase.length }}</h3>
+                                    <span fxFlex></span>
+                                    <h1 class="product-font ma-0">TOTAL: Q. {{ getTotal() | number: '.2' }}</h1>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        <button mat-button matStepperPrevious>Back</button>
+                        <button mat-button (click)="stepper.reset()">Reset</button>
+                    </div>
+                </mat-step>
+            </mat-horizontal-stepper>
         </div>
     </div>
 </div>
