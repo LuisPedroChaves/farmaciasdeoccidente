@@ -104,29 +104,28 @@
                                         <mat-tab label="{{presentation.name}}"
                                             *ngFor="let presentation of element.presentations">
 
-                                            <table class="mat-elevation-z8">
-                                                <tr>
-                                                    <td>Precio de Distribuidor</td>
-                                                    <td>Q. {{presentation.distributor_price}}</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>Precio al por menor:
-                                                    </td>
-                                                    <td>Q. {{presentation.retail_price}}</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>Precio al por mayor:
-                                                    </td>
-                                                    <td>Q. {{presentation.wholesale_price}}</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>Consumidor Final</td>
-                                                    <td>Q. {{presentation.cf_price}}</td>
-                                                </tr>
-
-                                            </table>
-
-
+                                            <div class="container">
+                                                <ul class="responsive-table">
+                                                    <li class="table-row">
+                                                        <div class="col col-1">Precio de Distribuidor</div>
+                                                        <div class="col col-2">Q. {{presentation.distributor_price}}
+                                                        </div>
+                                                    </li>
+                                                    <li class="table-row">
+                                                        <div class="col col-1">Precio al por menor</div>
+                                                        <div class="col col-2">Q. {{presentation.retail_price}} </div>
+                                                    </li>
+                                                    <li class="table-row">
+                                                        <div class="col col-1">Precio al por mayor</div>
+                                                        <div class="col col-2">Q. {{presentation.wholesale_price}}
+                                                        </div>
+                                                    </li>
+                                                    <li class="table-row">
+                                                        <div class="col col-1">Consumidor Final</div>
+                                                        <div class="col col-2">Q. {{presentation.cf_price}} </div>
+                                                    </li>
+                                                </ul>
+                                            </div>
                                         </mat-tab>
                                     </mat-tab-group>
 
