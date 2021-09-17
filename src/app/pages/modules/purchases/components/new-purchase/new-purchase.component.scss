@@ -3,8 +3,12 @@
 }
 
 .my-container {
-    height: calc(100vh - 251) !important;
+    height: calc(100vh - 251px) !important;
     margin-top: 5px;
+}
+
+.header-container {
+    height: calc(100vh - 231px) !important;
 }
 
 .detail-container {

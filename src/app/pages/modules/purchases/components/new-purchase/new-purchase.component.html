@@ -16,104 +16,106 @@
         <div fxFlex>
             <mat-horizontal-stepper #stepper>
                 <mat-step [stepControl]="formPurchase" errorMessage="Campos requeridos.">
-                    <ng-template matStepLabel>Encabezado</ng-template>
-                    <div class="card mat-elevation-z2" style="margin-top: 5px;">
-                        <form [formGroup]="formPurchase" autocomplete="off">
-                            <div fxLayout="row">
-                                <div fxFlex="20px"></div>
-                                <div fxFlex="50px" fxHide.xs fxLayoutAlign="center center">
-                                    <mat-icon color="accent" class="material-icons-outlined">business
-                                    </mat-icon>
+                    <div class="header-container">
+                        <ng-template matStepLabel>Encabezado</ng-template>
+                        <div class="card mat-elevation-z2" style="margin-top: 5px;">
+                            <form [formGroup]="formPurchase" autocomplete="off">
+                                <div fxLayout="row">
+                                    <div fxFlex="20px"></div>
+                                    <div fxFlex="50px" fxHide.xs fxLayoutAlign="center center">
+                                        <mat-icon color="accent" class="material-icons-outlined">business
+                                        </mat-icon>
+                                    </div>
+                                    <div fxFlex="75" class="inputpadding">
+                                        <mat-form-field appearance="outline" color="primary" class="width-all">
+                                            <mat-label>Proveedor</mat-label>
+                                            <input matInput formControlName="_provider" [matAutocomplete]="autoProvider" type="text" placeholder="Buscar proveedor..." aria-label="Number">
+                                            <mat-autocomplete autoActiveFirstOption #autoProvider="matAutocomplete">
+                                                <mat-option *ngFor="let option of filteredOptions | async" [value]="option.name">
+                                                    <small class="mat-text-muted">{{option.name}}</small>
+                                                </mat-option>
+                                            </mat-autocomplete>
+                                        </mat-form-field>
+                                    </div>
+                                    <div fxFlex class="inputpadding">
+                                        <mat-form-field appearance="outline" color="primary" class="width-all">
+                                            <mat-label>Fecha</mat-label>
+                                            <input matInput [matDatepicker]="picker" formControlName="date">
+                                            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                                            <mat-datepicker #picker></mat-datepicker>
+                                        </mat-form-field>
+                                    </div>
+                                    <div fxFlex="20px"></div>
                                 </div>
-                                <div fxFlex="75" class="inputpadding">
-                                    <mat-form-field appearance="outline" color="primary" class="width-all">
-                                        <mat-label>Proveedor</mat-label>
-                                        <input matInput formControlName="_provider" [matAutocomplete]="autoProvider" type="text" placeholder="Buscar proveedor..." aria-label="Number">
-                                        <mat-autocomplete autoActiveFirstOption #autoProvider="matAutocomplete">
-                                            <mat-option *ngFor="let option of filteredOptions | async" [value]="option.name">
-                                                <small class="mat-text-muted">{{option.name}}</small>
-                                            </mat-option>
-                                        </mat-autocomplete>
-                                    </mat-form-field>
+                                <div fxLayout="row">
+                                    <div fxFlex="20px"></div>
+                                    <div fxFlex="50px" fxHide.xs fxLayoutAlign="center center">
+                                        <mat-icon color="accent" class="material-icons-outlined">summarize
+                                        </mat-icon>
+                                    </div>
+                                    <div fxFlex class="inputpadding">
+                                        <mat-form-field appearance="outline" color="primary" class="width-all">
+                                            <mat-label>Factura</mat-label>
+                                            <input formControlName="noBill" type="text" matInput placeholder="Ingrese el No. de factura">
+                                        </mat-form-field>
+                                    </div>
+                                    <div fxFlex class="inputpadding">
+                                        <mat-form-field appearance="outline" color="primary" class="width-all">
+                                            <mat-label>Requicisión</mat-label>
+                                            <input formControlName="requisition" type="text" matInput placeholder="Ingrese el No. de requicisión">
+                                        </mat-form-field>
+                                    </div>
+                                    <div fxFlex="20px"></div>
                                 </div>
-                                <div fxFlex class="inputpadding">
-                                    <mat-form-field appearance="outline" color="primary" class="width-all">
-                                        <mat-label>Fecha</mat-label>
-                                        <input matInput [matDatepicker]="picker" formControlName="date">
-                                        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-                                        <mat-datepicker #picker></mat-datepicker>
-                                    </mat-form-field>
+                                <div fxLayout="row">
+                                    <div fxFlex="20px"></div>
+                                    <div fxFlex="50px" fxHide.xs fxLayoutAlign="center center">
+                                        <mat-icon color="accent" class="material-icons-outlined">attach_file
+                                        </mat-icon>
+                                    </div>
+                                    <div fxFlex class="inputpadding">
+                                        <mat-form-field appearance="outline" class="width-all">
+                                            <mat-label>
+                                                Archivo
+                                            </mat-label>
+                                            <ngx-mat-file-input #removableInput formControlName="file" placeholder="Ingrese un archivo">
+                                            </ngx-mat-file-input>
+                                            <button mat-icon-button matSuffix *ngIf="!removableInput.empty" (click)="removableInput.clear($event)">
+                                                <mat-icon>clear</mat-icon>
+                                            </button>
+                                        </mat-form-field>
+                                    </div>
+                                    <div fxFlex="50px" fxHide.xs fxLayoutAlign="center center">
+                                        <mat-icon color="accent" class="material-icons-outlined">payment
+                                        </mat-icon>
+                                    </div>
+                                    <div fxFlex="19" class="inputpadding">
+                                        <mat-button-toggle-group formControlName="payment" style="margin-top: 10px;">
+                                            <mat-button-toggle value="CONTADO">Contado</mat-button-toggle>
+                                            <mat-button-toggle value="CREDITO">Crédito</mat-button-toggle>
+                                        </mat-button-toggle-group>
+                                    </div>
                                 </div>
-                                <div fxFlex="20px"></div>
-                            </div>
-                            <div fxLayout="row">
-                                <div fxFlex="20px"></div>
-                                <div fxFlex="50px" fxHide.xs fxLayoutAlign="center center">
-                                    <mat-icon color="accent" class="material-icons-outlined">summarize
-                                    </mat-icon>
+                                <div fxLayout="row">
+                                    <div fxFlex="20px"></div>
+                                    <div fxFlex="50px" fxHide.xs fxLayoutAlign="center center">
+                                        <mat-icon color="accent" class="material-icons-outlined">info
+                                        </mat-icon>
+                                    </div>
+                                    <div fxFlex class="inputpadding">
+                                        <mat-form-field appearance="outline" color="primary" class="width-all">
+                                            <mat-label>Detalles</mat-label>
+                                            <textarea formControlName="details" matInput rows="6" cols="75" placeholder="Observaciones..."></textarea>
+                                        </mat-form-field>
+                                    </div>
+                                    <div fxFlex="20px"></div>
                                 </div>
-                                <div fxFlex class="inputpadding">
-                                    <mat-form-field appearance="outline" color="primary" class="width-all">
-                                        <mat-label>Factura</mat-label>
-                                        <input formControlName="noBill" type="text" matInput placeholder="Ingrese el No. de factura">
-                                    </mat-form-field>
+                                <div>
+                                    <div fxFlex></div>
+                                    <button mat-button matStepperNext>Siguiente</button>
                                 </div>
-                                <div fxFlex class="inputpadding">
-                                    <mat-form-field appearance="outline" color="primary" class="width-all">
-                                        <mat-label>Requicisión</mat-label>
-                                        <input formControlName="requisition" type="text" matInput placeholder="Ingrese el No. de requicisión">
-                                    </mat-form-field>
-                                </div>
-                                <div fxFlex="20px"></div>
-                            </div>
-                            <div fxLayout="row">
-                                <div fxFlex="20px"></div>
-                                <div fxFlex="50px" fxHide.xs fxLayoutAlign="center center">
-                                    <mat-icon color="accent" class="material-icons-outlined">attach_file
-                                    </mat-icon>
-                                </div>
-                                <div fxFlex class="inputpadding">
-                                    <mat-form-field appearance="outline" class="width-all">
-                                        <mat-label>
-                                            Archivo
-                                        </mat-label>
-                                        <ngx-mat-file-input #removableInput formControlName="file" placeholder="Ingrese un archivo">
-                                        </ngx-mat-file-input>
-                                        <button mat-icon-button matSuffix *ngIf="!removableInput.empty" (click)="removableInput.clear($event)">
-                                            <mat-icon>clear</mat-icon>
-                                        </button>
-                                    </mat-form-field>
-                                </div>
-                                <div fxFlex="50px" fxHide.xs fxLayoutAlign="center center">
-                                    <mat-icon color="accent" class="material-icons-outlined">payment
-                                    </mat-icon>
-                                </div>
-                                <div fxFlex="19" class="inputpadding">
-                                    <mat-button-toggle-group formControlName="payment" style="margin-top: 10px;">
-                                        <mat-button-toggle value="CONTADO">Contado</mat-button-toggle>
-                                        <mat-button-toggle value="CREDITO">Crédito</mat-button-toggle>
-                                    </mat-button-toggle-group>
-                                </div>
-                            </div>
-                            <div fxLayout="row">
-                                <div fxFlex="20px"></div>
-                                <div fxFlex="50px" fxHide.xs fxLayoutAlign="center center">
-                                    <mat-icon color="accent" class="material-icons-outlined">info
-                                    </mat-icon>
-                                </div>
-                                <div fxFlex class="inputpadding">
-                                    <mat-form-field appearance="outline" color="primary" class="width-all">
-                                        <mat-label>Detalles</mat-label>
-                                        <textarea formControlName="details" matInput rows="6" cols="75" placeholder="Observaciones..."></textarea>
-                                    </mat-form-field>
-                                </div>
-                                <div fxFlex="20px"></div>
-                            </div>
-                            <div>
-                                <div fxFlex></div>
-                                <button mat-button matStepperNext>Siguiente</button>
-                            </div>
-                        </form>
+                            </form>
+                        </div>
                     </div>
                 </mat-step>
                 <mat-step>
