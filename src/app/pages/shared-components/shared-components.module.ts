@@ -30,6 +30,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatBadgeModule } from '@angular/material/badge';
 import { MatPaginatorIntl, MatPaginatorModule } from '@angular/material/paginator';
 import { MatSortModule } from '@angular/material/sort';
+import {MatStepperModule} from '@angular/material/stepper';
 
 /* FLEX ----------------------*/
 import { FlexLayoutModule, CoreModule } from '@angular/flex-layout';
@@ -92,6 +93,7 @@ import { getSpanishPaginatorIntl } from './spanish-paginator-intl';
     MatTooltipModule,
     MatPaginatorModule,
     MatSortModule,
+    MatStepperModule
   ],
   exports: [
     FormsModule,
@@ -134,6 +136,7 @@ import { getSpanishPaginatorIntl } from './spanish-paginator-intl';
     MatTooltipModule,
     MatPaginatorModule,
     MatSortModule,
+    MatStepperModule,
     // components
     NewCellarComponent,
     ConfirmationDialogComponent,

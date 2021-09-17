@@ -12,11 +12,15 @@ import { ProductService } from '../../../../../core/services/httpServices/produc
 import { ProductItem } from '../../../../../core/models/Product';
 import { PurchaseDetailItem, PurchaseItem } from '../../../../../core/models/Purchase';
 import { PurchaseService } from '../../../../../core/services/httpServices/purchase.service';
+import {STEPPER_GLOBAL_OPTIONS} from '@angular/cdk/stepper';
 
 @Component({
   selector: 'app-new-purchase',
   templateUrl: './new-purchase.component.html',
-  styleUrls: ['./new-purchase.component.scss']
+  styleUrls: ['./new-purchase.component.scss'],
+  providers: [{
+    provide: STEPPER_GLOBAL_OPTIONS, useValue: {showError: true}
+  }]
 })
 export class NewPurchaseComponent implements OnInit, AfterContentInit, OnDestroy {
 
@@ -62,7 +66,7 @@ export class NewPurchaseComponent implements OnInit, AfterContentInit, OnDestroy
     public productService: ProductService,
     public toasty: ToastyService,
     public purchaseService: PurchaseService,
-    private router: Router
+    private router: Router,
   ) { }
 
   ngOnInit(): void {

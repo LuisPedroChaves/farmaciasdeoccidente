@@ -3,7 +3,8 @@
 }
 
 .my-container {
-    height: calc(100vh - 282px) !important;
+    height: calc(100vh - 251) !important;
+    margin-top: 5px;
 }
 
 .detail-container {
@@ -34,7 +35,7 @@
 }
 
 .searchSection {
-    padding-top: 15px;
+    // padding-top: 15px;
     padding-right: 15px;
     padding-left: 15px;
 }
@@ -133,4 +134,8 @@ $blue: #0a1958;
 .ng-valid[required],
 .ng-valid.required {
     border-left: 5px solid #cbe870;
+}
+
+.mat-form-field {
+    margin-top: 16px;
 }
