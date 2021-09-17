@@ -23,6 +23,8 @@ import { SymptomItem } from '../../../../../core/models/Symptom';
 import { SymptomService } from 'src/app/core/services/httpServices/symptom.service';
 import { SubstanceService } from '../../../../../core/services/httpServices/substance.service';
 import { Router } from '@angular/router';
+import { ProductPresentationsItem } from '../../../../../core/models/Product';
+import { title } from 'process';
 interface Presentation {
   value: string;
   viewValue: string;
@@ -37,7 +39,8 @@ export class ProductFormComponent
 {
   showButtomAddPresentations = true;
 
-  // END variables to Test
+  presentationsDefault: string[] = ['UNIDAD', 'TABLETA', 'CAJA'];
+  filterPresentations: Observable<string[]>[] = [];
 
   // variables of chips
   removable = true;
@@ -157,6 +160,33 @@ export class ProductFormComponent
       startWith(''),
       map((symptom) => this._filterSymptoms(symptom))
     );
+
+    // this.form.controls.presentations.controls.name.valueChanges.pipe(
+    //   startWith(''),
+    //   map((value) => this._filterPresentations(value))
+    // );
+  }
+
+  manageNameControl(index: number): void {
+    console.log(index, this.filterPresentations);
+    const arrayControl = this.form.get('presentations') as FormArray;
+
+    this.filterPresentations[index] = arrayControl
+      .at(index)
+      .get('name')
+      .valueChanges.pipe(
+        startWith(''),
+        map((name) =>
+          name
+            ? this._filterPresentations(name)
+            : this.presentationsDefault.slice()
+        )
+      );
+  }
+
+  displayFn(presentation?: string): string | undefined {
+    console.log(presentation);
+    return presentation ? presentation : undefined;
   }
 
   ngAfterContentInit(): void {
@@ -173,7 +203,7 @@ export class ProductFormComponent
 
   addPresentation(): void {
     const presentationFormGroup = this.formBuilder.group({
-      presentation: new FormControl(null, [Validators.required]),
+      name: new FormControl(null, [Validators.required]),
       wholesale_price: new FormControl(null, [Validators.required]),
       distributor_price: new FormControl(null, [Validators.required]),
       retail_price: new FormControl(null, [Validators.required]),
@@ -182,11 +212,14 @@ export class ProductFormComponent
       commission: new FormControl(null, [Validators.required]),
     });
     this.presentationsForm.push(presentationFormGroup);
+    this.manageNameControl(this.presentationsForm.length - 1);
   }
 
   removePresentation(indice: number): void {
     this.presentationsForm.removeAt(indice);
     this.showButtomAddPresentations = true;
+
+    this.filterPresentations.splice(indice, 1);
   }
 
   refreshForms(): void {
@@ -281,6 +314,16 @@ export class ProductFormComponent
   }
   // End Functions to Chips
 
+  private _filterPresentations(value: string): string[] {
+    console.log(value);
+    if (value) {
+      const filterValue = value.toLowerCase();
+      return this.presentationsDefault.filter((presentation) =>
+        presentation.toLowerCase().includes(filterValue)
+      );
+    }
+  }
+
   saveProduct(): void {
     console.log(this.form, this.substances, this.symptoms);
 
@@ -302,6 +345,7 @@ export class ProductFormComponent
           this.form.reset();
           this.symptoms = [];
           this.substances = [];
+          this.refreshForms();
           this.toasty.success('Producto Creado Exitosamente');
           this.loading = false;
         } else {

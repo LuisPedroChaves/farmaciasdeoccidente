@@ -21,17 +21,38 @@ import { AppState } from 'src/app/core/store/app.reducer';
 import { ProductService } from 'src/app/core/services/httpServices/product.service';
 import { ProductsDataSource } from 'src/app/core/services/cdks/product.datasource';
 import { ToastyService } from '../../../../../core/services/internal/toasty.service';
+import {
+  animate,
+  state,
+  style,
+  transition,
+  trigger,
+} from '@angular/animations';
+import { ProductItem } from 'src/app/core/models/Product';
+import { MatDialog } from '@angular/material/dialog';
+import { ConfirmationDialogComponent } from 'src/app/pages/shared-components/confirmation-dialog/confirmation-dialog.component';
 
 @Component({
   selector: 'app-products',
   templateUrl: './products.component.html',
   styleUrls: ['./products.component.scss'],
+  animations: [
+    trigger('detailExpand', [
+      state('collapsed', style({ height: '0px', minHeight: '0' })),
+      state('expanded', style({ height: '*' })),
+      transition(
+        'expanded <=> collapsed',
+        animate('225ms cubic-bezier(0.4, 0.0, 0.2, 1)')
+      ),
+    ]),
+  ],
 })
 export class ProductsComponent implements OnInit, OnDestroy, AfterViewInit {
-
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild('search') search: ElementRef<HTMLInputElement>;
   smallScreen = window.innerWidth < 960 ? true : false;
+
+  expandedElement: ProductItem | null;
 
   sessionsubscription: Subscription;
   productsp: string[];
@@ -44,7 +65,7 @@ export class ProductsComponent implements OnInit, OnDestroy, AfterViewInit {
     '_brand',
     'healthProgram',
     'state',
-    'options',
+    // 'options',
   ];
   currentPage = 0;
 
@@ -52,7 +73,8 @@ export class ProductsComponent implements OnInit, OnDestroy, AfterViewInit {
     public store: Store<AppState>,
     public productService: ProductService,
     public toasty: ToastyService,
-    public router: Router
+    public router: Router,
+    public dialog: MatDialog
   ) {}
 
   ngOnInit(): void {
@@ -103,5 +125,39 @@ export class ProductsComponent implements OnInit, OnDestroy, AfterViewInit {
 
   addNewProduct(): void {
     this.router.navigate(['admin/adminProducts/product', 'new']);
+  }
+
+  delProduct(product: ProductItem): void {
+    const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
+      width: '350px',
+      data: {
+        title: 'Eliminar Producto',
+        message:
+          '¿Confirma que desea eliminar el producto:  ' +
+          product.description +
+          '?',
+        description: false,
+      },
+      disableClose: true,
+      panelClass: ['farmacia-dialog', 'farmacia'],
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result !== undefined) {
+        // this.loading = true;
+        this.productService.deleteProduct(product).subscribe(
+          (res) => {
+            this.toasty.success('Producto eliminado exitosamente');
+            this.dataSource.loadProducts(this.currentPage, 10, '');
+
+            console.log(res);
+          },
+          (error) => {
+            // this.loading = false;
+            this.toasty.error('Error al eliminar el Producto');
+          }
+        );
+      }
+    });
   }
 }
