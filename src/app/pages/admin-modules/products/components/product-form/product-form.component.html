@@ -191,10 +191,15 @@
                     <div [formGroupName]="i" class="row" fxFlex="100" fxLayoutAlign="space-between" fxLayout="row wrap">
                         <div fxFlex="30" class="cell">
                             <mat-form-field appearance="outline" color="primary" class="width-all">
-                                <mat-label [attr.for]="'presentation' + i">Presentación</mat-label>
-                                <input matInput [attr.id]="'presentation' + i" formControlName="presentation"
-                                    type="text" name="presentation" placeholder="Ingrese el nombre de la presentación">
-
+                                <mat-label [attr.for]="'name' + i">Presentación</mat-label>
+                                <input matInput [attr.id]="'name' + i" formControlName="name" type="text" name="name"
+                                    placeholder="Ingrese el nombre de la presentación"
+                                    [matAutocomplete]="autoPresentation">
+                                <mat-autocomplete #autoPresentation="matAutocomplete" [displayWith]="displayFn">
+                                    <mat-option *ngFor="let option of filterPresentations[i] | async" [value]="option">
+                                        {{option}}
+                                    </mat-option>
+                                </mat-autocomplete>
                             </mat-form-field>
                         </div>
                         <div fxFlex="33" class="cell">
