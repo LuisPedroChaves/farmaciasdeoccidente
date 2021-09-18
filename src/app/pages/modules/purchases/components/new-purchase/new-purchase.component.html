@@ -29,7 +29,7 @@
                                     <div fxFlex="75" class="inputpadding">
                                         <mat-form-field appearance="outline" color="primary" class="width-all">
                                             <mat-label>Proveedor</mat-label>
-                                            <input matInput formControlName="_provider" [matAutocomplete]="autoProvider" type="text" placeholder="Buscar proveedor..." aria-label="Number">
+                                            <input #provider matInput formControlName="_provider" [matAutocomplete]="autoProvider" type="text" placeholder="Buscar proveedor..." aria-label="Number">
                                             <mat-autocomplete autoActiveFirstOption #autoProvider="matAutocomplete">
                                                 <mat-option *ngFor="let option of filteredOptions | async" [value]="option.name">
                                                     <small class="mat-text-muted">{{option.name}}</small>

@@ -1,159 +1,98 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
-import { Router } from '@angular/router';
+import { Subscription } from 'rxjs';
 
+import { CellarItem } from 'src/app/core/models/Cellar';
 import { DetailsPurchaseComponent } from '../details-purchase/details-purchase.component';
+import { PurchaseItem } from '../../../../../core/models/Purchase';
+import { PurchaseService } from '../../../../../core/services/httpServices/purchase.service';
 
 @Component({
   selector: 'app-deleted-purchases',
   templateUrl: './deleted-purchases.component.html',
   styleUrls: ['./deleted-purchases.component.scss']
 })
-export class DeletedPurchasesComponent implements OnInit {
+export class DeletedPurchasesComponent implements OnInit, OnDestroy {
 
   @ViewChild(MatSort, { static: true }) sort: MatSort;
   smallScreen = window.innerWidth < 960 ? true : false;
+  currentCellar: CellarItem;
 
   month = new Date().getMonth() + 1;
   year = new Date().getFullYear();
   currentFilter = 'current';
 
+  purchasesSubscription: Subscription;
+  purchases: PurchaseItem[];
   purchasesp: string[] = ["read", "update", "delete", "create"];
-  purchases: any[] = [
-    {
-      noBill: '2024',
-      _provider: 'Pfizer',
-      date: '15/08/2021',
-      requisition: '526',
-      payment: 'CONTADO',
-      total: 2534.61,
-      state: 'CREADA',
-      _user: 'Luis Chaves',
-    },
-    {
-      noBill: '2054',
-      _provider: 'CAPLIN',
-      date: '20/08/2021',
-      requisition: '627',
-      payment: 'CREDITO',
-      total: 5220.41,
-      state: 'FINALIZADA',
-      _user: 'Luis Chaves',
-    },
-    {
-      noBill: '2055',
-      _provider: 'CAPLIN',
-      date: '22/08/2021',
-      requisition: '745',
-      payment: 'CREDITO',
-      total: 3226.23,
-      state: 'FINALIZADA',
-      _user: 'Luis Chaves',
-    },
-    {
-      noBill: '2056',
-      _provider: 'CAPLIN',
-      date: '23/08/2021',
-      requisition: '746',
-      payment: 'CREDITO',
-      total: 4562.41,
-      state: 'FINALIZADA',
-      _user: 'Luis Chaves',
-    },
-    {
-      noBill: '2057',
-      _provider: 'CAPLIN',
-      date: '20/08/2021',
-      requisition: '747',
-      payment: 'CONTADO',
-      total: 2653.41,
-      state: 'FINALIZADA',
-      _user: 'Luis Chaves',
-    },
-    {
-      noBill: '2058',
-      _provider: 'CAPLIN',
-      date: '20/08/2021',
-      requisition: '748',
-      payment: 'CREDITO',
-      total: 9452.41,
-      state: 'FINALIZADA',
-      _user: 'Luis Chaves',
-    },
-    {
-      noBill: '2059',
-      _provider: 'CAPLIN',
-      date: '20/08/2021',
-      requisition: '749',
-      payment: 'CONTADO',
-      total: 4523.41,
-      state: 'FINALIZADA',
-      _user: 'Luis Chaves',
-    },
-    {
-      noBill: '2060',
-      _provider: 'CAPLIN',
-      date: '20/08/2021',
-      requisition: '750',
-      payment: 'CONTADO',
-      total: 1235.41,
-      state: 'FINALIZADA',
-      _user: 'Luis Chaves',
-    },
-    {
-      noBill: '2061',
-      _provider: 'CAPLIN',
-      date: '20/08/2021',
-      requisition: '751',
-      payment: 'CREDITO',
-      total: 4568.41,
-      state: 'FINALIZADA',
-      _user: 'Luis Chaves',
-    },
-    {
-      noBill: '2062',
-      _provider: 'CAPLIN',
-      date: '20/08/2021',
-      requisition: '755',
-      payment: 'CREDITO',
-      total: 3568.41,
-      state: 'FINALIZADA',
-      _user: 'Luis Chaves',
-    },
-  ];
 
   dataSource = new MatTableDataSource();
-  columns = ['image', 'noBill', '_provider', 'date', 'requisition', 'payment', 'total', '_user', 'options'];
-
+  columns = ['image', 'noBill', '_provider', 'date', 'requisition', 'payment', 'total', '_userDeleted', 'options'];
 
   constructor(
-    private router: Router,
     public dialog: MatDialog,
-  ) {
-    this.dataSource = new MatTableDataSource<any>(this.purchases);
-  }
+    public purchaseService: PurchaseService
+  ) { }
 
   ngOnInit(): void {
+    this.currentCellar = JSON.parse(localStorage.getItem('currentstore'));
+    const FILTER = { month: this.month, year: this.year, _cellar: this.currentCellar._id };
+    this.purchasesSubscription = this.purchaseService.getDeletes(FILTER).subscribe(data => {
+      this.purchases = data.purchases;
+      this.dataSource = new MatTableDataSource<any>(this.purchases);
+    });
   }
 
-  details(details) {
+  ngOnDestroy(): void {
+    this.purchasesSubscription?.unsubscribe();
+  }
+
+  details(purchase: PurchaseItem) {
     const dialogRef = this.dialog.open(DetailsPurchaseComponent, {
       width: this.smallScreen ? '100%' : '1280px',
       minHeight: '78vh',
       maxHeight: '78vh',
-      data: { details },
+      data: { ...purchase },
       disableClose: true,
       panelClass: ['farmacia-dialog', 'farmacia'],
     });
   }
 
-  applyFilter() {
+  applyFilter(filterValue?: string) {
+    if (filterValue) {
 
+      this.dataSource.filter = filterValue.trim().toLowerCase();
+      if (this.currentFilter === 'last') {
+        if (new Date().getMonth() === 0) {
+          this.month = 12;
+        } else {
+          this.month = new Date().getMonth();
+
+        }
+      }
+      if (this.currentFilter === 'current') { this.month = new Date().getMonth() + 1; }
+      const filters = { month: this.month, year: this.year, _cellar: this.currentCellar._id };
+      this.purchaseService.getDeletes(filters);
+    } else {
+      if (this.currentFilter === 'last') {
+        if (new Date().getMonth() === 0) {
+          this.month = 12;
+        } else {
+          this.month = new Date().getMonth();
+
+        }
+      }
+      if (this.currentFilter === 'current') { this.month = new Date().getMonth() + 1; }
+      const filters = { month: this.month, year: this.year, _cellar: this.currentCellar._id };
+      this.purchaseService.getDeletes(filters);
+    }
   }
-  applyFilter2(event: Event): void {
 
+  applyFilter2(event: Event): void {
+    const filterValue = (event.target as HTMLInputElement).value;
+    this.dataSource.filter = filterValue.trim().toLowerCase();
   }
 
 }

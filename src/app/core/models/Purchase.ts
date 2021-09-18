@@ -4,6 +4,7 @@ import { ProviderItem } from './Provider';
 import { ProductItem } from './Product';
 
 export interface PurchaseItem {
+    _id: string,
     _cellar: CellarItem;
     _user: UserItem;
     _provider: ProviderItem;
@@ -16,7 +17,10 @@ export interface PurchaseItem {
     payment: string,
     total: number
     file: string,
-    applied: boolean
+    applied: boolean,
+    _userDeleted: UserItem,
+    textDeleted: string,
+    deleted: boolean
 }
 
 export interface PurchaseDetailItem {

@@ -1,4 +1,4 @@
-import { Component, OnInit, AfterContentInit, OnDestroy, } from '@angular/core';
+import { Component, OnInit, AfterContentInit, OnDestroy, ElementRef, ViewChild } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Observable, Subscription } from 'rxjs';
@@ -27,6 +27,8 @@ export class NewPurchaseComponent implements OnInit, AfterContentInit, OnDestroy
   smallScreen = window.innerWidth < 960 ? true : false;
   loading = false;
   currentCellar: CellarItem;
+
+  @ViewChild('provider') provider: ElementRef<HTMLInputElement>;
 
   formPurchase = new FormGroup({
     _cellar: new FormControl(null),
@@ -94,6 +96,9 @@ export class NewPurchaseComponent implements OnInit, AfterContentInit, OnDestroy
         this.filteredProducts = data['products'];
       });
     this.currentCellar = JSON.parse(localStorage.getItem('currentstore'));
+    setTimeout(() => {
+      this.provider.nativeElement.focus();
+    }, 500);
   }
 
   ngAfterContentInit() {
@@ -192,6 +197,7 @@ export class NewPurchaseComponent implements OnInit, AfterContentInit, OnDestroy
 
     this.loading = true;
     this.formPurchase.get('_cellar').setValue(this.currentCellar);
+    this.formPurchase.get('total').setValue(this.getTotal());
     let purchase: PurchaseItem = { ...this.formPurchase.value };
     purchase.detail = this.detailPurchase;
 
