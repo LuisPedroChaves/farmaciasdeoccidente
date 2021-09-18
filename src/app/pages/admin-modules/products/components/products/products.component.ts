@@ -160,4 +160,11 @@ export class ProductsComponent implements OnInit, OnDestroy, AfterViewInit {
       }
     });
   }
+
+  editProduct(product: ProductItem): void {
+    this.router.navigate([
+      'admin/adminProducts/product',
+      'edit/' + product.description,
+    ]);
+  }
 }

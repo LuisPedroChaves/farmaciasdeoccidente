@@ -8,7 +8,7 @@ export const ProductsRoutes: Routes = [
     component: ProductsComponent,
   },
   {
-    path: 'product/new',
+    path: 'product/:action',
     component: NewProductComponent,
   },
 ];

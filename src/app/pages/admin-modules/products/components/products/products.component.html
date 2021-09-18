@@ -124,6 +124,13 @@
                                                         <div class="col col-1">Consumidor Final</div>
                                                         <div class="col col-2">Q. {{presentation.cf_price}} </div>
                                                     </li>
+                                                    <li class="table-row">
+                                                        <div class="col col-1"><strong> Cantidad de Unidades por
+                                                                Presentación</strong>
+                                                        </div>
+                                                        <div class="col col-2"> <strong> {{presentation.quantity}}
+                                                            </strong></div>
+                                                    </li>
                                                 </ul>
                                             </div>
                                         </mat-tab>
@@ -148,10 +155,14 @@
                                 </div>
                                 <mat-divider [vertical]="true"></mat-divider>
 
-                                <div fxFlex="20%" class="example-element-description">
+                                <div fxFlex="28%">
                                     <h2>Acciones:</h2>
                                     <button mat-menu-item (click)="editProduct(element)" color="warn">
-                                        <mat-icon class="material-icons-outlined">edit</mat-icon> Editar Producto
+                                        <mat-icon class="material-icons-outlined">edit</mat-icon> Editar Detalles del
+                                        Producto
+                                    </button>
+                                    <button mat-menu-item (click)="editProduct(element)" color="warn">
+                                        <mat-icon class="material-icons-outlined">edit</mat-icon> Editar Presentaciones
                                     </button>
                                     <button mat-menu-item (click)="delProduct(element)" color="warn">
                                         <mat-icon class="material-icons-outlined">delete</mat-icon> Eliminar Producto

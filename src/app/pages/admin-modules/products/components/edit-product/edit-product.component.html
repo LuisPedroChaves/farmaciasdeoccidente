@@ -1,0 +1,194 @@
+<form [formGroup]="form" autocomplete="off">
+    <div class="clientspace" data-simplebar>
+        <div fxLayout="row wrap" style="margin-top: 8px;">
+            <mat-divider inset=“true”></mat-divider>
+            <h3 color="accent" class="ma-0 info-row T1"> Detalle del Producto</h3>
+        </div>
+
+        <div fxLayout="row wrap" fxLayoutAlign="start center" style="margin-top: 8px;">
+            <div fxFlex="50px"></div>
+
+            <div fxFlex="50px" fxHide.xs>
+                <mat-icon color="accent" class="mSaterial-icons-outlined grayicon">integration_instructions
+                </mat-icon>
+            </div>
+
+            <div fxFlex fxLayout="row wrap">
+                <!-- BarCode -->
+                <div fxFlex="50%" fxFlex.xs="100%" class="inputpadding">
+                    <mat-form-field appearance="outline" color="primary" class="width-all">
+                        <mat-label>Código de Barras</mat-label>
+                        <input formControlName="barcode" type="text" matInput
+                            placeholder="Ingrese el codigo del producto">
+                    </mat-form-field>
+                </div>
+                <!-- END BarCode -->
+                <!-- Brand -->
+                <div fxFlex="50%" fxFlex.xs="100%" class="inputpadding">
+                    <mat-form-field appearance="outline" color="primary" class="width-all">
+                        <mat-label>Laboratorio</mat-label>
+                        <input type="text" placeholder="Ingrese un laboratorio" aria-label="text" matInput
+                            formControlName="_brand" [matAutocomplete]="auto1">
+                        <mat-autocomplete id="_brand" autoActiveFirstOption #auto1="matAutocomplete">
+                            <mat-option *ngFor="let option of filteredOptions | async" [value]="option.name">
+                                <span>{{option.name}}</span>
+                            </mat-option>
+                        </mat-autocomplete>
+                    </mat-form-field>
+                </div>
+                <!-- END Brand -->
+            </div>
+
+            <div fxFlex="50px"></div>
+
+        </div>
+
+        <!-- Description -->
+        <div fxLayout="row wrap" fxLayoutAlign="start center" style="margin-top: 8px;">
+            <div fxFlex="50px"></div>
+            <div fxFlex="50px" fxHide.xs>
+                <mat-icon color="accent" class="material-icons-outlined grayicon">description
+                </mat-icon>
+            </div>
+            <div fxFlex fxLayout="row wrap">
+                <div fxFlex="50%" class="inputpadding">
+                    <mat-form-field appearance="outline" color="primary" class="width-all">
+                        <mat-label>Nombre del Medicamento</mat-label>
+                        <input formControlName="description" type="text" matInput
+                            placeholder="Añada el Nombre del Medicamento">
+                    </mat-form-field>
+                </div>
+                <div fxFlex="50%" class="inputpadding">
+                    <mat-form-field appearance="outline" color="primary" class="width-all">
+                        <mat-label>Nombre Comercial</mat-label>
+                        <input formControlName="description" type="text" matInput
+                            placeholder="Añade el Nombre Comercial del Medicamento">
+                    </mat-form-field>
+                </div>
+                <div fxFlex="100%" class="inputpadding">
+                    <mat-form-field appearance="outline" color="primary" class="width-all">
+                        <mat-label>Programa de Salud</mat-label>
+                        <input formControlName="healthProgram" type="text" matInput
+                            placeholder="Añada un programa de Salud">
+                    </mat-form-field>
+                </div>
+            </div>
+            <div fxFlex="50px"></div>
+        </div>
+        <!-- END Description -->
+
+        <!-- Max and Min -->
+        <!-- <div fxLayout="row wrap" fxLayoutAlign="start center" style="margin-top: 8px;">
+            <div fxFlex="50px"></div>
+            <div fxFlex="50px" fxHide.xs>
+                <mat-icon color="accent" class="material-icons-outlined grayicon">pin
+                </mat-icon>
+            </div>
+            <div fxFlex fxLayout="row wrap">
+                <div fxFlex="50%" class="inputpadding">
+                    <mat-form-field appearance="outline" color="primary" class="width-all">
+                        <mat-label>Minimo de Medicamentos</mat-label>
+                        <input formControlName="max" type="number" matInput placeholder="Minimo de Medicamentos">
+                    </mat-form-field>
+                </div>
+                <div fxFlex="50%" class="inputpadding">
+                    <mat-form-field appearance="outline" color="primary" class="width-all">
+                        <mat-label>Maximo de Medicamentos</mat-label>
+                        <input formControlName="min" type="number" matInput placeholder="Maximo de Medicamentos">
+                    </mat-form-field>
+                </div>
+            </div>
+            <div fxFlex="50px"></div>
+        </div> -->
+        <!-- END Max and Min -->
+
+        <!-- Substances -->
+        <div fxLayout="row wrap" fxLayoutAlign="start center" style="margin-top: 8px;">
+            <div fxFlex="50px"></div>
+            <div fxFlex="50px" fxHide.xs>
+                <mat-icon color="accent" class="material-icons-outlined grayicon">bloodtype
+                </mat-icon>
+            </div>
+            <div fxFlex fxLayout="row wrap">
+                <div fxFlex="100%" class="inputpadding">
+                    <mat-form-field appearance="outline" class="width-all">
+                        <mat-label>Sustancias</mat-label>
+                        <mat-chip-list #chipListSubstances>
+                            <mat-chip *ngFor="let substance of substances" [removable]="removable"
+                                (removed)="removeSubstance(substance)">
+                                {{substance}}
+                                <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
+                            </mat-chip>
+                            <input type="text" placeholder="Ingrese una sustancia" #substanceInput aria-label="text"
+                                matInput formControlName="substances" [matAutocomplete]="auto2"
+                                [matChipInputFor]="chipListSubstances"
+                                [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+                                (matChipInputTokenEnd)="addSubstance($event)">
+                        </mat-chip-list>
+                        <mat-autocomplete id="substances" autoActiveFirstOption #auto2="matAutocomplete"
+                            (optionSelected)="selectedSubstance($event)">
+                            <mat-option *ngFor="let substance of filteredSubstances | async" [value]="substance">
+                                <span>{{substance.name}}</span>
+                            </mat-option>
+                        </mat-autocomplete>
+                    </mat-form-field>
+                </div>
+            </div>
+            <div fxFlex="50px"></div>
+        </div>
+        <!-- END Substances -->
+
+
+        <!-- symptom -->
+        <div fxLayout="row wrap" fxLayoutAlign="start center" style="margin-top: 8px;">
+            <div fxFlex="50px"></div>
+            <div fxFlex="50px" fxHide.xs>
+                <mat-icon color="accent" class="material-icons-outlined grayicon">masks
+                </mat-icon>
+            </div>
+            <div fxFlex fxLayout="row wrap">
+                <div fxFlex="100%" class="inputpadding">
+                    <mat-form-field appearance="outline" class="width-all">
+                        <mat-label>Sintomas</mat-label>
+                        <mat-chip-list #chipListSymptoms>
+                            <mat-chip *ngFor="let symptom of symptoms" [removable]="removable"
+                                (removed)="removeSymptoms(symptom)">
+                                {{symptom}}
+                                <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
+                            </mat-chip>
+                            <input type="text" placeholder="Ingrese un Simtoma" #symptomInput aria-label="text" matInput
+                                formControlName="symptoms" [matAutocomplete]="auto3"
+                                [matChipInputFor]="chipListSymptoms"
+                                [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+                                (matChipInputTokenEnd)="addSymptom($event)">
+                        </mat-chip-list>
+                        <mat-autocomplete id="symptoms" autoActiveFirstOption #auto3="matAutocomplete"
+                            (optionSelected)="selectedSymptom($event)">
+                            <mat-option *ngFor="let symptom of filteredSymptoms | async" [value]="symptom.name">
+                                <span>{{symptom.name}}</span>
+                            </mat-option>
+                        </mat-autocomplete>
+                    </mat-form-field>
+                </div>
+            </div>
+            <div fxFlex="50px"></div>
+        </div>
+        <!-- END symptom -->
+
+        <div fxLayout="row wrap">
+            <div fxFlex="100px" fxHide.xs></div>
+        </div>
+        <mat-divider></mat-divider>
+        <div fxLayout="row" class="header">
+            <button mat-button *ngIf="!loading" [routerLink]="'/admin/adminProducts'" class="info-row">
+                CANCELAR
+            </button>
+            <span fxFlex></span>
+            <button mat-button *ngIf="!loading" (click)="editProduct()" [disabled]="this.form.invalid" color="primary">
+                GUARDAR
+            </button>
+            <mat-progress-spinner *ngIf="loading" mode="indeterminate" diameter="30" color="warn">
+            </mat-progress-spinner>
+        </div>
+    </div>
+</form>

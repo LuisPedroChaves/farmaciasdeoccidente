@@ -3,7 +3,8 @@
         <button mat-icon-button class="close-button" [routerLink]="'/admin/adminProducts'">
             <mat-icon>close</mat-icon>
         </button>
-        <h2 color="accent" class="ma-0 info-row T">Nuevo Producto</h2>
+        <h2 *ngIf="action === 'new'" color="accent" class="ma-0 info-row T">Nuevo Producto</h2>
+        <h2 *ngIf="action === 'edit'" color="accent" class="ma-0 info-row T">Editar Producto</h2>
     </div>
     <div class="container-form">
         <div class="job-card mat-elevation-z2" fxLayout="row wrap" fxLayoutAlign="start center">
@@ -12,8 +13,11 @@
                 <span fxFlex></span>
             </div>
             <br>
-            <div fxFlex="100" fxLayout="column wrap">
+            <div *ngIf="action === 'new'" fxFlex="100" fxLayout="column wrap">
                 <app-product-form></app-product-form>
+            </div>
+            <div *ngIf="action === 'edit'" fxFlex="100" fxLayout="column wrap">
+                <app-edit-product [product]="product"></app-edit-product>
             </div>
         </div>
     </div>
