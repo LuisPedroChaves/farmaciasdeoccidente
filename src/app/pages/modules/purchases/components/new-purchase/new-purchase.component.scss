@@ -1,0 +1,146 @@
+.section-content {
+    height: calc(100%) !important;
+}
+
+.my-container {
+    height: calc(100vh - 251px) !important;
+    margin-top: 5px;
+}
+
+.header-container {
+    height: calc(100vh - 231px) !important;
+}
+
+.detail-container {
+    height: calc(100vh - 472px) !important;
+}
+
+.p-10 {
+    padding: 10px;
+}
+
+.close-button {
+    margin-right: 10px;
+}
+
+.T {
+    color: #045195;
+    font-size: 25px;
+}
+
+.card {
+    background-color: white;
+    border-radius: 10px;
+    padding: 10px;
+}
+
+.section {
+    padding: 15px 15px;
+}
+
+.searchSection {
+    // padding-top: 15px;
+    padding-right: 15px;
+    padding-left: 15px;
+}
+
+.width-all {
+    width: 100%;
+    font-size: 13px;
+}
+
+.inputpadding {
+    padding-left: 3px;
+    padding-right: 3px;
+}
+
+.header {
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    padding: 0px 10px;
+    mat-icon {
+        visibility: hidden;
+    }
+}
+
+.row {
+    margin: 10px 10px;
+    padding: 10px 10px;
+    mat-icon {
+        visibility: hidden;
+    }
+}
+
+.row:hover {
+    background-color: #fafafa;
+    mat-icon {
+        visibility: visible;
+    }
+}
+
+.header-cell {
+    font-size: 14px;
+    font-weight: 700;
+    color: rgba(0, 0, 0, 0.54);
+}
+
+.cell {
+    padding: 8px 3px;
+}
+
+.cantinput {
+    padding: 3px;
+    width: 80%;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    border-radius: 5px;
+}
+
+$blue: #0a1958;
+.cantinput:focus {
+    border: 1px solid rgba($color: $blue, $alpha: 0.5) !important;
+    outline-color: rgba($color: $blue, $alpha: 0.9);
+}
+
+.productheader {
+    padding: 5px 10px;
+}
+
+.product {
+    background-color: white;
+    padding: 15px;
+    border-radius: 10px;
+    margin-bottom: 5px;
+}
+
+.noproducts {
+    padding: 40px;
+}
+
+.totalP {
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+.chip-color {
+    background-color: #cbe870;
+}
+
+::ng-deep .mat-progress-bar-fill::after {
+    background-color: #0a1958;
+}
+
+::ng-deep .mat-progress-bar-buffer {
+    background: rgba(15, 26, 86, 0.20);
+}
+
+::ng-deep .mat-progress-bar {
+    border-radius: 2px;
+}
+
+.ng-valid[required],
+.ng-valid.required {
+    border-left: 5px solid #cbe870;
+}
+
+.mat-form-field {
+    margin-top: 16px;
+}

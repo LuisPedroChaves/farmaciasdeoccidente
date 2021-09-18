@@ -1,0 +1,52 @@
+<div class="farmacia">
+    <header fxLayout="row wrap" fxLayoutAlign="center center" class="header">
+        <h2 style="margin: 0;" class="h2">FACTURA NO. {{ purchase.noBill }}</h2>
+        <span fxFlex></span>
+        <button mat-icon-button (click)="dialogRef.close()">
+      <mat-icon>close</mat-icon>
+    </button>
+    </header>
+    <h4 class="product-font ma-0">{{ purchase.details }}</h4>
+    <br>
+    <h4 *ngIf="purchase.deleted" class="product-font ma-0"><b>ANULACIÓN:</b> {{ purchase.textDeleted }}</h4>
+    <br>
+    <mat-divider></mat-divider>
+    <div fxLayout="row wrap">
+        <div class="headerTable" fxFlex fxLayout="row wrap">
+            <div fxFlex class="ellipsis-text cell header-cell">Cantidad</div>
+            <div fxFlex class="ellipsis-text cell header-cell">Producto</div>
+            <div fxFlex class="ellipsis-text cell header-cell">Precio Unitario (Q)</div>
+            <div fxFlex class="ellipsis-text cell header-cell">Bono</div>
+            <div fxFlex class="ellipsis-text cell header-cell">Descuento (%)</div>
+            <div fxFlex class="ellipsis-text cell header-cell">Total (Q)</div>
+            <div fxFlex class="ellipsis-text cell header-cell">Costo Unitario (Q)</div>
+            <div fxFlex class="ellipsis-text cell header-cell">Cantidad Real</div>
+            <div fxFlex class="ellipsis-text cell header-cell">Fecha de vencimiento</div>
+        </div>
+        <div fxLayout="row wrap" class="clientspace" *ngIf="purchase.detail.length > 0" data-simplebar>
+            <div class="row" *ngFor="let p of purchase.detail; let i = index" fxFlex="100" fxLayoutAlign="start center" fxLayout="row wrap">
+                <div fxFlex fxLayoutAlign="center center" class="ellipsis-text cell">{{p.quantity}}</div>
+                <div fxFlex fxLayoutAlign="center center" class="ellipsis-text cell">{{ p._product.code }} | {{p._product.description}}</div>
+                <div fxFlex fxLayoutAlign="center center" class="ellipsis-text cell">{{p.price}}</div>
+                <div fxFlex fxLayoutAlign="center center" class="ellipsis-text cell">{{p.bonus}}</div>
+                <div fxFlex fxLayoutAlign="center center" class="ellipsis-text cell">{{p.discount}}</div>
+                <div fxFlex fxLayoutAlign="center center" class="ellipsis-text cell"><b>{{p.quantity * p.price | number: '.2'}}</b></div>
+                <div fxFlex fxLayoutAlign="center center" class="ellipsis-text cell">{{p.cost | number: '.2'}}</div>
+                <div fxFlex fxLayoutAlign="center center" class="ellipsis-text cell">{{p.realQuantity}}</div>
+                <div fxFlex fxLayoutAlign="center center" class="ellipsis-text cell">{{p.expirationDate | date: 'dd/MM/yyyy'}}</div>
+            </div>
+        </div>
+    </div>
+    <mat-divider></mat-divider>
+    <div fxLayout="row" class="header">
+        <button mat-button (click)="dialogRef.close()" class="info-row close-button">
+      CANCELAR
+    </button>
+        <button mat-raised-button *ngIf="!purchase.deleted" [disabled]="purchase.applied" color="warn" (click)="dialogRef.close()" class="info-row">
+          <mat-icon>warning</mat-icon>
+      APLICAR INVENTARIO
+    </button>
+        <span fxFlex></span>
+        <h1 class="product-font ma-0">TOTAL: Q. {{ purchase.total | number: '.2' }}</h1>
+    </div>
+</div>

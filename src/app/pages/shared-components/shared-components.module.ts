@@ -28,6 +28,9 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatRippleModule } from '@angular/material/core';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatBadgeModule } from '@angular/material/badge';
+import { MatPaginatorIntl, MatPaginatorModule } from '@angular/material/paginator';
+import { MatSortModule } from '@angular/material/sort';
+import {MatStepperModule} from '@angular/material/stepper';
 
 /* FLEX ----------------------*/
 import { FlexLayoutModule, CoreModule } from '@angular/flex-layout';
@@ -45,6 +48,7 @@ import { NewCellarComponent } from './new-cellar/new-cellar.component';
 import { ConfirmationDialogComponent } from './confirmation-dialog/confirmation-dialog.component';
 import { NotificationsComponent } from './notifications/notifications.component';
 import { UpdateNotificationsComponent } from './update-notifications/update-notifications.component';
+import { getSpanishPaginatorIntl } from './spanish-paginator-intl';
 @NgModule({
   declarations: [NewCellarComponent, ConfirmationDialogComponent, NotificationsComponent, UpdateNotificationsComponent],
   imports: [
@@ -86,7 +90,10 @@ import { UpdateNotificationsComponent } from './update-notifications/update-noti
     MatChipsModule,
     MatAutocompleteModule,
     MatRippleModule,
-    MatTooltipModule
+    MatTooltipModule,
+    MatPaginatorModule,
+    MatSortModule,
+    MatStepperModule
   ],
   exports: [
     FormsModule,
@@ -127,14 +134,17 @@ import { UpdateNotificationsComponent } from './update-notifications/update-noti
     MatAutocompleteModule,
     MatRippleModule,
     MatTooltipModule,
-
+    MatPaginatorModule,
+    MatSortModule,
+    MatStepperModule,
     // components
     NewCellarComponent,
     ConfirmationDialogComponent,
     NotificationsComponent
   ]
   , providers: [
-    { provide: MAT_DATE_LOCALE, useValue: 'es' }
+    { provide: MAT_DATE_LOCALE, useValue: 'es' },
+    { provide: MatPaginatorIntl, useValue: getSpanishPaginatorIntl() }
   ]
 })
 export class SharedComponentsModule { }

@@ -1,6 +1,6 @@
 [
     {
-        "state": "order",
+        "state": "ORDER",
         "name": "Ordenes",
         "type": "sub",
         "icon": "receipt_long",
@@ -69,7 +69,47 @@
         "type": "link",
         "icon": "person_search",
         "iconType": "icon",
+        "order": 6
+    },
+    {
+        "state": "storage",
+        "name": "Inventario",
+        "type": "link",
+        "icon": "inventory",
+        "iconType": "icon",
         "order": 7
+    },
+    {
+        "state": "PURCHASE",
+        "name": "Ingresos",
+        "type": "sub",
+        "icon": "shopping_basket",
+        "iconType": "icon",
+        "order": 8
+    },
+    {
+        "state": "purchases",
+        "name": "Facturas",
+        "type": "link",
+        "icon": "summarize",
+        "iconType": "icon",
+        "order": 1
+    },
+    {
+        "state": "adjusts",
+        "name": "Ajustes",
+        "type": "link",
+        "icon": "adjust",
+        "iconType": "icon",
+        "order": 2
+    },
+    {
+        "state": "providers",
+        "name": "Proveedores",
+        "type": "link",
+        "icon": "business",
+        "iconType": "icon",
+        "order": 3
     },
     {
         "state": "/admin",
@@ -104,11 +144,19 @@
         "order": 4
     },
     {
+        "state": "adminProducts",
+        "name": "Catálogo de productos",
+        "type": "link",
+        "icon": "category",
+        "iconType": "icon",
+        "order": 5
+    },
+    {
         "state": "users",
         "name": "Usuarios",
         "type": "link",
         "icon": "people",
         "iconType": "icon",
-        "order": 5
+        "order": 6
     }
 ]

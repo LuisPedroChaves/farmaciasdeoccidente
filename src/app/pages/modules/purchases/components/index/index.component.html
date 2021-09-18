@@ -1,0 +1,24 @@
+<div [ngClass]="{ 'app': !smallScreen, 'app-sm': smallScreen } ">
+    <div class="section-content farmacia">
+        <div>
+            <header class="module-header" [ngClass]="{'padding-25': !smallScreen, 'padding-15': smallScreen }" fxLayoutAlign="start center" fxLayout="row wrap">
+                <h4 class="product-font ma-0 module-title">Facturas</h4> &nbsp;&nbsp;&nbsp;&nbsp;
+                <h2 class="title1 product-font ma-0">Listado general de facturas</h2>
+                <mat-chip-list>
+                    <mat-chip>
+                        BETA
+                    </mat-chip>
+                </mat-chip-list>
+            </header>
+            <mat-divider></mat-divider>
+            <mat-tab-group mat-align-tabs="start">
+                <mat-tab label="Vigentes">
+                    <app-current-purchases></app-current-purchases>
+                </mat-tab>
+                <mat-tab label="Anuladas">
+                    <app-deleted-purchases></app-deleted-purchases>
+                </mat-tab>
+            </mat-tab-group>
+        </div>
+    </div>
+</div>

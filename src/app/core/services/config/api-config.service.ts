@@ -2,11 +2,10 @@ import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class ApiConfigService {
-
-  constructor() { }
+  constructor() {}
 
   // Url base
   public API_URL = environment.root;
@@ -49,6 +48,22 @@ export class ApiConfigService {
   public API_UPLOAD = this.API_URL + '/upload';
   public API_READ = this.API_URL + '/readFIle';
 
-  /* #endregion */
+  // Product
+  public API_PRODUCT = this.API_URL + '/product';
 
+  // Brand
+  public API_BRAND = this.API_URL + '/brand';
+
+  // Brand
+  public API_PROVIDER = this.API_URL + '/provider';
+  // Symptom
+  public API_SYMPTOM = this.API_URL + '/symptoms';
+
+  // Substance
+  public API_SUBSTANCE = this.API_URL + '/substance';
+
+  // Purchase
+  public API_PURCHASE = this.API_URL + '/purchase';
+
+  /* #endregion */
 }
