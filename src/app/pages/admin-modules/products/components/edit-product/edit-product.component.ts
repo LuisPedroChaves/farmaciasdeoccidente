@@ -1,5 +1,13 @@
-import { AfterContentInit, OnDestroy, OnInit } from '@angular/core';
-import { Component, ElementRef, ViewChild } from '@angular/core';
+import { ENTER, COMMA } from '@angular/cdk/keycodes';
+import {
+  AfterContentInit,
+  Component,
+  ElementRef,
+  Input,
+  OnDestroy,
+  OnInit,
+  ViewChild,
+} from '@angular/core';
 import {
   FormArray,
   FormBuilder,
@@ -7,31 +15,38 @@ import {
   FormGroup,
   Validators,
 } from '@angular/forms';
+import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
+import { MatChipInputEvent } from '@angular/material/chips';
+import { MatDialog } from '@angular/material/dialog';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Observable, Subscription } from 'rxjs';
+import { startWith, map } from 'rxjs/operators';
 import { BrandItem } from 'src/app/core/models/Brand';
-import { ProductItem } from 'src/app/core/models/Product';
+import {
+  ProductItem,
+  ProductItemResponse,
+  ProductPresentationsItem,
+} from 'src/app/core/models/Product';
+import { SubstanceItem } from 'src/app/core/models/Substance';
+import { SymptomItem } from 'src/app/core/models/Symptom';
 import { BrandService } from 'src/app/core/services/httpServices/brand.service';
 import { OrderService } from 'src/app/core/services/httpServices/order.service';
 import { ProductService } from 'src/app/core/services/httpServices/product.service';
-import { ToastyService } from 'src/app/core/services/internal/toasty.service';
-import { COMMA, ENTER } from '@angular/cdk/keycodes';
-import { map, startWith } from 'rxjs/operators';
-import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
-import { MatChipInputEvent } from '@angular/material/chips/chip-input';
-import { SubstanceItem } from '../../../../../core/models/Substance';
-import { SymptomItem } from '../../../../../core/models/Symptom';
+import { SubstanceService } from 'src/app/core/services/httpServices/substance.service';
 import { SymptomService } from 'src/app/core/services/httpServices/symptom.service';
-import { SubstanceService } from '../../../../../core/services/httpServices/substance.service';
-import { Router } from '@angular/router';
+import { ToastyService } from 'src/app/core/services/internal/toasty.service';
+import { ConfirmationDialogComponent } from 'src/app/pages/shared-components/confirmation-dialog/confirmation-dialog.component';
 
 @Component({
-  selector: 'app-product-form',
-  templateUrl: './product-form.component.html',
-  styleUrls: ['./product-form.component.scss'],
+  selector: 'app-edit-product',
+  templateUrl: './edit-product.component.html',
+  styleUrls: ['./edit-product.component.scss'],
 })
-export class ProductFormComponent
+export class EditProductComponent
   implements OnInit, AfterContentInit, OnDestroy
 {
+  @Input() product: ProductItemResponse;
+
   showButtomAddPresentations = true;
 
   presentationsDefault: string[] = ['UNIDAD', 'TABLETA', 'CAJA'];
@@ -61,7 +76,6 @@ export class ProductFormComponent
 
   @ViewChild('substanceInput') substanceInput: ElementRef<HTMLInputElement>;
   @ViewChild('symptomInput') symptomInput: ElementRef<HTMLInputElement>;
-  @ViewChild('barcode') barcode: ElementRef<HTMLInputElement>;
 
   // End Variables of chips
 
@@ -102,10 +116,65 @@ export class ProductFormComponent
     public productService: ProductService,
     private symptomService: SymptomService,
     private substanceService: SubstanceService,
-    public router: Router
-  ) {}
+    public router: Router,
+    public activatedRoute: ActivatedRoute,
+    public dialog: MatDialog
+  ) {
+    //  activatedRoute.params.subscribe((params) => {
+    //    const action = params.action;
+    //    this.dataRoute = action.split('/');
+    //    console.log(action, this.dataRoute);
+    //    if (action && this.dataRoute.length !== 0) {
+    //      if (this.dataRoute[0] === 'edit') {
+    //        this.productService
+    //          .search(this.dataRoute[1])
+    //          .subscribe(({ products }) => {
+    //            if (products.length > 0) {
+    //              this.product = products[0];
+    //              console.log(products, this.product);
+    //            }
+    //          });
+    //      }
+    //      this.action = this.dataRoute[0];
+    //      console.log('log');
+    //    }
+    //  });
+  }
 
   ngOnInit(): void {
+    console.log(this.product);
+    if (this.product) {
+      this.form = new FormGroup({
+        _brand: new FormControl(this.product._brand.name, [
+          Validators.required,
+        ]),
+        barcode: new FormControl(this.product.barcode, [Validators.required]),
+        description: new FormControl(this.product.description, [
+          Validators.required,
+        ]),
+        healthProgram: new FormControl(this.product.healthProgram),
+        substances: new FormControl(null),
+        symptoms: new FormControl(null),
+        presentations: this.formBuilder.array([]),
+
+        // substances: new FormControl(this.product.substances),
+        // symptoms: new FormControl(this.product.symptoms),
+      });
+      this.product.substances.forEach((sub) => {
+        this.substances.push(sub.name.toString());
+      });
+
+      this.product.symptoms.forEach((sym) => {
+        this.symptoms.push(sym.name.toString());
+      });
+
+      if (this.product.presentations.length > 0) {
+        this.product.presentations.forEach((presentation) => {
+          this.addPresentation(presentation);
+        });
+      }
+    }
+
     this.brandsSubscription = this.brandService.readData().subscribe((data) => {
       this.brands = data;
       this.options = [...this.brands];
@@ -139,15 +208,18 @@ export class ProductFormComponent
       startWith(''),
       map((symptom) => this._filterSymptoms(symptom))
     );
+  }
 
-    // this.form.controls.presentations.controls.name.valueChanges.pipe(
-    //   startWith(''),
-    //   map((value) => this._filterPresentations(value))
-    // );
+  ngAfterContentInit(): void {
+    this.brandService.loadData();
+    this.symptomService.loadData();
+    this.substanceService.loadData();
+  }
 
-    setTimeout(()=>{
-      this.barcode.nativeElement.focus();
-  })
+  ngOnDestroy(): void {
+    this.brandsSubscription?.unsubscribe();
+    this.symptomSubscription?.unsubscribe();
+    this.substanceSubscription?.unsubscribe();
   }
 
   manageNameControl(index: number): void {
@@ -166,33 +238,29 @@ export class ProductFormComponent
         )
       );
   }
-
   displayFn(presentation?: string): string | undefined {
     console.log(presentation);
     return presentation ? presentation : undefined;
   }
 
-  ngAfterContentInit(): void {
-    this.brandService.loadData();
-    this.symptomService.loadData();
-    this.substanceService.loadData();
-  }
-
-  ngOnDestroy(): void {
-    this.brandsSubscription?.unsubscribe();
-    this.symptomSubscription?.unsubscribe();
-    this.substanceSubscription?.unsubscribe();
-  }
-
-  addPresentation(): void {
+  addPresentation(presentation?: ProductPresentationsItem): void {
+    console.log(presentation);
     const presentationFormGroup = this.formBuilder.group({
-      name: new FormControl(null, [Validators.required]),
-      wholesale_price: new FormControl(null, [Validators.required]),
-      distributor_price: new FormControl(null, [Validators.required]),
-      retail_price: new FormControl(null, [Validators.required]),
-      cf_price: new FormControl(null, [Validators.required]),
-      quantity: new FormControl(null, [Validators.required]),
-      commission: new FormControl(null, [Validators.required]),
+      name: new FormControl(presentation.name, [Validators.required]),
+      wholesale_price: new FormControl(presentation.wholesale_price, [
+        Validators.required,
+      ]),
+      distributor_price: new FormControl(presentation.distributor_price, [
+        Validators.required,
+      ]),
+      retail_price: new FormControl(presentation.retail_price, [
+        Validators.required,
+      ]),
+      cf_price: new FormControl(presentation.cf_price, [Validators.required]),
+      quantity: new FormControl(presentation.quantity, [Validators.required]),
+      commission: new FormControl(presentation.commission, [
+        Validators.required,
+      ]),
     });
     this.presentationsForm.push(presentationFormGroup);
     this.manageNameControl(this.presentationsForm.length - 1);
@@ -307,40 +375,54 @@ export class ProductFormComponent
     }
   }
 
-  saveProduct(): void {
+  editProduct(): void {
     console.log(this.form, this.substances, this.symptoms);
 
     if (this.form.invalid) {
       return;
     }
+
     this.loading = true;
     const product: ProductItem = { ...this.form.value };
 
+    product._id = this.product._id;
     product._brand = { name: this.form.value._brand };
     product.substances = this.substances;
     product.symptoms = this.symptoms;
     console.log(product);
 
-    this.productService.createProduct(product).subscribe(
-      (res) => {
-        console.log(res);
-        if (res.ok) {
-          this.form.reset();
-          this.symptoms = [];
-          this.substances = [];
-          this.refreshForms();
-          this.toasty.success('Producto Creado Exitosamente');
-          this.loading = false;
-          this.barcode.nativeElement.focus();
-        } else {
-          this.loading = false;
-          this.toasty.error('Error al crear producto');
-        }
+    const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
+      width: '350px',
+      data: {
+        title: 'Editar Producto',
+        message:
+          '¿Confirma que desea Editar las propiedades del producto:  ' +
+          this.product.description +
+          '?',
+        description: false,
       },
-      (error) => {
-        this.loading = false;
-        this.toasty.error('Error al crear producto');
+      disableClose: true,
+      panelClass: ['farmacia-dialog', 'farmacia'],
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result !== undefined) {
+        this.loading = true;
+        this.productService.updateProduct(product).subscribe(
+          (res) => {
+            console.log(res);
+
+            this.toasty.success('Producto Editado exitosamente');
+            this.router.navigate(['admin/adminProducts']), console.log(res);
+          },
+          (error) => {
+            console.log(error);
+            this.loading = false;
+            this.toasty.error('Error al editar el Producto');
+          }
+        );
       }
-    );
+      this.loading = false;
+    });
   }
 }

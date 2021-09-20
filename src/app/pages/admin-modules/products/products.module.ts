@@ -7,9 +7,10 @@ import { ProductsComponent } from './components/products/products.component';
 import { NewProductComponent } from './components/new-product/new-product.component';
 import { CoreModule } from 'src/app/core/core.module';
 import { ProductFormComponent } from './components/product-form/product-form.component';
+import { EditProductComponent } from './components/edit-product/edit-product.component';
 
 @NgModule({
-  declarations: [ProductsComponent, NewProductComponent, ProductFormComponent],
+  declarations: [ProductsComponent, NewProductComponent, ProductFormComponent, EditProductComponent],
   imports: [
     CommonModule,
     RouterModule.forChild(ProductsRoutes),
