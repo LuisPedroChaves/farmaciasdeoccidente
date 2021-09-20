@@ -12,14 +12,14 @@ import { ProductService } from '../../../../../core/services/httpServices/produc
 import { ProductItem } from '../../../../../core/models/Product';
 import { PurchaseDetailItem, PurchaseItem } from '../../../../../core/models/Purchase';
 import { PurchaseService } from '../../../../../core/services/httpServices/purchase.service';
-import {STEPPER_GLOBAL_OPTIONS} from '@angular/cdk/stepper';
+import { STEPPER_GLOBAL_OPTIONS } from '@angular/cdk/stepper';
 
 @Component({
   selector: 'app-new-purchase',
   templateUrl: './new-purchase.component.html',
   styleUrls: ['./new-purchase.component.scss'],
   providers: [{
-    provide: STEPPER_GLOBAL_OPTIONS, useValue: {showError: true}
+    provide: STEPPER_GLOBAL_OPTIONS, useValue: { showError: true }
   }]
 })
 export class NewPurchaseComponent implements OnInit, AfterContentInit, OnDestroy {
@@ -122,28 +122,6 @@ export class NewPurchaseComponent implements OnInit, AfterContentInit, OnDestroy
     return product ? product.description : '';
   }
 
-  calcs(index: number, quantity: number, type: string): void {
-    const INPUTS_VALIDOS = {
-      'quantity': () => {
-        const REAL_QUANTITY: number = this.detailPurchase[index].bonus + quantity;
-        this.detailPurchase[index].realQuantity = REAL_QUANTITY;
-        this.detailPurchase[index].stockQuantity = this.calcStock(REAL_QUANTITY, this.detailPurchase[index]._product.presentations.quantity);
-      },
-      'price': () => this.detailPurchase[index].cost = quantity,
-      'bonus': () => {
-        const REAL_QUANTITY: number = this.detailPurchase[index].quantity + quantity;
-        this.detailPurchase[index].realQuantity = REAL_QUANTITY;
-        this.detailPurchase[index].stockQuantity = this.calcStock(REAL_QUANTITY, this.detailPurchase[index]._product.presentations.quantity);
-        this.detailPurchase[index].cost = ((this.detailPurchase[index].price * this.detailPurchase[index].quantity) / REAL_QUANTITY).toFixed(2);
-      },
-      'discount': () => {
-        const DISCOUNT = quantity / 100;
-        this.detailPurchase[index].cost = ((this.detailPurchase[index].cost - (this.detailPurchase[index].price * DISCOUNT))).toFixed(2);
-      },
-    }
-
-    INPUTS_VALIDOS[type]();
-  }
 
   getTotal(): number {
     let total = 0;
@@ -155,8 +133,40 @@ export class NewPurchaseComponent implements OnInit, AfterContentInit, OnDestroy
     return total;
   }
 
+  calcs(index: number, quantity: number, type: string): void {
+    const INPUTS_VALIDOS = {
+      'quantity': () => {
+        const REAL_QUANTITY: number = this.detailPurchase[index].bonus + quantity;
+        this.detailPurchase[index].realQuantity = REAL_QUANTITY;
+        this.detailPurchase[index].stockQuantity = this.calcStock(REAL_QUANTITY, this.detailPurchase[index]._product.presentations.quantity);
+        this.calcCost(index);
+      },
+      'price': () => {
+        this.detailPurchase[index].price = quantity;
+        this.calcCost(index);
+      },
+      'bonus': () => {
+        const REAL_QUANTITY: number = this.detailPurchase[index].quantity + quantity;
+        this.detailPurchase[index].realQuantity = REAL_QUANTITY;
+        this.detailPurchase[index].stockQuantity = this.calcStock(REAL_QUANTITY, this.detailPurchase[index]._product.presentations.quantity);
+        this.calcCost(index);
+      },
+      'discount': () => {
+         this.detailPurchase[index].discount =  quantity;
+        this.calcCost(index);
+      },
+    }
+
+    INPUTS_VALIDOS[type]();
+  }
+
   calcStock(quantity: number, quantityPresentation: number): number {
     return quantity * quantityPresentation;
+  }
+
+  calcCost(index: number) {
+    const COST: number  = ((this.detailPurchase[index].price * this.detailPurchase[index].quantity) / this.detailPurchase[index].realQuantity);
+    this.detailPurchase[index].cost = (COST - (COST * (this.detailPurchase[index].discount / 100))).toFixed(2);
   }
 
   addRow(product: any) {

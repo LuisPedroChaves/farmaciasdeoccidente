@@ -161,6 +161,7 @@
                                         <div fxFlex="80" class="ellipsis-text cell"><b>{{p._product.description}}</b></div>
                                         <div fxFlex="20" fxLayoutAlign="end center">
                                             <mat-chip-list>
+                                                <mat-chip selected color="warn">{{ p.stockQuantity }}</mat-chip>
                                                 <mat-chip selected color="warn">{{ p._product.presentations.name }}</mat-chip>
                                                 <mat-chip>{{ p._product.presentations.quantity }} ud.</mat-chip>
                                             </mat-chip-list>
