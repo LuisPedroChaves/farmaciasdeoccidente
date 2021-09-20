@@ -28,7 +28,6 @@ export class NewProductComponent
 {
   loading = false;
   action: string;
-  dataRoute: any;
 
   dataSource: ProductsDataSource;
   product: ProductItem;
@@ -44,17 +43,20 @@ export class NewProductComponent
   ) {
     activatedRoute.params.subscribe((params) => {
       const action = params.action;
-      this.dataRoute = action.split('/');
-      if (action && this.dataRoute.length !== 0) {
-        if (this.dataRoute[0] === 'edit') {
-          this.productService
-            .search(this.dataRoute[1])
-            .subscribe(({ products }) => {
-              if (products.length > 0) {
-                this.product = products[0];
-                this.action = this.dataRoute[0];
-              }
-            });
+      const product = params.product;
+
+      if (action) {
+        if (action === 'edit') {
+          console.log(action, product);
+          this.productService.findById(product).subscribe(({ products }) => {
+            if (products.length > 0) {
+              this.product = products[0];
+              this.action = action;
+            }
+          });
+        } else {
+          this.action = action;
+          console.log(action);
         }
       }
     });

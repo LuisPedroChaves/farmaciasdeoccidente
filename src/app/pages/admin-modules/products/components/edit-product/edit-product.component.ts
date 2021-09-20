@@ -22,7 +22,11 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Observable, Subscription } from 'rxjs';
 import { startWith, map } from 'rxjs/operators';
 import { BrandItem } from 'src/app/core/models/Brand';
-import { ProductItem } from 'src/app/core/models/Product';
+import {
+  ProductItem,
+  ProductItemResponse,
+  ProductPresentationsItem,
+} from 'src/app/core/models/Product';
 import { SubstanceItem } from 'src/app/core/models/Substance';
 import { SymptomItem } from 'src/app/core/models/Symptom';
 import { BrandService } from 'src/app/core/services/httpServices/brand.service';
@@ -41,7 +45,7 @@ import { ConfirmationDialogComponent } from 'src/app/pages/shared-components/con
 export class EditProductComponent
   implements OnInit, AfterContentInit, OnDestroy
 {
-  @Input() product: ProductItem;
+  @Input() product: ProductItemResponse;
 
   showButtomAddPresentations = true;
 
@@ -156,8 +160,19 @@ export class EditProductComponent
         // substances: new FormControl(this.product.substances),
         // symptoms: new FormControl(this.product.symptoms),
       });
-      this.substances = this.product.substances;
-      this.symptoms = this.product.symptoms;
+      this.product.substances.forEach((sub) => {
+        this.substances.push(sub.name.toString());
+      });
+
+      this.product.symptoms.forEach((sym) => {
+        this.symptoms.push(sym.name.toString());
+      });
+
+      if (this.product.presentations.length > 0) {
+        this.product.presentations.forEach((presentation) => {
+          this.addPresentation(presentation);
+        });
+      }
     }
 
     this.brandsSubscription = this.brandService.readData().subscribe((data) => {
@@ -228,15 +243,24 @@ export class EditProductComponent
     return presentation ? presentation : undefined;
   }
 
-  addPresentation(): void {
+  addPresentation(presentation?: ProductPresentationsItem): void {
+    console.log(presentation);
     const presentationFormGroup = this.formBuilder.group({
-      name: new FormControl(null, [Validators.required]),
-      wholesale_price: new FormControl(null, [Validators.required]),
-      distributor_price: new FormControl(null, [Validators.required]),
-      retail_price: new FormControl(null, [Validators.required]),
-      cf_price: new FormControl(null, [Validators.required]),
-      quantity: new FormControl(null, [Validators.required]),
-      commission: new FormControl(null, [Validators.required]),
+      name: new FormControl(presentation.name, [Validators.required]),
+      wholesale_price: new FormControl(presentation.wholesale_price, [
+        Validators.required,
+      ]),
+      distributor_price: new FormControl(presentation.distributor_price, [
+        Validators.required,
+      ]),
+      retail_price: new FormControl(presentation.retail_price, [
+        Validators.required,
+      ]),
+      cf_price: new FormControl(presentation.cf_price, [Validators.required]),
+      quantity: new FormControl(presentation.quantity, [Validators.required]),
+      commission: new FormControl(presentation.commission, [
+        Validators.required,
+      ]),
     });
     this.presentationsForm.push(presentationFormGroup);
     this.manageNameControl(this.presentationsForm.length - 1);
@@ -360,13 +384,13 @@ export class EditProductComponent
 
     this.loading = true;
     const product: ProductItem = { ...this.form.value };
+
+    product._id = this.product._id;
     product._brand = { name: this.form.value._brand };
     product.substances = this.substances;
     product.symptoms = this.symptoms;
+    console.log(product);
 
-    this.product = { ...product };
-
-    console.log(this.product);
     const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
       width: '350px',
       data: {
@@ -383,20 +407,22 @@ export class EditProductComponent
 
     dialogRef.afterClosed().subscribe((result) => {
       if (result !== undefined) {
-        console.log('editando');
+        this.loading = true;
+        this.productService.updateProduct(product).subscribe(
+          (res) => {
+            console.log(res);
 
-        // this.loading = true;
-        // this.productService.updateProduct(this.product).subscribe(
-        //   (res) => {
-        //     this.toasty.success('Producto Editado exitosamente');
-        //     this.router.navigate(['admin/adminProducts']), console.log(res);
-        //   },
-        //   (error) => {
-        //     // this.loading = false;
-        //     this.toasty.error('Error al editar el Producto');
-        //   }
-        // );
+            this.toasty.success('Producto Editado exitosamente');
+            this.router.navigate(['admin/adminProducts']), console.log(res);
+          },
+          (error) => {
+            console.log(error);
+            this.loading = false;
+            this.toasty.error('Error al editar el Producto');
+          }
+        );
       }
+      this.loading = false;
     });
   }
 }

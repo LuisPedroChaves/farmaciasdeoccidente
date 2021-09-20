@@ -8,6 +8,10 @@ export const ProductsRoutes: Routes = [
     component: ProductsComponent,
   },
   {
+    path: 'product/:action/:product',
+    component: NewProductComponent,
+  },
+  {
     path: 'product/:action',
     component: NewProductComponent,
   },

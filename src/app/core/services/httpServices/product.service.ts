@@ -44,6 +44,8 @@ export class ProductService {
   }
 
   updateProduct(product: ProductItem): Observable<any> {
+    console.log(product);
+
     return this.http.put(
       `${this.apiConfigService.API_PRODUCT}/${product._id}`,
       product
@@ -59,6 +61,12 @@ export class ProductService {
   search(search: string = ''): Observable<any> {
     return this.http.get(`${this.apiConfigService.API_PRODUCT}/search`, {
       params: new HttpParams().set('search', search.toString()),
+    });
+  }
+
+  findById(id: string): Observable<any> {
+    return this.http.get(`${this.apiConfigService.API_PRODUCT}`, {
+      params: new HttpParams().set('_id', id.toString()),
     });
   }
 }

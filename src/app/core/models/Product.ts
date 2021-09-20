@@ -20,6 +20,24 @@ export interface ProductItem {
   discontinued: boolean;
 }
 
+export interface ProductItemResponse {
+  _id?: string;
+  _brand: BrandItem;
+  code: string;
+  barcode: string;
+  description: string;
+  healthProgram: string;
+  wholesale_price: number;
+  distributor_price: number;
+  retail_price: number;
+  cf_price: number;
+  presentations: ProductPresentationsItem[];
+  substances: SubstanceItem[];
+  symptoms: SymptomItem[];
+  exempt: boolean;
+  discontinued: boolean;
+}
+
 export interface ProductPresentationsItem {
   _id?: string;
   name: string;

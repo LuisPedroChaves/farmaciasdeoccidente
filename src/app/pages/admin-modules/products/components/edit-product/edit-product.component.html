@@ -51,14 +51,7 @@
                 </mat-icon>
             </div>
             <div fxFlex fxLayout="row wrap">
-                <div fxFlex="50%" class="inputpadding">
-                    <mat-form-field appearance="outline" color="primary" class="width-all">
-                        <mat-label>Nombre del Medicamento</mat-label>
-                        <input formControlName="description" type="text" matInput
-                            placeholder="Añada el Nombre del Medicamento">
-                    </mat-form-field>
-                </div>
-                <div fxFlex="50%" class="inputpadding">
+                <div fxFlex="100%" class="inputpadding">
                     <mat-form-field appearance="outline" color="primary" class="width-all">
                         <mat-label>Nombre Comercial</mat-label>
                         <input formControlName="description" type="text" matInput
@@ -174,6 +167,97 @@
             <div fxFlex="50px"></div>
         </div>
         <!-- END symptom -->
+
+        <!-- Payments -->
+
+        <div fxLayout="row wrap" fxLayoutAlign="start center" style="margin-top: 8px;">
+            <div fxFlex="50px"></div>
+            <div fxFlex="50px" fxHide.xs>
+                <mat-icon color="accent" class="material-icons-outlined grayicon">payments
+                </mat-icon>
+            </div>
+            <div fxFlex fxLayout="row wrap">
+                <div formArrayName="presentations"
+                    *ngFor="let presentation of presentationsForm.controls; let i = index" fxFlex="100">
+                    <div [formGroupName]="i" class="row" fxFlex="100" fxLayoutAlign="space-between" fxLayout="row wrap">
+                        <div fxFlex="30" class="cell">
+                            <mat-form-field appearance="outline" color="primary" class="width-all">
+                                <mat-label [attr.for]="'name' + i">Presentación</mat-label>
+                                <input matInput [attr.id]="'name' + i" formControlName="name" type="text" name="name"
+                                    placeholder="Ingrese el nombre de la presentación"
+                                    [matAutocomplete]="autoPresentation">
+                                <mat-autocomplete #autoPresentation="matAutocomplete" [displayWith]="displayFn">
+                                    <mat-option *ngFor="let option of filterPresentations[i] | async" [value]="option">
+                                        {{option}}
+                                    </mat-option>
+                                </mat-autocomplete>
+                            </mat-form-field>
+                        </div>
+                        <div fxFlex="33" class="cell">
+                            <mat-form-field appearance="outline" color="primary" class="width-all">
+                                <mat-label [attr.for]="'wholesale_price' + i">Precio Al Por Mayor</mat-label>
+                                <span matPrefix><b>Q.</b></span>
+                                <input [attr.id]="'wholesale_price' + i" formControlName="wholesale_price" type="number"
+                                    matInput placeholder="Ingrese el precio al por mayor">
+                            </mat-form-field>
+                        </div>
+                        <div fxFlex="33" class=" cell">
+                            <mat-form-field appearance="outline" color="primary" class="width-all">
+                                <mat-label [attr.for]="'distributor_price' + i">Precio de Distribuidor</mat-label>
+                                <span matPrefix><b>Q.</b></span>
+                                <input [attr.id]="'distributor_price' + i" formControlName="distributor_price"
+                                    type="number" matInput placeholder="Ingrese el precio para Distribuidor">
+                            </mat-form-field>
+                        </div>
+                        <div fxFlex="22.5" class=" cell">
+                            <mat-form-field appearance="outline" color="primary" class="width-all">
+                                <mat-label [attr.for]="'retail_price' + i">Precio Al Por Menor</mat-label>
+                                <span matPrefix><b>Q.</b></span>
+                                <input [attr.id]="'retail_price' + i" formControlName="retail_price" type="number"
+                                    matInput placeholder="Ingrese el precio al por menor">
+                            </mat-form-field>
+                        </div>
+                        <div fxFlex="22.5" class=" cell">
+                            <mat-form-field appearance="outline" color="primary" class="width-all">
+                                <mat-label [attr.for]="'cf_price' + i">Precio para CF</mat-label>
+                                <span matPrefix><b>Q.</b></span>
+                                <input [attr.id]="'cf_price' + i" formControlName="cf_price" type="number" matInput
+                                    placeholder="Ingrese pra Consumidor Final">
+                            </mat-form-field>
+                        </div>
+                        <div fxFlex="22.5" class=" cell">
+                            <mat-form-field appearance="outline" color="primary" class="width-all">
+                                <mat-label [attr.for]="'commission' + i">Cantidad por Presentación</mat-label>
+                                <input [attr.id]="'quantity' + i" formControlName="quantity" type="number" matInput
+                                    placeholder="Cantidad por Presentación">
+                            </mat-form-field>
+                        </div>
+                        <div fxFlex="22.5" class=" cell">
+                            <mat-form-field appearance="outline" color="primary" class="width-all">
+                                <mat-label [attr.for]="'commission' + i">Comission por Vendedor</mat-label>
+                                <span matPrefix><b>Q.</b></span>
+                                <input [attr.id]="'commission' + i" formControlName="commission" type="number" matInput
+                                    placeholder="Comisión por Vendedor">
+                            </mat-form-field>
+                        </div>
+                        <div fxFlex="100" class=" cell">
+                            <mat-divider></mat-divider>
+                        </div>
+                    </div>
+                    <div fxFlex="5" fxFlexAlign="center" class="ellipsis-text cell icon-cancel">
+                        <mat-icon class="material-icons-outlined cursor-pointer" (click)="removePresentation(i)">
+                            cancel</mat-icon>
+                    </div>
+                </div>
+                <div class="row" fxFlex fxLayout="row wrap" *ngIf="showButtomAddPresentations">
+                    <div fxFlex class="ellipsis-text cell ">
+                        <label class="cursor-pointer" (click)="addPresentation()"> + Agregar Presentación</label>
+                    </div>
+                </div>
+            </div>
+            <div fxFlex="50px"></div>
+        </div>
+        <!-- END Payments -->
 
         <div fxLayout="row wrap">
             <div fxFlex="100px" fxHide.xs></div>
