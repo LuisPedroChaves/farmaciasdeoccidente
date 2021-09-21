@@ -44,6 +44,8 @@ export class ProductService {
   }
 
   updateProduct(product: ProductItem): Observable<any> {
+    console.log(product);
+
     return this.http.put(
       `${this.apiConfigService.API_PRODUCT}/${product._id}`,
       product
@@ -60,5 +62,16 @@ export class ProductService {
     return this.http.get(`${this.apiConfigService.API_PRODUCT}/search`, {
       params: new HttpParams().set('search', search.toString()),
     });
+  }
+
+  findById(id: string): Observable<any> {
+    console.log(id);
+    return this.http.get(`${this.apiConfigService.API_PRODUCT}/${id}`);
+  }
+
+  discontinued(product: ProductItem): Observable<any> {
+    return this.http.delete(
+      `${this.apiConfigService.API_PRODUCT}/discontinued/${product._id}`
+    );
   }
 }

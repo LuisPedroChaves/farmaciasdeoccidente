@@ -18,7 +18,7 @@
                 <div fxFlex="50%" fxFlex.xs="100%" class="inputpadding">
                     <mat-form-field appearance="outline" color="primary" class="width-all">
                         <mat-label>Código de Barras</mat-label>
-                        <input #barcode formControlName="barcode" type="text" matInput
+                        <input formControlName="barcode" type="text" matInput
                             placeholder="Ingrese el codigo del producto">
                     </mat-form-field>
                 </div>
@@ -61,7 +61,6 @@
                 <div fxFlex="20%" fxFlexAlign="center" fxLayout="row wrap" class="inputpadding">
                     <mat-checkbox formControlName="exempt">Producto Excento de IVA</mat-checkbox>
                 </div>
-
                 <div fxFlex="100%" class="inputpadding">
                     <mat-form-field appearance="outline" color="primary" class="width-all">
                         <mat-label>Programa de Salud</mat-label>
@@ -172,8 +171,6 @@
         </div>
         <!-- END symptom -->
 
-
-
         <!-- Payments -->
 
         <div fxLayout="row wrap" fxLayoutAlign="start center" style="margin-top: 8px;">
@@ -264,16 +261,18 @@
             <div fxFlex="50px"></div>
         </div>
         <!-- END Payments -->
+
         <div fxLayout="row wrap">
             <div fxFlex="100px" fxHide.xs></div>
         </div>
         <mat-divider></mat-divider>
         <div fxLayout="row" class="header">
-            <button mat-button *ngIf="!loading" [routerLink]="'/admin/adminProducts'" class="info-row">
+            <button mat-button *ngIf="!loading" [routerLink]="'/admin/adminProducts'" (click)="product = null"
+                class="info-row">
                 CANCELAR
             </button>
             <span fxFlex></span>
-            <button mat-button *ngIf="!loading" (click)="saveProduct()" [disabled]="this.form.invalid" color="primary">
+            <button mat-button *ngIf="!loading" (click)="editProduct()" [disabled]="this.form.invalid" color="primary">
                 GUARDAR
             </button>
             <mat-progress-spinner *ngIf="loading" mode="indeterminate" diameter="30" color="warn">

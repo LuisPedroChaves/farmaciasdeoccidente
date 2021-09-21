@@ -160,4 +160,42 @@ export class ProductsComponent implements OnInit, OnDestroy, AfterViewInit {
       }
     });
   }
+
+  editProduct(product: ProductItem): void {
+    this.router.navigate(['admin/adminProducts/product', 'edit', product._id]);
+  }
+
+  discontinuedProduct(product: ProductItem): void {
+    const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
+      width: '350px',
+      data: {
+        title: 'Desactivar Producto',
+        message:
+          '¿Confirma que desea desactivar el producto:  ' +
+          product.description +
+          '?',
+        description: false,
+      },
+      disableClose: true,
+      panelClass: ['farmacia-dialog', 'farmacia'],
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result !== undefined) {
+        // this.loading = true;
+        this.productService.discontinued(product).subscribe(
+          (res) => {
+            this.toasty.success('Producto desactivado exitosamente');
+            this.dataSource.loadProducts(this.currentPage, 10, '');
+
+            console.log(res);
+          },
+          (error) => {
+            // this.loading = false;
+            this.toasty.error('Error al desactivar el Producto');
+          }
+        );
+      }
+    });
+  }
 }
