@@ -30,8 +30,7 @@ import { Router } from '@angular/router';
   styleUrls: ['./product-form.component.scss'],
 })
 export class ProductFormComponent
-  implements OnInit, AfterContentInit, OnDestroy
-{
+  implements OnInit, AfterContentInit, OnDestroy {
   showButtomAddPresentations = true;
 
   presentationsDefault: string[] = ['UNIDAD', 'TABLETA', 'CAJA'];
@@ -73,7 +72,7 @@ export class ProductFormComponent
     _brand: new FormControl(null, [Validators.required]),
     barcode: new FormControl(null, [Validators.required]),
     description: new FormControl(null, [Validators.required]),
-    exempt: new FormControl(null, [Validators.required]),
+    exempt: new FormControl(null),
     healthProgram: new FormControl(null),
     substances: new FormControl(null),
     symptoms: new FormControl(null),
@@ -104,7 +103,7 @@ export class ProductFormComponent
     private symptomService: SymptomService,
     private substanceService: SubstanceService,
     public router: Router
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.brandsSubscription = this.brandService.readData().subscribe((data) => {
@@ -148,7 +147,46 @@ export class ProductFormComponent
 
     setTimeout(() => {
       this.barcode.nativeElement.focus();
+      this.defaultPresentations();
     });
+
+  }
+
+  defaultPresentations() {
+    // PRESENTACIONES POR DEFECTO
+    const UNIDAD = this.formBuilder.group({
+      name: new FormControl('UNIDAD', [Validators.required]),
+      wholesale_price: new FormControl(null, [Validators.required]),
+      distributor_price: new FormControl(null, [Validators.required]),
+      retail_price: new FormControl(null, [Validators.required]),
+      cf_price: new FormControl(null, [Validators.required]),
+      quantity: new FormControl(1, [Validators.required]),
+      commission: new FormControl(null, [Validators.required]),
+    });
+    this.presentationsForm.push(UNIDAD);
+    this.manageNameControl(this.presentationsForm.length - 1);
+    const TABLETA = this.formBuilder.group({
+      name: new FormControl('TABLETA', [Validators.required]),
+      wholesale_price: new FormControl(null, [Validators.required]),
+      distributor_price: new FormControl(null, [Validators.required]),
+      retail_price: new FormControl(null, [Validators.required]),
+      cf_price: new FormControl(null, [Validators.required]),
+      quantity: new FormControl(1, [Validators.required]),
+      commission: new FormControl(null, [Validators.required]),
+    });
+    this.presentationsForm.push(TABLETA);
+    this.manageNameControl(this.presentationsForm.length - 1);
+    const CAJA = this.formBuilder.group({
+      name: new FormControl('CAJA', [Validators.required]),
+      wholesale_price: new FormControl(null, [Validators.required]),
+      distributor_price: new FormControl(null, [Validators.required]),
+      retail_price: new FormControl(null, [Validators.required]),
+      cf_price: new FormControl(null, [Validators.required]),
+      quantity: new FormControl(1, [Validators.required]),
+      commission: new FormControl(null, [Validators.required]),
+    });
+    this.presentationsForm.push(CAJA);
+    this.manageNameControl(this.presentationsForm.length - 1);
   }
 
   manageNameControl(index: number): void {
@@ -333,6 +371,7 @@ export class ProductFormComponent
           this.toasty.success('Producto Creado Exitosamente');
           this.loading = false;
           this.barcode.nativeElement.focus();
+          this.defaultPresentations();
         } else {
           this.loading = false;
           this.toasty.error('Error al crear producto');
