@@ -18,6 +18,7 @@ export interface ProductItem {
   symptoms: string[];
   exempt: boolean;
   discontinued: boolean;
+  deleted?: boolean;
 }
 
 export interface ProductItemResponse {
@@ -36,6 +37,7 @@ export interface ProductItemResponse {
   symptoms: SymptomItem[];
   exempt: boolean;
   discontinued: boolean;
+  deleted?: boolean;
 }
 
 export interface ProductPresentationsItem {

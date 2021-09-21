@@ -73,6 +73,7 @@ export class ProductFormComponent
     _brand: new FormControl(null, [Validators.required]),
     barcode: new FormControl(null, [Validators.required]),
     description: new FormControl(null, [Validators.required]),
+    exempt: new FormControl(null, [Validators.required]),
     healthProgram: new FormControl(null),
     substances: new FormControl(null),
     symptoms: new FormControl(null),
@@ -145,9 +146,9 @@ export class ProductFormComponent
     //   map((value) => this._filterPresentations(value))
     // );
 
-    setTimeout(()=>{
+    setTimeout(() => {
       this.barcode.nativeElement.focus();
-  })
+    });
   }
 
   manageNameControl(index: number): void {
@@ -191,7 +192,7 @@ export class ProductFormComponent
       distributor_price: new FormControl(null, [Validators.required]),
       retail_price: new FormControl(null, [Validators.required]),
       cf_price: new FormControl(null, [Validators.required]),
-      quantity: new FormControl(null, [Validators.required]),
+      quantity: new FormControl(1, [Validators.required]),
       commission: new FormControl(null, [Validators.required]),
     });
     this.presentationsForm.push(presentationFormGroup);

@@ -152,6 +152,8 @@ export class EditProductComponent
         description: new FormControl(this.product.description, [
           Validators.required,
         ]),
+        exempt: new FormControl(this.product.exempt, [Validators.required]),
+
         healthProgram: new FormControl(this.product.healthProgram),
         substances: new FormControl(null),
         symptoms: new FormControl(null),
@@ -389,6 +391,9 @@ export class EditProductComponent
     product._brand = { name: this.form.value._brand };
     product.substances = this.substances;
     product.symptoms = this.symptoms;
+    product.deleted = this.product.deleted;
+    product.discontinued = this.product.discontinued;
+
     console.log(product);
 
     const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
@@ -411,7 +416,7 @@ export class EditProductComponent
         this.productService.updateProduct(product).subscribe(
           (res) => {
             console.log(res);
-
+            this.product = null;
             this.toasty.success('Producto Editado exitosamente');
             this.router.navigate(['admin/adminProducts']), console.log(res);
           },

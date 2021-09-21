@@ -51,12 +51,15 @@
                 </mat-icon>
             </div>
             <div fxFlex fxLayout="row wrap">
-                <div fxFlex="100%" class="inputpadding">
+                <div fxFlex="75%" class="inputpadding">
                     <mat-form-field appearance="outline" color="primary" class="width-all">
                         <mat-label>Nombre Comercial</mat-label>
                         <input formControlName="description" type="text" matInput
                             placeholder="Añade el Nombre Comercial del Medicamento">
                     </mat-form-field>
+                </div>
+                <div fxFlex="20%" fxFlexAlign="center" fxLayout="row wrap" class="inputpadding">
+                    <mat-checkbox formControlName="exempt">Producto Excento de IVA</mat-checkbox>
                 </div>
                 <div fxFlex="100%" class="inputpadding">
                     <mat-form-field appearance="outline" color="primary" class="width-all">
@@ -234,7 +237,7 @@
                         </div>
                         <div fxFlex="22.5" class=" cell">
                             <mat-form-field appearance="outline" color="primary" class="width-all">
-                                <mat-label [attr.for]="'commission' + i">Comission por Vendedor</mat-label>
+                                <mat-label [attr.for]="'commission' + i">Comisión por Vendedor</mat-label>
                                 <span matPrefix><b>Q.</b></span>
                                 <input [attr.id]="'commission' + i" formControlName="commission" type="number" matInput
                                     placeholder="Comisión por Vendedor">
@@ -264,7 +267,8 @@
         </div>
         <mat-divider></mat-divider>
         <div fxLayout="row" class="header">
-            <button mat-button *ngIf="!loading" [routerLink]="'/admin/adminProducts'" class="info-row">
+            <button mat-button *ngIf="!loading" [routerLink]="'/admin/adminProducts'" (click)="product = null"
+                class="info-row">
                 CANCELAR
             </button>
             <span fxFlex></span>

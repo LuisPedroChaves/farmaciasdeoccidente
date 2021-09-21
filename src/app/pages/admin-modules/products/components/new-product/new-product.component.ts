@@ -43,17 +43,22 @@ export class NewProductComponent
   ) {
     activatedRoute.params.subscribe((params) => {
       const action = params.action;
-      const product = params.product;
+      const productToFind = params.product;
 
       if (action) {
         if (action === 'edit') {
-          console.log(action, product);
-          this.productService.findById(product).subscribe(({ products }) => {
-            if (products.length > 0) {
-              this.product = products[0];
-              this.action = action;
-            }
-          });
+          console.log(action, productToFind);
+          this.productService
+            .findById(productToFind)
+            .subscribe(({ product }) => {
+              console.log('searching founded');
+              if (product) {
+                console.log(product);
+
+                this.product = product;
+                this.action = action;
+              }
+            });
         } else {
           this.action = action;
           console.log(action);

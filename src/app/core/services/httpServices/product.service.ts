@@ -65,8 +65,13 @@ export class ProductService {
   }
 
   findById(id: string): Observable<any> {
-    return this.http.get(`${this.apiConfigService.API_PRODUCT}`, {
-      params: new HttpParams().set('_id', id.toString()),
-    });
+    console.log(id);
+    return this.http.get(`${this.apiConfigService.API_PRODUCT}/${id}`);
+  }
+
+  discontinued(product: ProductItem): Observable<any> {
+    return this.http.delete(
+      `${this.apiConfigService.API_PRODUCT}/discontinued/${product._id}`
+    );
   }
 }
