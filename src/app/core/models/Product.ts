@@ -16,6 +16,7 @@ export interface ProductItem {
   presentations: ProductPresentationsItem[];
   substances: string[];
   symptoms: string[];
+  lastUpdate?: string,
   exempt: boolean;
   discontinued: boolean;
   deleted?: boolean;
@@ -50,9 +51,3 @@ export interface ProductPresentationsItem {
   quantity: number;
   commission: number;
 }
-// export interface ProductSubstancesItem {
-//   _substance: SubstanceItem;
-// }
-// export interface ProductSymptomsItem {
-//   _symptom: SymptomItem;
-// }

@@ -66,10 +66,6 @@ const routes: Routes = [
         path: 'adjusts', pathMatch: 'full',  loadChildren: () => import('./pages/modules/adjusts/adjusts.module').then(m => m.AdjustsModule),
         canActivate: [CheckTokenGuard]
       },
-      {
-        path: 'providers', pathMatch: 'full',  loadChildren: () => import('./pages/modules/providers/providers.module').then(m => m.ProvidersModule),
-        canActivate: [CheckTokenGuard]
-      },
     ]
   },
   {
@@ -118,6 +114,10 @@ const routes: Routes = [
       },
       {
         path: 'statements/:id/:return', pathMatch: 'full',  loadChildren: () => import('./pages/admin-modules/statements/statements.module').then(m => m.StatementsModule),
+        canActivate: [CheckTokenGuard]
+      },
+      {
+        path: 'providers', pathMatch: 'full',  loadChildren: () => import('./pages/admin-modules/providers/providers.module').then(m => m.ProvidersModule),
         canActivate: [CheckTokenGuard]
       },
     ]

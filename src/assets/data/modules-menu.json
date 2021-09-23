@@ -1,5 +1,4 @@
-[
-    {
+[{
         "state": "ORDER",
         "name": "Ordenes",
         "type": "sub",
@@ -104,14 +103,6 @@
         "order": 2
     },
     {
-        "state": "providers",
-        "name": "Proveedores",
-        "type": "link",
-        "icon": "business",
-        "iconType": "icon",
-        "order": 3
-    },
-    {
         "state": "/admin",
         "name": "Sucursales",
         "type": "link",
@@ -152,11 +143,19 @@
         "order": 5
     },
     {
+        "state": "providers",
+        "name": "Proveedores",
+        "type": "link",
+        "icon": "business",
+        "iconType": "icon",
+        "order": 6
+    },
+    {
         "state": "users",
         "name": "Usuarios",
         "type": "link",
         "icon": "people",
         "iconType": "icon",
-        "order": 6
+        "order": 7
     }
 ]

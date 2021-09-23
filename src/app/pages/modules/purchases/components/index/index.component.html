@@ -12,9 +12,17 @@
             </header>
             <mat-divider></mat-divider>
             <mat-tab-group mat-align-tabs="start">
-                <mat-tab label="Vigentes">
+                <mat-tab>
+                    <ng-template mat-tab-label>
+                        <mat-icon class="example-tab-icon">request_quote</mat-icon>
+                        Actualizar precios
+                    </ng-template>
                     <app-current-purchases></app-current-purchases>
                 </mat-tab>
+                <mat-tab label="Ingresos pendientes">
+                    <app-current-purchases></app-current-purchases>
+                </mat-tab>
+                <mat-tab label="Historial"></mat-tab>
                 <mat-tab label="Anuladas">
                     <app-deleted-purchases></app-deleted-purchases>
                 </mat-tab>

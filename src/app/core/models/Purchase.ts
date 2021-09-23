@@ -17,7 +17,7 @@ export interface PurchaseItem {
     payment: string,
     total: number
     file: string,
-    applied: boolean,
+    state: string,
     _userDeleted: UserItem,
     textDeleted: string,
     deleted: boolean
