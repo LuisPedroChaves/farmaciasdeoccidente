@@ -193,7 +193,6 @@ export class ProductFormComponent
   }
 
   manageNameControl(index: number): void {
-    console.log(index, this.filterPresentations);
     const arrayControl = this.form.get('presentations') as FormArray;
 
     this.filterPresentations[index] = arrayControl
@@ -210,7 +209,6 @@ export class ProductFormComponent
   }
 
   displayFn(presentation?: string): string | undefined {
-    console.log(presentation);
     return presentation ? presentation : undefined;
   }
 
@@ -340,7 +338,6 @@ export class ProductFormComponent
   // End Functions to Chips
 
   private _filterPresentations(value: string): string[] {
-    console.log(value);
     if (value) {
       const filterValue = value.toLowerCase();
       return this.presentationsDefault.filter((presentation) =>
@@ -350,8 +347,6 @@ export class ProductFormComponent
   }
 
   saveProduct(): void {
-    console.log(this.form, this.substances, this.symptoms);
-
     if (this.form.invalid) {
       return;
     }
@@ -361,11 +356,9 @@ export class ProductFormComponent
     product._brand = { name: this.form.value._brand };
     product.substances = this.substances;
     product.symptoms = this.symptoms;
-    console.log(product);
 
     this.productService.createProduct(product).subscribe(
       (res) => {
-        console.log(res);
         if (res.ok) {
           this.form.reset();
           this.symptoms = [];

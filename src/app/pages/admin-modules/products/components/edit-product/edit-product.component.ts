@@ -119,30 +119,9 @@ export class EditProductComponent
     public router: Router,
     public activatedRoute: ActivatedRoute,
     public dialog: MatDialog
-  ) {
-    //  activatedRoute.params.subscribe((params) => {
-    //    const action = params.action;
-    //    this.dataRoute = action.split('/');
-    //    console.log(action, this.dataRoute);
-    //    if (action && this.dataRoute.length !== 0) {
-    //      if (this.dataRoute[0] === 'edit') {
-    //        this.productService
-    //          .search(this.dataRoute[1])
-    //          .subscribe(({ products }) => {
-    //            if (products.length > 0) {
-    //              this.product = products[0];
-    //              console.log(products, this.product);
-    //            }
-    //          });
-    //      }
-    //      this.action = this.dataRoute[0];
-    //      console.log('log');
-    //    }
-    //  });
-  }
+  ) {}
 
   ngOnInit(): void {
-    console.log(this.product);
     if (this.product) {
       this.form = new FormGroup({
         _brand: new FormControl(this.product._brand.name, [
@@ -225,7 +204,6 @@ export class EditProductComponent
   }
 
   manageNameControl(index: number): void {
-    console.log(index, this.filterPresentations);
     const arrayControl = this.form.get('presentations') as FormArray;
 
     this.filterPresentations[index] = arrayControl
@@ -241,12 +219,10 @@ export class EditProductComponent
       );
   }
   displayFn(presentation?: string): string | undefined {
-    console.log(presentation);
     return presentation ? presentation : undefined;
   }
 
   addPresentation(presentation?: ProductPresentationsItem): void {
-    console.log(presentation);
     const presentationFormGroup = this.formBuilder.group({
       name: new FormControl(presentation.name, [Validators.required]),
       wholesale_price: new FormControl(presentation.wholesale_price, [
@@ -368,7 +344,6 @@ export class EditProductComponent
   // End Functions to Chips
 
   private _filterPresentations(value: string): string[] {
-    console.log(value);
     if (value) {
       const filterValue = value.toLowerCase();
       return this.presentationsDefault.filter((presentation) =>
@@ -378,8 +353,6 @@ export class EditProductComponent
   }
 
   editProduct(): void {
-    console.log(this.form, this.substances, this.symptoms);
-
     if (this.form.invalid) {
       return;
     }
@@ -393,8 +366,6 @@ export class EditProductComponent
     product.symptoms = this.symptoms;
     product.deleted = this.product.deleted;
     product.discontinued = this.product.discontinued;
-
-    console.log(product);
 
     const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
       width: '350px',
@@ -415,13 +386,11 @@ export class EditProductComponent
         this.loading = true;
         this.productService.updateProduct(product).subscribe(
           (res) => {
-            console.log(res);
             this.product = null;
             this.toasty.success('Producto Editado exitosamente');
-            this.router.navigate(['admin/adminProducts']), console.log(res);
+            this.router.navigate(['admin/adminProducts']);
           },
           (error) => {
-            console.log(error);
             this.loading = false;
             this.toasty.error('Error al editar el Producto');
           }
