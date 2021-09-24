@@ -1,8 +1,22 @@
-import { Component, OnInit, AfterContentInit, OnDestroy, ElementRef, ViewChild } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  AfterContentInit,
+  OnDestroy,
+  ElementRef,
+  ViewChild,
+} from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Observable, Subscription } from 'rxjs';
-import { debounceTime, finalize, map, startWith, switchMap, tap } from 'rxjs/operators';
+import {
+  debounceTime,
+  finalize,
+  map,
+  startWith,
+  switchMap,
+  tap,
+} from 'rxjs/operators';
 
 import { ToastyService } from 'src/app/core/services/internal/toasty.service';
 import { CellarItem } from 'src/app/core/models/Cellar';
@@ -10,20 +24,30 @@ import { ProviderService } from '../../../../../core/services/httpServices/provi
 import { ProviderItem } from '../../../../../core/models/Provider';
 import { ProductService } from '../../../../../core/services/httpServices/product.service';
 import { ProductItem } from '../../../../../core/models/Product';
-import { PurchaseDetailItem, PurchaseItem } from '../../../../../core/models/Purchase';
+import {
+  PurchaseDetailItem,
+  PurchaseItem,
+} from '../../../../../core/models/Purchase';
 import { PurchaseService } from '../../../../../core/services/httpServices/purchase.service';
 import { STEPPER_GLOBAL_OPTIONS } from '@angular/cdk/stepper';
+import { ProductFormComponent } from '../../../../admin-modules/products/components/product-form/product-form.component';
+import { MatDialog } from '@angular/material/dialog';
+import { ProductModalFormComponent } from '../../../../admin-modules/products/components/product-form/product-modal-form.component';
 
 @Component({
   selector: 'app-new-purchase',
   templateUrl: './new-purchase.component.html',
   styleUrls: ['./new-purchase.component.scss'],
-  providers: [{
-    provide: STEPPER_GLOBAL_OPTIONS, useValue: { showError: true }
-  }]
+  providers: [
+    {
+      provide: STEPPER_GLOBAL_OPTIONS,
+      useValue: { showError: true },
+    },
+  ],
 })
-export class NewPurchaseComponent implements OnInit, AfterContentInit, OnDestroy {
-
+export class NewPurchaseComponent
+  implements OnInit, AfterContentInit, OnDestroy
+{
   smallScreen = window.innerWidth < 960 ? true : false;
   loading = false;
   currentCellar: CellarItem;
@@ -40,7 +64,7 @@ export class NewPurchaseComponent implements OnInit, AfterContentInit, OnDestroy
     details: new FormControl(''),
     payment: new FormControl('CONTADO'),
     total: new FormControl(0, Validators.required),
-    file: new FormControl('')
+    file: new FormControl(''),
   });
 
   formDetail = new FormGroup({
@@ -69,14 +93,29 @@ export class NewPurchaseComponent implements OnInit, AfterContentInit, OnDestroy
     public toasty: ToastyService,
     public purchaseService: PurchaseService,
     private router: Router,
-  ) { }
+    public dialog: MatDialog
+  ) {}
 
   ngOnInit(): void {
-    this.providerSubscription = this.providerService.readData().subscribe(data => {
-      this.providers = data;
-    });
-    this.filteredOptions = this.formPurchase.controls._provider.valueChanges.pipe(startWith(''), map(value => this._filter(value)));
+    this.providerSubscription = this.providerService
+      .readData()
+      .subscribe((data) => {
+        this.providers = data;
+      });
+    this.filteredOptions =
+      this.formPurchase.controls._provider.valueChanges.pipe(
+        startWith(''),
+        map((value) => this._filter(value))
+      );
+    this.loadProducts();
 
+    this.currentCellar = JSON.parse(localStorage.getItem('currentstore'));
+    setTimeout(() => {
+      this.provider.nativeElement.focus();
+    }, 500);
+  }
+
+  loadProducts(): void {
     this.searchProductsCtrl.valueChanges
       .pipe(
         debounceTime(500),
@@ -84,35 +123,33 @@ export class NewPurchaseComponent implements OnInit, AfterContentInit, OnDestroy
           this.filteredProducts = [];
           this.isLoading = true;
         }),
-        switchMap(value => this.productService.search(value)
-          .pipe(
+        switchMap((value) =>
+          this.productService.search(value).pipe(
             finalize(() => {
-              this.isLoading = false
-            }),
+              this.isLoading = false;
+            })
           )
         )
       )
-      .subscribe(data => {
+      .subscribe((data) => {
         this.filteredProducts = data['products'];
       });
-    this.currentCellar = JSON.parse(localStorage.getItem('currentstore'));
-    setTimeout(() => {
-      this.provider.nativeElement.focus();
-    }, 500);
   }
 
-  ngAfterContentInit() {
+  ngAfterContentInit(): void {
     this.providerService.loadData();
   }
 
-  ngOnDestroy() {
+  ngOnDestroy(): void {
     this.providerSubscription?.unsubscribe();
   }
 
   private _filter(value: string): ProviderItem[] {
     if (value) {
       const filterValue = value.toLowerCase();
-      return this.providers.filter(provider => provider.name.toLowerCase().includes(filterValue));
+      return this.providers.filter((provider) =>
+        provider.name.toLowerCase().includes(filterValue)
+      );
     } else {
       return [];
     }
@@ -122,11 +159,10 @@ export class NewPurchaseComponent implements OnInit, AfterContentInit, OnDestroy
     return product ? product.description : '';
   }
 
-
   getTotal(): number {
     let total = 0;
 
-    this.detailPurchase.forEach(p => {
+    this.detailPurchase.forEach((p) => {
       const t = p.quantity * p.price;
       total += t;
     });
@@ -135,27 +171,35 @@ export class NewPurchaseComponent implements OnInit, AfterContentInit, OnDestroy
 
   calcs(index: number, quantity: number, type: string): void {
     const INPUTS_VALIDOS = {
-      'quantity': () => {
-        const REAL_QUANTITY: number = this.detailPurchase[index].bonus + quantity;
+      quantity: () => {
+        const REAL_QUANTITY: number =
+          this.detailPurchase[index].bonus + quantity;
         this.detailPurchase[index].realQuantity = REAL_QUANTITY;
-        this.detailPurchase[index].stockQuantity = this.calcStock(REAL_QUANTITY, this.detailPurchase[index]._product.presentations.quantity);
+        this.detailPurchase[index].stockQuantity = this.calcStock(
+          REAL_QUANTITY,
+          this.detailPurchase[index]._product.presentations.quantity
+        );
         this.calcCost(index);
       },
-      'price': () => {
+      price: () => {
         this.detailPurchase[index].price = quantity;
         this.calcCost(index);
       },
-      'bonus': () => {
-        const REAL_QUANTITY: number = this.detailPurchase[index].quantity + quantity;
+      bonus: () => {
+        const REAL_QUANTITY: number =
+          this.detailPurchase[index].quantity + quantity;
         this.detailPurchase[index].realQuantity = REAL_QUANTITY;
-        this.detailPurchase[index].stockQuantity = this.calcStock(REAL_QUANTITY, this.detailPurchase[index]._product.presentations.quantity);
+        this.detailPurchase[index].stockQuantity = this.calcStock(
+          REAL_QUANTITY,
+          this.detailPurchase[index]._product.presentations.quantity
+        );
         this.calcCost(index);
       },
-      'discount': () => {
-         this.detailPurchase[index].discount =  quantity;
+      discount: () => {
+        this.detailPurchase[index].discount = quantity;
         this.calcCost(index);
       },
-    }
+    };
 
     INPUTS_VALIDOS[type]();
   }
@@ -164,15 +208,24 @@ export class NewPurchaseComponent implements OnInit, AfterContentInit, OnDestroy
     return quantity * quantityPresentation;
   }
 
-  calcCost(index: number) {
-    const COST: number  = ((this.detailPurchase[index].price * this.detailPurchase[index].quantity) / this.detailPurchase[index].realQuantity);
-    this.detailPurchase[index].cost = (COST - (COST * (this.detailPurchase[index].discount / 100))).toFixed(2);
+  calcCost(index: number): void {
+    const COST: number =
+      (this.detailPurchase[index].price * this.detailPurchase[index].quantity) /
+      this.detailPurchase[index].realQuantity;
+    this.detailPurchase[index].cost = (
+      COST -
+      COST * (this.detailPurchase[index].discount / 100)
+    ).toFixed(2);
   }
 
-  addRow(product: any) {
+  addRow(product: any): void {
     this.searchProductsCtrl.setValue('');
 
-    const INDEX = this.detailPurchase.findIndex(d => (d._product._id === product._id && d._product.presentations._id === product.presentations._id));
+    const INDEX = this.detailPurchase.findIndex(
+      (d) =>
+        d._product._id === product._id &&
+        d._product.presentations._id === product.presentations._id
+    );
 
     if (INDEX > -1) {
       this.toasty.toasty('warning', '¡El producto ya fue agregado!');
@@ -187,7 +240,7 @@ export class NewPurchaseComponent implements OnInit, AfterContentInit, OnDestroy
         cost: 0,
         realQuantity: 1,
         stockQuantity: this.calcStock(1, product.presentations.quantity),
-        expirationDate: null
+        expirationDate: null,
       });
     }
   }
@@ -196,13 +249,15 @@ export class NewPurchaseComponent implements OnInit, AfterContentInit, OnDestroy
     this.detailPurchase.splice(index, 1);
   }
 
-  savePurchase() {
-
-    const INVALID: PurchaseDetailItem[] = this.detailPurchase.find((detail: PurchaseDetailItem) => !detail.quantity || !detail.price || !detail.realQuantity);
+  savePurchase(): void {
+    const INVALID: PurchaseDetailItem[] = this.detailPurchase.find(
+      (detail: PurchaseDetailItem) =>
+        !detail.quantity || !detail.price || !detail.realQuantity
+    );
 
     if (INVALID) {
       this.toasty.error('Algunos valores del detalle no están completos');
-      return
+      return;
     }
 
     this.loading = true;
@@ -211,19 +266,41 @@ export class NewPurchaseComponent implements OnInit, AfterContentInit, OnDestroy
     let purchase: PurchaseItem = { ...this.formPurchase.value };
     purchase.detail = this.detailPurchase;
 
-    this.purchaseService.createPurchase(purchase).subscribe(data => {
-      if (data.ok === true) {
-        this.toasty.success('Compra creada exitosamente');
-        this.router.navigate(['/purchases']);
-        this.loading = false;
-      } else {
+    this.purchaseService.createPurchase(purchase).subscribe(
+      (data) => {
+        if (data.ok === true) {
+          this.toasty.success('Compra creada exitosamente');
+          this.router.navigate(['/purchases']);
+          this.loading = false;
+        } else {
+          this.loading = false;
+          this.toasty.error('Error al crear la compra');
+        }
+      },
+      (err) => {
         this.loading = false;
         this.toasty.error('Error al crear la compra');
       }
-    }, err => {
-      this.loading = false;
-      this.toasty.error('Error al crear la compra');
-    });
+    );
   }
 
+  addProduct(): void {
+    const dialogRef = this.dialog.open(ProductModalFormComponent, {
+      width: this.smallScreen ? '100%' : '800px',
+      data: {
+        by: 'NewPurchase',
+      },
+
+      minHeight: '78vh',
+      maxHeight: '78vh',
+      disableClose: true,
+      panelClass: ['farmacia-dialog', 'farmacia'],
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result !== undefined) {
+        this.loadProducts();
+      }
+    });
+  }
 }

@@ -26,11 +26,11 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 
 @Component({
-  selector: 'app-product-form',
+  selector: 'app-product-modal-form',
   templateUrl: './product-form.component.html',
   styleUrls: ['./product-form.component.scss'],
 })
-export class ProductFormComponent
+export class ProductModalFormComponent
   implements OnInit, AfterContentInit, OnDestroy
 {
   isMatDialog = false;
@@ -106,8 +106,16 @@ export class ProductFormComponent
     public productService: ProductService,
     private symptomService: SymptomService,
     private substanceService: SubstanceService,
-    public router: Router
-  ) {}
+    public router: Router,
+    public activatedRoute: ActivatedRoute,
+    public dialogRef: MatDialogRef<ProductModalFormComponent>
+  ) {
+    activatedRoute.params.subscribe(({ action }) => {
+      action !== 'new' ? (this.isMatDialog = true) : (this.isMatDialog = false);
+    });
+    if (this.isMatDialog) {
+    }
+  }
 
   ngOnInit(): void {
     this.brandsSubscription = this.brandService.readData().subscribe((data) => {
@@ -373,6 +381,9 @@ export class ProductFormComponent
           this.refreshForms();
           this.toasty.success('Producto Creado Exitosamente');
           this.loading = false;
+          if (this.isMatDialog) {
+            this.dialogRef.close('ok');
+          }
           this.barcode.nativeElement.focus();
           this.defaultPresentations();
         } else {
