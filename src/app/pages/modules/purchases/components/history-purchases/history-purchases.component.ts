@@ -12,11 +12,11 @@ import { PurchaseService } from '../../../../../core/services/httpServices/purch
 import { ToastyService } from '../../../../../core/services/internal/toasty.service';
 
 @Component({
-  selector: 'app-current-purchases',
-  templateUrl: './current-purchases.component.html',
-  styleUrls: ['./current-purchases.component.scss']
+  selector: 'app-history-purchases',
+  templateUrl: './history-purchases.component.html',
+  styleUrls: ['./history-purchases.component.scss']
 })
-export class CurrentPurchasesComponent implements OnInit, AfterContentInit, OnDestroy {
+export class HistoryPurchasesComponent implements OnInit, AfterContentInit, OnDestroy {
 
   smallScreen = window.innerWidth < 960 ? true : false;
   currentCellar: CellarItem;
@@ -43,7 +43,7 @@ export class CurrentPurchasesComponent implements OnInit, AfterContentInit, OnDe
       this.purchases = data;
       this.dataSource = new MatTableDataSource<PurchaseItem>(this.purchases);
     });
-  }
+   }
 
   ngOnInit(): void {
     this.currentCellar = JSON.parse(localStorage.getItem('currentstore'));

@@ -136,6 +136,7 @@ export class NewPurchaseComponent implements OnInit, AfterContentInit, OnDestroy
   calcs(index: number, quantity: number, type: string): void {
     const INPUTS_VALIDOS = {
       'quantity': () => {
+        this.detailPurchase[index].quantity = quantity;
         const REAL_QUANTITY: number = this.detailPurchase[index].bonus + quantity;
         this.detailPurchase[index].realQuantity = REAL_QUANTITY;
         this.detailPurchase[index].stockQuantity = this.calcStock(REAL_QUANTITY, this.detailPurchase[index]._product.presentations.quantity);
@@ -180,7 +181,7 @@ export class NewPurchaseComponent implements OnInit, AfterContentInit, OnDestroy
     } else {
       this.detailPurchase.push({
         _product: product,
-        quantity: 1,
+        quantity: '',
         price: '',
         bonus: 0,
         discount: 0,

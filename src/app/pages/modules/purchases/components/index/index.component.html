@@ -14,15 +14,18 @@
             <mat-tab-group mat-align-tabs="start">
                 <mat-tab>
                     <ng-template mat-tab-label>
-                        <mat-icon class="example-tab-icon">request_quote</mat-icon>
-                        Actualizar precios
+                        <span [matBadge]="created" matBadgeOverlap="false" matBadgeColor="warn">
+                            Actualizar precios
+                        </span>
                     </ng-template>
-                    <app-current-purchases></app-current-purchases>
+                    <app-created-purchases (sendTotal)="totalCreated($event)"></app-created-purchases>
                 </mat-tab>
                 <mat-tab label="Ingresos pendientes">
-                    <app-current-purchases></app-current-purchases>
+                    <app-updated-purchases></app-updated-purchases>
                 </mat-tab>
-                <mat-tab label="Historial"></mat-tab>
+                <mat-tab label="Historial">
+                    <app-history-purchases></app-history-purchases>
+                </mat-tab>
                 <mat-tab label="Anuladas">
                     <app-deleted-purchases></app-deleted-purchases>
                 </mat-tab>

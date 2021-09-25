@@ -52,6 +52,10 @@ export class PurchaseService implements IDataService<PurchaseItem[]> {
     }
   }
 
+  getCreated( _cellar ): Observable<any> {
+    return this.http.get(this.apiConfigService.API_PURCHASE + '/createds/' + _cellar);
+  }
+
   getDeletes({ month, year, _cellar }): Observable<any> {
     return this.http.get(this.apiConfigService.API_PURCHASE + '/deletes/' + _cellar, {
       params: new HttpParams()

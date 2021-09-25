@@ -7,16 +7,18 @@ import { SharedComponentsModule } from '../../shared-components/shared-component
 import { PurchasesRoutes } from './purchases.routing';
 import { NewPurchaseComponent } from './components/new-purchase/new-purchase.component';
 import { IndexComponent } from './components/index/index.component';
-import { CurrentPurchasesComponent } from './components/current-purchases/current-purchases.component';
 import { DeletedPurchasesComponent } from './components/deleted-purchases/deleted-purchases.component';
 import { DetailsPurchaseComponent } from './components/details-purchase/details-purchase.component';
 import { UpdatePricesComponent } from './components/update-prices/update-prices.component';
 import { NewAdjustComponent } from './components/new-adjust/new-adjust.component';
+import { CreatedPurchasesComponent } from './components/created-purchases/created-purchases.component';
+import { UpdatedPurchasesComponent } from './components/updated-purchases/updated-purchases.component';
+import { HistoryPurchasesComponent } from './components/history-purchases/history-purchases.component';
 
 
 
 @NgModule({
-  declarations: [NewPurchaseComponent, IndexComponent, CurrentPurchasesComponent, DeletedPurchasesComponent, DetailsPurchaseComponent, UpdatePricesComponent, NewAdjustComponent],
+  declarations: [NewPurchaseComponent, IndexComponent, DeletedPurchasesComponent, DetailsPurchaseComponent, UpdatePricesComponent, NewAdjustComponent, CreatedPurchasesComponent, UpdatedPurchasesComponent, HistoryPurchasesComponent],
   imports: [
     CommonModule,
     RouterModule.forChild(PurchasesRoutes),

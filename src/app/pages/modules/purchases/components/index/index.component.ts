@@ -9,9 +9,15 @@ export class IndexComponent implements OnInit {
 
   smallScreen = window.innerWidth < 960 ? true : false;
 
+  created: number = 0;
+
   constructor() { }
 
   ngOnInit(): void {
+  }
+
+  totalCreated(event: number) {
+    this.created = event;
   }
 
 }

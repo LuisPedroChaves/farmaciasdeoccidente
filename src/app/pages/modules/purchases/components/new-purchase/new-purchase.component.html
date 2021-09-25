@@ -166,7 +166,7 @@
                                             </mat-chip-list>
                                         </div>
                                         <div fxFlex class="cell">
-                                            <input #quantity="ngModel" (ngModelChange)="calcs(i, $event, 'quantity')" type="number" [(ngModel)]="p.quantity" [ngModelOptions]="{standalone: true}" class="cantinput" required>
+                                            <input (ngModelChange)="calcs(i, $event, 'quantity')" type="number" [(ngModel)]="p.quantity" [ngModelOptions]="{standalone: true}" class="cantinput" required>
                                         </div>
                                         <div fxFlex class=" cell">
                                             <input (ngModelChange)="calcs(i, $event, 'price')" type="number" [(ngModel)]="p.price" [ngModelOptions]="{standalone: true}" class="cantinput" required>
