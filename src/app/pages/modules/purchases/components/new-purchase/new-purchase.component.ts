@@ -33,6 +33,7 @@ import { STEPPER_GLOBAL_OPTIONS } from '@angular/cdk/stepper';
 import { ProductFormComponent } from '../../../../admin-modules/products/components/product-form/product-form.component';
 import { MatDialog } from '@angular/material/dialog';
 import { ProductModalFormComponent } from '../../../../admin-modules/products/components/product-form/product-modal-form.component';
+import { NewProviderComponent } from 'src/app/pages/admin-modules/providers/components/new-provider/new-provider.component';
 
 @Component({
   selector: 'app-new-purchase',
@@ -286,6 +287,25 @@ export class NewPurchaseComponent
 
   addProduct(): void {
     const dialogRef = this.dialog.open(ProductModalFormComponent, {
+      width: this.smallScreen ? '100%' : '800px',
+      data: {
+        by: 'NewPurchase',
+      },
+
+      minHeight: '78vh',
+      maxHeight: '78vh',
+      disableClose: true,
+      panelClass: ['farmacia-dialog', 'farmacia'],
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result !== undefined) {
+        this.loadProducts();
+      }
+    });
+  }
+  addProvider(): void {
+    const dialogRef = this.dialog.open(NewProviderComponent, {
       width: this.smallScreen ? '100%' : '800px',
       data: {
         by: 'NewPurchase',
