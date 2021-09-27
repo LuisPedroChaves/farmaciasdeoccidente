@@ -122,7 +122,6 @@ export class NewPurchaseComponent implements OnInit, AfterContentInit, OnDestroy
     return product ? product.description : '';
   }
 
-
   getTotal(): number {
     let total = 0;
 
@@ -181,6 +180,7 @@ export class NewPurchaseComponent implements OnInit, AfterContentInit, OnDestroy
     } else {
       this.detailPurchase.push({
         _product: product,
+        presentation: product.presentations.name,
         quantity: '',
         price: '',
         bonus: 0,
@@ -188,7 +188,8 @@ export class NewPurchaseComponent implements OnInit, AfterContentInit, OnDestroy
         cost: 0,
         realQuantity: 1,
         stockQuantity: this.calcStock(1, product.presentations.quantity),
-        expirationDate: null
+        expirationDate: null,
+        lastCost: product.presentations.cost ? product.presentations.cost : 0,
       });
     }
   }

@@ -25,6 +25,7 @@ export interface PurchaseItem {
 
 export interface PurchaseDetailItem {
     _product: ProductItem;
+    presentation: string,
     quantity: number,
     price: number,
     bonus: number,
@@ -33,8 +34,10 @@ export interface PurchaseDetailItem {
     realQuantity: number,
     stockQuantity: number,
     expirationDate: Date,
-    changedPrice: number
+    lastCost: number,
+    updated: boolean
 }
+
 export interface PurchaseAdjustItem {
     _user: UserItem;
     _product: ProductItem;
