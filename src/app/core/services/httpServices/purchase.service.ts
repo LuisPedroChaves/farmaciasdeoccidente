@@ -64,6 +64,10 @@ export class PurchaseService implements IDataService<PurchaseItem[]> {
     });
   }
 
+  getById(id: string): Observable<any> {
+    return this.http.get(`${this.apiConfigService.API_PURCHASE}/purchase/${id}`);
+  }
+
   createPurchase(body: PurchaseItem): Observable<any> {
     // const jsonParms = JSON.stringify(u);
     body._user = this.userID;

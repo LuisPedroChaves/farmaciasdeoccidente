@@ -49,8 +49,9 @@ import { ConfirmationDialogComponent } from './confirmation-dialog/confirmation-
 import { NotificationsComponent } from './notifications/notifications.component';
 import { UpdateNotificationsComponent } from './update-notifications/update-notifications.component';
 import { getSpanishPaginatorIntl } from './spanish-paginator-intl';
+import { LoaderComponent } from './loader/loader.component';
 @NgModule({
-  declarations: [NewCellarComponent, ConfirmationDialogComponent, NotificationsComponent, UpdateNotificationsComponent],
+  declarations: [NewCellarComponent, ConfirmationDialogComponent, NotificationsComponent, UpdateNotificationsComponent, LoaderComponent],
   imports: [
     CommonModule,
     FormsModule,
@@ -140,7 +141,8 @@ import { getSpanishPaginatorIntl } from './spanish-paginator-intl';
     // components
     NewCellarComponent,
     ConfirmationDialogComponent,
-    NotificationsComponent
+    NotificationsComponent,
+    LoaderComponent
   ]
   , providers: [
     { provide: MAT_DATE_LOCALE, useValue: 'es' },

@@ -78,15 +78,14 @@
                         <button mat-menu-item (click)="details(element)" color="warn">
               <mat-icon class="material-icons-outlined">visibility</mat-icon> Ver detalles
             </button>
-                        <button mat-menu-item *ngIf="purchasesp && purchasesp.includes('update')" [routerLink]="'updatePrices/myID'" color="warn">
-              <mat-icon class="material-icons-outlined">request_quote</mat-icon> Actualizar precios
-            </button>
                         <mat-divider></mat-divider>
                         <button mat-menu-item *ngIf="purchasesp && purchasesp.includes('delete')" (click)="delete(element)" style="color:brown;">
               <mat-icon class="material-icons-outlined">delete</mat-icon> Anular Compra
             </button>
                     </mat-menu>
-                    <button mat-button [disabled]="element.applied" color="warn">APLICAR</button>
+                    <button mat-button *ngIf="purchasesp && purchasesp.includes('update')" [routerLink]="['updatePrices/' + element._id]" color="warn">
+            ACTUALIZAR
+          </button>
                 </td>
             </ng-container>
             <tr mat-header-row *matHeaderRowDef="columns"></tr>
