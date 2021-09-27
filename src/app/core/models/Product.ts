@@ -50,4 +50,5 @@ export interface ProductPresentationsItem {
   cf_price: number;
   quantity: number;
   commission: number;
+  cost: number;
 }

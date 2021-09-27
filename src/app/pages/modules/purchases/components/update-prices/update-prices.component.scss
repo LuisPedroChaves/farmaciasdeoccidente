@@ -1,108 +1,107 @@
 .section-content {
     height: calc(100%) !important;
-  }
+}
 
-  .my-container {
+.my-container {
     height: calc(100vh - 180px) !important;
-  }
+}
 
-  .my-container2 {
+.my-container2 {
     height: calc(100vh - 476px) !important;
-  }
+}
 
-  .p-10 {
+.p-10 {
     padding: 10px;
-  }
+}
 
-  .close-button {
+.close-button {
     margin-right: 10px;
-  }
+}
 
-  .T {
+.T {
     color: #045195;
     font-size: 25px;
-  }
+}
 
-  .card {
+.card {
     background-color: white;
     border-radius: 10px;
-    padding: 10px;
-  }
+    padding: 10px 10px;
+}
 
-  .section {
+.section {
     padding: 15px 15px;
-  }
+}
 
-  .width-all {
+.width-all {
     width: 100%;
     font-size: 13px;
-  }
+}
 
-  .inputpadding {
+.inputpadding {
     padding-left: 3px;
     padding-right: 3px;
-  }
+}
 
-  .header {
+.header {
     border-bottom: 1px solid rgba(0, 0, 0, 0.1);
     padding: 0px 10px;
-  }
+}
 
-  .row {
+.row {
     border-bottom: 1px solid rgba(0, 0, 0, 0.1);
     padding: 0px 10px;
-  }
+}
 
-  .row:hover {
+.row:hover {
     mat-icon {
-      color: #045195;
+        color: #045195;
     }
-  }
+}
 
-  .header-cell {
+.header-cell {
     font-size: 11px;
     font-weight: 700;
     color: rgba(0, 0, 0, 0.54);
-  }
+}
 
-  .cell {
+.cell {
     padding: 8px 3px;
-  }
+}
 
-  .cantinput {
+.cantinput {
     padding: 3px;
     width: 80%;
     border: 1px solid rgba(0, 0, 0, 0.1);
     border-radius: 5px;
-  }
+}
 
-  $blue: #0a1958;
-
-  .cantinput:focus {
+$blue: #0a1958;
+.cantinput:focus {
     border: 1px solid rgba($color: $blue, $alpha: 0.5) !important;
     outline-color: rgba($color: $blue, $alpha: 0.9);
-  }
+}
 
-  .productheader {
+.productheader {
     padding: 5px 10px;
-  }
+}
 
-  .product {
+.product {
     background-color: white;
     padding: 15px;
     border-radius: 10px;
     margin-bottom: 5px;
-  }
+}
 
-  .noproducts {
+.noproducts {
     padding: 40px;
-  }
+}
 
-  .totalP {
-      padding-left: 15px;
-      padding-right: 15px;
-  }
+.totalP {
+    padding-left: 15px;
+    padding-right: 15px;
+}
 
-  img {
-      max-width: 200px;
-  }
+img {
+    max-width: 200px;
+}
