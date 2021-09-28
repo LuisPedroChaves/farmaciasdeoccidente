@@ -172,7 +172,7 @@ export class NewPurchaseComponent
 
   calcs(index: number, quantity: number, type: string): void {
     const INPUTS_VALIDOS = {
-      quantity: () => {
+      'quantity': () => {
         this.detailPurchase[index].quantity = quantity;
         const REAL_QUANTITY: number = this.detailPurchase[index].bonus + quantity;
         this.detailPurchase[index].realQuantity = REAL_QUANTITY;
