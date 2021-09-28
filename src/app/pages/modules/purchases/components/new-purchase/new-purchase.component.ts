@@ -173,8 +173,8 @@ export class NewPurchaseComponent
   calcs(index: number, quantity: number, type: string): void {
     const INPUTS_VALIDOS = {
       quantity: () => {
-        const REAL_QUANTITY: number =
-          this.detailPurchase[index].bonus + quantity;
+        this.detailPurchase[index].quantity = quantity;
+        const REAL_QUANTITY: number = this.detailPurchase[index].bonus + quantity;
         this.detailPurchase[index].realQuantity = REAL_QUANTITY;
         this.detailPurchase[index].stockQuantity = this.calcStock(
           REAL_QUANTITY,
@@ -242,6 +242,7 @@ export class NewPurchaseComponent
         realQuantity: 1,
         stockQuantity: this.calcStock(1, product.presentations.quantity),
         expirationDate: null,
+        lastCost: product.presentations.cost ? product.presentations.cost : 0,
       });
     }
   }
