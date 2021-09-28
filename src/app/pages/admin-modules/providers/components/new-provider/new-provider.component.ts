@@ -1,7 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { MatDialogRef } from '@angular/material/dialog';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Router } from '@angular/router';
+import { ProviderItem } from 'src/app/core/models/Provider';
+import { ProviderService } from 'src/app/core/services/httpServices/provider.service';
 import { ToastyService } from 'src/app/core/services/internal/toasty.service';
 
 @Component({
@@ -13,10 +15,10 @@ export class NewProviderComponent implements OnInit {
   form = new FormGroup({
     name: new FormControl(null, [Validators.required]),
     address: new FormControl(null, [Validators.required]),
-    nit: new FormControl(null, [Validators.required]),
-    phone: new FormControl(null, [Validators.required]),
-    email: new FormControl(null, [Validators.required]),
-    creditDays: new FormControl(null, [Validators.required]),
+    nit: new FormControl(null),
+    phone: new FormControl(null),
+    email: new FormControl(null),
+    creditDays: new FormControl('0', [Validators.required]),
   });
 
   loading = false;
@@ -24,43 +26,35 @@ export class NewProviderComponent implements OnInit {
   constructor(
     public toasty: ToastyService,
     public router: Router,
-    public dialogRef: MatDialogRef<NewProviderComponent>
+    public dialogRef: MatDialogRef<NewProviderComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: any,
+    public providerService: ProviderService
   ) {}
 
   ngOnInit(): void {}
 
   saveProduct(): void {
-    // if (this.form.invalid) {
-    //   return;
-    // }
-    // this.loading = true;
-    // const product: ProductItem = { ...this.form.value };
-    // product._brand = { name: this.form.value._brand };
-    // product.substances = this.substances;
-    // product.symptoms = this.symptoms;
-    // this.productService.createProduct(product).subscribe(
-    //   (res) => {
-    //     if (res.ok) {
-    //       this.form.reset();
-    //       this.symptoms = [];
-    //       this.substances = [];
-    //       this.refreshForms();
-    //       this.toasty.success('Producto Creado Exitosamente');
-    //       this.loading = false;
-    //       if (this.isMatDialog) {
-    //         this.dialogRef.close('ok');
-    //       }
-    //       this.barcode.nativeElement.focus();
-    //       this.defaultPresentations();
-    //     } else {
-    //       this.loading = false;
-    //       this.toasty.error('Error al crear producto');
-    //     }
-    //   },
-    //   (error) => {
-    //     this.loading = false;
-    //     this.toasty.error('Error al crear producto');
-    //   }
-    // );
+    if (this.form.invalid) {
+      return;
+    }
+    this.loading = true;
+    const provider: ProviderItem = { ...this.form.value };
+    console.log(provider);
+    this.providerService.createProvider(provider).subscribe(
+      (data) => {
+        if (data.ok === true) {
+          this.toasty.success('Proveedor creado exitosamente');
+          this.dialogRef.close('ok');
+          this.loading = false;
+        } else {
+          this.loading = false;
+          this.toasty.error('Error al crear el Proveedor');
+        }
+      },
+      (err) => {
+        this.loading = false;
+        this.toasty.error('Error al crear el Proveedor');
+      }
+    );
   }
 }

@@ -7,10 +7,11 @@ import { SharedComponentsModule } from '../../shared-components/shared-component
 import { ProvidersRoutes } from './providers.routing';
 import { ProvidersComponent } from './components/providers/providers.component';
 import { NewProviderComponent } from './components/new-provider/new-provider.component';
+import { EditProviderComponent } from './components/edit-provider/edit-provider.component';
 
 
 @NgModule({
-  declarations: [ProvidersComponent, NewProviderComponent],
+  declarations: [ProvidersComponent, NewProviderComponent, EditProviderComponent],
   imports: [
     CommonModule,
     RouterModule.forChild(ProvidersRoutes),
