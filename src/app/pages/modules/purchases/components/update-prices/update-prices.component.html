@@ -30,10 +30,10 @@
                         </div>
                     </div>
                     <div fxFlex="100" fxLayout="row wrap" *ngIf="purchase.detail.length > 0">
-                        <div class="row cursor-pointer" *ngFor="let p of purchase.detail; let i = index" fxFlex="100" (click)="selectProduct(p)" fxLayoutAlign="start center" fxLayout="row wrap">
+                        <div class="row  detalle cursor-pointer" *ngFor="let p of purchase.detail; let i = index" fxFlex="100" (click)="selectProduct(p)" fxLayoutAlign="start center" fxLayout="row wrap">
                             <div fxFlex class="ellipsis-text cell">
                                 <mat-chip-list>
-                                    <mat-chip>{{ p.presentation }}</mat-chip>
+                                    <mat-chip selected color="warn">{{ p.presentation }}</mat-chip>
                                 </mat-chip-list>
                             </div>
                             <div fxFlex class="ellipsis-text cell">
