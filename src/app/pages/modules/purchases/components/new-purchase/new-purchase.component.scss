@@ -148,3 +148,9 @@ $blue: #0a1958;
 .mat-stepper-horizontal {
     background-color: transparent !important;
 }
+
+.detalle:hover {
+        transition: 0.3s;
+        border: 2px solid #045195;
+        background-color: #e0e0e0;
+}
