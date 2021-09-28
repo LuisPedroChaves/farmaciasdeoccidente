@@ -1,11 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { MatDialog } from '@angular/material/dialog';
 
 import { PurchaseItem, PurchaseDetailItem } from '../../../../../core/models/Purchase';
 import { PurchaseService } from '../../../../../core/services/httpServices/purchase.service';
 import { ProductItem } from '../../../../../core/models/Product';
 import { ToastyService } from '../../../../../core/services/internal/toasty.service';
-import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
+import { ConfirmationDialogComponent } from 'src/app/pages/shared-components/confirmation-dialog/confirmation-dialog.component';
 
 @Component({
   selector: 'app-update-prices',
@@ -24,7 +25,8 @@ export class UpdatePricesComponent implements OnInit {
     private activeRoute: ActivatedRoute,
     private router: Router,
     public purchaseService: PurchaseService,
-    private toasty: ToastyService
+    private toasty: ToastyService,
+    private dialog: MatDialog
   ) { }
 
   ngOnInit(): void {
@@ -63,11 +65,26 @@ export class UpdatePricesComponent implements OnInit {
   }
 
   finish() {
-    this.loading = true;
-    this.purchaseService.statePurchase(this.purchase)
-      .subscribe(resp => {
-        this.router.navigate(['/purchases']);
-      });
+    const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
+      width: '350px',
+      data: { title: 'Finalizar edición', message: '¿Confirma que desea finalizar la edición de precios en la factura No.  ' + this.purchase.noBill + '?' },
+      disableClose: true,
+      panelClass: ['farmacia-dialog', 'farmacia'],
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result !== undefined) {
+        this.loading = true;
+        this.purchase.state = 'UPDATED';
+        this.purchaseService.statePurchase(this.purchase)
+          .subscribe(resp => {
+            this.router.navigate(['/purchases']);
+          }, error => {
+          this.loading = false;
+          this.toasty.error('Error al finalizar edición');
+        });
+      }
+    });
   }
 
 }
