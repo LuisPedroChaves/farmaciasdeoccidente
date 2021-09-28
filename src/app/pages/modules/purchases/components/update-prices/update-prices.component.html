@@ -1,10 +1,16 @@
 <div fxFlex fxLayout="column" class="section-content">
     <div fxLayout="row">
-        <header class="module-header p-10" [ngClass]="{'padding-25': !smallScreen, 'padding-15': smallScreen }" fxLayoutAlign="start center" fxLayout="row wrap">
+        <header class="module-header p-10" [ngClass]="{'padding-25': !smallScreen, 'padding-15': smallScreen }" fxFlex fxLayoutAlign="start center" fxLayout="row wrap">
             <button mat-icon-button class="close-button" [routerLink]="'/purchases'">
         <mat-icon>close</mat-icon>
       </button>
             <h2 color="accent" class="ma-0 info-row T">Actualizador de precios</h2>
+            <div fxFlex></div>
+            <button mat-raised-button *ngIf="!loading" (click)="finish()" color="warn" class="close-button">
+                <mat-icon>check_circle_outline</mat-icon>
+                Finalizar edición
+              </button>
+            <mat-progress-spinner *ngIf="loading" mode="indeterminate" diameter="30" color="warn"></mat-progress-spinner>
         </header>
     </div>
     <div *ngIf="purchase" fxFlex fxLayout="row">
@@ -49,6 +55,7 @@
                         <h2 color="primary" class="product-font ma-0">{{selectedProduct.code}} | {{ selectedProduct.description }}
                         </h2>
                         <h3 color="primary" class="product-font ma-0">{{ selectedProduct._brand.name }} </h3>
+                        <h4 color="primary" class="product-font ma-0">Última actualización: {{ selectedProduct.lastUpdate }} </h4>
                         <div fxFlex></div>
                     </div>
                     <div fxFlex fxLayout="column">
@@ -79,7 +86,8 @@
                                         <mat-form-field appearance="outline" color="primary" class="width-all">
                                             <mat-label>Distribuidor</mat-label>
                                             <input [(ngModel)]="presentation.distributor_newPrice" type="number" matInput placeholder="0.00">
-                                            <mat-hint align="start">Actual: <strong> Q{{ presentation.distributor_price }}</strong> </mat-hint>
+                                            <mat-hint align="start">Actual: <strong> Q{{ presentation.distributor_price }}</strong>
+                                            </mat-hint>
                                         </mat-form-field>
                                     </div>
                                     <div fxFlex="25%" class="inputpadding">
@@ -107,9 +115,10 @@
             CANCELAR
           </button>
                     <div fxFlex></div>
-                    <button mat-raised-button color="warn" class="close-button">
-            GUARDAR PRODUCTO
+                    <button mat-raised-button *ngIf="!loading" color="accent" class="close-button">
+            ACTUALIZAR PRODUCTO
           </button>
+                    <mat-progress-spinner *ngIf="loading" mode="indeterminate" diameter="30" color="warn"></mat-progress-spinner>
                 </div>
             </div>
         </div>

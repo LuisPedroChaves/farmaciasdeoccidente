@@ -74,6 +74,10 @@ export class PurchaseService implements IDataService<PurchaseItem[]> {
     return this.http.post(this.apiConfigService.API_PURCHASE, body);
   }
 
+  statePurchase(body: PurchaseItem): Observable<any> {
+    return this.http.put(this.apiConfigService.API_PURCHASE + '/state/' + body._id, body);
+  }
+
   deletePurchase(body: PurchaseItem): Observable<any> {
     body._userDeleted = this.userID;
     return this.http.put(this.apiConfigService.API_PURCHASE + '/delete/' + body._id, body);
