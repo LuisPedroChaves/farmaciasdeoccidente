@@ -30,7 +30,7 @@
                         </div>
                     </div>
                     <div fxFlex="100" fxLayout="row wrap" *ngIf="purchase.detail.length > 0">
-                        <div class="row  detalle cursor-pointer" *ngFor="let p of purchase.detail; let i = index" fxFlex="100" (click)="selectProduct(p)" fxLayoutAlign="start center" fxLayout="row wrap">
+                        <div *ngFor="let p of purchase.detail; let i = index" [ngClass]="{'detalle': (selectedProduct && i === selectedProduct.index)}" class="row cursor-pointer" fxFlex="100" (click)="selectProduct(p, i)" fxLayoutAlign="start center" fxLayout="row wrap">
                             <div fxFlex class="ellipsis-text cell">
                                 <mat-chip-list>
                                     <mat-chip selected color="warn">{{ p.presentation }}</mat-chip>
@@ -39,7 +39,7 @@
                             <div fxFlex class="ellipsis-text cell">
                                 {{p._product.description}}
                             </div>
-                            <div fxFlex="15" class="ellipsis-text cell">{{ calcPercent(p.cost, p.lastCost) }}%</div>
+                            <div fxFlex="15" class="ellipsis-text cell">{{ calcPercent(p.cost, p.lastCost).toFixed(2) }}%</div>
                             <div fxFlex="5" class="ellipsis-text cell">
                                 <mat-icon *ngIf="p.updated" color="warn">check</mat-icon>
                             </div>
@@ -115,7 +115,7 @@
             CANCELAR
           </button>
                     <div fxFlex></div>
-                    <button mat-raised-button *ngIf="!loading" color="accent" class="close-button">
+                    <button mat-raised-button *ngIf="!loading" (click)="updateProduct()" color="accent" class="close-button">
             ACTUALIZAR PRODUCTO
           </button>
                     <mat-progress-spinner *ngIf="loading" mode="indeterminate" diameter="30" color="warn"></mat-progress-spinner>

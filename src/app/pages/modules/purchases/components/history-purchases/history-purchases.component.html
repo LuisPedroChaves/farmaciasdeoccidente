@@ -12,38 +12,20 @@
             <input matInput (keyup)="applyFilter2($event)" type="text">
         </mat-form-field>
         <span fxFlex></span>
-        <mat-form-field appearance="outline" color="primary" class="findinput">
-            <mat-label>Filtro</mat-label>
-            <mat-select [(ngModel)]="currentFilter" (selectionChange)="applyFilter()">
-                <mat-option value="current">Mes actual</mat-option>
-                <mat-option value="last">Mes anterior</mat-option>
-                <mat-option value="month">Seleccionar Mes</mat-option>
-            </mat-select>
+        <mat-form-field appearance="outline" color="primary" class="dateinput">
+            <mat-label>Fecha de inicio</mat-label>
+            <input matInput [matDatepicker]="picker1" [(ngModel)]="startDate" (ngModelChange)="chengeDate()">
+            <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+            <mat-datepicker #picker1></mat-datepicker>
         </mat-form-field>
-
-        <mat-select (selectionChange)="applyFilter()" [ngStyle]="{'display': currentFilter === 'month' ? 'inline': 'none'}" class="dateinput" [(ngModel)]="this.month">
-            <mat-option [value]="1">Enero</mat-option>
-            <mat-option [value]="2">Febrero</mat-option>
-            <mat-option [value]="3">Marzo</mat-option>
-            <mat-option [value]="4">Abril</mat-option>
-            <mat-option [value]="5">Mayo</mat-option>
-            <mat-option [value]="6">Junio</mat-option>
-            <mat-option [value]="7">Julio</mat-option>
-            <mat-option [value]="8">Agosto</mat-option>
-            <mat-option [value]="9">Septiembre</mat-option>
-            <mat-option [value]="10">Octubre</mat-option>
-            <mat-option [value]="11">Noviembre</mat-option>
-            <mat-option [value]="12">Diciembre</mat-option>
-        </mat-select>
-        <mat-select (selectionChange)="applyFilter()" [ngStyle]="{'display': currentFilter === 'month' ? 'inline': 'none'}" *ngIf="currentFilter === 'month'" class="dateinput" [(ngModel)]="this.year">
-            <mat-option *ngFor="let y of [2020, 2021, 2022, 2023, 2024, 2025, 2026, 2027, 2028, 2029, 2030, 2031, 2032, 2033,2034,2035,2036,2037,2038,2039,2040]" [value]="y">{{ y }}</mat-option>
-        </mat-select>
+        <mat-form-field appearance="outline" color="primary" class="dateinput">
+            <mat-label>Fecha final</mat-label>
+            <input matInput [matDatepicker]="picker2" [(ngModel)]="endDate" (ngModelChange)="chengeDate()">
+            <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+            <mat-datepicker #picker2></mat-datepicker>
+        </mat-form-field>
     </div>
-    <button *ngIf="!smallScreen && purchasesp.includes('create')" mat-fab color="primary" class="fab mat-elevation-z10" [routerLink]="'/purchases/new'">
-    <mat-icon>add</mat-icon><span class="extended-fab-button__text">Factura</span>
-  </button>
     <div *ngIf="purchases !== undefined && purchasesp.includes('read')" class="allspace" data-simplebar>
-
         <table mat-table matSort matTableResponsive [dataSource]="dataSource" multiTemplateDataRows class="mat-elevation-z2 noborder-table ">
             <ng-container matColumnDef="image">
                 <th mat-header-cell *matHeaderCellDef></th>
@@ -106,15 +88,11 @@
                         <button mat-menu-item (click)="details(element)" color="warn">
               <mat-icon class="material-icons-outlined">visibility</mat-icon> Ver detalles
             </button>
-                        <button mat-menu-item *ngIf="purchasesp && purchasesp.includes('update')" [routerLink]="'updatePrices/myID'" color="warn">
-              <mat-icon class="material-icons-outlined">request_quote</mat-icon> Actualizar precios
-            </button>
                         <mat-divider></mat-divider>
                         <button mat-menu-item *ngIf="purchasesp && purchasesp.includes('delete')" (click)="delete(element)" style="color:brown;">
               <mat-icon class="material-icons-outlined">delete</mat-icon> Anular Compra
             </button>
                     </mat-menu>
-                    <button mat-button [disabled]="element.applied" color="warn">APLICAR</button>
                 </td>
             </ng-container>
             <tr mat-header-row *matHeaderRowDef="columns"></tr>

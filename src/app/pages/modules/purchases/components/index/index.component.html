@@ -20,8 +20,13 @@
                     </ng-template>
                     <app-created-purchases (sendTotal)="totalCreated($event)"></app-created-purchases>
                 </mat-tab>
-                <mat-tab label="Ingresos pendientes">
-                    <app-updated-purchases></app-updated-purchases>
+                <mat-tab>
+                    <ng-template mat-tab-label>
+                        <span [matBadge]="updated" matBadgeOverlap="false" matBadgeColor="accent">
+                            Ingresos pendientes
+                        </span>
+                    </ng-template>
+                    <app-updated-purchases (sendTotal)="totalUpdated($event)"></app-updated-purchases>
                 </mat-tab>
                 <mat-tab label="Historial">
                     <app-history-purchases></app-history-purchases>
@@ -30,6 +35,9 @@
                     <app-deleted-purchases></app-deleted-purchases>
                 </mat-tab>
             </mat-tab-group>
+            <button *ngIf="!smallScreen && purchasesp.includes('create')" mat-fab color="primary" class="fab mat-elevation-z10" [routerLink]="'/purchases/new'">
+                <mat-icon>add</mat-icon><span class="extended-fab-button__text">Factura</span>
+              </button>
         </div>
     </div>
 </div>

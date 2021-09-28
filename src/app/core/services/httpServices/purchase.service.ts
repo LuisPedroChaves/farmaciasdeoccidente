@@ -22,8 +22,8 @@ export class PurchaseService implements IDataService<PurchaseItem[]> {
     public apiConfigService: ApiConfigService
   ) { }
 
-  loadData({ month, year, _cellar }) {
-    this.http.get(this.apiConfigService.API_PURCHASE + '/' + _cellar + '?month=' + month + '&year=' + year).pipe(
+  loadData({ startDate, endDate, _cellar }) {
+    this.http.get(this.apiConfigService.API_PURCHASE + '/' + _cellar + '?startDate=' + startDate + '&endDate=' + endDate).pipe(
       map((response: any) => {
         this.purchaseList = response.purchases;
         this.purchaseSubject.next(this.purchaseList);
@@ -31,9 +31,9 @@ export class PurchaseService implements IDataService<PurchaseItem[]> {
   }
 
   getData(filter: any) {
-    const { month, year, _cellar } = filter;
+    const { startDate, endDate, _cellar } = filter;
     if (this.purchaseList === undefined) {
-      this.loadData({ month, year, _cellar });
+      this.loadData({ startDate, endDate, _cellar });
     } else {
       this.purchaseSubject.next(this.purchaseList);
     }
@@ -56,6 +56,10 @@ export class PurchaseService implements IDataService<PurchaseItem[]> {
     return this.http.get(this.apiConfigService.API_PURCHASE + '/createds/' + _cellar);
   }
 
+  getUpdated( _cellar ): Observable<any> {
+    return this.http.get(this.apiConfigService.API_PURCHASE + '/updateds/' + _cellar);
+  }
+
   getDeletes({ month, year, _cellar }): Observable<any> {
     return this.http.get(this.apiConfigService.API_PURCHASE + '/deletes/' + _cellar, {
       params: new HttpParams()
@@ -76,6 +80,10 @@ export class PurchaseService implements IDataService<PurchaseItem[]> {
 
   statePurchase(body: PurchaseItem): Observable<any> {
     return this.http.put(this.apiConfigService.API_PURCHASE + '/state/' + body._id, body);
+  }
+
+  detailPurchase(body: PurchaseItem): Observable<any> {
+    return this.http.put(this.apiConfigService.API_PURCHASE + '/detail/' + body._id, body);
   }
 
   deletePurchase(body: PurchaseItem): Observable<any> {

@@ -8,8 +8,11 @@ import { Component, OnInit } from '@angular/core';
 export class IndexComponent implements OnInit {
 
   smallScreen = window.innerWidth < 960 ? true : false;
+  purchasesp: string[] = ["read", "update", "delete", "create"];
+
 
   created: number = 0;
+  updated: number = 0;
 
   constructor() { }
 
@@ -18,6 +21,10 @@ export class IndexComponent implements OnInit {
 
   totalCreated(event: number) {
     this.created = event;
+  }
+
+  totalUpdated(event: number) {
+    this.updated = event;
   }
 
 }

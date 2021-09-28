@@ -25,8 +25,11 @@
         <div fxLayout="row wrap" class="clientspace" *ngIf="purchase.detail.length > 0" data-simplebar>
             <div *ngFor="let p of purchase.detail; let i = index" class="card mat-elevation-z4">
                 <div class="row" fxFlex="100" fxLayoutAlign="start center" fxLayout="row wrap">
-                    <div fxFlex="100" fxLayoutAlign="start center" class="ellipsis-text cell"><b>{{ p._product.code }} | {{p._product.description}}</b>
+                    <div fxFlex="90" fxLayoutAlign="start center" class="ellipsis-text cell"><b>{{ p._product.code }} | {{p._product.description}}</b>
                     </div>
+                    <mat-chip-list fxFlex="10">
+                        <mat-chip selected color="warn">{{ p.presentation }}</mat-chip>
+                    </mat-chip-list>
                     <div fxFlex fxLayoutAlign="center center" class="ellipsis-text cell">{{p.quantity}}</div>
                     <div fxFlex fxLayoutAlign="center center" class="ellipsis-text cell">{{p.price}}</div>
                     <div fxFlex fxLayoutAlign="center center" class="ellipsis-text cell">{{p.bonus}}</div>

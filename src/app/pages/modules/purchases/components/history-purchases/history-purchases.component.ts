@@ -23,9 +23,8 @@ export class HistoryPurchasesComponent implements OnInit, AfterContentInit, OnDe
 
   @ViewChild(MatSort, { static: true }) sort: MatSort;
 
-  month = new Date().getMonth() + 1;
-  year = new Date().getFullYear();
-  currentFilter = 'current';
+  startDate: Date = new Date();
+  endDate: Date = new Date();
 
   purchases: PurchaseItem[];
   purchaseSubscription: Subscription;
@@ -50,12 +49,18 @@ export class HistoryPurchasesComponent implements OnInit, AfterContentInit, OnDe
   }
 
   ngAfterContentInit(): void {
-    const FILTER = { month: this.month, year: this.year, _cellar: this.currentCellar._id };
+    const FILTER = { startDate: this.startDate, endDate: this.endDate, _cellar: this.currentCellar._id };
     this.purchaseService.loadData(FILTER);
   }
 
   ngOnDestroy(): void {
     this.purchaseSubscription?.unsubscribe();
+  }
+
+  chengeDate() {
+    this.purchases = undefined;
+    const FILTER = { startDate: this.startDate, endDate: this.endDate, _cellar: this.currentCellar._id };
+    this.purchaseService.loadData(FILTER);
   }
 
   details(purchase: PurchaseItem) {
@@ -67,36 +72,6 @@ export class HistoryPurchasesComponent implements OnInit, AfterContentInit, OnDe
       disableClose: true,
       panelClass: ['farmacia-dialog', 'farmacia'],
     });
-  }
-
-  applyFilter(filterValue?: string) {
-    if (filterValue) {
-
-      this.dataSource.filter = filterValue.trim().toLowerCase();
-      if (this.currentFilter === 'last') {
-        if (new Date().getMonth() === 0) {
-          this.month = 12;
-        } else {
-          this.month = new Date().getMonth();
-
-        }
-      }
-      if (this.currentFilter === 'current') { this.month = new Date().getMonth() + 1; }
-      const filters = { month: this.month, year: this.year, _cellar: this.currentCellar._id };
-      this.purchaseService.loadData(filters);
-    } else {
-      if (this.currentFilter === 'last') {
-        if (new Date().getMonth() === 0) {
-          this.month = 12;
-        } else {
-          this.month = new Date().getMonth();
-
-        }
-      }
-      if (this.currentFilter === 'current') { this.month = new Date().getMonth() + 1; }
-      const filters = { month: this.month, year: this.year, _cellar: this.currentCellar._id };
-      this.purchaseService.loadData(filters);
-    }
   }
 
   applyFilter2(event: Event): void {
@@ -118,7 +93,7 @@ export class HistoryPurchasesComponent implements OnInit, AfterContentInit, OnDe
         purchase.textDeleted = result;
         this.purchaseService.deletePurchase(purchase).subscribe(data => {
           this.toasty.success('Factura eliminada exitosamente');
-          const FILTER = { month: this.month, year: this.year, _cellar: this.currentCellar._id };
+          const FILTER = { startDate: this.startDate, endDate: this.endDate, _cellar: this.currentCellar._id };
           this.purchaseService.loadData(FILTER);
           // this.loading = false;
         }, error => {

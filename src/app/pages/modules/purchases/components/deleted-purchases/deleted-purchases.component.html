@@ -20,7 +20,6 @@
                 <mat-option value="month">Seleccionar Mes</mat-option>
             </mat-select>
         </mat-form-field>
-
         <mat-select (selectionChange)="applyFilter()" [ngStyle]="{'display': currentFilter === 'month' ? 'inline': 'none'}" class="dateinput" [(ngModel)]="this.month">
             <mat-option [value]="1">Enero</mat-option>
             <mat-option [value]="2">Febrero</mat-option>
@@ -39,11 +38,7 @@
             <mat-option *ngFor="let y of [2020, 2021, 2022, 2023, 2024, 2025, 2026, 2027, 2028, 2029, 2030, 2031, 2032, 2033,2034,2035,2036,2037,2038,2039,2040]" [value]="y">{{ y }}</mat-option>
         </mat-select>
     </div>
-    <button *ngIf="!smallScreen && purchasesp.includes('create')" mat-fab color="primary" class="fab mat-elevation-z10" [routerLink]="'/purchases/new'">
-      <mat-icon>add</mat-icon><span class="extended-fab-button__text">Factura</span>
-    </button>
     <div *ngIf="purchases !== undefined && purchasesp.includes('read')" class="allspace" data-simplebar>
-
         <table mat-table matSort matTableResponsive [dataSource]="dataSource" multiTemplateDataRows class="mat-elevation-z2 noborder-table ">
             <ng-container matColumnDef="image">
                 <th mat-header-cell *matHeaderCellDef></th>

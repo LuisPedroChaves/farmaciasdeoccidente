@@ -12,9 +12,6 @@
             <input matInput (keyup)="applyFilter2($event)" type="text">
         </mat-form-field>
     </div>
-    <button *ngIf="!smallScreen && purchasesp.includes('create')" mat-fab color="primary" class="fab mat-elevation-z10" [routerLink]="'/purchases/new'">
-    <mat-icon>add</mat-icon><span class="extended-fab-button__text">Factura</span>
-  </button>
     <div *ngIf="purchases !== undefined && purchasesp.includes('read')" class="allspace" data-simplebar>
         <table mat-table matSort matTableResponsive [dataSource]="dataSource" multiTemplateDataRows class="mat-elevation-z2 noborder-table ">
             <ng-container matColumnDef="image">

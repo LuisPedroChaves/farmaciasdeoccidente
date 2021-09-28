@@ -52,6 +52,14 @@ export class ProductService {
     );
   }
 
+  updatePrices(product: ProductItem): Observable<any> {
+
+    return this.http.put(
+      `${this.apiConfigService.API_PRODUCT}/prices/${product._id}`,
+      product
+    );
+  }
+
   deleteProduct(product: ProductItem): Observable<any> {
     return this.http.delete(
       `${this.apiConfigService.API_PRODUCT}/${product._id}`

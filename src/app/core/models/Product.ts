@@ -20,6 +20,7 @@ export interface ProductItem {
   exempt: boolean;
   discontinued: boolean;
   deleted?: boolean;
+  index?: number
 }
 
 export interface ProductItemResponse {
@@ -51,4 +52,8 @@ export interface ProductPresentationsItem {
   quantity: number;
   commission: number;
   cost: number;
+  wholesale_newPrice?: number; // SIRVE EN EL MODULO DE ACTUALIZAR PRECIOS
+  distributor_newPrice?: number;// SIRVE EN EL MODULO DE ACTUALIZAR PRECIOS
+  retail_newPrice?: number;// SIRVE EN EL MODULO DE ACTUALIZAR PRECIOS
+  cf_newPrice?: number;// SIRVE EN EL MODULO DE ACTUALIZAR PRECIOS
 }
