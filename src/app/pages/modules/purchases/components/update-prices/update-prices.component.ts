@@ -1,10 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
 import { PurchaseItem, PurchaseDetailItem } from '../../../../../core/models/Purchase';
 import { PurchaseService } from '../../../../../core/services/httpServices/purchase.service';
 import { ProductItem } from '../../../../../core/models/Product';
 import { ToastyService } from '../../../../../core/services/internal/toasty.service';
+import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
 
 @Component({
   selector: 'app-update-prices',
@@ -14,12 +15,14 @@ import { ToastyService } from '../../../../../core/services/internal/toasty.serv
 export class UpdatePricesComponent implements OnInit {
 
   smallScreen = window.innerWidth < 960 ? true : false;
+  loading = false;
 
   purchase: PurchaseItem;
   selectedProduct: ProductItem;
 
   constructor(
     private activeRoute: ActivatedRoute,
+    private router: Router,
     public purchaseService: PurchaseService,
     private toasty: ToastyService
   ) { }
@@ -57,6 +60,14 @@ export class UpdatePricesComponent implements OnInit {
       newPresentations[0].cf_newPrice = newPresentations[0].cf_price + ((newPresentations[0].cf_price * this.calcPercent(detail.cost, detail.lastCost)) / 100) ;
     }
     this.selectedProduct.presentations = newPresentations;
+  }
+
+  finish() {
+    this.loading = true;
+    this.purchaseService.statePurchase(this.purchase)
+      .subscribe(resp => {
+        this.router.navigate(['/purchases']);
+      });
   }
 
 }
