@@ -26,18 +26,11 @@ import { ProductsDataSource } from 'src/app/core/services/cdks/product.datasourc
 export class NewProductComponent
   implements OnInit, AfterContentInit, OnDestroy
 {
-  loading = false;
   action: string;
 
-  dataSource: ProductsDataSource;
   product: ProductItem;
 
   constructor(
-    // public dialogRef: MatDialogRef<NewProductComponent>,
-    // @Inject(MAT_DIALOG_DATA) public data: any,
-    public orderService: OrderService,
-    public toasty: ToastyService,
-    public brandService: BrandService,
     public productService: ProductService,
     public activatedRoute: ActivatedRoute
   ) {
@@ -69,72 +62,7 @@ export class NewProductComponent
 
   ngOnInit(): void {}
 
-  ngAfterContentInit(): void {
-    // this.brandService.loadData();
-  }
+  ngAfterContentInit(): void {}
 
-  ngOnDestroy(): void {
-    // this.brandsSubscription?.unsubscribe();
-  }
-
-  // saveProduct(): void {
-  //   if (this.form.invalid) {
-  //     return;
-  //   }
-  //   this.loading = true;
-
-  //   if (this.data) {
-  //     console.log('we will edit', 'brand: ');
-
-  //     this.product._brand = { name: this.form.value.brand };
-  //     this.product.code = this.form.value.code;
-  //     this.product.description = this.form.value.description;
-  //     this.product.wholesale_price = this.form.value.wholesale_price;
-  //     this.product.distributor_price = this.form.value.distributor_price;
-  //     this.product.retail_price = this.form.value.retail_price;
-
-  //     this.productService.updateProduct(this.product).subscribe(
-  //       (data) => {
-  //         console.log(data);
-  //         if (data.ok === true) {
-  //           this.toasty.success('Producto editada exitosamente');
-  //           // this.dialogRef.close('ok');
-  //           this.loading = false;
-  //         } else {
-  //           this.loading = false;
-  //           this.toasty.error('Error al editar el Producto');
-  //         }
-  //       },
-  //       (error) => {
-  //         this.loading = false;
-  //         this.toasty.error('Error al editar el Producto');
-  //       }
-  //     );
-  //     console.log(this.product);
-  //   } else {
-  //     console.log('we will create');
-
-  //     this.product = { ...this.form.value };
-  //     this.product._brand = { name: this.form.value.brand };
-
-  //     this.productService.createProduct(this.product).subscribe(
-  //       (data) => {
-  //         console.log(data);
-
-  //         if (data.ok === true) {
-  //           this.toasty.success('Producto creado exitosamente');
-  //           // this.dialogRef.close('ok');
-  //           this.loading = false;
-  //         } else {
-  //           this.loading = false;
-  //           this.toasty.error('Error al crear la producto');
-  //         }
-  //       },
-  //       (err) => {
-  //         this.loading = false;
-  //         this.toasty.error('Error al crear la Producto');
-  //       }
-  //     );
-  //   }
-  // }
+  ngOnDestroy(): void {}
 }

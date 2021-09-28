@@ -8,17 +8,16 @@ import { ProviderItem } from '../../models/Provider';
 import { ApiConfigService } from '../config/api-config.service';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class ProviderService implements IDataService<ProviderItem[]> {
-
   public providerList: ProviderItem[];
   providerSubject = new Subject<ProviderItem[]>();
 
   constructor(
     public http: HttpClient,
     public apiConfigService: ApiConfigService
-  ) { }
+  ) {}
 
   loadData(): void {
     this.http
@@ -51,5 +50,14 @@ export class ProviderService implements IDataService<ProviderItem[]> {
     } else {
       delete this.providerList;
     }
+  }
+  createProvider(u: ProviderItem): Observable<any> {
+    return this.http.post(this.apiConfigService.API_PROVIDER, u);
+  }
+  updateProvider(u: ProviderItem): Observable<any> {
+    return this.http.put(this.apiConfigService.API_PROVIDER + '/' + u._id, u);
+  }
+  deleteProvider(u: ProviderItem): Observable<any> {
+    return this.http.delete(this.apiConfigService.API_PROVIDER + '/' + u._id);
   }
 }

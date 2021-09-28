@@ -1,16 +1,16 @@
 <div fxFlex fxLayout="column" class="section-content">
     <header class="module-header section" fxLayout="row wrap">
         <button mat-icon-button class="close-button" [routerLink]="'/purchases'">
-      <mat-icon>close</mat-icon>
-    </button>
+            <mat-icon>close</mat-icon>
+        </button>
         <h2 color="accent" class="ma-0 info-row T">Nueva factura</h2>
         <div fxFlex></div>
-        <button mat-raised-button color="accent" class="close-button">
-      <mat-icon>add</mat-icon>PRODUCTO
-    </button>
-        <button mat-raised-button color="accent">
-      <mat-icon>add</mat-icon>PROVEEDOR
-    </button>
+        <button mat-raised-button color="accent" (click)="addProduct()" class="close-button">
+            <mat-icon>add</mat-icon>PRODUCTO
+        </button>
+        <button mat-raised-button color="accent" (click)="addProvider()">
+            <mat-icon>add</mat-icon>PROVEEDOR
+        </button>
     </header>
     <div fxLayout="row">
         <div fxFlex>
@@ -130,7 +130,8 @@
                                     </mat-option>
                                     <ng-container *ngIf="!isLoading">
                                         <mat-option *ngFor="let product of filteredProducts" [value]="product">
-                                            <span><b>{{product.code}}</b> | {{product.description}} | {{ product._brand.name }}</span>
+                                            <span><b>{{product.code}}</b> | {{product.description}} | {{
+                                                product._brand.name }}</span>
                                             <div fxFlex></div>
                                             <mat-chip-list style="padding-top: 8px;">
                                                 <mat-chip class="chip-color">{{ product.presentations.name }}</mat-chip>
@@ -161,7 +162,8 @@
                                         <div fxFlex="80" class="ellipsis-text cell"><b>{{p._product.description}}</b></div>
                                         <div fxFlex="20" fxLayoutAlign="end center">
                                             <mat-chip-list>
-                                                <mat-chip selected color="warn">{{ p._product.presentations.name }}</mat-chip>
+                                                <mat-chip selected color="warn">{{ p._product.presentations.name }}
+                                                </mat-chip>
                                                 <mat-chip>{{ p._product.presentations.quantity }} ud.</mat-chip>
                                             </mat-chip-list>
                                         </div>
@@ -173,12 +175,14 @@
                                         </div>
                                         <div fxFlex class=" cell"><input (ngModelChange)="calcs(i, $event, 'bonus')" type="number" [(ngModel)]="p.bonus" [ngModelOptions]="{standalone: true}" class="cantinput"></div>
                                         <div fxFlex class=" cell"><input (ngModelChange)="calcs(i, $event, 'discount')" type="number" [(ngModel)]="p.discount" [ngModelOptions]="{standalone: true}" class="cantinput"></div>
-                                        <div fxFlex class="ellipsis-text cell"><b>{{p.quantity * p.price | number: '.2'}}</b></div>
+                                        <div fxFlex class="ellipsis-text cell"><b>{{p.quantity * p.price | number:
+                                                '.2'}}</b></div>
                                         <div fxFlex class="ellipsis-text cell">{{ p.cost }}</div>
                                         <div fxFlex class=" cell"><input type="number" [(ngModel)]="p.realQuantity" [ngModelOptions]="{standalone: true}" class="cantinput" required></div>
                                         <div fxFlex class=" cell">
                                             <input matInput fxFlex [matDatepicker]="picker" [(ngModel)]="p.expirationDate" [ngModelOptions]="{standalone: true}" class="cantinput">
-                                            <mat-datepicker-toggle matSuffix fxFlex="20" [for]="picker"></mat-datepicker-toggle>
+                                            <mat-datepicker-toggle matSuffix fxFlex="20" [for]="picker">
+                                            </mat-datepicker-toggle>
                                             <mat-datepicker #picker></mat-datepicker>
                                         </div>
                                         <div fxFlex="5" fxLayoutAlign="center center" class="cell">
@@ -224,14 +228,14 @@
                             <div class="section" fxLayout="row wrap">
                                 <div fxFlex="100" fxLayoutAlign="center center" fxLayout="row wrap">
                                     <button mat-raised-button matStepperPrevious class="close-button">
-                        ATRAS
-                                          </button>
+                                        ATRAS
+                                    </button>
                                     <button mat-raised-button (click)="stepper.reset()" class="close-button" style="color:brown;">
-                        CANCELAR
-                                          </button>
+                                        CANCELAR
+                                    </button>
                                     <button *ngIf="!loading" mat-raised-button [disabled]="formPurchase.invalid || detailPurchase.length === 0" (click)="savePurchase()" color="warn" class="close-button">
-                        CREAR NUEVA FACTURA
-                                          </button>
+                                        CREAR NUEVA FACTURA
+                                    </button>
                                     <mat-progress-spinner *ngIf="loading" mode="indeterminate" diameter="30" color="warn"></mat-progress-spinner>
                                 </div>
                             </div>

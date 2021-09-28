@@ -1,1 +1,84 @@
-<h2>Disponible próximamente…</h2>
+<div [ngClass]="{ 'app': !smallScreen, 'app-sm': smallScreen } ">
+    <div class="section-content">
+        <!-- <button *ngIf="!smallScreen && (providersp && providersp.includes('create'))" mat-fab color="primary" -->
+        <button *ngIf="!smallScreen" mat-fab color="primary" class="fab mat-elevation-z10" (click)="newProvider()">
+            <mat-icon>add</mat-icon><span class="extended-fab-button__text">Proveedor</span>
+        </button>
+        <div>
+            <header class="module-header" [ngClass]="{'padding-25': !smallScreen, 'padding-15': smallScreen }"
+                fxLayoutAlign="start center" fxLayout="row wrap">
+                <h1 class="product-font ma-0 module-title">Proveedores</h1>
+            </header>
+            <mat-divider></mat-divider>
+
+            <div fxLayout="row wrap" class="module-container " data-simplebar>
+                <!-- <div class="container-strech"> -->
+                <div fxLayout="row wrap" fxLayoutAlign="start center" class="costumers-header">
+                    <h2 class="title1 product-font ma-0">Catálogo de Proveedores</h2>
+                    &nbsp;&nbsp;&nbsp;&nbsp;
+                    <button *ngIf="smallScreen" class="new-button-sm" mat-icon-button (click)="newCostumer()">
+                        <svg class="svg-24 svg-in-button" viewBox="0 0 24 24">
+                            <path fill="currentColor" d="M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z" />
+                        </svg>
+                    </button>
+
+                    <span fxFlex></span>
+                    <mat-form-field appearance="outline" floatLabel="always" class="findinput">
+                        <mat-label>Buscar</mat-label>
+                        <mat-icon class="text-muted" matPrefix>search</mat-icon>
+                        <input (keyup)="applyFilter($event)" matInput type="text">
+                    </mat-form-field>
+                </div>
+                <!-- *ngIf="providers !== undefined && (providersp && providersp.includes('read'))"> -->
+                <div class="costumers-header" *ngIf="providers !== undefined">
+                    <!-- *****Tabla responsiva agregar: matSort matTableResponsive -------------- e importar el módulo en sharedCompnents y tambien en el style SCSS -->
+                    <table mat-table matSort matTableResponsive [dataSource]="dataSource" multiTemplateDataRows
+                        class="mat-elevation-z2 noborder-table ">
+                        <ng-container matColumnDef="image">
+                            <th mat-header-cell *matHeaderCellDef></th>
+                            <td mat-cell *matCellDef="let element">
+                                <mat-icon color="primary" class="material-icons-outlined">person</mat-icon>
+                            </td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="name">
+                            <th mat-header-cell *matHeaderCellDef> Nombre </th>
+                            <td mat-cell *matCellDef="let element"> {{element.name}} </td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="nit">
+                            <th mat-header-cell *matHeaderCellDef> Nit </th>
+                            <td mat-cell *matCellDef="let element"> {{element.nit}} </td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="phone">
+                            <th mat-header-cell *matHeaderCellDef> Teléfono </th>
+                            <td mat-cell *matCellDef="let element"> {{element.phone}} </td>
+                        </ng-container>
+                        <ng-container matColumnDef="address">
+                            <th mat-header-cell *matHeaderCellDef> Dirección </th>
+                            <td mat-cell *matCellDef="let element"> {{element.address}} </td>
+                        </ng-container>
+                        <ng-container matColumnDef="email">
+                            <th mat-header-cell *matHeaderCellDef> Email </th>
+                            <td mat-cell *matCellDef="let element"> {{element.email}} </td>
+                        </ng-container>
+                        <ng-container matColumnDef="creditDays">
+                            <th mat-header-cell *matHeaderCellDef> Días de Crédito </th>
+                            <td mat-cell *matCellDef="let element"> {{element.creditDays}} </td>
+                        </ng-container>
+                        <tr mat-header-row *matHeaderRowDef="columnsToDisplay2"></tr>
+                        <tr mat-row *matRowDef="let element; columns: columnsToDisplay2;" class="example-element-row"
+                            (click)="editProvider(element)">
+                        </tr>
+                    </table>
+                </div>
+                <div fxLayout="column wrap" fxLayoutAlign="center center" class="padding-15 loader-screen"
+                    *ngIf="providers === undefined">
+                    <mat-progress-spinner mode="indeterminate" diameter="60" color="warn"></mat-progress-spinner>
+                </div>
+                <!-- </div> -->
+            </div>
+        </div>
+    </div>
+</div>
