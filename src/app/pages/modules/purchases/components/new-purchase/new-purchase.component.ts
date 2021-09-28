@@ -182,11 +182,11 @@ export class NewPurchaseComponent
         );
         this.calcCost(index);
       },
-      price: () => {
+      'price': () => {
         this.detailPurchase[index].price = quantity;
         this.calcCost(index);
       },
-      bonus: () => {
+      'bonus': () => {
         const REAL_QUANTITY: number =
           this.detailPurchase[index].quantity + quantity;
         this.detailPurchase[index].realQuantity = REAL_QUANTITY;
@@ -196,7 +196,7 @@ export class NewPurchaseComponent
         );
         this.calcCost(index);
       },
-      discount: () => {
+      'discount': () => {
         this.detailPurchase[index].discount = quantity;
         this.calcCost(index);
       },
