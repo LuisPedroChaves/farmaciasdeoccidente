@@ -52,6 +52,9 @@ export class UpdatePricesComponent implements OnInit {
     let newPresentations: any[] = this.selectedProduct.presentations.filter(p => p.name === detail.presentation);
     if (newPresentations[0]) {
       newPresentations[0].wholesale_newPrice = newPresentations[0].wholesale_price + ((newPresentations[0].wholesale_price * this.calcPercent(detail.cost, detail.lastCost)) / 100) ;
+      newPresentations[0].distributor_newPrice = newPresentations[0].distributor_price + ((newPresentations[0].distributor_price * this.calcPercent(detail.cost, detail.lastCost)) / 100) ;
+      newPresentations[0].retail_newPrice = newPresentations[0].retail_price + ((newPresentations[0].retail_price * this.calcPercent(detail.cost, detail.lastCost)) / 100) ;
+      newPresentations[0].cf_newPrice = newPresentations[0].cf_price + ((newPresentations[0].cf_price * this.calcPercent(detail.cost, detail.lastCost)) / 100) ;
     }
     this.selectedProduct.presentations = newPresentations;
   }

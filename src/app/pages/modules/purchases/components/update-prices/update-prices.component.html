@@ -71,28 +71,28 @@
                                     <div fxFlex="25%" class="inputpadding">
                                         <mat-form-field appearance="outline" color="primary" class="width-all">
                                             <mat-label>Mayorista</mat-label>
-                                            <input [(ngModel)]="presentation.wholesale_price_sugerido" type="number" matInput placeholder="0.00">
+                                            <input [(ngModel)]="presentation.wholesale_newPrice" type="number" matInput placeholder="0.00">
                                             <mat-hint align="start">Actual: <strong> Q{{ presentation.wholesale_price }}</strong> </mat-hint>
                                         </mat-form-field>
                                     </div>
                                     <div fxFlex="25%" class="inputpadding">
                                         <mat-form-field appearance="outline" color="primary" class="width-all">
                                             <mat-label>Distribuidor</mat-label>
-                                            <input type="number" matInput placeholder="0.00" value="130.00">
+                                            <input [(ngModel)]="presentation.distributor_newPrice" type="number" matInput placeholder="0.00">
                                             <mat-hint align="start">Actual: <strong> Q{{ presentation.distributor_price }}</strong> </mat-hint>
                                         </mat-form-field>
                                     </div>
                                     <div fxFlex="25%" class="inputpadding">
                                         <mat-form-field appearance="outline" color="primary" class="width-all">
                                             <mat-label>Minorista</mat-label>
-                                            <input type="number" matInput placeholder="0.00" value="140.00">
+                                            <input [(ngModel)]="presentation.retail_newPrice" type="number" matInput placeholder="0.00">
                                             <mat-hint align="start">Actual: <strong> Q{{ presentation.retail_price }}</strong> </mat-hint>
                                         </mat-form-field>
                                     </div>
                                     <div fxFlex="25%" class="inputpadding">
                                         <mat-form-field appearance="outline" color="primary" class="width-all">
                                             <mat-label>Consumidor Final</mat-label>
-                                            <input type="number" matInput placeholder="0.00" value="125.00">
+                                            <input [(ngModel)]="presentation.cf_newPrice" type="number" matInput placeholder="0.00">
                                             <mat-hint align="start">Actual: <strong> Q{{ presentation.cf_price }}</strong> </mat-hint>
                                         </mat-form-field>
                                     </div>
