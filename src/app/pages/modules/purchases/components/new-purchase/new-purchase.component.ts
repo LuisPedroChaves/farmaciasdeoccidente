@@ -319,7 +319,7 @@ export class NewPurchaseComponent
 
     dialogRef.afterClosed().subscribe((result) => {
       if (result !== undefined) {
-        this.loadProducts();
+        this.providerService.loadData();
       }
     });
   }
