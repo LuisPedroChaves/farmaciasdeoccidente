@@ -157,7 +157,7 @@
                             </div>
                             <div class="detail-container" data-simplebar>
                                 <div fxLayout="row wrap" *ngIf="detailPurchase.length > 0">
-                                    <div *ngFor="let p of detailPurchase; let i = index" class="row card mat-elevation-z4" fxFlex="100" fxLayoutAlign="start center" fxLayout="row wrap">
+                                    <div *ngFor="let p of detailPurchase; let i = index" class="row card detalle mat-elevation-z4" fxFlex="100" fxLayoutAlign="start center" fxLayout="row wrap">
                                         <div fxFlex="80" class="ellipsis-text cell"><b>{{p._product.description}}</b></div>
                                         <div fxFlex="20" fxLayoutAlign="end center">
                                             <mat-chip-list>
