@@ -157,28 +157,6 @@ export class ProductFormComponent
 
   defaultPresentations(): void {
     // PRESENTACIONES POR DEFECTO
-    const UNIDAD = this.formBuilder.group({
-      name: new FormControl('UNIDAD', [Validators.required]),
-      wholesale_price: new FormControl(null, [Validators.required]),
-      distributor_price: new FormControl(null, [Validators.required]),
-      retail_price: new FormControl(null, [Validators.required]),
-      cf_price: new FormControl(null, [Validators.required]),
-      quantity: new FormControl(1, [Validators.required]),
-      commission: new FormControl(null, [Validators.required]),
-    });
-    this.presentationsForm.push(UNIDAD);
-    this.manageNameControl(this.presentationsForm.length - 1);
-    const TABLETA = this.formBuilder.group({
-      name: new FormControl('TABLETA', [Validators.required]),
-      wholesale_price: new FormControl(null, [Validators.required]),
-      distributor_price: new FormControl(null, [Validators.required]),
-      retail_price: new FormControl(null, [Validators.required]),
-      cf_price: new FormControl(null, [Validators.required]),
-      quantity: new FormControl(1, [Validators.required]),
-      commission: new FormControl(null, [Validators.required]),
-    });
-    this.presentationsForm.push(TABLETA);
-    this.manageNameControl(this.presentationsForm.length - 1);
     const CAJA = this.formBuilder.group({
       name: new FormControl('CAJA', [Validators.required]),
       wholesale_price: new FormControl(null, [Validators.required]),
@@ -186,7 +164,7 @@ export class ProductFormComponent
       retail_price: new FormControl(null, [Validators.required]),
       cf_price: new FormControl(null, [Validators.required]),
       quantity: new FormControl(1, [Validators.required]),
-      commission: new FormControl(null, [Validators.required]),
+      commission: new FormControl(0, [Validators.required]),
     });
     this.presentationsForm.push(CAJA);
     this.manageNameControl(this.presentationsForm.length - 1);
