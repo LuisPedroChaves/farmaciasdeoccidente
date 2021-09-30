@@ -1,9 +1,12 @@
 import { Component, OnInit } from '@angular/core';
+import { FormControl, FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Store } from '@ngrx/store';
+
 import { Subscription } from 'rxjs';
-import { filter } from 'rxjs/operators';
+import { debounceTime, filter } from 'rxjs/operators';
+import { Store } from '@ngrx/store';
+
 import { InternalOrderItem } from 'src/app/core/models/InternalOrder';
 import { RouteItem } from 'src/app/core/models/Route';
 import { UserItem } from 'src/app/core/models/User';
@@ -40,9 +43,10 @@ export class DeliveryDetailsComponent implements OnInit {
     { index: 6, image: 'assets/images/avatars/00F.jpg' },
   ];
 
-  month = new Date().getMonth() + 1;
-  year = new Date().getFullYear();
-  currentFilter = 'current';
+  range = new FormGroup({
+    start: new FormControl(),
+    end: new FormControl()
+  });
   deliveriesp: string[] = ['read', 'create', 'update', 'delete'];
 
   constructor(
@@ -74,6 +78,16 @@ export class DeliveryDetailsComponent implements OnInit {
         this.loadRoutes();
       });
     });
+
+    this.range.valueChanges
+    .pipe(
+      debounceTime(500),
+      )
+    .subscribe(range => {
+      if (range.start && range.end) {
+        this.loadData(range.start, range.end);
+      }
+    });
   }
 
   loadRoutes() {
@@ -83,8 +97,14 @@ export class DeliveryDetailsComponent implements OnInit {
     this.internalOrderService.getDelivery(this.selectedUser._id).subscribe(data => {
       this.internalOrders = data.internalOrders;
     });
-    const filter = { month: this.month, year: this.year, _user: this.selectedUser._id, _cellar: null };
-    this.routeService.loadData(filter);
+  }
+
+  loadData(start, end) {
+    this.routes = undefined;
+    const startDate = start._d ? start._d : start;
+    const endDate = end._d ? end._d : end;
+    const FILTER = { startDate, endDate, _user: this.selectedUser._id, _cellar: null };
+    this.routeService.loadData(FILTER);
   }
 
   editRoute(route: RouteItem) {
@@ -117,36 +137,6 @@ export class DeliveryDetailsComponent implements OnInit {
         this.loadRoutes();
       }
     });
-  }
-
-  applyFilter(filterValue?: string) {
-    if (filterValue) {
-
-      // this.dataSource.filter = filterValue.trim().toLowerCase();
-      if (this.currentFilter === 'last') {
-        if (new Date().getMonth() === 0) {
-          this.month = 12;
-        } else {
-          this.month = new Date().getMonth();
-
-        }
-      }
-      if (this.currentFilter === 'current') { this.month = new Date().getMonth() + 1; }
-      const filters = { month: this.month, year: this.year, _user: this.selectedUser._id, _cellar: null };
-      this.routeService.loadData(filters);
-    } else {
-      if (this.currentFilter === 'last') {
-        if (new Date().getMonth() === 0) {
-          this.month = 12;
-        } else {
-          this.month = new Date().getMonth();
-
-        }
-      }
-      if (this.currentFilter === 'current') { this.month = new Date().getMonth() + 1; }
-      const filters = { month: this.month, year: this.year, _user: this.selectedUser._id, _cellar: null };
-      this.routeService.loadData(filters);
-    }
   }
 
 }

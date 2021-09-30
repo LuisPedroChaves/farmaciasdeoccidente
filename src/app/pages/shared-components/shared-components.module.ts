@@ -19,7 +19,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatDatepickerModule } from '@angular/material/datepicker';
-import { MatNativeDateModule, MAT_DATE_LOCALE } from '@angular/material/core';
+import { DateAdapter, MatNativeDateModule, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatBottomSheetModule } from '@angular/material/bottom-sheet';
@@ -30,7 +30,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatBadgeModule } from '@angular/material/badge';
 import { MatPaginatorIntl, MatPaginatorModule } from '@angular/material/paginator';
 import { MatSortModule } from '@angular/material/sort';
-import {MatStepperModule} from '@angular/material/stepper';
+import { MatStepperModule } from '@angular/material/stepper';
 
 /* FLEX ----------------------*/
 import { FlexLayoutModule, CoreModule } from '@angular/flex-layout';
@@ -50,6 +50,21 @@ import { NotificationsComponent } from './notifications/notifications.component'
 import { UpdateNotificationsComponent } from './update-notifications/update-notifications.component';
 import { getSpanishPaginatorIntl } from './spanish-paginator-intl';
 import { LoaderComponent } from './loader/loader.component';
+
+import { MatMomentDateModule, MAT_MOMENT_DATE_ADAPTER_OPTIONS, MomentDateAdapter } from "@angular/material-moment-adapter";
+import 'moment/locale/es';
+// Tambien hay que instalar MOMENT JS
+export const MY_DATE_FORMATS = {
+  parse: {
+    dateInput: 'DD/MM/YYYY',
+  },
+  display: {
+    dateInput: 'DD/MM/YYYY',
+    monthYearLabel: 'MMMM YYYY',
+    dateA11yLabel: 'LL',
+    monthYearA11yLabel: 'MMMM YYYY'
+  },
+};
 @NgModule({
   declarations: [NewCellarComponent, ConfirmationDialogComponent, NotificationsComponent, UpdateNotificationsComponent, LoaderComponent],
   imports: [
@@ -94,7 +109,8 @@ import { LoaderComponent } from './loader/loader.component';
     MatTooltipModule,
     MatPaginatorModule,
     MatSortModule,
-    MatStepperModule
+    MatStepperModule,
+    MatMomentDateModule
   ],
   exports: [
     FormsModule,
@@ -138,6 +154,7 @@ import { LoaderComponent } from './loader/loader.component';
     MatPaginatorModule,
     MatSortModule,
     MatStepperModule,
+    MatMomentDateModule,
     // components
     NewCellarComponent,
     ConfirmationDialogComponent,
@@ -146,7 +163,13 @@ import { LoaderComponent } from './loader/loader.component';
   ]
   , providers: [
     { provide: MAT_DATE_LOCALE, useValue: 'es' },
-    { provide: MatPaginatorIntl, useValue: getSpanishPaginatorIntl() }
+    {
+      provide: DateAdapter,
+      useClass: MomentDateAdapter,
+      deps: [MAT_DATE_LOCALE, MAT_MOMENT_DATE_ADAPTER_OPTIONS]
+    },
+    { provide: MAT_DATE_FORMATS, useValue: MY_DATE_FORMATS },
+    { provide: MatPaginatorIntl, useValue: getSpanishPaginatorIntl() },
   ]
 })
 export class SharedComponentsModule { }

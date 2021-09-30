@@ -1,20 +1,23 @@
 import { Component, OnInit, AfterContentInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Store } from '@ngrx/store';
+import { FormControl, FormGroup } from '@angular/forms';
+
 import { Subscription } from 'rxjs';
+import { debounceTime, filter } from 'rxjs/operators';
+import { Store } from '@ngrx/store';
+
 import { ToastyService } from 'src/app/core/services/internal/toasty.service';
 import { AppState } from 'src/app/core/store/app.reducer';
 import { CellarItem } from 'src/app/core/models/Cellar';
-import { filter } from 'rxjs/operators';
 import { UserService } from 'src/app/core/services/httpServices/user.service';
 import { RouteService } from 'src/app/core/services/httpServices/route.service';
 import { InternalOrderService } from 'src/app/core/services/httpServices/internal-order.service';
-import { EditRouteComponent } from '../edit-route/edit-route.component';
-import { NewRouteComponent } from '../new-route/new-route.component';
 import { UserItem } from 'src/app/core/models/User';
 import { RouteItem } from 'src/app/core/models/Route';
 import { InternalOrderItem } from 'src/app/core/models/InternalOrder';
+import { EditRouteComponent } from '../edit-route/edit-route.component';
+import { NewRouteComponent } from '../new-route/new-route.component';
 
 @Component({
   selector: 'app-delivery-details',
@@ -43,10 +46,10 @@ export class DeliveryDetailsComponent implements OnInit {
     { index: 6, image: 'assets/images/avatars/00F.jpg' },
   ];
 
-  month = new Date().getMonth() + 1;
-  year = new Date().getFullYear();
-  currentFilter = 'current';
-
+  range = new FormGroup({
+    start: new FormControl(),
+    end: new FormControl()
+  });
   deliveriesp: string[] = [];
 
   constructor(
@@ -78,6 +81,16 @@ export class DeliveryDetailsComponent implements OnInit {
       });
     });
     this.currentCellar = JSON.parse(localStorage.getItem('currentstore'));
+
+    this.range.valueChanges
+    .pipe(
+      debounceTime(500),
+      )
+    .subscribe(range => {
+      if (range.start && range.end) {
+        this.loadData(range.start, range.end);
+      }
+    });
   }
 
   loadRoutes() {
@@ -87,8 +100,14 @@ export class DeliveryDetailsComponent implements OnInit {
     this.internalOrderService.getDelivery(this.selectedUser._id).subscribe(data => {
       this.internalOrders = data.internalOrders;
     });
-    const filter = { month: this.month, year: this.year, _user: this.selectedUser._id, _cellar: this.currentCellar._id };
-    this.routeService.loadData(filter);
+  }
+
+  loadData(start, end) {
+    this.routes = undefined;
+    const startDate = start._d ? start._d : start;
+    const endDate = end._d ? end._d : end;
+    const FILTER = { startDate, endDate, _user: this.selectedUser._id, _cellar: null };
+    this.routeService.loadData(FILTER);
   }
 
   editRoute(route: RouteItem) {
@@ -126,35 +145,4 @@ export class DeliveryDetailsComponent implements OnInit {
       }
     });
   }
-
-  applyFilter(filterValue?: string) {
-    if (filterValue) {
-
-      // this.dataSource.filter = filterValue.trim().toLowerCase();
-      if (this.currentFilter === 'last') {
-        if (new Date().getMonth() === 0) {
-          this.month = 12;
-        } else {
-          this.month = new Date().getMonth();
-
-        }
-      }
-      if (this.currentFilter === 'current') { this.month = new Date().getMonth() + 1; }
-      const filters = { month: this.month, year: this.year, _user: this.selectedUser._id, _cellar: this.currentCellar._id };
-      this.routeService.loadData(filters);
-    } else {
-      if (this.currentFilter === 'last') {
-        if (new Date().getMonth() === 0) {
-          this.month = 12;
-        } else {
-          this.month = new Date().getMonth();
-
-        }
-      }
-      if (this.currentFilter === 'current') { this.month = new Date().getMonth() + 1; }
-      const filters = { month: this.month, year: this.year, _user: this.selectedUser._id, _cellar: this.currentCellar._id };
-      this.routeService.loadData(filters);
-    }
-  }
-
 }

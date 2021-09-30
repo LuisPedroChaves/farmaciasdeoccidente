@@ -2,7 +2,9 @@ import { Component, OnInit, ViewChild, AfterContentInit, OnDestroy } from '@angu
 import { MatDialog } from '@angular/material/dialog';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Subscription } from 'rxjs';
+import { debounceTime } from 'rxjs/operators';
 
 import { ConfirmationDialogComponent } from 'src/app/pages/shared-components/confirmation-dialog/confirmation-dialog.component';
 import { CellarItem } from 'src/app/core/models/Cellar';
@@ -16,15 +18,17 @@ import { ToastyService } from '../../../../../core/services/internal/toasty.serv
   templateUrl: './history-purchases.component.html',
   styleUrls: ['./history-purchases.component.scss']
 })
-export class HistoryPurchasesComponent implements OnInit, AfterContentInit, OnDestroy {
+export class HistoryPurchasesComponent implements OnInit, OnDestroy {
 
   smallScreen = window.innerWidth < 960 ? true : false;
   currentCellar: CellarItem;
 
   @ViewChild(MatSort, { static: true }) sort: MatSort;
 
-  startDate: Date = new Date();
-  endDate: Date = new Date();
+  range = new FormGroup({
+    start: new FormControl(),
+    end: new FormControl()
+  });
 
   purchases: PurchaseItem[];
   purchaseSubscription: Subscription;
@@ -42,24 +46,30 @@ export class HistoryPurchasesComponent implements OnInit, AfterContentInit, OnDe
       this.purchases = data;
       this.dataSource = new MatTableDataSource<PurchaseItem>(this.purchases);
     });
-   }
+  }
 
   ngOnInit(): void {
     this.currentCellar = JSON.parse(localStorage.getItem('currentstore'));
-  }
-
-  ngAfterContentInit(): void {
-    const FILTER = { startDate: this.startDate, endDate: this.endDate, _cellar: this.currentCellar._id };
-    this.purchaseService.loadData(FILTER);
+    this.range.valueChanges
+      .pipe(
+        debounceTime(500),
+      )
+      .subscribe(range => {
+        if (range.start && range.end) {
+          this.loadData(range.start, range.end);
+        }
+      });
   }
 
   ngOnDestroy(): void {
     this.purchaseSubscription?.unsubscribe();
   }
 
-  chengeDate() {
+  loadData(start, end) {
     this.purchases = undefined;
-    const FILTER = { startDate: this.startDate, endDate: this.endDate, _cellar: this.currentCellar._id };
+    const startDate = start._d ? start._d : start;
+    const endDate = end._d ? end._d : end;
+    const FILTER = { startDate, endDate, _cellar: this.currentCellar._id };
     this.purchaseService.loadData(FILTER);
   }
 
@@ -93,8 +103,7 @@ export class HistoryPurchasesComponent implements OnInit, AfterContentInit, OnDe
         purchase.textDeleted = result;
         this.purchaseService.deletePurchase(purchase).subscribe(data => {
           this.toasty.success('Factura eliminada exitosamente');
-          const FILTER = { startDate: this.startDate, endDate: this.endDate, _cellar: this.currentCellar._id };
-          this.purchaseService.loadData(FILTER);
+          this.loadData(this.range.get('start').value, this.range.get('end').value);
           // this.loading = false;
         }, error => {
           // this.loading = false;

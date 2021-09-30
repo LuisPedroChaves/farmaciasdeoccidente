@@ -8,6 +8,9 @@ import {
 } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { MatDialog } from '@angular/material/dialog';
+import { STEPPER_GLOBAL_OPTIONS } from '@angular/cdk/stepper';
+
 import { Observable, Subscription } from 'rxjs';
 import {
   debounceTime,
@@ -20,6 +23,7 @@ import {
 
 import { ToastyService } from 'src/app/core/services/internal/toasty.service';
 import { CellarItem } from 'src/app/core/models/Cellar';
+import { NewProviderComponent } from 'src/app/pages/admin-modules/providers/components/new-provider/new-provider.component';
 import { ProviderService } from '../../../../../core/services/httpServices/provider.service';
 import { ProviderItem } from '../../../../../core/models/Provider';
 import { ProductService } from '../../../../../core/services/httpServices/product.service';
@@ -29,11 +33,7 @@ import {
   PurchaseItem,
 } from '../../../../../core/models/Purchase';
 import { PurchaseService } from '../../../../../core/services/httpServices/purchase.service';
-import { STEPPER_GLOBAL_OPTIONS } from '@angular/cdk/stepper';
-import { ProductFormComponent } from '../../../../admin-modules/products/components/product-form/product-form.component';
-import { MatDialog } from '@angular/material/dialog';
 import { ProductModalFormComponent } from '../../../../admin-modules/products/components/product-form/product-modal-form.component';
-import { NewProviderComponent } from 'src/app/pages/admin-modules/providers/components/new-provider/new-provider.component';
 
 @Component({
   selector: 'app-new-purchase',
@@ -60,7 +60,7 @@ export class NewPurchaseComponent
     _user: new FormControl(null),
     _provider: new FormControl(null, Validators.required),
     noBill: new FormControl('', Validators.required),
-    date: new FormControl(new Date(), Validators.required),
+    date: new FormControl(Validators.required),
     requisition: new FormControl(''),
     details: new FormControl(''),
     payment: new FormControl('CONTADO'),
