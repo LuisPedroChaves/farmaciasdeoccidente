@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { CommonModule, DatePipe } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 /* MATERIAL ---------------------------------- */
@@ -170,6 +170,7 @@ export const MY_DATE_FORMATS = {
     },
     { provide: MAT_DATE_FORMATS, useValue: MY_DATE_FORMATS },
     { provide: MatPaginatorIntl, useValue: getSpanishPaginatorIntl() },
+    DatePipe
   ]
 })
 export class SharedComponentsModule { }

@@ -1,8 +1,11 @@
 import { Component, OnInit, AfterContentInit } from '@angular/core';
+import { FormControl, FormGroup } from '@angular/forms';
 import { MatTableDataSource } from '@angular/material/table';
-import { Store } from '@ngrx/store';
+
 import { Subscription } from 'rxjs';
-import { filter } from 'rxjs/operators';
+import { debounceTime, filter } from 'rxjs/operators';
+import { Store } from '@ngrx/store';
+
 import { CellarItem } from 'src/app/core/models/Cellar';
 import { AppState } from 'src/app/core/store/app.reducer';
 import { InternalOrderItem } from '../../../../../core/models/InternalOrder';
@@ -20,9 +23,10 @@ export class HistoryComponent implements OnInit, AfterContentInit {
   orders: InternalOrderItem[];
   currentCellar: CellarItem;
 
-  month = new Date().getMonth() + 1;
-  year = new Date().getFullYear();
-  currentFilter = 'current';
+  range = new FormGroup({
+    start: new FormControl(new Date()),
+    end: new FormControl(new Date())
+  });
   currentOrigin = 'origen';
 
   dataSource = new MatTableDataSource();
@@ -51,47 +55,38 @@ export class HistoryComponent implements OnInit, AfterContentInit {
       }
   });
     this.currentCellar = JSON.parse(localStorage.getItem('currentstore'));
+    this.range.valueChanges
+    .pipe(
+      debounceTime(500),
+    )
+    .subscribe(range => {
+      if (range.start && range.end) {
+        this.loadData(range.start, range.end);
+      }
+    });
   }
 
   ngAfterContentInit() {
-    const filter = { month: this.month, year: this.year, _cellar: this.currentCellar._id, type: 'PEDIDO', origin: this.currentOrigin };
-    this.internalOrderService.loadData(filter);
+    this.loadData(this.range.get('start').value, this.range.get('end').value);
+  }
+
+  loadData(start, end) {
+    this.orders = undefined;
+    const startDate = start._d ? start._d : start;
+    const endDate = end._d ? end._d : end;
+    const FILTER = {
+      startDate,
+      endDate,
+      _cellar: this.currentCellar._id,
+      type: 'PEDIDO',
+      origin: this.currentOrigin
+    };
+    this.internalOrderService.loadData(FILTER);
   }
 
   getExtfile(file: string) {
     const nameFile = file.split('.');
     return nameFile[nameFile.length - 1];
-  }
-
-  applyFilter(filterValue?: string) {
-    this.orders = undefined;
-    if (filterValue) {
-
-      this.dataSource.filter = filterValue.trim().toLowerCase();
-      if (this.currentFilter === 'last') {
-        if (new Date().getMonth() === 0) {
-          this.month = 12;
-        } else {
-          this.month = new Date().getMonth();
-
-        }
-      }
-      if (this.currentFilter === 'current') { this.month = new Date().getMonth() + 1; }
-      const filters = { month: this.month, year: this.year, _cellar: this.currentCellar._id, type: 'PEDIDO', origin: this.currentOrigin };
-      this.internalOrderService.loadData(filters);
-    } else {
-      if (this.currentFilter === 'last') {
-        if (new Date().getMonth() === 0) {
-          this.month = 12;
-        } else {
-          this.month = new Date().getMonth();
-
-        }
-      }
-      if (this.currentFilter === 'current') { this.month = new Date().getMonth() + 1; }
-      const filters = { month: this.month, year: this.year, _cellar: this.currentCellar._id, type: 'PEDIDO', origin: this.currentOrigin };
-      this.internalOrderService.loadData(filters);
-    }
   }
 
   applyFilter2(event: Event) {

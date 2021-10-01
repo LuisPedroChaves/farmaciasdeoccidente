@@ -20,8 +20,8 @@ export class OrderService implements IDataService<OrderItem[]> {
     public apiConfigService: ApiConfigService
   ) { }
 
-  loadData({month, year, _cellar, _user}) {
-    this.http.get(`${this.apiConfigService.API_ORDER}/${_cellar}/${_user}?month=${month}&year=${year}`).pipe(
+  loadData({startDate, endDate, _cellar, _user}) {
+    this.http.get(`${this.apiConfigService.API_ORDER}/${_cellar}/${_user}?startDate=${startDate}&endDate=${endDate}`).pipe(
         map((response: any) => {
           this.orderList = response.orders;
           this.orderSubject.next( this.orderList);
@@ -29,9 +29,9 @@ export class OrderService implements IDataService<OrderItem[]> {
   }
 
   getData(filter: any) {
-    const {month, year, _cellar, _user} = filter;
+    const {startDate, endDate, _cellar, _user} = filter;
     if ( this.orderList === undefined ) {
-      this.loadData({month, year, _cellar, _user});
+      this.loadData({startDate, endDate, _cellar, _user});
     } else {
       this.orderSubject.next( this.orderList );
     }
@@ -49,10 +49,6 @@ export class OrderService implements IDataService<OrderItem[]> {
       delete this.orderList;
     }
   }
-
-  // getOrders({month, year}): Observable<any> {
-  //   return this.http.get(this.apiConfigService.API_ORDER + '/?month=' + month + '&year=' + year);
-  // }
 
   getDispatches(_cellar: string): Observable<any> {
     return this.http.get(this.apiConfigService.API_ORDER + '/dispatches/' + _cellar);

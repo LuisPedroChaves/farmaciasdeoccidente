@@ -18,7 +18,7 @@ import { ToastyService } from '../../../../../core/services/internal/toasty.serv
   templateUrl: './history-purchases.component.html',
   styleUrls: ['./history-purchases.component.scss']
 })
-export class HistoryPurchasesComponent implements OnInit, OnDestroy {
+export class HistoryPurchasesComponent implements OnInit, OnDestroy, AfterContentInit {
 
   smallScreen = window.innerWidth < 960 ? true : false;
   currentCellar: CellarItem;
@@ -26,8 +26,8 @@ export class HistoryPurchasesComponent implements OnInit, OnDestroy {
   @ViewChild(MatSort, { static: true }) sort: MatSort;
 
   range = new FormGroup({
-    start: new FormControl(),
-    end: new FormControl()
+    start: new FormControl(new Date()),
+    end: new FormControl(new Date())
   });
 
   purchases: PurchaseItem[];
@@ -63,6 +63,10 @@ export class HistoryPurchasesComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.purchaseSubscription?.unsubscribe();
+  }
+
+  ngAfterContentInit(): void {
+    this.loadData(this.range.get('start').value, this.range.get('end').value);
   }
 
   loadData(start, end) {

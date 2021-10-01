@@ -2,20 +2,24 @@ import { Component, OnInit, ViewChild, AfterContentInit, OnDestroy } from '@angu
 import { MatDialog } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatSort } from '@angular/material/sort';
+import { Router } from '@angular/router';
+import { FormControl, FormGroup } from '@angular/forms';
+
 import { Subscription } from 'rxjs';
+import { debounceTime, filter } from 'rxjs/operators';
 import { Store } from '@ngrx/store';
+
 import { AppState } from 'src/app/core/store/app.reducer';
+import { ConfirmationDialogComponent } from 'src/app/pages/shared-components/confirmation-dialog/confirmation-dialog.component';
 import { EventBusService } from '../../../../../core/services/internal/event-bus.service';
 import { ConfigService } from '../../../../../core/services/config/config.service';
 import { OrderService } from '../../../../../core/services/httpServices/order.service';
 import { OrderItem } from '../../../../../core/models/Order';
-import { filter } from 'rxjs/operators';
 import { NewOrderComponent } from '../new-order/new-order.component';
 import { EditOrderComponent } from '../edit-order/edit-order.component';
 import { CellarItem } from '../../../../../core/models/Cellar';
-import { ConfirmationDialogComponent } from 'src/app/pages/shared-components/confirmation-dialog/confirmation-dialog.component';
 import { ToastyService } from '../../../../../core/services/internal/toasty.service';
-import { Router } from '@angular/router';
+
 @Component({
   selector: 'app-orders',
   templateUrl: './orders.component.html',
@@ -26,16 +30,15 @@ export class OrdersComponent implements OnInit, AfterContentInit, OnDestroy {
   @ViewChild(MatSort, { static: true }) sort: MatSort;
 
   smallScreen = window.innerWidth < 960 ? true : false;
-
   sessionsubscription: Subscription;
 
   orders: OrderItem[];
   currentCellar: CellarItem;
 
-  month = new Date().getMonth() + 1;
-  year = new Date().getFullYear();
-  currentFilter = 'current';
-
+  range = new FormGroup({
+    start: new FormControl(new Date()),
+    end: new FormControl(new Date())
+  });
   ordersp: string[] = [];
 
   dataSource = new MatTableDataSource();
@@ -67,52 +70,41 @@ export class OrdersComponent implements OnInit, AfterContentInit, OnDestroy {
       }
     });
     this.currentCellar = JSON.parse(localStorage.getItem('currentstore'));
-
+    this.range.valueChanges
+      .pipe(
+        debounceTime(500),
+      )
+      .subscribe(range => {
+        if (range.start && range.end) {
+          this.loadData(range.start, range.end);
+        }
+      });
   }
 
   ngAfterContentInit() {
-    const filter = { month: this.month, year: this.year, _cellar: this.currentCellar._id, _user: 'all' };
-    this.orderService.loadData(filter);
+    this.loadData(this.range.get('start').value, this.range.get('end').value);
   }
 
   ngOnDestroy() {
     this.sessionsubscription?.unsubscribe();
   }
 
+  loadData(start, end) {
+    this.orders = undefined;
+    const startDate = start._d ? start._d : start;
+    const endDate = end._d ? end._d : end;
+    const FILTER = {
+      startDate,
+      endDate,
+      _cellar: this.currentCellar._id,
+      _user: 'all'
+    };
+    this.orderService.loadData(FILTER);
+  }
+
   selectOrder(order: OrderItem) {
     this.router.navigate(['/order', order._id, 'orders']);
   }
-
-  applyFilter(filterValue?: string) {
-    if (filterValue) {
-
-      this.dataSource.filter = filterValue.trim().toLowerCase();
-      if (this.currentFilter === 'last') {
-        if (new Date().getMonth() === 0) {
-          this.month = 12;
-        } else {
-          this.month = new Date().getMonth();
-
-        }
-      }
-      if (this.currentFilter === 'current') { this.month = new Date().getMonth() + 1; }
-      const filters = { month: this.month, year: this.year, _cellar: this.currentCellar._id, _user: 'all' };
-      this.orderService.loadData(filters);
-    } else {
-      if (this.currentFilter === 'last') {
-        if (new Date().getMonth() === 0) {
-          this.month = 12;
-        } else {
-          this.month = new Date().getMonth();
-
-        }
-      }
-      if (this.currentFilter === 'current') { this.month = new Date().getMonth() + 1; }
-      const filters = { month: this.month, year: this.year, _cellar: this.currentCellar._id, _user: 'all' };
-      this.orderService.loadData(filters);
-    }
-  }
-
 
   applyFilter2(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
@@ -131,8 +123,7 @@ export class OrdersComponent implements OnInit, AfterContentInit, OnDestroy {
 
     dialogRef.afterClosed().subscribe(result => {
       if (result !== undefined) {
-        const filter = { month: this.month, year: this.year, _cellar: this.currentCellar._id, _user: 'all' };
-        this.orderService.loadData(filter);
+        this.loadData(this.range.get('start').value, this.range.get('end').value);
       }
     });
   }
@@ -147,8 +138,7 @@ export class OrdersComponent implements OnInit, AfterContentInit, OnDestroy {
 
     dialogRef.afterClosed().subscribe(result => {
       if (result !== undefined) {
-        const filter = { month: this.month, year: this.year, _cellar: this.currentCellar._id, _user: 'all' };
-        this.orderService.loadData(filter);
+        this.loadData(this.range.get('start').value, this.range.get('end').value);
       }
     });
   }
@@ -167,8 +157,7 @@ export class OrdersComponent implements OnInit, AfterContentInit, OnDestroy {
         order.textDeleted = result;
         this.orderService.deleteOrder(order).subscribe(data => {
           this.toasty.success('Orden eliminada exitosamente');
-          const filter = { month: this.month, year: this.year, _cellar: this.currentCellar._id, _user: 'all' };
-          this.orderService.loadData(filter);
+          this.loadData(this.range.get('start').value, this.range.get('end').value);
           // this.loading = false;
         }, error => {
           // this.loading = false;

@@ -23,8 +23,8 @@ export class InternalOrderService implements IDataService<InternalOrderItem[]> {
     public websocketS: WebsocketService
   ) { }
 
-  loadData({month, year, _cellar, type, origin}) {
-    this.http.get(this.apiConfigService.API_INTERNAL_ORDER + '/' + _cellar + '?month=' + month + '&year=' + year + '&type=' + type + '&origin=' + origin).pipe(
+  loadData({startDate, endDate, _cellar, type, origin}) {
+    this.http.get(this.apiConfigService.API_INTERNAL_ORDER + '/' + _cellar + '?startDate=' + startDate + '&endDate=' + endDate + '&type=' + type + '&origin=' + origin).pipe(
         map((response: any) => {
           this.internalOrderList = response.internalOrders;
           this.internalOrderSubject.next( this.internalOrderList);
@@ -32,9 +32,9 @@ export class InternalOrderService implements IDataService<InternalOrderItem[]> {
   }
 
   getData(filter: any) {
-    const {month, year, _cellar, type, origin} = filter;
+    const {startDate, endDate, _cellar, type, origin} = filter;
     if ( this.internalOrderList === undefined ) {
-      this.loadData({month, year, _cellar, type,origin});
+      this.loadData({startDate, endDate, _cellar, type,origin});
     } else {
       this.internalOrderSubject.next( this.internalOrderList );
     }
