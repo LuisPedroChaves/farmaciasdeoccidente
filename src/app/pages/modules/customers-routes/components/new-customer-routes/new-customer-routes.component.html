@@ -1,125 +1,191 @@
 <div class="farmacia">
-  <header fxLayout="row wrap" fxLayoutAlign="center center" class="header">
-    <h2 style="margin: 0;" class="h2">Nuevo Cliente</h2>
-    <span fxFlex></span>
-    <button mat-icon-button *ngIf="!loading" (click)="dialogRef.close()">
+    <header fxLayout="row wrap" fxLayoutAlign="center center" class="header">
+        <h2 style="margin: 0;" class="h2">Nuevo Cliente</h2>
+        <span fxFlex></span>
+        <button mat-icon-button *ngIf="!loading" (click)="dialogRef.close()">
       <mat-icon>close</mat-icon>
     </button>
-  </header>
-  <mat-divider></mat-divider>
-  <form [formGroup]="form" autocomplete="off">
-    <div class="clientspace" data-simplebar>
-      <div fxLayout="row wrap" fxLayoutAlign="start center" style="margin-top: 8px;">
-        <div fxFlex="50px" fxHide.xs>
-          <mat-icon color="accent" class="material-icons-outlined grayicon">person</mat-icon>
-        </div>
-        <div fxFlex fxLayout="row wrap">
-          <div fxFlex="100" class="inputpadding">
-            <mat-form-field appearance="outline" color="primary" class="width-all">
-              <mat-label>Nombre</mat-label>
-              <input formControlName="name" type="text" matInput placeholder="Ingrese el nombre del empleado">
-            </mat-form-field>
-          </div>
-        </div>
-        <div fxFlex="50px"></div>
-      </div>
-      <div fxLayout="row wrap" fxLayoutAlign="start center" style="margin-top: 8px;">
-        <div fxFlex="50px" fxHide.xs>
-          <mat-icon color="accent" class="material-icons-outlined grayicon">perm_phone_msg
-          </mat-icon>
-        </div>
-        <div fxFlex fxLayout="row wrap">
-          <div fxFlex="50%" fxFlex.xs="100%" class="inputpadding">
-            <mat-form-field appearance="outline" color="primary" class="width-all">
-              <mat-label>NIT</mat-label>
-              <input formControlName="nit" type="text" matInput placeholder="Ingrese el NIT">
-            </mat-form-field>
-          </div>
-          <div fxFlex="50%" fxFlex.xs="100%" class="inputpadding">
-            <mat-form-field appearance="outline" color="primary" class="width-all">
-              <mat-label>Teléfono</mat-label>
-              <input formControlName="phone" type="text" matInput placeholder="Ingrese el número de Teléfono">
-            </mat-form-field>
-          </div>
+    </header>
+    <mat-divider></mat-divider>
+    <form [formGroup]="form" autocomplete="off">
+        <div class="clientspace" data-simplebar>
+            <div fxLayout="row wrap" fxLayoutAlign="start center" style="margin-top: 8px;">
+                <div fxFlex="50px" fxHide.xs>
+                    <mat-icon color="accent" class="material-icons-outlined grayicon">person</mat-icon>
+                </div>
+                <div fxFlex fxLayout="row wrap">
+                    <div fxFlex="100" class="inputpadding">
+                        <mat-form-field appearance="outline" color="primary" class="width-all">
+                            <mat-label>Nombre</mat-label>
+                            <input formControlName="name" type="text" matInput placeholder="Ingrese el nombre del empleado">
+                        </mat-form-field>
+                    </div>
+                </div>
+                <div fxFlex="50px"></div>
+            </div>
+            <div fxLayout="row wrap" fxLayoutAlign="start center" style="margin-top: 8px;">
+                <div fxFlex="50px" fxHide.xs>
+                    <mat-icon color="accent" class="material-icons-outlined grayicon">perm_phone_msg
+                    </mat-icon>
+                </div>
+                <div fxFlex fxLayout="row wrap">
+                    <div fxFlex="50%" fxFlex.xs="100%" class="inputpadding">
+                        <mat-form-field appearance="outline" color="primary" class="width-all">
+                            <mat-label>NIT</mat-label>
+                            <input formControlName="nit" type="text" matInput placeholder="Ingrese el NIT">
+                        </mat-form-field>
+                    </div>
+                    <div fxFlex="50%" fxFlex.xs="100%" class="inputpadding">
+                        <mat-form-field appearance="outline" color="primary" class="width-all">
+                            <mat-label>Teléfono</mat-label>
+                            <input formControlName="phone" type="text" matInput placeholder="Ingrese el número de Teléfono">
+                        </mat-form-field>
+                    </div>
 
+                </div>
+                <div fxFlex="50px"></div>
+            </div>
+            <div fxLayout="row wrap" fxLayoutAlign="start center" style="margin-top: 8px;">
+                <div fxFlex="50px" fxHide.xs>
+                    <mat-icon color="accent" class="material-icons-outlined grayicon">place
+                    </mat-icon>
+                </div>
+                <div fxFlex fxLayout="row wrap">
+                    <div fxFlex="100%" class="inputpadding">
+                        <mat-form-field appearance="outline" color="primary" class="width-all">
+                            <mat-label>Dirección</mat-label>
+                            <input formControlName="address" type="text" matInput placeholder="Ingrese la Dirección">
+                        </mat-form-field>
+                    </div>
+                </div>
+                <div fxFlex="50px"></div>
+            </div>
+            <div fxLayout="row wrap" fxLayoutAlign="start center" style="margin-top: 8px;">
+                <div fxFlex="50px" fxHide.xs>
+                    <div fxFlex="100px" fxHide.xs>
+                        <mat-icon color="accent" class="material-icons-outlined grayicon">public
+                        </mat-icon>
+                    </div>
+                </div>
+                <div fxFlex fxLayout="row wrap">
+                    <div fxFlex="50%" fxFlex.xs="100%" class="inputpadding">
+                        <mat-form-field appearance="outline" color="primary" class="width-all">
+                            <mat-label>Municipio</mat-label>
+                            <input formControlName="town" type="text" matInput placeholder="Ingrese el municipio">
+                        </mat-form-field>
+                    </div>
+                    <div fxFlex="50%" fxFlex.xs="100%" class="inputpadding">
+                        <mat-form-field color="primary" class="width-all" appearance="outline">
+                            <mat-label>Departamento</mat-label>
+                            <mat-select formControlName="department">
+                                <mat-option value="Alta Verapaz">Alta Verapaz</mat-option>
+                                <mat-option value="Baja Verapaz">Baja Verapaz</mat-option>
+                                <mat-option value="Chimaltenango">Chimaltenango</mat-option>
+                                <mat-option value="Chiquimula">Chiquimula</mat-option>
+                                <mat-option value="Petén">Petén</mat-option>
+                                <mat-option value="El Progreso">El Progreso</mat-option>
+                                <mat-option value="Quiché">Quiché</mat-option>
+                                <mat-option value="Escuintla">Escuintla</mat-option>
+                                <mat-option value="Guatemala">Guatemala</mat-option>
+                                <mat-option value="Huehuetenango">Huehuetenango</mat-option>
+                                <mat-option value="Izabal">Izabal</mat-option>
+                                <mat-option value="Jalapa">Jalapa</mat-option>
+                                <mat-option value="Jutiapa">Jutiapa</mat-option>
+                                <mat-option value="Quetzaltenango">Quetzaltenango</mat-option>
+                                <mat-option value="Retalhuleu">Retalhuleu</mat-option>
+                                <mat-option value="Sacatepéquez">Sacatepéquez</mat-option>
+                                <mat-option value="San Marcos">San Marcos</mat-option>
+                                <mat-option value="Santa Rosa">Santa Rosa</mat-option>
+                                <mat-option value="Sololá">Sololá</mat-option>
+                                <mat-option value="Suchitepéquez">Suchitepéquez</mat-option>
+                                <mat-option value="Totonicapán">Totonicapán</mat-option>
+                                <mat-option value="Zacapa">Zacapa</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                </div>
+                <div fxFlex="50px"></div>
+            </div>
+            <div fxLayout="row wrap">
+                <div fxFlex="100px" fxHide.xs></div>
+            </div>
+            <div fxLayout="row wrap">
+                <h2>Direcciones adicionales</h2>
+            </div>
+            <div formArrayName="addresses" *ngFor="let address of addressForm.controls; let i = index" fxLayout="row wrap" fxLayoutAlign="start center" class="card mat-elevation-z4" style="margin-top: 8px;">
+                <div fxFlex="30px" fxHide.xs>
+                    <mat-icon color="accent" class="material-icons-outlined grayicon">place
+                    </mat-icon>
+                </div>
+                <div fxFlex [formGroupName]="i" fxLayout="row wrap">
+                    <div fxFlex="100%">
+                        <mat-form-field appearance="outline" color="primary" class="width-all">
+                            <mat-label [attr.for]="'address' + i">Dirección</mat-label>
+                            <input [attr.id]="'address' + i" formControlName="address" type="text" matInput placeholder="Ingrese la Dirección">
+                        </mat-form-field>
+                    </div>
+                    <div fxFlex="50%" fxFlex.xs="100%" class="inputpadding">
+                        <mat-form-field appearance="outline" color="primary" class="width-all">
+                            <mat-label [attr.for]="'town' + i">Municipio</mat-label>
+                            <input [attr.id]="'town' + i" formControlName="town" type="text" matInput placeholder="Ingrese el municipio">
+                        </mat-form-field>
+                    </div>
+                    <div fxFlex="50%" fxFlex.xs="100%" class="inputpadding">
+                        <mat-form-field color="primary" class="width-all" appearance="outline">
+                            <mat-label [attr.for]="'department' + i">Departamento</mat-label>
+                            <mat-select [attr.id]="'department' + i" formControlName="department">
+                                <mat-option value="Alta Verapaz">Alta Verapaz</mat-option>
+                                <mat-option value="Baja Verapaz">Baja Verapaz</mat-option>
+                                <mat-option value="Chimaltenango">Chimaltenango</mat-option>
+                                <mat-option value="Chiquimula">Chiquimula</mat-option>
+                                <mat-option value="Petén">Petén</mat-option>
+                                <mat-option value="El Progreso">El Progreso</mat-option>
+                                <mat-option value="Quiché">Quiché</mat-option>
+                                <mat-option value="Escuintla">Escuintla</mat-option>
+                                <mat-option value="Guatemala">Guatemala</mat-option>
+                                <mat-option value="Huehuetenango">Huehuetenango</mat-option>
+                                <mat-option value="Izabal">Izabal</mat-option>
+                                <mat-option value="Jalapa">Jalapa</mat-option>
+                                <mat-option value="Jutiapa">Jutiapa</mat-option>
+                                <mat-option value="Quetzaltenango">Quetzaltenango</mat-option>
+                                <mat-option value="Retalhuleu">Retalhuleu</mat-option>
+                                <mat-option value="Sacatepéquez">Sacatepéquez</mat-option>
+                                <mat-option value="San Marcos">San Marcos</mat-option>
+                                <mat-option value="Santa Rosa">Santa Rosa</mat-option>
+                                <mat-option value="Sololá">Sololá</mat-option>
+                                <mat-option value="Suchitepéquez">Suchitepéquez</mat-option>
+                                <mat-option value="Totonicapán">Totonicapán</mat-option>
+                                <mat-option value="Zacapa">Zacapa</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                </div>
+                <div fxFlex="50px" fxLayoutAlign="center center">
+                    <button mat-mini-fab (click)="addressForm.removeAt(i)" class="mat-elevation-z0">
+                        <mat-icon>close</mat-icon>
+                      </button>
+                </div>
+            </div>
+            <div fxLayout="row wrap">
+                <div fxFlex></div>
+                <button mat-button (click)="addAddress()" color="accent">
+          <mat-icon>add</mat-icon>
+          Dirección
+        </button>
+                <div fxFlex></div>
+            </div>
         </div>
-        <div fxFlex="50px"></div>
-      </div>
-      <div fxLayout="row wrap" fxLayoutAlign="start center" style="margin-top: 8px;">
-        <div fxFlex="50px" fxHide.xs>
-          <mat-icon color="accent" class="material-icons-outlined grayicon">place
-          </mat-icon>
-        </div>
-        <div fxFlex fxLayout="row wrap">
-          <div fxFlex="100%" class="inputpadding">
-            <mat-form-field appearance="outline" color="primary" class="width-all">
-              <mat-label>Dirección</mat-label>
-              <input formControlName="address" type="text" matInput placeholder="Ingrese la Dirección">
-            </mat-form-field>
-          </div>
-        </div>
-        <div fxFlex="50px"></div>
-      </div>
-      <div fxLayout="row wrap" fxLayoutAlign="start center" style="margin-top: 8px;">
-        <div fxFlex="50px" fxHide.xs>
-          <div fxFlex="100px" fxHide.xs>
-            <mat-icon color="accent" class="material-icons-outlined grayicon">public
-            </mat-icon>
-          </div>
-        </div>
-        <div fxFlex fxLayout="row wrap">
-          <div fxFlex="50%" fxFlex.xs="100%" class="inputpadding">
-            <mat-form-field appearance="outline" color="primary" class="width-all">
-              <mat-label>Municipio</mat-label>
-              <input formControlName="town" type="text" matInput placeholder="Ingrese el municipio">
-            </mat-form-field>
-          </div>
-          <div fxFlex="50%" fxFlex.xs="100%" class="inputpadding">
-            <mat-form-field color="primary" class="width-all" appearance="outline">
-              <mat-label>Departamento</mat-label>
-              <mat-select formControlName="department">
-                <mat-option value="Alta Verapaz">Alta Verapaz</mat-option>
-                <mat-option value="Baja Verapaz">Baja Verapaz</mat-option>
-                <mat-option value="Chimaltenango">Chimaltenango</mat-option>
-                <mat-option value="Chiquimula">Chiquimula</mat-option>
-                <mat-option value="Petén">Petén</mat-option>
-                <mat-option value="El Progreso">El Progreso</mat-option>
-                <mat-option value="Quiché">Quiché</mat-option>
-                <mat-option value="Escuintla">Escuintla</mat-option>
-                <mat-option value="Guatemala">Guatemala</mat-option>
-                <mat-option value="Huehuetenango">Huehuetenango</mat-option>
-                <mat-option value="Izabal">Izabal</mat-option>
-                <mat-option value="Jalapa">Jalapa</mat-option>
-                <mat-option value="Jutiapa">Jutiapa</mat-option>
-                <mat-option value="Quetzaltenango">Quetzaltenango</mat-option>
-                <mat-option value="Retalhuleu">Retalhuleu</mat-option>
-                <mat-option value="Sacatepéquez">Sacatepéquez</mat-option>
-                <mat-option value="San Marcos">San Marcos</mat-option>
-                <mat-option value="Santa Rosa">Santa Rosa</mat-option>
-                <mat-option value="Sololá">Sololá</mat-option>
-                <mat-option value="Suchitepéquez">Suchitepéquez</mat-option>
-                <mat-option value="Totonicapán">Totonicapán</mat-option>
-                <mat-option value="Zacapa">Zacapa</mat-option>
-              </mat-select>
-            </mat-form-field>
-          </div>
-        </div>
-        <div fxFlex="50px"></div>
-      </div>
-      <div fxLayout="row wrap">
-        <div fxFlex="100px" fxHide.xs></div>
-      </div>
-    </div>
-  </form>
-  <mat-divider></mat-divider>
-  <div fxLayout="row" class="header">
-    <button mat-button *ngIf="!loading" (click)="dialogRef.close()" class="info-row">
+    </form>
+    <br>
+    <mat-divider></mat-divider>
+    <div fxLayout="row" class="header">
+        <button mat-button *ngIf="!loading" (click)="dialogRef.close()" class="info-row">
       CANCELAR
     </button>
-    <span fxFlex></span>
-    <button mat-button *ngIf="!loading" (click)="saveClient()" [disabled]="this.form.invalid" color="primary">
+        <span fxFlex></span>
+        <button mat-button *ngIf="!loading" (click)="saveClient()" [disabled]="this.form.invalid" color="primary">
       GUARDAR
     </button>
-    <mat-progress-spinner *ngIf="loading" mode="indeterminate" diameter="30"  color="warn"></mat-progress-spinner>
-  </div>
+        <mat-progress-spinner *ngIf="loading" mode="indeterminate" diameter="30" color="warn"></mat-progress-spinner>
+    </div>
 </div>

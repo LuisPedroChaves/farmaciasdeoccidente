@@ -8,10 +8,17 @@ export interface CustomerItem {
  	address: string,
  	town: string,
  	department: string,
+	addresses?: CustomerAddressesItem[],
  	company: string,
  	code?: string,
  	transport: string,
  	limitCredit: number,
 	 limitDaysCredit: number,
 	 _seller?: UserItem,
+}
+
+export interface CustomerAddressesItem{
+	address: string,
+	town: string,
+	department: string,
 }
