@@ -147,6 +147,7 @@ const storageItems: StorageItem[] = [
           retail_price: 8.5,
           wholesale_price: 6.5,
           _id: '6148fcd14ba6963840cc36b4',
+          cost: 0
         },
         {
           cf_price: 4.5,
@@ -158,6 +159,7 @@ const storageItems: StorageItem[] = [
           retail_price: 3.5,
           wholesale_price: 1.5,
           _id: '6148fcd14ba6963840cc36b5',
+          cost: 0
         },
       ],
       substances: [
@@ -235,6 +237,7 @@ const storageItems: StorageItem[] = [
           retail_price: 8.5,
           wholesale_price: 6.5,
           _id: '6148fcd14ba6963840cc36b4',
+          cost: 0
         },
         {
           cf_price: 4.5,
@@ -246,6 +249,7 @@ const storageItems: StorageItem[] = [
           retail_price: 3.5,
           wholesale_price: 1.5,
           _id: '6148fcd14ba6963840cc36b5',
+          cost: 0
         },
       ],
       substances: [
@@ -323,6 +327,7 @@ const storageItems: StorageItem[] = [
           retail_price: 8.5,
           wholesale_price: 6.5,
           _id: '6148fcd14ba6963840cc36b4',
+          cost: 0
         },
         {
           cf_price: 4.5,
@@ -334,6 +339,7 @@ const storageItems: StorageItem[] = [
           retail_price: 3.5,
           wholesale_price: 1.5,
           _id: '6148fcd14ba6963840cc36b5',
+          cost: 0
         },
       ],
       substances: [
