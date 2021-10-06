@@ -16,7 +16,7 @@ export interface ProductItem {
   presentations: ProductPresentationsItem[];
   substances: string[];
   symptoms: string[];
-  lastUpdate?: string,
+  lastUpdate?: string;
   exempt: boolean;
   discontinued: boolean;
   deleted?: boolean;
@@ -26,20 +26,16 @@ export interface ProductItem {
 export interface ProductItemResponse {
   _id?: string;
   _brand: BrandItem;
-  code: string;
   barcode: string;
+  code: string;
+  deleted?: boolean;
   description: string;
+  discontinued: boolean;
+  exempt: boolean;
   healthProgram: string;
-  wholesale_price: number;
-  distributor_price: number;
-  retail_price: number;
-  cf_price: number;
   presentations: ProductPresentationsItem[];
   substances: SubstanceItem[];
   symptoms: SymptomItem[];
-  exempt: boolean;
-  discontinued: boolean;
-  deleted?: boolean;
 }
 
 export interface ProductPresentationsItem {
