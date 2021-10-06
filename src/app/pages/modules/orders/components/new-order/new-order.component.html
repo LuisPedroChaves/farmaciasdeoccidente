@@ -12,6 +12,27 @@
             <div fxLayout="row wrap" fxLayoutAlign="start center" style="margin-top: 8px;">
                 <div fxFlex="50px"></div>
                 <div fxFlex="50px" fxHide.xs>
+                    <mat-icon color="accent" class="material-icons-outlined grayicon">search</mat-icon>
+                </div>
+                <div fxFlex fxLayout="row wrap">
+                    <div fxFlex fxFlex.xs="100%" class="inputpadding">
+                        <mat-form-field appearance="outline" color="primary" class="width-all">
+                            <mat-label>Buscar Cliente.</mat-label>
+                            <input type="text" (ngModelChange)="findThis($event)" placeholder="Buscar cliente..." aria-label="Number" matInput [matAutocomplete]="auto">
+                            <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete">
+                                <mat-option *ngFor="let option of filteredOptions | async" [value]="option.nit">
+                                    <span>{{option.nit}}</span> |
+                                    <small class="mat-text-muted">{{option.name}}</small>
+                                </mat-option>
+                            </mat-autocomplete>
+                        </mat-form-field>
+                    </div>
+                </div>
+                <div fxFlex="50px"></div>
+            </div>
+            <div fxLayout="row wrap" fxLayoutAlign="start center" style="margin-top: 8px;">
+                <div fxFlex="50px"></div>
+                <div fxFlex="50px" fxHide.xs>
                     <mat-icon color="accent" class="material-icons-outlined grayicon">person</mat-icon>
                 </div>
                 <div fxFlex fxLayout="row wrap">
