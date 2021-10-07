@@ -33,6 +33,7 @@ import { ProductService } from 'src/app/core/services/httpServices/product.servi
 import { ToastyService } from 'src/app/core/services/internal/toasty.service';
 import { AppState } from 'src/app/core/store/app.reducer';
 import { CellarItem } from '../../../../../core/models/Cellar';
+import { MatTableDataSource } from '@angular/material/table';
 
 @Component({
   selector: 'app-storage',
@@ -50,6 +51,11 @@ import { CellarItem } from '../../../../../core/models/Cellar';
   ],
 })
 export class StorageComponent implements OnInit, OnDestroy, AfterViewInit {
+  month = new Date().getMonth() + 1;
+  year = new Date().getFullYear();
+  currentFilter = 'current';
+  dataSource = new MatTableDataSource();
+
   editQuantityLimit = false;
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -61,13 +67,14 @@ export class StorageComponent implements OnInit, OnDestroy, AfterViewInit {
 
   sessionsubscription: Subscription;
   productsp: string[];
-  dataSource = storageItems;
+  dataSourceStorage = storageItems;
   // dataSource: ProductsDataSource;
   columns = [
     'code',
     'description',
     '_brand',
     'healthProgram',
+    'cost',
     'totalStock',
     'state',
     // 'options',
@@ -101,7 +108,7 @@ export class StorageComponent implements OnInit, OnDestroy, AfterViewInit {
 
     // this.dataSource = new ProductsDataSource(this.productService);
     // this.dataSource.loadProducts(this.currentPage, 10, '');
-    console.log(this.dataSource);
+    console.log(this.dataSourceStorage);
   }
   ngOnDestroy(): void {
     this.sessionsubscription?.unsubscribe();
@@ -148,6 +155,41 @@ export class StorageComponent implements OnInit, OnDestroy, AfterViewInit {
   cancel(): void {
     this.editQuantityLimit = false;
     this.form.reset();
+  }
+
+  applyFilter(filterValue?): void {
+    if (filterValue) {
+      this.dataSource.filter = filterValue.trim().toLowerCase();
+      if (this.currentFilter === 'last') {
+        if (new Date().getMonth() === 0) {
+          this.month = 12;
+        } else {
+          this.month = new Date().getMonth();
+        }
+      }
+      if (this.currentFilter === 'current') {
+        this.month = new Date().getMonth() + 1;
+      }
+      const FILTER = {
+        month: this.month,
+        year: this.year,
+      };
+    } else {
+      if (this.currentFilter === 'last') {
+        if (new Date().getMonth() === 0) {
+          this.month = 12;
+        } else {
+          this.month = new Date().getMonth();
+        }
+      }
+      if (this.currentFilter === 'current') {
+        this.month = new Date().getMonth() + 1;
+      }
+      const FILTER = {
+        month: this.month,
+        year: this.year,
+      };
+    }
   }
 }
 
