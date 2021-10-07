@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable, Subject } from 'rxjs';
 import { map } from 'rxjs/operators';
+
 import { IDataService } from '../config/i-data-service';
 import { ApiConfigService } from '../config/api-config.service';
 import { CustomerItem } from '../../models/Customer';
@@ -46,6 +47,12 @@ export class CustomerService implements IDataService<CustomerItem[]> {
     } else {
       delete this.customerList;
     }
+  }
+
+  search(search: string = ''): Observable<any> {
+    return this.http.get(`${this.apiConfigService.API_CUSTOMER}/search`, {
+      params: new HttpParams().set('search', search.toString()),
+    });
   }
 
   getRecivables(): Observable<any> {
