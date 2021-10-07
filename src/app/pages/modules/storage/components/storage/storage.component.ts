@@ -13,6 +13,7 @@ import {
   OnInit,
   ViewChild,
 } from '@angular/core';
+import { FormControl, FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { Router } from '@angular/router';
@@ -49,12 +50,14 @@ import { CellarItem } from '../../../../../core/models/Cellar';
   ],
 })
 export class StorageComponent implements OnInit, OnDestroy, AfterViewInit {
+  editQuantityLimit = false;
+
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild('search') search: ElementRef<HTMLInputElement>;
 
   smallScreen = window.innerWidth < 960 ? true : false;
 
-  expandedElement: ProductItem | null;
+  expandedElement: StorageItem | null;
 
   sessionsubscription: Subscription;
   productsp: string[];
@@ -70,6 +73,11 @@ export class StorageComponent implements OnInit, OnDestroy, AfterViewInit {
     // 'options',
   ];
   currentPage = 0;
+
+  form = new FormGroup({
+    minStock: new FormControl(null),
+    maxStock: new FormControl(null),
+  });
 
   constructor(
     public store: Store<AppState>,
@@ -122,6 +130,25 @@ export class StorageComponent implements OnInit, OnDestroy, AfterViewInit {
   //     this.search.nativeElement.value
   //   );
   // }
+
+  editProduct(storage: StorageItem): void {
+    console.log(storage);
+    this.form.setValue({
+      minStock: storage.minStock,
+      maxStock: storage.maxStock,
+    });
+    this.editQuantityLimit = true;
+
+    // update Storage List
+  }
+
+  saveQuantity(): void {
+    this.editQuantityLimit = false;
+  }
+  cancel(): void {
+    this.editQuantityLimit = false;
+    this.form.reset();
+  }
 }
 
 const storageItems: StorageItem[] = [

@@ -121,7 +121,7 @@
                         <div class="element-detail"
                             [@detailExpand]="element == expandedElement ? 'expanded' : 'collapsed'">
                             <div fxFlex fxLayout="row wrap " fxFlexAlign="center">
-                                <div fxFlex="35%">
+                                <div *ngIf="!editQuantityLimit" fxFlex="35%">
                                     <h2>Cantidades:</h2>
                                     <button mat-menu-item color="warn" disabled>
                                         <mat-icon class="material-icons-outlined">remove</mat-icon> <strong>Cantidad
@@ -132,10 +132,47 @@
                                         <strong>Cantidad Máxima</strong>{{element.maxStock}}
                                     </button>
                                 </div>
+                                <div *ngIf="editQuantityLimit" fxFlex="35%">
+                                    <form [formGroup]="form" autocomplete="off">
+                                        <div fxFlex fxLayout="row wrap" fxLayoutAlign="start center">
+                                            <h2>Editando Cantidades:</h2>
+                                            <div fxFlex="100%" class="inputpadding" fxLayoutAlign="start center">
+                                                <mat-icon class="material-icons-outlined">remove</mat-icon>
+                                                <mat-form-field appearance="outline" color="primary" class="width-all">
+                                                    <mat-label>Cantidad Mínima</mat-label>
+                                                    <input formControlName="minStock" type="text" matInput
+                                                        placeholder="Ingrese la cantidad mínima">
+                                                </mat-form-field>
+                                            </div>
+                                            <div fxFlex="100%" class="inputpadding" fxLayoutAlign="start center">
+                                                <mat-icon class="material-icons-outlined">add</mat-icon>
+                                                <mat-form-field appearance="outline" color="primary" class="width-all">
+                                                    <mat-label>Cantidad Máxima</mat-label>
+                                                    <input formControlName="maxStock" type="text" matInput
+                                                        placeholder="Ingrese la cantidad mínima">
+                                                </mat-form-field>
+                                            </div>
+                                        </div>
+                                    </form>
+                                    <div fxFlex fxLayout="row wrap" fxLayoutAlign="start center">
+                                        <button (click)="saveQuantity()" mat-menu-item appearance="outline"
+                                            color="success">
+                                            <mat-icon class="material-icons-outlined">save</mat-icon>
+                                            Guardar
+                                        </button>
+                                        <button (click)="saveQuantity()" mat-menu-item appearance="outline"
+                                            color="success">
+                                            <mat-icon (click)="cancel()" class="material-icons-outlined">cancel
+                                            </mat-icon>
+                                            Cancelar
+                                        </button>
+                                    </div>
+                                </div>
                                 <mat-divider [vertical]="true"></mat-divider>
                                 <div fxFlex="28%">
                                     <h2>Acciones:</h2>
-                                    <button mat-menu-item (click)="editProduct(element)" color="warn">
+                                    <button mat-menu-item (click)="editProduct(element)" color="warn"
+                                        [disabled]="editQuantityLimit">
                                         <mat-icon class="material-icons-outlined">edit</mat-icon> Cambiar Cantidades
                                     </button>
                                 </div>
@@ -149,7 +186,7 @@
                 <tr mat-header-row *matHeaderRowDef="columns"></tr>
                 <tr mat-row *matRowDef="let element; columns: columns;" class="example-element-row"
                     [class.example-expanded-row]="expandedElement === element"
-                    (click)="expandedElement = expandedElement === element ? null : element">
+                    (click)="expandedElement = expandedElement === element ? null : element;cancel()">
                 </tr>
                 <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="example-detail-row"></tr>
             </table>
