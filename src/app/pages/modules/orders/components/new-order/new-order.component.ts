@@ -18,6 +18,7 @@ import { CustomerService } from '../../../../../core/services/httpServices/custo
 export class NewOrderComponent implements OnInit {
 
   @ViewChild('search') search: ElementRef<HTMLInputElement>;
+  @ViewChild(MatAccordion) accordion: MatAccordion;
   loading = false;
 
   form = new FormGroup({
@@ -36,6 +37,7 @@ export class NewOrderComponent implements OnInit {
     timeOrder: new FormControl(0,),
   });
   selectedCustomer: CustomerItem = {
+    _id: null,
     name: '',
     nit: '',
     phone: '',
@@ -131,12 +133,27 @@ export class NewOrderComponent implements OnInit {
     this.form.get('department').setValue(address.department);
   }
 
+  addAddress() {
+    this.selectedCustomer.addresses.push(this.newAddress);
+    this.form.get('address').setValue(this.newAddress.address);
+    this.form.get('town').setValue(this.newAddress.town);
+    this.form.get('department').setValue(this.newAddress.department);
+    this.newAddress = {
+      address: '',
+      town: '',
+      department: 'Huehuetenango'
+    };
+    this.accordion.closeAll();
+  }
+
   saveClient() {
     if (this.form.invalid) { return; }
     this.loading = true;
     this.form.get('_cellar').setValue(this.data.currentCellar);
     this.form.get('timeOrder').setValue(this.display);
-    const order: OrderItem = { ...this.form.value };
+    let order: OrderItem = { ...this.form.value };
+    this.selectedCustomer.addresses.splice(0, 1);
+    order._customer = this.selectedCustomer;
     this.orderService.createOrder(order).subscribe(data => {
       if (data.ok === true) {
         this.toasty.success('Orden creada exitosamente');
@@ -152,4 +169,29 @@ export class NewOrderComponent implements OnInit {
     });
   }
 
+  clear() {
+    this.form.reset({
+      payment: 'EFECTIVO',
+      state: 'ORDEN'
+    });
+    this.selectedCustomer = {
+      _id: null,
+      name: '',
+      nit: '',
+      phone: '',
+      address: '',
+      town: '',
+      department: '',
+      addresses: [],
+      company: '',
+      transport: '',
+      limitCredit: 0,
+      limitDaysCredit: 0
+    };
+    this.newAddress = {
+      address: '',
+      town: '',
+      department: 'Huehuetenango'
+    };
+  }
 }

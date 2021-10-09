@@ -35,7 +35,15 @@
                 </div>
                 <div fxFlex="50px"></div>
             </div>
-            <div fxLayout="row wrap" fxLayoutAlign="start center" style="margin-top: 8px;">
+            <br>
+            <mat-divider></mat-divider>
+            <div fxLayout="row wrap" fxLayoutAlign="center center" style="margin-top: 5px;">
+                <h2 fxFlex="100%" fxLayoutAlign="center center">Dirección seleccionada:</h2>
+                <h4 fxFlex="100%" fxLayoutAlign="center center" *ngIf="!form.get('address').value">¡Vacio!, Seleccione o ingrese una dirección
+                </h4>
+                <h4 fxFlex="100%" fxLayoutAlign="center center">{{form.get('address').value}} {{form.get('town').value}} {{ form.get('department').value }}</h4>
+            </div>
+            <div *ngIf=" selectedCustomer.addresses.length > 0" fxLayout="row wrap" fxLayoutAlign="start center" style="margin-top: 5px;">
                 <div fxFlex="50px"></div>
                 <div fxFlex="50px" fxHide.xs>
                     <mat-icon color="accent" class="material-icons-outlined grayicon">place
@@ -44,7 +52,7 @@
                 <div fxFlex fxLayout="row wrap">
                     <div fxFlex fxFlex.xs="100%" class="inputpadding">
                         <mat-form-field appearance="outline" color="primary" class="width-all">
-                            <mat-label>Seleccione una dirección</mat-label>
+                            <mat-label>Direcciones disponibles</mat-label>
                             <mat-select (selectionChange)="selectAddress($event.value)">
                                 <mat-option *ngFor="let address of selectedCustomer.addresses" [value]="address">
                                     {{address.address}} | {{address.town}}, {{address.department}}
@@ -55,14 +63,7 @@
                 </div>
                 <div fxFlex="50px"></div>
             </div>
-            <br>
-            <mat-divider></mat-divider>
-            <div fxLayout="row wrap" fxLayoutAlign="center center" style="margin-top: 5px;">
-                <h2 fxFlex="100%" fxLayoutAlign="center center">Dirección:</h2>
-                <h4 fxFlex="100%" fxLayoutAlign="center center" *ngIf="!form.get('address').value">Seleccione o ingrese una dirección</h4>
-                <h4 fxFlex="100%" fxLayoutAlign="center center">{{form.get('address').value}} {{form.get('town').value}} {{ form.get('department').value }}</h4>
-            </div>
-            <div fxLayout="row wrap" fxLayoutAlign="start center">
+            <div fxLayout="row wrap" fxLayoutAlign="start center" style="margin-top: 5px;">
                 <div fxFlex="100px"></div>
                 <div fxFlex fxLayout="row wrap">
                     <div fxFlex fxFlex.xs="100%" class="inputpadding">
@@ -125,7 +126,9 @@
                                             </mat-form-field>
                                         </div>
                                     </div>
-                                    <button mat-button color="warn">Ingresar</button>
+                                    <button mat-button (click)="addAddress()" color="warn">
+                    <mat-icon>add</mat-icon> Ingresar
+                  </button>
                                 </div>
                             </mat-expansion-panel>
                         </mat-accordion>
@@ -135,6 +138,7 @@
             </div>
             <br>
             <mat-divider></mat-divider>
+            <br>
             <div fxLayout="row wrap" fxLayoutAlign="start center" style="margin-top: 8px;">
                 <div fxFlex="50px"></div>
                 <div fxFlex="50px" fxHide.xs>
@@ -234,6 +238,9 @@
     <div fxLayout="row" class="header">
         <button mat-button *ngIf="!loading" (click)="dialogRef.close()" class="info-row">
       CANCELAR
+    </button>
+        <button mat-button *ngIf="!loading" (click)="clear()" color="accent" class="info-row">
+      LIMPIAR
     </button>
         <span fxFlex></span>
         <button mat-button *ngIf="!loading" (click)="saveClient()" [disabled]="this.form.invalid" color="primary">

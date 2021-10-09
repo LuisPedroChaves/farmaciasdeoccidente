@@ -19,8 +19,8 @@ export class SaleService implements IDataService<SaleItem[]> {
     public apiConfigService: ApiConfigService
   ) { }
 
-  loadData({month, year, _cellar}) {
-    this.http.get(this.apiConfigService.API_SALE + '/' + _cellar + '?month=' + month + '&year=' + year).pipe(
+  loadData({startDate, endDate, _cellar}) {
+    this.http.get(this.apiConfigService.API_SALE + '/' + _cellar + '?startDate=' + startDate + '&endDate=' + endDate).pipe(
         map((response: any) => {
           this.saleList = response.sales;
           this.saleSubject.next( this.saleList);
@@ -28,9 +28,9 @@ export class SaleService implements IDataService<SaleItem[]> {
   }
 
   getData(filter: any) {
-    const {month, year, _cellar} = filter;
+    const {startDate, endDate, _cellar} = filter;
     if ( this.saleList === undefined ) {
-      this.loadData({month, year, _cellar});
+      this.loadData({startDate, endDate, _cellar});
     } else {
       this.saleSubject.next( this.saleList );
     }
@@ -49,8 +49,8 @@ export class SaleService implements IDataService<SaleItem[]> {
     }
   }
 
-  getHistory(id: string, month, year): Observable<any> {
-    return this.http.get(this.apiConfigService.API_SALE + '/history/' + id + '?month=' + month + '&year=' + year);
+  getHistory(id: string, startDate, endDate): Observable<any> {
+    return this.http.get(this.apiConfigService.API_SALE + '/history/' + id + '?startDate=' + startDate + '&endDate=' + endDate);
   }
 
   createSale(u: SaleItem): Observable<any> {

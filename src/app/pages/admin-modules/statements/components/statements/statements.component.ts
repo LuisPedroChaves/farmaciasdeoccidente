@@ -1,11 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
+import { FormControl, FormGroup } from '@angular/forms';
+
 import { ToastyService } from 'src/app/core/services/internal/toasty.service';
+import { PaySaleComponent } from 'src/app/pages/modules/sales/components/pay-sale/pay-sale.component';
 import { CustomerService } from '../../../../../core/services/httpServices/customer.service';
 import { SaleService } from '../../../../../core/services/httpServices/sale.service';
 import { SaleItem } from '../../../../../core/models/Sale';
-import { PaySaleComponent } from 'src/app/pages/modules/sales/components/pay-sale/pay-sale.component';
+import { debounceTime } from 'rxjs/operators';
 @Component({
   selector: 'app-statements',
   templateUrl: './statements.component.html',
@@ -24,9 +27,10 @@ export class StatementsComponent implements OnInit {
   total = 0;
   timeInvaliable = 0;
 
-  month = new Date().getMonth() + 1;
-  year = new Date().getFullYear();
-  currentFilter = 'current';
+  range = new FormGroup({
+    start: new FormControl(new Date()),
+    end: new FormControl(new Date())
+  });
 
   avatars = [
     { index: 0, image: 'assets/images/avatars/01.png' },
@@ -52,22 +56,37 @@ export class StatementsComponent implements OnInit {
       this.loadCustomer(params.id);
       this.return = params.return;
     });
+    this.range.valueChanges
+    .pipe(
+      debounceTime(500),
+    )
+    .subscribe(range => {
+      if (range.start && range.end) {
+        this.loadData(range.start, range.end);
+      }
+    });
   }
 
   loadCustomer(id) {
     this.customerService.getStatements(id).subscribe(data => {
       this.selectedCustomer = data.customer;
       this.getTotals();
-      this.loadHistory(this.month, this.year);
+      this.loadData(this.range.get('start').value, this.range.get('end').value);
     });
   }
 
-  loadHistory(month, year) {
+  loadData(start, end) {
     this.loading = true;
-    this.saleService.getHistory(this.selectedCustomer._id, month, year).subscribe(data => {
+    const startDate = start._d ? start._d : start;
+    const endDate = end._d ? end._d : end;
+    this.saleService.getHistory(this.selectedCustomer._id, startDate, endDate).subscribe(data => {
       this.sales = data.sales;
       this.loading = false;
     });
+    const FILTER = {
+      startDate,
+      endDate
+    };
   }
 
   getTotals() {
@@ -106,38 +125,9 @@ export class StatementsComponent implements OnInit {
         this.customerService.getStatements(this.selectedCustomer._id).subscribe(data => {
           this.selectedCustomer = data.customer;
           this.getTotals();
-          this.loadHistory(this.month, this.year);
+          this.loadData(this.range.get('start').value, this.range.get('end').value);
         });
       }
     });
   }
-
-  applyFilter(filterValue?: string) {
-    if (filterValue) {
-
-      // this.dataSource.filter = filterValue.trim().toLowerCase();
-      if (this.currentFilter === 'last') {
-        if (new Date().getMonth() === 0) {
-          this.month = 12;
-        } else {
-          this.month = new Date().getMonth();
-
-        }
-      }
-      if (this.currentFilter === 'current') { this.month = new Date().getMonth() + 1; }
-      this.loadHistory(this.month, this.year);
-    } else {
-      if (this.currentFilter === 'last') {
-        if (new Date().getMonth() === 0) {
-          this.month = 12;
-        } else {
-          this.month = new Date().getMonth();
-
-        }
-      }
-      if (this.currentFilter === 'current') { this.month = new Date().getMonth() + 1; }
-      this.loadHistory(this.month, this.year);
-    }
-  }
-
 }

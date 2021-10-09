@@ -3,17 +3,19 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { Router } from '@angular/router';
-import { Store } from '@ngrx/store';
+import { FormControl, FormGroup } from '@angular/forms';
+
 import { Subscription } from 'rxjs';
-import { filter } from 'rxjs/operators';
+import { debounceTime, filter } from 'rxjs/operators';
+import { Store } from '@ngrx/store';
+
 import { CellarItem } from 'src/app/core/models/Cellar';
 import { ConfigService } from 'src/app/core/services/config/config.service';
 import { EventBusService } from 'src/app/core/services/internal/event-bus.service';
 import { ToastyService } from 'src/app/core/services/internal/toasty.service';
 import { AppState } from 'src/app/core/store/app.reducer';
-import { NewSaleComponent } from '../new-sale/new-sale.component';
-import { EditSaleComponent } from '../edit-sale/edit-sale.component';
 import { ConfirmationDialogComponent } from 'src/app/pages/shared-components/confirmation-dialog/confirmation-dialog.component';
+import { NewSaleComponent } from '../new-sale/new-sale.component';
 import { SaleItem } from '../../../../../core/models/Sale';
 import { SaleService } from '../../../../../core/services/httpServices/sale.service';
 import { PaySaleComponent } from '../pay-sale/pay-sale.component';
@@ -34,15 +36,15 @@ export class SalesComponent implements OnInit, AfterContentInit, OnDestroy {
   sales: SaleItem[];
   currentCellar: CellarItem;
 
-  month = new Date().getMonth() + 1;
-  year = new Date().getFullYear();
-  currentFilter = 'current';
-
+  range = new FormGroup({
+    start: new FormControl(new Date()),
+    end: new FormControl(new Date())
+  });
   salesp: string[] = [];
 
   dataSource = new MatTableDataSource();
-  columnsToDisplay = [ 'noBill', 'date', 'code', 'nit', 'name', 'phone', 'paid', 'total', 'options'];
-  columnsToDisplay2 = ['image',  'noBill', 'date', 'code', 'nit', 'name', 'phone', 'paid', 'total', 'options'];
+  columnsToDisplay = ['noBill', 'date', 'code', 'nit', 'name', 'phone', 'paid', 'total', 'options'];
+  columnsToDisplay2 = ['image', 'noBill', 'date', 'code', 'nit', 'name', 'phone', 'paid', 'total', 'options'];
   expandedElement: SaleItem | null;
 
   constructor(
@@ -68,15 +70,36 @@ export class SalesComponent implements OnInit, AfterContentInit, OnDestroy {
       }
     });
     this.currentCellar = JSON.parse(localStorage.getItem('currentstore'));
+    this.range.valueChanges
+    .pipe(
+      debounceTime(500),
+    )
+    .subscribe(range => {
+      if (range.start && range.end) {
+        this.loadData(range.start, range.end);
+      }
+    });
   }
 
   ngAfterContentInit() {
-    const filter = { month: this.month, year: this.year, _cellar: this.currentCellar._id };
-    this.saleService.loadData(filter);
+    this.loadData(this.range.get('start').value, this.range.get('end').value);
   }
 
   ngOnDestroy() {
     this.sessionsubscription?.unsubscribe();
+  }
+
+
+  loadData(start, end) {
+    this.sales = undefined;
+    const startDate = start._d ? start._d : start;
+    const endDate = end._d ? end._d : end;
+    const FILTER = {
+      startDate,
+      endDate,
+      _cellar: this.currentCellar._id
+    };
+    this.saleService.loadData(FILTER);
   }
 
   pay(sale: SaleItem) {
@@ -95,37 +118,6 @@ export class SalesComponent implements OnInit, AfterContentInit, OnDestroy {
     });
   }
 
-  applyFilter(filterValue?: string) {
-    if (filterValue) {
-
-      this.dataSource.filter = filterValue.trim().toLowerCase();
-      if (this.currentFilter === 'last') {
-        if (new Date().getMonth() === 0) {
-          this.month = 12;
-        } else {
-          this.month = new Date().getMonth();
-
-        }
-      }
-      if (this.currentFilter === 'current') { this.month = new Date().getMonth() + 1; }
-      const filters = { month: this.month, year: this.year, _cellar: this.currentCellar._id };
-      this.saleService.loadData(filters);
-    } else {
-      if (this.currentFilter === 'last') {
-        if (new Date().getMonth() === 0) {
-          this.month = 12;
-        } else {
-          this.month = new Date().getMonth();
-
-        }
-      }
-      if (this.currentFilter === 'current') { this.month = new Date().getMonth() + 1; }
-      const filters = { month: this.month, year: this.year, _cellar: this.currentCellar._id };
-      this.saleService.loadData(filters);
-    }
-  }
-
-
   applyFilter2(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
     this.dataSource.filter = filterValue.trim().toLowerCase();
@@ -143,8 +135,7 @@ export class SalesComponent implements OnInit, AfterContentInit, OnDestroy {
 
     dialogRef.afterClosed().subscribe(result => {
       if (result !== undefined) {
-        const filter = { month: this.month, year: this.year, _cellar: this.currentCellar._id };
-        this.saleService.loadData(filter);
+        this.loadData(this.range.get('start').value, this.range.get('end').value);
       }
     });
   }
@@ -159,8 +150,7 @@ export class SalesComponent implements OnInit, AfterContentInit, OnDestroy {
 
     // dialogRef.afterClosed().subscribe(result => {
     //   if (result !== undefined) {
-    //     const filter = { month: this.month, year: this.year, _cellar: this.currentCellar._id };
-    //     this.saleService.loadData(filter);
+      // this.loadData(this.range.get('start').value, this.range.get('end').value);
     //   }
     // });
   }
@@ -168,9 +158,9 @@ export class SalesComponent implements OnInit, AfterContentInit, OnDestroy {
   delete(sale: SaleItem) {
     const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
       width: '350px',
-      data: { title: 'Eliminar Venta', message: '¿Confirma que desea eliminar la venta  ' + sale.noBill + '?', isLogin: true},
+      data: { title: 'Eliminar Venta', message: '¿Confirma que desea eliminar la venta  ' + sale.noBill + '?', isLogin: true },
       disableClose: true,
-      panelClass: ['farmacia-dialog', 'farmacia' ],
+      panelClass: ['farmacia-dialog', 'farmacia'],
     });
 
     dialogRef.afterClosed().subscribe(result => {
@@ -179,8 +169,7 @@ export class SalesComponent implements OnInit, AfterContentInit, OnDestroy {
           // this.loading = true;
           this.saleService.deleteSale(sale).subscribe(data => {
             this.toasty.success('Venta eliminada exitosamente');
-            const filter = { month: this.month, year: this.year, _cellar: this.currentCellar._id };
-            this.saleService.loadData(filter);
+            this.loadData(this.range.get('start').value, this.range.get('end').value);
             // this.loading = false;
           }, error => {
             // this.loading = false;
