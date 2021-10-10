@@ -75,7 +75,7 @@ export class NewOrderComponent implements OnInit {
     this.loadProducts();
     setTimeout(() => {
       this.search.nativeElement.focus();
-    }, 500);
+    }, 1000);
   }
 
   startTimer() {
@@ -174,6 +174,8 @@ export class NewOrderComponent implements OnInit {
       payment: 'EFECTIVO',
       state: 'ORDEN'
     });
+    this.searchCustomersCtrl.reset();
+    this.search.nativeElement.focus();
     this.selectedCustomer = {
       _id: null,
       name: '',
