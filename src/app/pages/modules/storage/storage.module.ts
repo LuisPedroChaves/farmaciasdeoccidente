@@ -6,11 +6,14 @@ import { CoreModule } from 'src/app/core/core.module';
 import { SharedComponentsModule } from '../../shared-components/shared-components.module';
 import { StorageRoutes } from './storage.routing';
 import { StorageComponent } from './components/storage/storage.component';
+import { ModalMovementsComponent } from './components/modal-movements/modal-movements.component';
+import { GeneralInventoryComponent } from './components/general-inventory/general-inventory.component';
+import { PendingInventoryComponent } from './components/pending-inventory/pending-inventory.component';
 
 
 
 @NgModule({
-  declarations: [StorageComponent],
+  declarations: [StorageComponent, ModalMovementsComponent, GeneralInventoryComponent, PendingInventoryComponent],
   imports: [
     CommonModule,
     RouterModule.forChild(StorageRoutes),

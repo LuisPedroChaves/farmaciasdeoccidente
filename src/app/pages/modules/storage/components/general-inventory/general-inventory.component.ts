@@ -17,27 +17,18 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { title } from 'process';
-import { fromEvent, Subscription } from 'rxjs';
-import {
-  filter,
-  debounceTime,
-  distinctUntilChanged,
-  tap,
-} from 'rxjs/operators';
+import { Subscription, fromEvent } from 'rxjs';
+import { debounceTime, distinctUntilChanged, tap } from 'rxjs/operators';
 import { ProductItem } from 'src/app/core/models/Product';
 import { StorageItem } from 'src/app/core/models/Storage';
-import { ProductsDataSource } from 'src/app/core/services/cdks/product.datasource';
 import { ProductService } from 'src/app/core/services/httpServices/product.service';
 import { ToastyService } from 'src/app/core/services/internal/toasty.service';
 import { AppState } from 'src/app/core/store/app.reducer';
-import { CellarItem } from '../../../../../core/models/Cellar';
-import { ModalMovementsComponent } from '../modal-movements/modal-movements.component';
 
 @Component({
-  selector: 'app-storage',
-  templateUrl: './storage.component.html',
-  styleUrls: ['./storage.component.scss'],
+  selector: 'app-general-inventory',
+  templateUrl: './general-inventory.component.html',
+  styleUrls: ['./general-inventory.component.scss'],
   animations: [
     trigger('detailExpand', [
       state('collapsed', style({ height: '0px', minHeight: '0' })),
@@ -49,7 +40,9 @@ import { ModalMovementsComponent } from '../modal-movements/modal-movements.comp
     ]),
   ],
 })
-export class StorageComponent implements OnInit, OnDestroy, AfterViewInit {
+export class GeneralInventoryComponent
+  implements OnInit, OnDestroy, AfterViewInit
+{
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild('search') search: ElementRef<HTMLInputElement>;
 
@@ -81,6 +74,7 @@ export class StorageComponent implements OnInit, OnDestroy, AfterViewInit {
     public router: Router,
     public dialog: MatDialog
   ) {}
+
   ngOnInit(): void {
     // this.sessionsubscription = this.store
     //   .select('session')
@@ -125,25 +119,6 @@ export class StorageComponent implements OnInit, OnDestroy, AfterViewInit {
   //     this.search.nativeElement.value
   //   );
   // }
-
-  showMovements(item: any): void {
-    const dialogRef = this.dialog.open(ModalMovementsComponent, {
-      width: this.smallScreen ? '100%' : '1200px',
-      data: {
-        by: 'NewPurchase',
-      },
-      minHeight: '78vh',
-      maxHeight: '78vh',
-      disableClose: true,
-      panelClass: ['farmacia-dialog', 'farmacia'],
-    });
-
-    dialogRef.afterClosed().subscribe((result) => {
-      if (result !== undefined) {
-        // this.loadProducts();
-      }
-    });
-  }
 }
 
 const storageItems: StorageItem[] = [
