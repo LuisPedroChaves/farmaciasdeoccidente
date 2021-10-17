@@ -13,8 +13,10 @@ import {
   OnInit,
   ViewChild,
 } from '@angular/core';
+import { FormControl, FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
+import { MatTableDataSource } from '@angular/material/table';
 import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { title } from 'process';
@@ -50,6 +52,13 @@ import { ModalMovementsComponent } from '../modal-movements/modal-movements.comp
   ],
 })
 export class StorageComponent implements OnInit, OnDestroy, AfterViewInit {
+  month = new Date().getMonth() + 1;
+  year = new Date().getFullYear();
+  currentFilter = 'current';
+  dataSource = new MatTableDataSource();
+
+  editQuantityLimit = false;
+
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild('search') search: ElementRef<HTMLInputElement>;
 
@@ -57,22 +66,28 @@ export class StorageComponent implements OnInit, OnDestroy, AfterViewInit {
 
   smallScreen = window.innerWidth < 960 ? true : false;
 
-  expandedElement: ProductItem | null;
+  expandedElement: StorageItem | null;
 
   sessionsubscription: Subscription;
   productsp: string[];
-  dataSource = storageItems;
+  dataSourceStorage = storageItems;
   // dataSource: ProductsDataSource;
   columns = [
     'code',
     'description',
     '_brand',
     'healthProgram',
+    'cost',
     'totalStock',
     'state',
     // 'options',
   ];
   currentPage = 0;
+
+  form = new FormGroup({
+    minStock: new FormControl(null),
+    maxStock: new FormControl(null),
+  });
 
   constructor(
     public store: Store<AppState>,
@@ -96,7 +111,7 @@ export class StorageComponent implements OnInit, OnDestroy, AfterViewInit {
 
     // this.dataSource = new ProductsDataSource(this.productService);
     // this.dataSource.loadProducts(this.currentPage, 10, '');
-    console.log(this.dataSource);
+    console.log(this.dataSourceStorage);
   }
   ngOnDestroy(): void {
     this.sessionsubscription?.unsubscribe();
