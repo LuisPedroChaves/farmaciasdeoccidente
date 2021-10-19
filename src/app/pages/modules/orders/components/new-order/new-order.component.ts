@@ -174,7 +174,7 @@ export class NewOrderComponent implements OnInit {
       payment: 'EFECTIVO',
       state: 'ORDEN'
     });
-    this.searchCustomersCtrl.reset();
+    this.searchCustomersCtrl.reset('');
     this.search.nativeElement.focus();
     this.selectedCustomer = {
       _id: null,
