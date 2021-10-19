@@ -24,6 +24,7 @@ import { StorageItem } from 'src/app/core/models/Storage';
 import { ProductService } from 'src/app/core/services/httpServices/product.service';
 import { ToastyService } from 'src/app/core/services/internal/toasty.service';
 import { AppState } from 'src/app/core/store/app.reducer';
+import { ModalMovementsComponent } from '../modal-movements/modal-movements.component';
 
 @Component({
   selector: 'app-general-inventory',
@@ -119,6 +120,24 @@ export class GeneralInventoryComponent
   //     this.search.nativeElement.value
   //   );
   // }
+  showMovements(item: any): void {
+    const dialogRef = this.dialog.open(ModalMovementsComponent, {
+      width: this.smallScreen ? '100%' : '1200px',
+      data: {
+        by: 'NewPurchase',
+      },
+      minHeight: '78vh',
+      maxHeight: '78vh',
+      disableClose: true,
+      panelClass: ['farmacia-dialog', 'farmacia'],
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result !== undefined) {
+        // this.loadProducts();
+      }
+    });
+  }
 }
 
 const storageItems: StorageItem[] = [

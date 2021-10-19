@@ -24,6 +24,7 @@ import { StorageItem } from 'src/app/core/models/Storage';
 import { ProductService } from 'src/app/core/services/httpServices/product.service';
 import { ToastyService } from 'src/app/core/services/internal/toasty.service';
 import { AppState } from 'src/app/core/store/app.reducer';
+import { LoteDetailsComponent } from '../lote-details/lote-details.component';
 
 @Component({
   selector: 'app-pending-inventory',
@@ -118,6 +119,26 @@ export class PendingInventoryComponent
   //     this.search.nativeElement.value
   //   );
   // }
+
+  showMovements(idLote: number): void {
+    console.log(idLote);
+    const dialogRef = this.dialog.open(LoteDetailsComponent, {
+      width: this.smallScreen ? '100%' : '600px',
+      data: {
+        lote: idLote,
+      },
+      minHeight: '78vh',
+      maxHeight: '78vh',
+      disableClose: true,
+      panelClass: ['farmacia-dialog', 'farmacia'],
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result !== undefined) {
+        // this.loadProducts();
+      }
+    });
+  }
 }
 const storageItems: StorageItem[] = [
   {

@@ -1,0 +1,33 @@
+<header fxLayout="row wrap" fxLayoutAlign="center center" class="header">
+    <h2 style="margin: 0;" class="h2">Detalle de Lote No.: <strong>
+            {{loteExample.noLote}}
+        </strong>
+    </h2>
+    <span fxFlex></span>
+    <button mat-icon-button (click)="dialogRef.close()">
+        <mat-icon>close</mat-icon>
+    </button>
+</header>
+<div class="content">
+    <mat-divider></mat-divider>
+    <br><br>
+    <div fxflex="100" class="text-muted input-padding" ng-reflect-fx-flex="100"
+        style="flex: 1 1 100%; box-sizing: border-box; max-width: 100%;">
+        <strong>
+            <h3 class="ma-0 ">Fecha de Expiración: <small>{{loteExample.expiration_date}}</small> </h3>
+        </strong>
+        <h3 class="ma-0 ">Costo de Lote: <small>{{loteExample.cost}}</small> </h3>
+        <h3 class="ma-0 ">Cantidad de Compra: <small>{{loteExample.quantity}}</small> </h3>
+        <h3 class="ma-0 ">Existencias de Lote: <small>{{loteExample.stock}}</small> </h3>
+    </div>
+    <br>
+    <br>
+
+    <mat-divider></mat-divider>
+
+</div>
+<div fxLayout="row" class="header" flexlayout="center">
+    <button mat-button (click)="dialogRef.close()" class="info-row">
+        Cerrar
+    </button>
+</div>

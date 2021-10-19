@@ -20,7 +20,8 @@
                     <!-- Position lote -->
                     <ng-container matColumnDef="lote">
                         <th mat-header-cell *matHeaderCellDef> Lote </th>
-                        <td mat-cell *matCellDef="let element"> <a (click)="something()" class="pointer">
+                        <td mat-cell *matCellDef="let element"> <a (click)="showLote(element.lote)"
+                                style="cursor:pointer">
                                 {{element.lote}}</a>
                         </td>
                     </ng-container>

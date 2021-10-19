@@ -40,16 +40,6 @@ import { ModalMovementsComponent } from '../modal-movements/modal-movements.comp
   selector: 'app-storage',
   templateUrl: './storage.component.html',
   styleUrls: ['./storage.component.scss'],
-  animations: [
-    trigger('detailExpand', [
-      state('collapsed', style({ height: '0px', minHeight: '0' })),
-      state('expanded', style({ height: '*' })),
-      transition(
-        'expanded <=> collapsed',
-        animate('225ms cubic-bezier(0.4, 0.0, 0.2, 1)')
-      ),
-    ]),
-  ],
 })
 export class StorageComponent implements OnInit, OnDestroy, AfterViewInit {
   month = new Date().getMonth() + 1;
@@ -117,21 +107,7 @@ export class StorageComponent implements OnInit, OnDestroy, AfterViewInit {
     this.sessionsubscription?.unsubscribe();
   }
 
-  ngAfterViewInit(): void {
-    // server-side search
-    fromEvent(this.search.nativeElement, 'keyup')
-      .pipe(
-        debounceTime(500),
-        distinctUntilChanged(),
-        tap(() => {
-          this.paginator.pageIndex = 0;
-          // this.loadProductsPage();
-        })
-      )
-      .subscribe();
-
-    // this.paginator.page.pipe(tap(() => this.loadProductsPage())).subscribe();
-  }
+  ngAfterViewInit(): void {}
 
   // loadProductsPage(): void {
   //   this.dataSource.loadProducts(
@@ -140,25 +116,6 @@ export class StorageComponent implements OnInit, OnDestroy, AfterViewInit {
   //     this.search.nativeElement.value
   //   );
   // }
-
-  showMovements(item: any): void {
-    const dialogRef = this.dialog.open(ModalMovementsComponent, {
-      width: this.smallScreen ? '100%' : '1200px',
-      data: {
-        by: 'NewPurchase',
-      },
-      minHeight: '78vh',
-      maxHeight: '78vh',
-      disableClose: true,
-      panelClass: ['farmacia-dialog', 'farmacia'],
-    });
-
-    dialogRef.afterClosed().subscribe((result) => {
-      if (result !== undefined) {
-        // this.loadProducts();
-      }
-    });
-  }
 }
 
 const storageItems: StorageItem[] = [

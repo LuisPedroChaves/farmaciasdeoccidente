@@ -1,7 +1,8 @@
 import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
-import { MatDialogRef } from '@angular/material/dialog';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
+import { LoteDetailsComponent } from '../lote-details/lote-details.component';
 
 @Component({
   selector: 'app-modal-movements',
@@ -9,6 +10,8 @@ import { MatTableDataSource } from '@angular/material/table';
   styleUrls: ['./modal-movements.component.scss'],
 })
 export class ModalMovementsComponent implements OnInit, AfterViewInit {
+  smallScreen = window.innerWidth < 960 ? true : false;
+
   displayedColumns: string[] = [
     'lote',
     'date',
@@ -31,13 +34,35 @@ export class ModalMovementsComponent implements OnInit, AfterViewInit {
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatPaginator) paginator2: MatPaginator;
 
-  constructor(public dialogRef: MatDialogRef<ModalMovementsComponent>) {}
+  constructor(
+    public dialogRef: MatDialogRef<ModalMovementsComponent>,
+    public dialog: MatDialog
+  ) {}
 
   ngOnInit(): void {}
 
   ngAfterViewInit(): void {
     this.dataSource.paginator = this.paginator;
     this.dataSource2.paginator = this.paginator2;
+  }
+
+  showLote(item: any): void {
+    const dialogRef = this.dialog.open(LoteDetailsComponent, {
+      width: this.smallScreen ? '100%' : '30%',
+      data: {
+        by: 'NewPurchase',
+      },
+      minHeight: '78vh',
+      maxHeight: '78vh',
+      disableClose: true,
+      panelClass: ['farmacia-dialog', 'farmacia'],
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result !== undefined) {
+        // this.loadProducts();
+      }
+    });
   }
 }
 
