@@ -1,24 +1,50 @@
 <button mat-mini-fab color="warn" class="miniFab mat-elevation-z10">
     <mat-icon>print</mat-icon>
 </button>
-
+<div fxLayoutAlign="center">
+    <h2>Inventario General</h2>
+</div>
+<mat-divider></mat-divider>
 
 <div fxLayout="row wrap" class="my-container" data-simplebar>
     <!-- <div class="container-strech"> -->
     <div fxLayout="row wrap" fxLayoutAlign="start center" class="costumers-header">
         <div fxFlex="10%" fxFlex.md="15%" fxFlex.sm="15%" fxFlex.xs="100%" class="inputpadding">
-            <mat-label>Buscando por: <strong>Producto</strong></mat-label>
+            <mat-label>Buscando por: <strong>{{searchBy}}</strong></mat-label>
         </div>
-        <div fxFlex="20%" fxFlex.md="30%" fxFlex.lg="20%" fxFlex.xl="20%" fxFlex.sm="30%" fxFlex.xs="100%"
-            class="inputpadding">
-            <mat-form-field appearance="outline" floatLabel="always" class="findinput">
-                <mat-label>Buscar</mat-label>
-                <mat-icon class="text-muted" matPrefix>search</mat-icon>
-                <input matInput #search type="text">
-            </mat-form-field>
-        </div>
+        <form>
+            <div *ngIf="searchBy === 'Producto'" fxFlex="20%" fxFlex.md="30%" fxFlex.lg="20%" fxFlex.xl="20%"
+                fxFlex.sm="30%" fxFlex.xs="100%" class="inputpadding">
+                <mat-form-field appearance="outline" floatLabel="always" class="findinput">
+                    <mat-label>Buscar</mat-label>
+                    <mat-icon class="text-muted" matPrefix>search</mat-icon>
+                    <input (keyup.enter)="searchByProduct(productInput.value)"
+                        (ngModelChange)="searchByProduct(productInput.value)" #productInput type="text"
+                        placeholder="Ingrese el nombre de un producto" aria-label="text" matInput
+                        [formControl]="searchProductField">
+
+                </mat-form-field>
+            </div>
+            <div *ngIf="searchBy === 'Laboratorio'" fxFlex="20%" fxFlex.md="30%" fxFlex.lg="20%" fxFlex.xl="20%"
+                fxFlex.sm="30%" fxFlex.xs="100%" class="inputpadding">
+                <mat-form-field appearance="outline" floatLabel="always" class="findinput">
+                    <mat-label>Buscar</mat-label>
+                    <mat-icon class="text-muted" matPrefix>search</mat-icon>
+                    <input (keyup.enter)="filterByBrand(brandInput.value)" #brandInput type="text"
+                        placeholder="Ingrese un laboratorio" aria-label="text" matInput [formControl]="searchBrandField"
+                        [matAutocomplete]="auto1">
+                    <mat-autocomplete id="_brand" autoActiveFirstOption #auto1="matAutocomplete">
+                        <mat-option (click)="filterByBrand(option.name)"
+                            *ngFor="let option of brandFilteredOptions | async" [value]="option.name">
+                            <span>{{option.name}}</span>
+                        </mat-option>
+                    </mat-autocomplete>
+                </mat-form-field>
+            </div>
+        </form>
+
         <div fxFlex="18%" fxFlex.md="28%" fxFlex.sm="30%" fxFlex.xs="100%" class="inputpadding">
-            <button mat-menu-item color="warn">
+            <button (click)="changeSearch()" mat-menu-item color="warn">
                 <mat-icon class="material-icons-outlined">published_with_changes</mat-icon> Cambiar Busqueda
             </button>
         </div>
@@ -134,9 +160,9 @@
                             <mat-divider [vertical]="true"></mat-divider>
                             <div fxFlex="28%">
                                 <h2>Acciones:</h2>
-                                <button mat-menu-item (click)="editProduct(element)" color="warn">
+                                <!-- <button mat-menu-item (click)="editProduct(element)" color="warn">
                                     <mat-icon class="material-icons-outlined">edit</mat-icon> Cambiar Cantidades
-                                </button>
+                                </button> -->
                                 <button mat-menu-item (click)="showMovements(element)" color="warn">
                                     <mat-icon class="material-icons-outlined">route</mat-icon> Ver Ultimos
                                     Movimientos

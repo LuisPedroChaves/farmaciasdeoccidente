@@ -11,24 +11,25 @@
     </header>
     <!-- <button mat-fab color="primary" class="fab mat-elevation-z10" (click)="addNewProduct()"> -->
     <!-- <button mat-fab color="primary" class="fab mat-elevation-z10" (click)="addNewProduct()"> -->
-    <mat-divider></mat-divider>
-    <mat-tab-group>
-        <mat-tab>
-            <ng-template mat-tab-label>
-                <mat-icon class="tab-icon">thumb_up</mat-icon>
-                First
-            </ng-template>
-            <app-general-inventory></app-general-inventory>
-        </mat-tab>
+    <div fxLayoutAlign="center" fxLayout="row wrap">
+        <div fxFlex="15%" fxFlex.md="30%" fxFlex.lg="20%" fxFlex.xl="20%" fxFlex.sm="30%" fxFlex.xs="100%">
+            <button mat-menu-item (click)="inventoryGeneral = true" color="warn" active="true">
+                <mat-icon class="material-icons-outlined">done_all</mat-icon> Inventario General
+            </button>
+        </div>
+        <div fxFlex="17%" fxFlex.md="30%" fxFlex.lg="20%" fxFlex.xl="20%" fxFlex.sm="30%" fxFlex.xs="100%">
+            <button mat-menu-item (click)="inventoryGeneral = false" color="warn">
+                <mat-icon class="material-icons-outlined">pending_actions</mat-icon> Inventario de Pendientes
+            </button>
+        </div>
+    </div>
 
-        <mat-tab>
-            <ng-template mat-tab-label>
-                <mat-icon class="tab-icon">thumb_up</mat-icon>
-                Second
-            </ng-template>
-            <app-pending-inventory></app-pending-inventory>
-        </mat-tab>
+    <div *ngIf="inventoryGeneral">
+        <app-general-inventory></app-general-inventory>
+    </div>
+    <div *ngIf="!inventoryGeneral">
+        <app-pending-inventory></app-pending-inventory>
+    </div>
 
-    </mat-tab-group>
 
 </div>

@@ -13,14 +13,23 @@ import {
   OnInit,
   ViewChild,
 } from '@angular/core';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { Subscription, fromEvent } from 'rxjs';
-import { debounceTime, distinctUntilChanged, tap } from 'rxjs/operators';
+import { Subscription, fromEvent, Observable } from 'rxjs';
+import {
+  debounceTime,
+  distinctUntilChanged,
+  map,
+  startWith,
+  tap,
+} from 'rxjs/operators';
+import { BrandItem } from 'src/app/core/models/Brand';
 import { ProductItem } from 'src/app/core/models/Product';
 import { StorageItem } from 'src/app/core/models/Storage';
+import { BrandService } from 'src/app/core/services/httpServices/brand.service';
 import { ProductService } from 'src/app/core/services/httpServices/product.service';
 import { ToastyService } from 'src/app/core/services/internal/toasty.service';
 import { AppState } from 'src/app/core/store/app.reducer';
@@ -44,12 +53,19 @@ import { ModalMovementsComponent } from '../modal-movements/modal-movements.comp
 export class GeneralInventoryComponent
   implements OnInit, OnDestroy, AfterViewInit
 {
-  @ViewChild(MatPaginator) paginator: MatPaginator;
-  @ViewChild('search') search: ElementRef<HTMLInputElement>;
-
   searchBy = 'Producto';
-
   smallScreen = window.innerWidth < 960 ? true : false;
+
+  @ViewChild(MatPaginator) paginator: MatPaginator;
+  // @ViewChild('search') search: ElementRef<HTMLInputElement>;
+
+  // Autocomplete Brand
+  orderFind = false;
+  brandsSubscription: Subscription;
+  brands: BrandItem[];
+  brandOptions: BrandItem[] = [];
+  brandFilteredOptions: Observable<BrandItem[]>;
+  // END brand
 
   expandedElement: ProductItem | null;
 
@@ -68,58 +84,52 @@ export class GeneralInventoryComponent
   ];
   currentPage = 0;
 
+  searchBrandField = new FormControl();
+  searchProductField = new FormControl();
+
   constructor(
     public store: Store<AppState>,
-    public productService: ProductService,
     public toasty: ToastyService,
     public router: Router,
-    public dialog: MatDialog
+    public dialog: MatDialog,
+    public productService: ProductService,
+    public brandService: BrandService
   ) {}
 
   ngOnInit(): void {
-    // this.sessionsubscription = this.store
-    //   .select('session')
-    //   .pipe(filter((session) => session !== null))
-    //   .subscribe((session) => {
-    //     if (session.permissions !== null) {
-    //       const b = session.permissions.filter(
-    //         (pr) => pr.name === 'adminProducts'
-    //       );
-    //       this.productsp = b.length > 0 ? b[0].options : [];
-    //     }
-    //   });
+    // Brand Autocomplete
+    this.brandsSubscription = this.brandService.readData().subscribe((data) => {
+      this.brands = data;
+      this.brandOptions = [...this.brands];
+    });
+    this.brandFilteredOptions = this.searchBrandField.valueChanges.pipe(
+      startWith(''),
+      map((value) => this._filterBrands(value))
+    );
+    // END Brand AUtocomplete
 
-    // this.dataSource = new ProductsDataSource(this.productService);
-    // this.dataSource.loadProducts(this.currentPage, 10, '');
     console.log(this.dataSource);
   }
   ngOnDestroy(): void {
     this.sessionsubscription?.unsubscribe();
+    this.brandsSubscription?.unsubscribe();
   }
 
   ngAfterViewInit(): void {
-    // server-side search
-    fromEvent(this.search.nativeElement, 'keyup')
-      .pipe(
-        debounceTime(500),
-        distinctUntilChanged(),
-        tap(() => {
-          this.paginator.pageIndex = 0;
-          // this.loadProductsPage();
-        })
-      )
-      .subscribe();
-
-    // this.paginator.page.pipe(tap(() => this.loadProductsPage())).subscribe();
+    this.brandService.loadData();
   }
 
-  // loadProductsPage(): void {
-  //   this.dataSource.loadProducts(
-  //     this.paginator.pageIndex,
-  //     this.paginator.pageSize,
-  //     this.search.nativeElement.value
-  //   );
-  // }
+  private _filterBrands(value: string): BrandItem[] {
+    if (value) {
+      const filterValue = value.toLowerCase();
+      return this.brandOptions.filter((option) =>
+        option.name.toLowerCase().includes(filterValue)
+      );
+    } else {
+      return [];
+    }
+  }
+
   showMovements(item: any): void {
     const dialogRef = this.dialog.open(ModalMovementsComponent, {
       width: this.smallScreen ? '100%' : '1200px',
@@ -137,6 +147,26 @@ export class GeneralInventoryComponent
         // this.loadProducts();
       }
     });
+  }
+
+  filterByBrand(brandName: string): void {
+    console.log(brandName);
+  }
+
+  searchByProduct(productName: string): void {
+    console.log(productName);
+  }
+
+  changeSearch(): void {
+    if (this.searchBy === 'Producto') {
+      this.searchBy = 'Laboratorio';
+      this.searchBrandField.setValue('');
+      this.searchProductField.setValue('');
+    } else {
+      this.searchBy = 'Producto';
+      this.searchBrandField.setValue('');
+      this.searchProductField.setValue('');
+    }
   }
 }
 

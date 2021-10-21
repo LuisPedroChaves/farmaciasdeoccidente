@@ -1,7 +1,10 @@
 <button mat-mini-fab color="warn" class="miniFab mat-elevation-z10">
     <mat-icon>print</mat-icon>
 </button>
-
+<div fxLayoutAlign="center">
+    <h2>Pendientes de Inventario</h2>
+</div>
+<mat-divider></mat-divider>
 
 <div fxLayout="row wrap" class="my-container" data-simplebar>
     <!-- <div class="container-strech"> -->
@@ -134,9 +137,9 @@
                             <mat-divider [vertical]="true"></mat-divider>
                             <div fxFlex="28%">
                                 <h2>Acciones:</h2>
-                                <button mat-menu-item (click)="editProduct(element)" color="warn">
+                                <!-- <button mat-menu-item (click)="editProduct(element)" color="warn">
                                     <mat-icon class="material-icons-outlined">edit</mat-icon> Cambiar Cantidades
-                                </button>
+                                </button> -->
                                 <button mat-menu-item (click)="showMovements(element)" color="warn">
                                     <mat-icon class="material-icons-outlined">route</mat-icon> Ver Ultimos
                                     Movimientos
