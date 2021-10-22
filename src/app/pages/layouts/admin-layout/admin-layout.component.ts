@@ -14,6 +14,7 @@ import { HttpClient } from '@angular/common/http';
 import { UpdateNotificationsComponent } from 'src/app/pages/shared-components/update-notifications/update-notifications.component';
 import { MatDialog } from '@angular/material/dialog';
 import { environment } from 'src/environments/environment.prod';
+import { UserComponent } from '../../shared-components/user/user.component';
 const SMALL_WIDTH_BREAKPOINT = 960;
 
 @Component({
@@ -172,6 +173,21 @@ export class AdminLayoutComponent implements OnInit, OnDestroy {
   logout(): void {
     localStorage.removeItem('farmaciasDO-session');
     this.store.dispatch(actions.logoutSuccess());
+  }
+
+  showProfile() {
+    const dialogRef = this.dialog.open(UserComponent, {
+      width: this.smallScreen ? '100%' : '600px',
+      height: this.smallScreen ? '100%' : '720px',
+      data: {},
+      disableClose: true,
+      panelClass: ['farmacia-dialog', 'farmacia'],
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result !== undefined) {
+      }
+    });
   }
 
 }

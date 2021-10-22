@@ -53,6 +53,7 @@ import { LoaderComponent } from './loader/loader.component';
 
 import { MatMomentDateModule, MAT_MOMENT_DATE_ADAPTER_OPTIONS, MomentDateAdapter } from "@angular/material-moment-adapter";
 import 'moment/locale/es';
+import { UserComponent } from './user/user.component';
 // Tambien hay que instalar MOMENT JS
 export const MY_DATE_FORMATS = {
   parse: {
@@ -66,7 +67,7 @@ export const MY_DATE_FORMATS = {
   },
 };
 @NgModule({
-  declarations: [NewCellarComponent, ConfirmationDialogComponent, NotificationsComponent, UpdateNotificationsComponent, LoaderComponent],
+  declarations: [NewCellarComponent, ConfirmationDialogComponent, NotificationsComponent, UpdateNotificationsComponent, LoaderComponent, UserComponent],
   imports: [
     CommonModule,
     FormsModule,

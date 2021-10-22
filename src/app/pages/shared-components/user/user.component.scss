@@ -1,0 +1,137 @@
+.header {
+    padding: 10px;
+}
+
+.h2 {
+    color: #0a1958;
+}
+
+.info-row {
+    margin-bottom: 5px;
+    margin-top: 3px;
+}
+
+.close-button {
+    margin-right: 10px;
+}
+
+.clientspace {
+    height: 610px;
+    width: 100%;
+}
+
+$blue: #2979ff;
+$blue-2: #0c50c7;
+.section-content {
+    height: calc(100%);
+}
+
+.headerrow {
+    padding: 20px;
+}
+
+.new-header {
+    padding: 10px;
+}
+
+.input-all {
+    width: 100%;
+}
+
+.close-button {
+    margin-right: 10px;
+}
+
+.avatarimage {
+    width: 125px;
+    height: 125px;
+    border-radius: 100%;
+    border: 3px solid $blue;
+}
+
+.image-section {
+    width: 135px;
+    height: 135px;
+}
+
+.text-center {
+    text-align: center !important;
+}
+
+.image-edit {
+    position: relative;
+    display: block;
+}
+
+.avatarimageStep {
+    min-height: 130px !important;
+    min-width: 140px !important;
+    max-height: 130px !important;
+    max-width: 140px !important;
+    text-align: center !important;
+    img {
+        width: 125px;
+        border-radius: 100%;
+        border: 4px solid $blue;
+    }
+}
+
+.input-80 {
+    width: 80%;
+}
+
+.display-bottom-right {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    color: white;
+    margin-right: 15px;
+}
+
+.form-paddin {
+    padding: 0px 25px;
+}
+
+.input-section {
+    padding: 10px 0px;
+}
+
+.menu-images {
+    min-width: 185px;
+    width: 185px;
+    max-width: 185px;
+    padding: 7px;
+}
+
+.avataroption {
+    width: 40px;
+    height: 40px;
+}
+
+.avatar {
+    width: 38px;
+    height: 38px;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+.avatar:hover {
+    border-radius: 20px;
+    transition: 0.3s;
+}
+
+.text-md {
+    font-size: 18px;
+}
+
+.check {
+    color: green;
+}
+
+.error {
+    color: rgb(190, 0, 0);
+}
+
+.infosection {
+    padding: 15px;
+}
