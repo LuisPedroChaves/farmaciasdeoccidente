@@ -11,14 +11,35 @@
 <div class="content">
     <mat-divider></mat-divider>
     <br><br>
-    <div fxflex="100" class="text-muted input-padding" ng-reflect-fx-flex="100"
-        style="flex: 1 1 100%; box-sizing: border-box; max-width: 100%;">
-        <strong>
-            <h3 class="ma-0 ">Fecha de Expiración: <small>{{loteExample.expiration_date}}</small> </h3>
-        </strong>
-        <h3 class="ma-0 ">Costo de Lote: <small>{{loteExample.cost}}</small> </h3>
-        <h3 class="ma-0 ">Cantidad de Compra: <small>{{loteExample.quantity}}</small> </h3>
-        <h3 class="ma-0 ">Existencias de Lote: <small>{{loteExample.stock}}</small> </h3>
+    <div fxLayout="row wrap" class=" input-padding" style="flex: 1 1 100%; box-sizing: border-box; max-width: 100%;">
+        <div fxFlex="50%" fxFlex.md="50%" fxFlex.sm="100%" fxFlex.xs="100%" fxLayoutAlign="end">
+            <strong>
+                <h3 class=" text-muted ma-0 ">Fecha de Expiración:</h3>
+            </strong>
+        </div>
+        <div fxFlex="50%" fxFlex.md="50%" fxFlex.sm="100%" fxFlex.xs="100%">
+            <strong>
+                <h3 class="input-padding">{{loteExample.expiration_date}}</h3>
+            </strong>
+        </div>
+        <div fxFlex="50%" fxFlex.md="50%" fxFlex.sm="100%" fxFlex.xs="100%" fxLayoutAlign="end">
+            <h3 class="text-muted ma-0 ">Costo de Lote:</h3>
+        </div>
+        <div fxFlex="50%" fxFlex.md="50%" fxFlex.sm="100%" fxFlex.xs="100%">
+            <h3 class="input-padding"> Q.{{loteExample.cost}}</h3>
+        </div>
+        <div fxFlex="50%" fxFlex.md="50%" fxFlex.sm="100%" fxFlex.xs="100%" fxLayoutAlign="end">
+            <h3 class="text-muted ma-0 ">Cantidad de Compra: </h3>
+        </div>
+        <div fxFlex="50%" fxFlex.md="50%" fxFlex.sm="100%" fxFlex.xs="100%">
+            <h3 class="input-padding">{{loteExample.quantity}} Unidades</h3>
+        </div>
+        <div fxFlex="50%" fxFlex.md="50%" fxFlex.sm="100%" fxFlex.xs="100%" fxLayoutAlign="end">
+            <h3 class="text-muted ma-0 ">Existencias de Lote: </h3>
+        </div>
+        <div fxFlex="50%" fxFlex.md="50%" fxFlex.sm="100%" fxFlex.xs="100%">
+            <h3 class="input-padding">{{loteExample.stock}} Unidades</h3>
+        </div>
     </div>
     <br>
     <br>
