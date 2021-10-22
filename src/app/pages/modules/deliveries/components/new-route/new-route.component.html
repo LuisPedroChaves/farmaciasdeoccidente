@@ -22,32 +22,42 @@
                         <span class="text-muted">Por favor selecciona una orden pendiente </span>
                     </div>
                     <div *ngIf="newRoute.details.length > 0" fxLayout="column wrap">
-                        <mat-list *ngFor="let c of  newRoute.details" style="padding-top: 0; width: 100%;" class="divider">
-                            <mat-list-item class="assigned-job mat-elevation-z4">
-                                <mat-icon mat-list-icon *ngIf="c._order" class="material-icons-outlined whitebg" color="primary">
-                                    receipt_long
-                                </mat-icon>
-                                <h4 mat-line *ngIf="c._order">#{{ c._order.noOrder }} <span fxFlex></span> Factura: {{ c._order.noBill }}</h4>
-                                <p mat-line *ngIf="c._order" class="text-muted">
-                                    {{c._order.address}}
-                                </p>
-                                <small mat-line *ngIf="c._order" class="text-muted">{{ c._order.town }}, {{ c._order.department }}
-                </small>
-                                <button mat-icon-button *ngIf="c._order" (click)="removeOrder(c._order)">
-                  <mat-icon>close</mat-icon>
-                </button>
-                                <mat-icon mat-list-icon *ngIf="c._internalOrder" class="material-icons-outlined whitebg" color="accent">
-                                    send</mat-icon>
-                                <h4 mat-line *ngIf="c._internalOrder">#{{ c._internalOrder.noOrder }} <span fxFlex></span> {{ c._internalOrder.type }}</h4>
-                                <small mat-line *ngIf="c._internalOrder" class="text-muted">Origen:
-                  {{c._internalOrder._cellar.name }}</small>
-                                <small mat-line *ngIf="c._internalOrder" class="text-muted">Destino:
-                  {{c._internalOrder._destination.name }}</small>
-                                <button mat-icon-button *ngIf="c._internalOrder" (click)="removeInternalOrder(c._internalOrder)">
-                  <mat-icon>close</mat-icon>
-                </button>
-                            </mat-list-item>
-                        </mat-list>
+                        <ng-container *ngFor="let c of  newRoute.details">
+                            <mat-card *ngIf="c._order" class="assigned-job mat-elevation-z4">
+                                <mat-card-header>
+                                    <div mat-card-avatar>
+                                        <mat-icon mat-list-icon class="material-icons-outlined whitebg" color="primary">receipt_long</mat-icon>
+                                    </div>
+                                    <mat-card-title>#{{ c._order.noOrder }}</mat-card-title>
+                                    <mat-card-subtitle>Factura: {{ c._order.noBill }}</mat-card-subtitle>
+                                </mat-card-header>
+                                <mat-card-content>
+                                    <p>{{c._order.address}}</p>
+                                    <p>{{ c._order.town }} {{ c._order.department }}</p>
+                                </mat-card-content>
+                                <mat-card-actions>
+                                    <button mat-button (click)="removeOrder(c._order)" style="color:brown;">Quitar</button>
+                                </mat-card-actions>
+                            </mat-card>
+                            <mat-card *ngIf="c._internalOrder" class="assigned-job mat-elevation-z4">
+                                <mat-card-header>
+                                    <div mat-card-avatar>
+                                        <mat-icon mat-list-icon class="material-icons-outlined whitebg" color="accent">send</mat-icon>
+                                    </div>
+                                    <mat-card-subtitle>{{ c._internalOrder.type }}</mat-card-subtitle>
+                                    <mat-card-title>#{{ c._internalOrder.noOrder }}</mat-card-title>
+                                </mat-card-header>
+                                <mat-card-content>
+                                    <p>
+                                        <span class="text-muted">Origen: {{c._internalOrder._cellar.name }}</span>
+                                        <br> Destino: {{c._internalOrder._destination.name }}
+                                    </p>
+                                </mat-card-content>
+                                <mat-card-actions>
+                                    <button mat-button (click)="removeInternalOrder(c._internalOrder)" style="color:brown;">Quitar</button>
+                                </mat-card-actions>
+                            </mat-card>
+                        </ng-container>
                     </div>
                 </div>
             </div>
@@ -69,22 +79,34 @@
                             <mat-icon class="text-muted" matPrefix>search</mat-icon>
                             <input matInput type="text" [(ngModel)]="searchText">
                         </mat-form-field> &nbsp; &nbsp; &nbsp;
-                        <mat-list matRipple (click)="addInternalOrder(c)" *ngFor="let c of  (internalOrders | filter: searchText : ['noOrder'])" style="padding-top: 0; cursor: pointer;">
-                            <mat-list-item class="assigned-job mat-elevation-z4">
-                                <mat-icon mat-list-icon class="material-icons-outlined whitebg" color="accent">send</mat-icon>
-                                <h4 mat-line>#{{ c.noOrder }} <span fxFlex></span> {{ c.type }}</h4>
-                                <small mat-line class="text-muted">Origen: {{c._cellar.name }}</small>
-                                <small mat-line class="text-muted">Destino: {{c._destination.name }}</small>
-                            </mat-list-item>
-                        </mat-list>
-                        <mat-list matRipple (click)="addOrder(c)" *ngFor="let c of  (orders | filter: searchText : ['noBill', 'nit', 'name', 'phone', 'address', 'town', 'department'])" style="padding-top: 0; cursor: pointer;">
-                            <mat-list-item class="assigned-job mat-elevation-z4">
-                                <mat-icon mat-list-icon class="material-icons-outlined whitebg" color="primary">receipt_long</mat-icon>
-                                <h4 mat-line>#{{ c.noOrder }} <span fxFlex></span> Factura: {{ c.noBill }}</h4>
-                                <small mat-line class="text-muted">{{c.address}} </small>
-                                <small mat-line class="text-muted">{{ c.town }}, {{ c.department }} </small>
-                            </mat-list-item>
-                        </mat-list>
+                        <mat-card matRipple (click)="addInternalOrder(c)" *ngFor="let c of  (internalOrders | filter: searchText : ['noOrder'])" class="assigned-job mat-elevation-z4 cursor-pointer">
+                            <mat-card-header>
+                                <div mat-card-avatar>
+                                    <mat-icon mat-list-icon class="material-icons-outlined whitebg" color="accent">send</mat-icon>
+                                </div>
+                                <mat-card-subtitle>{{ c.type }}</mat-card-subtitle>
+                                <mat-card-title>#{{ c.noOrder }}</mat-card-title>
+                            </mat-card-header>
+                            <mat-card-content>
+                                <p>
+                                    <span class="text-muted">Origen: {{c._cellar.name }}</span>
+                                    <br> Destino: {{c._destination.name }}
+                                </p>
+                            </mat-card-content>
+                        </mat-card>
+                        <mat-card matRipple (click)="addOrder(c)" *ngFor="let c of  (orders | filter: searchText : ['noBill', 'nit', 'name', 'phone', 'address', 'town', 'department'])" class="assigned-job mat-elevation-z4 cursor-pointer">
+                            <mat-card-header>
+                                <div mat-card-avatar>
+                                    <mat-icon mat-list-icon class="material-icons-outlined whitebg" color="primary">receipt_long</mat-icon>
+                                </div>
+                                <mat-card-title>#{{ c.noOrder }}</mat-card-title>
+                                <mat-card-subtitle>Factura: {{ c.noBill }}</mat-card-subtitle>
+                            </mat-card-header>
+                            <mat-card-content>
+                                <p>{{c.address}}</p>
+                                <p>{{ c.town }} {{ c.department }}</p>
+                            </mat-card-content>
+                        </mat-card>
                     </div>
                 </div>
             </div>
