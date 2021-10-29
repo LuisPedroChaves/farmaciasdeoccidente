@@ -1,0 +1,33 @@
+.screen-space {
+    height: calc(100vh - 161px);
+    background-color: white;
+}
+
+.screen-space-sm {
+    height: calc(100vh - 189px);
+    background-color: white;
+}
+
+
+.header {padding: 10px;}
+.T1 { color: #045195;  font-size: 20px;}
+.V {color: #0a1958;}
+.ammounttitle { padding: 10px 26px; border-left: 1px solid rgba(0, 0, 0, 0.1);}
+.pasive { color: rgb(179, 61, 61);}
+.active { color: rgb(78, 129, 73);}
+.filterbutton {margin: 0px 8px}
+
+.space {
+    height: calc(100% - 92px);
+}
+.space-sm {
+    height: calc(100% - 74px);
+}
+.tab-space { height: calc(100%); }
+.tab { height: calc(100vh - 304px); padding: 10px; background-color: rgba($color: #000000, $alpha: 0.05); }
+.request-space { padding: 10px 15px; }
+.list-space { padding: 0px 15px; }
+.card-icon {
+    font-size: 40px;
+}
+.card-row { padding-bottom: 5px; }

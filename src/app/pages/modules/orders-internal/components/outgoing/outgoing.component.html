@@ -1,0 +1,206 @@
+<div class="screen-space" >
+    <div class="header" fxLayout="row wrap" fxLayoutAlign="start center">
+        <h2 *ngIf="!smallScreen" class="product-font ma-0 T1">Solicitudes de pedidos</h2>
+        <span fxFlex></span>
+        <div [fxFlex]="smallScreen ? 50 : 'nogrow'" fxLayout="column wrap" class="ammounttitle active">
+            <h1 class="ma-0 active"> {{ recibidos.length }}</h1>
+            <small>Pedidos recibidos</small>
+          </div>
+          <div [fxFlex]="smallScreen ? 50 : 'nogrow'" fxLayout="column wrap" class="ammounttitle pasive">
+            <h1 class="ma-0 pasive">{{ enviados.length }}</h1>
+            <small>Solicitudes enviadas</small>
+        </div>
+    </div>
+
+
+    <!-- SMALSCREEN  -->
+    <div *ngIf="smallScreen" class="space-sm">
+        <mat-tab-group mat-stretch-tabs color="accent" class="tab-space">
+            <mat-tab label="Pedidos Recibidos">
+                <div  data-simplebar class="tab">
+                   
+                    <mat-card *ngFor="let a of recibidos">
+                        <mat-card-content>
+                            <div fxLayout="row wrap" fxLayoutAlign="start center">
+                                <div fxFlex="50px"><mat-icon class="active">call_received</mat-icon></div>
+                                <div fxFlex fxLayout="column wrap">
+                                    <div fxLayout="row wrap" class="card-row">
+                                        <div class="text-lg"><b>{{ a._cellar.name }}</b></div>
+                                        <div fxFlex></div>
+                                        <div>No. {{ a.noOrder }}</div>
+                                    </div>
+                                    <div fxLayout="row wrap" fxLayoutAlign="start center" class="card-row">
+                                        <mat-chip-list>
+                                            <mat-chip selected color="accent">Despachado</mat-chip>
+                                        </mat-chip-list>  &nbsp; &nbsp;
+                                        {{ a.date | date: 'dd/MM/yyyy HH:mm' }}
+                                    </div>
+                                </div>
+                            </div>
+                            <div fxLayout="row wrap" fxLayoutAlign="start center" style="margin-top: 10px">
+                                <div fxFlex="25">Usuario:</div>
+                                <div fxFlex>{{ a._user.name }}</div>
+                            </div>
+                            <div fxLayout="row wrap" fxLayoutAlign="start center">
+                                <div fxFlex="25">Repartidor:</div>
+                                <div fxFlex>{{ a._delivery.name }}</div>
+                            </div>
+                            <div fxLayout="row wrap" fxLayoutAlign="start center">
+                                <div fxFlex="25">Despacho:</div>
+                                <div fxFlex>{{ a.timeDispatch | date: 'dd/MM/yyyy HH:mm' }}</div>
+                            </div>
+                        </mat-card-content>
+                        <mat-card-actions>
+                            <button mat-button>
+                                Ver detalles
+                            </button>
+                            <span fxFlex></span>
+                            <button mat-button color="accent" matTooltip="Marcar como recibido">
+                                <mat-icon>task_alt</mat-icon>
+                                Recibido
+                            </button>
+                        </mat-card-actions>
+                    </mat-card>
+
+                </div>
+            </mat-tab>
+            <mat-tab label="Envíos">
+                <div  data-simplebar class="tab">
+                    WENAS <br>
+                    WENAS <br>
+                    WENAS <br>
+                    WENAS <br>
+                    WENAS <br>
+                    WENAS <br>
+                    WENAS <br>
+                    WENAS <br>
+                    WENAS <br>
+                    WENAS <br>
+                    WENAS <br>
+                    WENAS <br>
+                    WENAS <br>
+                    WENAS <br>
+                    WENAS <br>
+                    WENAS <br>
+                    WENAS <br>
+                    WENAS <br>
+                    WENAS <br>
+                    WENAS <br>
+                    WENAS <br>
+                    WENAS <br>
+                    WENAS <br>
+                    WENAS <br>
+                    WENAS <br>
+                    WENAS <br>
+                    WENAS <br>
+                    WENAS <br>
+                    WENAS <br>
+                    WENAS <br>
+                    WENAS <br>
+                    WENAS <br>
+                    WENAS <br>
+                    WENAS <br>
+                    WENAS <br>
+                    WENAS <br>
+                    WENAS <br>
+                    WENAS <br>
+                    WENAS <br>
+                    WENAS <br>
+                    WENAS <br>
+                    WENAS <br>
+                    WENAS <br>
+                    WENAS <br>
+                    WENAS <br>
+                    WENAS <br>
+                    WENAS <br>
+                    WENAS <br>
+                    WENAS <br>
+                    WENAS <br>
+                    WENAS <br>
+                    WENAS <br>
+                    WENAS <br>
+                    WENAS <br>
+                    WENAS <br>
+                    WENAS <br>
+                    WENAS <br>
+                    WENAS <br>
+                    WENAS <br>
+                    WENAS <br>
+                    WENAS <br>
+                    WENAS <br>
+                    WENAS <br>
+                    WENAS <br>
+                    WENAS <br>
+                    WENAS <br>
+                    WENAS <br>
+                    WENAS <br>
+                    WENAS <br>
+                    WENAS <br>
+                    WENAS <br>
+                    WENAS <br>
+                    WENAS <br>
+                    WENAS <br>
+                    WENAS <br>
+                    WENAS <br>
+                    WENAS <br>
+                    WENAS <br>
+                    WENAS <br>
+                    WENAS <br>
+                    WENAS <br>
+                    WENAS <br>
+                    WENAS <br>
+                    WENAS <br>
+                    WENAS <br>
+                </div>
+            </mat-tab>
+        </mat-tab-group>
+
+    </div>
+
+    <!-- <div class="space" data-simplebar>
+        <div class="request-space" fxLayout="row wrap">
+            <div fxFlex.gt-sm="50" fxFlex="100">
+                <h3 class="ma-0 product-font V"><b>Pedidos Recibidos</b></h3>
+                <div class="text-muted">Confirmación de envíos recibidos</div>
+                <br><br>
+                <div class="list-space" fxLayout="row wrap">
+
+                    <mat-card fxFlex="100">
+                        <mat-card-header>
+                            <mat-icon mat-card-avatar class="card-icon active">call_received</mat-icon>
+                            <mat-card-title fxLayout="row wrap">
+                                <span>Nombre de la sucursal</span>
+                                <span fxFlex></span>
+                                <span   >No. 540044</span>
+                            </mat-card-title>
+                            <mat-card-subtitle>10/10/2012</mat-card-subtitle>
+                        </mat-card-header>
+                        <mat-card-content>
+                            <div fxLayout="row wrap">
+                                <div fxFlex="20">Repartidor:</div>
+                                <div fxFlex>Luis Pedro Chaves</div>
+                            </div>
+                            <div fxLayout="row wrap" fxLayoutAlign="start center">
+                                <div fxFlex="20">Estado:</div>
+                                <div fxFlex>
+                                    <mat-chip-list>
+                                        <mat-chip selected color="accent">
+                                          Despachado
+                                        </mat-chip>
+                                    </mat-chip-list>
+                                </div>
+                            </div>
+                        </mat-card-content>
+                        <mat-card-actions>
+                            <span fxFlex></span>
+                            <button mat-button>ACEPTAR</button>
+                        </mat-card-actions>
+                    </mat-card>
+                </div>
+            </div>
+            <div fxFlex.gt-sm="50" fxFlex="100">
+                <h3 class="ma-0 product-font V"><b>Confirmar envios recibidos</b></h3>
+            </div>
+        </div>
+    </div> -->
+</div>

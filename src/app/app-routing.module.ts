@@ -43,6 +43,10 @@ const routes: Routes = [
         canActivate: [CheckTokenGuard]
       },
       {
+        path: 'ordersInternal',  loadChildren: () => import('./pages/modules/orders-internal/orders-internal.module').then(m => m.OrdersInternalModule),
+        canActivate: [CheckTokenGuard]
+      },
+      {
         path: 'transfers',  loadChildren: () => import('./pages/modules/transfers/transfers.module').then(m => m.TransfersModule),
         canActivate: [CheckTokenGuard]
       },// Aquí comienza Cuentas por cobrar

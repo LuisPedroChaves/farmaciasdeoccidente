@@ -28,6 +28,7 @@ import { AuthAdminGuard } from './core/auth/auth-admin.guard';
 
 // sockets
 import { SocketIoModule, SocketIoConfig } from 'ngx-socket-io';
+
 const config: SocketIoConfig = { url: environment.root, options: {} };
 
 @NgModule({

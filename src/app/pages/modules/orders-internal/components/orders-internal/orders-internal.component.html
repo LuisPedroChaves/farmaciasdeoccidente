@@ -1,0 +1,34 @@
+<div *ngIf="internalOrdersp !== undefined">
+    <div class="header scrollmenu" fxLayout="row" fxLayoutAlign="start end">
+        <h4 class="product-font ma-0 module-title">
+            Pedidos a bodegas</h4>
+        <div fxFlex></div>
+        <div *ngIf="internalOrdersp.includes('read') && this.currentStore.type === 'BODEGA'" [ngClass]="{'active-tab': this.tab === 'incomingScreen'}" (click)="changeTab('incomingScreen')" class="option cursor-pointer" matRipple fxLayout="column wrap" fxLayoutAlign="start center">
+            <div class="iconspace">
+                <mat-icon inline="false" class="material-icons-outlined" color="primary">ballot</mat-icon>
+            </div>
+            <div *ngIf="!smallScreen" class="iconspace2"><span>Monitor</span></div>
+        </div>
+        <div *ngIf="internalOrdersp.includes('read')" [ngClass]="{'active-tab': this.tab === 'outgoing'}" (click)="changeTab('outgoing')" class="option cursor-pointer" matRipple fxLayout="column wrap" fxLayoutAlign="start center">
+            <div class="iconspace">
+                <mat-icon inline="false" class="material-icons-outlined" color="primary">markunread_mailbox</mat-icon>
+            </div>
+            <div *ngIf="!smallScreen" class="iconspace2"><span>Solicitudes</span></div>
+        </div>
+        <div *ngIf="internalOrdersp.includes('read') && this.currentStore.type === 'BODEGA'" [ngClass]="{'active-tab': this.tab === 'incoming'}" (click)="changeTab('incoming')" class="option cursor-pointer" matRipple fxLayout="column wrap" fxLayoutAlign="start center">
+            <div class="iconspace">
+                <mat-icon inline="false" class="material-icons-outlined" color="primary">schedule_send</mat-icon>
+            </div>
+            <div *ngIf="!smallScreen" class="iconspace2"><span>Pedidos</span></div>
+        </div>
+        <div *ngIf="internalOrdersp.includes('read') && this.currentStore.type === 'BODEGA'" [ngClass]="{'active-tab': this.tab === 'history'}" (click)="changeTab('history')" class="option cursor-pointer" matRipple fxLayout="column wrap" fxLayoutAlign="start center">
+            <div class="iconspace">
+                <mat-icon inline="false" class="material-icons-outlined" color="primary">ballot</mat-icon>
+            </div>
+            <div *ngIf="!smallScreen" class="iconspace2"><span>Historial</span></div>
+        </div>
+    </div>
+    <div [ngClass]="{'space':!smallScreen, 'space-sm':smallScreen}">
+        <router-outlet></router-outlet>
+    </div>
+</div>

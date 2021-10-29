@@ -47,6 +47,14 @@
         "order": 3
     },
     {
+        "state": "ordersInternal",
+        "name": "Pedidos (new)",
+        "type": "link",
+        "icon": "send",
+        "iconType": "icon",
+        "order": 3
+    },
+    {
         "state": "transfers",
         "name": "Traslados",
         "type": "link",

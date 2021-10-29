@@ -100,7 +100,7 @@ export class AppLayoutComponent implements OnInit, OnDestroy, AfterContentInit {
       this.menuService.initMenu()
     ]).subscribe(data => {
       if (data[0].role.type === 'ADMIN') {
-        this.http.get<MenuItem[]>('/assets/data/modules.json').subscribe((result: any) => {
+        this.http.get<MenuItem[]>('assets/data/modules.json').subscribe((result: any) => {
           this.myrole = result.filter(r => r.parent !== 'ADMIN');
           this.showNotifications(this.myrole);
           this.store.dispatch(actions.setMyRole({ myroles: this.myrole }));
@@ -201,16 +201,18 @@ export class AppLayoutComponent implements OnInit, OnDestroy, AfterContentInit {
     parents.forEach(p => {
       const childrens = permissions.filter(mp => mp.parent === p.name);
       const parentEquivalent: MenuItem = menu.filter(m => m.state === p.name)[0];
+      
       if (childrens.length > 0) {
         parentEquivalent.children = [];
         childrens.forEach(c => {
-          const childmenu: ChildrenItems = menu.filter(mc => mc.state === c.name)[0];
-          parentEquivalent.children.push(childmenu);
-          //TODO: Eliminar cuando ya no lo esten utilizando por sucursal
-          if (childmenu.state !== 'deliveries') {
+          const childmenu: ChildrenItems = menu.filter(mc => mc.state === c.name)[0] ?  menu.filter(mc => mc.state === c.name)[0] : null;
+          if (childmenu !== null) {
+            parentEquivalent.children.push(childmenu);
           }
+          //TODO: Eliminar cuando ya no lo esten utilizando por sucursal
         });
       }
+      console.log(parentEquivalent);
       this.menuItems.push(parentEquivalent);
     });
   }

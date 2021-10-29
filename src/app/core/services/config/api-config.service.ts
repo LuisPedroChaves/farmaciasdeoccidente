@@ -13,7 +13,7 @@ export class ApiConfigService {
   /* #region  AUTH */
   public API_LOGIN = this.API_URL + '/login';
   public API_LOGOUT = this.API_URL + '/logout';
-  public API_MENU = '/assets/data/modules-menu.json'; // ---------- no modificar
+  public API_MENU = 'assets/data/modules-menu.json'; // ---------- no modificar
 
   /* #endregion */
 
@@ -22,7 +22,7 @@ export class ApiConfigService {
   public API_CELLAR = this.API_URL + '/cellar';
 
   // Role
-  public API_ROLES = '/assets/data/modules.json'; // ---------- no modificar
+  public API_ROLES = 'assets/data/modules.json'; // ---------- no modificar
   public API_ROLE = this.API_URL + '/role';
   public API_MY_ROLE = this.API_URL + '/role/';
 
