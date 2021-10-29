@@ -11,7 +11,15 @@ $farmacia-primary: mat-palette($md-mcfarmaciaprimary);
 $farmacia-accent: mat-palette($md-mcfarmaciasecondary);
 $farmacia-warn: mat-palette($md-mcfarmaciawarn);
 $farmacia-theme: mat-light-theme(( color: ( primary: $farmacia-primary, accent: $farmacia-accent, warn: $farmacia-warn, )));
+$farmacia-theme-d: mat-dark-theme($farmacia-primary, $farmacia-accent, $farmacia-warn);
 .farmacia {
     @include theme-color-grabber($farmacia-theme);
     @include angular-material-theme($farmacia-theme);
+}
+
+.overlay-theme.farmacia {.farmacia-search { @include angular-material-theme($farmacia-theme-d); }}
+.overlay-theme.farmacia {
+    @include angular-material-theme($farmacia-theme);
+    @include mat-menu-theme($farmacia-theme);
+    @include mat-select-theme($farmacia-theme);
 }

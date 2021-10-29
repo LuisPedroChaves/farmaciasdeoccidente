@@ -20,7 +20,8 @@ export interface ProductItem {
   exempt: boolean;
   discontinued: boolean;
   deleted?: boolean;
-  index?: number
+  index?: number;
+  unity?: string;
 }
 
 export interface ProductItemResponse {

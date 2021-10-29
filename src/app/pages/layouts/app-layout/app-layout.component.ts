@@ -212,7 +212,6 @@ export class AppLayoutComponent implements OnInit, OnDestroy, AfterContentInit {
           //TODO: Eliminar cuando ya no lo esten utilizando por sucursal
         });
       }
-      console.log(parentEquivalent);
       this.menuItems.push(parentEquivalent);
     });
   }

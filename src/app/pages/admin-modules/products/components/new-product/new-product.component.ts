@@ -40,21 +40,16 @@ export class NewProductComponent
 
       if (action) {
         if (action === 'edit') {
-          console.log(action, productToFind);
           this.productService
             .findById(productToFind)
             .subscribe(({ product }) => {
-              console.log('searching founded');
               if (product) {
-                console.log(product);
-
                 this.product = product;
                 this.action = action;
               }
             });
         } else {
           this.action = action;
-          console.log(action);
         }
       }
     });

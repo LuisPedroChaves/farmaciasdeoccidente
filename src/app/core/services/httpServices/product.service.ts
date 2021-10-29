@@ -39,12 +39,10 @@ export class ProductService {
   }
 
   createProduct(product: ProductItem): Observable<any> {
-    console.log('Sending POST request');
     return this.http.post(this.apiConfigService.API_PRODUCT, product);
   }
 
   updateProduct(product: ProductItem): Observable<any> {
-    console.log(product);
 
     return this.http.put(
       `${this.apiConfigService.API_PRODUCT}/${product._id}`,
@@ -73,7 +71,6 @@ export class ProductService {
   }
 
   findById(id: string): Observable<any> {
-    console.log(id);
     return this.http.get(`${this.apiConfigService.API_PRODUCT}/${id}`);
   }
 

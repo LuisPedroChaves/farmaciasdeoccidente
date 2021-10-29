@@ -18,6 +18,7 @@ import { FilePipe } from './filePipes/file.pipe';
     OrderByPipe,
     MoneyPipe,
 
+
     // time pipes
     TimeFormatPipe,
     TimestampDatePipe,

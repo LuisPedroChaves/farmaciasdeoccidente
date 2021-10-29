@@ -92,7 +92,6 @@ export class ProductsComponent implements OnInit, OnDestroy, AfterViewInit {
 
     this.dataSource = new ProductsDataSource(this.productService);
     this.dataSource.loadProducts(this.currentPage, 10, '');
-    console.log(this.dataSource);
   }
 
   ngOnDestroy(): void {
@@ -149,8 +148,6 @@ export class ProductsComponent implements OnInit, OnDestroy, AfterViewInit {
           (res) => {
             this.toasty.success('Producto eliminado exitosamente');
             this.dataSource.loadProducts(this.currentPage, 10, '');
-
-            console.log(res);
           },
           (error) => {
             // this.loading = false;
@@ -187,8 +184,6 @@ export class ProductsComponent implements OnInit, OnDestroy, AfterViewInit {
           (res) => {
             this.toasty.success('Producto desactivado exitosamente');
             this.dataSource.loadProducts(this.currentPage, 10, '');
-
-            console.log(res);
           },
           (error) => {
             // this.loading = false;

@@ -23,11 +23,10 @@ export class UploadFileService {
         if (xhr.readyState === 4) {
 
           if (xhr.status === 200) {
-            console.log( 'Imagen Subida' );
             resolve( JSON.parse(xhr.response));
           } else {
-            console.log( 'Fallo la subida' );
-            console.log("🚀 ~ file: upload-file.service.ts ~ line 31 ~ UploadFileService ~ returnnewPromise ~ xhr.response", xhr)
+            // console.log( 'Fallo la subida' );
+            // console.log("🚀 ~ file: upload-file.service.ts ~ line 31 ~ UploadFileService ~ returnnewPromise ~ xhr.response", xhr)
             reject( xhr.response );
           }
         }

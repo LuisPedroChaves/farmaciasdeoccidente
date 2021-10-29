@@ -48,7 +48,7 @@
     },
     {
         "state": "ordersInternal",
-        "name": "Pedidos (new)",
+        "name": "Pedidos (β)",
         "type": "link",
         "icon": "send",
         "iconType": "icon",

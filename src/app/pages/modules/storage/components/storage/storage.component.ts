@@ -93,7 +93,6 @@ export class StorageComponent implements OnInit, OnDestroy, AfterViewInit {
 
     // this.dataSource = new ProductsDataSource(this.productService);
     // this.dataSource.loadProducts(this.currentPage, 10, '');
-    console.log(this.dataSource);
   }
   ngOnDestroy(): void {
     this.sessionsubscription?.unsubscribe();

@@ -24,8 +24,6 @@ export class SubstanceService implements IDataService<SubstanceItem[]> {
       .get(this.apiConfigService.API_SUBSTANCE)
       .pipe(
         map((response: any) => {
-          console.log(response);
-
           this.SubstanceList = response.substances;
           this.substanceSubject.next(this.SubstanceList);
         })

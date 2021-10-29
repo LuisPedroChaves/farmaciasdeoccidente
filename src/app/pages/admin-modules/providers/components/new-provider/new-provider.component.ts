@@ -39,7 +39,6 @@ export class NewProviderComponent implements OnInit {
     }
     this.loading = true;
     const provider: ProviderItem = { ...this.form.value };
-    console.log(provider);
     this.providerService.createProvider(provider).subscribe(
       (data) => {
         if (data.ok === true) {

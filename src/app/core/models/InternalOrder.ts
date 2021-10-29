@@ -1,5 +1,6 @@
 import { CellarItem } from './Cellar';
 import { UserItem } from './User';
+import { ProductItem } from './Product';
 
 export interface InternalOrderItem {
 	_id?: string,
@@ -18,4 +19,15 @@ export interface InternalOrderItem {
     file: string,
     dispatchFile: string,
     deleted?: boolean
+}
+
+
+export interface InternalOrderFullItem extends InternalOrderItem{
+    products: DetailItem[];
+}
+
+export interface DetailItem {
+    quantity: number;
+    product: ProductItem;
+    stock: number;
 }

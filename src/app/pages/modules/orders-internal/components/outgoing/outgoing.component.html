@@ -1,3 +1,12 @@
+<button *ngIf="(internalOrdersp && internalOrdersp.includes('create'))" mat-fab color="primary" class="fab mat-elevation-z10" [matMenuTriggerFor]="menu">
+    <mat-icon>add</mat-icon><span class="extended-fab-button__text">Solicitar Pedido</span>
+</button>
+<mat-menu #menu="matMenu">
+    <button mat-menu-item (click)="newOrder()"><mat-icon>local_shipping</mat-icon> Pedido Normal</button>
+    <button mat-menu-item (click)="newOrder('NEW')"><mat-icon>fiber_new</mat-icon> Pedido de Nuevo Ingreso</button>
+    <button mat-menu-item (click)="newOrder('MISSING')"><mat-icon>call_missed_outgoing</mat-icon> Pedido de Faltantes</button>
+    <button mat-menu-item (click)="newOrder('RESTORE')"><mat-icon>inventory_2</mat-icon> Pedido de Reposición</button>
+</mat-menu>
 <div class="screen-space" >
     <div class="header" fxLayout="row wrap" fxLayoutAlign="start center">
         <h2 *ngIf="!smallScreen" class="product-font ma-0 T1">Solicitudes de pedidos</h2>
@@ -16,10 +25,69 @@
     <!-- SMALSCREEN  -->
     <div *ngIf="smallScreen" class="space-sm">
         <mat-tab-group mat-stretch-tabs color="accent" class="tab-space">
+            
+            <mat-tab label="Envíos">
+                <div  data-simplebar class="tab" *ngIf="enviados.length > 0">
+                    
+
+                    <mat-card class="order-card" *ngFor="let a of enviados | orderBy: 'date' : true">
+                        <mat-card-content>
+                            <div fxLayout="row wrap" fxLayoutAlign="start center">
+                                <div fxFlex="50px"><mat-icon class="pasive">local_shipping</mat-icon></div>
+                                <div fxFlex fxLayout="column wrap">
+                                    <div fxLayout="row wrap" class="card-row">
+                                        <div class="text-lg"><b>{{ a._cellar.name }}</b></div>
+                                        <div fxFlex></div>
+                                        <div>No. {{ a.noOrder }}</div>
+                                    </div>
+                                    <div fxLayout="row wrap" fxLayoutAlign="start center" class="card-row">
+                                        <mat-chip-list>
+                                            <mat-chip *ngIf="a.state === 'ENVIO'"> Solicitado</mat-chip>
+                                            <mat-chip *ngIf="a.state === 'RECHAZO'" selected color="primary">Rechazado</mat-chip>
+                                            <mat-chip *ngIf="a.state === 'CONFIRMACION'" selected color="warn">Aceptado</mat-chip>
+                                            <mat-chip *ngIf="a.state === 'DESPACHO'" color="accent">Despachado</mat-chip>
+                                            <mat-chip *ngIf="a.state === 'ENTREGA'" color="accent">Entregado</mat-chip>
+                                            <mat-chip *ngIf="a.state === 'REVISION'" color="accent">Revisado</mat-chip>
+                                        </mat-chip-list> &nbsp; &nbsp;
+                                        {{ a.date | date: 'dd/MM/yyyy HH:mm' }}
+                                    </div>
+                                </div>
+                            </div>
+                            <div fxLayout="row wrap" fxLayoutAlign="start center" style="margin-top: 10px">
+                                <div fxFlex="25">Usuario:</div>
+                                <div fxFlex>{{ a._user.name }}</div>
+                            </div>
+                            <div fxLayout="row wrap" *ngIf="a._delivery" fxLayoutAlign="start center">
+                                <div fxFlex="25">Aceptación:</div>
+                                <div fxFlex>{{ a.timeInit ? a.timeInit : '-' }}</div>
+                            </div>
+                            <div fxLayout="row wrap" fxLayoutAlign="start center">
+                                <div fxFlex="25">Detalles:</div>
+                                <div fxFlex>{{ a.details }}</div>
+                            </div>
+                        </mat-card-content>
+                        <mat-card-actions>
+                            <button mat-button (click)="details(a)">
+                                Ver detalles
+                            </button>
+                            <span fxFlex></span>
+                            <button mat-icon-button *ngIf="(a.state === 'ENVIO' || a.state === 'RECHAZO') && (internalOrdersp && internalOrdersp.includes('delete'))" (click)="delete(a)">
+                                <mat-icon>delete</mat-icon>
+                              </button>
+                        </mat-card-actions>
+                    </mat-card>
+                </div>
+
+                <div fxLayout="column wrap" fxLayoutAlign="center center"  class="tab" *ngIf="enviados.length === 0">
+                    <mat-icon>local_shipping</mat-icon>
+                    <span class="text-muted messagenot">Actualmente no hay ningún pedido recibido</span>
+                </div>
+            </mat-tab>
+
             <mat-tab label="Pedidos Recibidos">
-                <div  data-simplebar class="tab">
+                <div  data-simplebar class="tab" *ngIf="recibidos.length > 0">
                    
-                    <mat-card *ngFor="let a of recibidos">
+                    <mat-card class="order-card" *ngFor="let a of recibidos | orderBy: 'timeDispatch' : true">
                         <mat-card-content>
                             <div fxLayout="row wrap" fxLayoutAlign="start center">
                                 <div fxFlex="50px"><mat-icon class="active">call_received</mat-icon></div>
@@ -41,7 +109,7 @@
                                 <div fxFlex="25">Usuario:</div>
                                 <div fxFlex>{{ a._user.name }}</div>
                             </div>
-                            <div fxLayout="row wrap" fxLayoutAlign="start center">
+                            <div fxLayout="row wrap" *ngIf="a._delivery" fxLayoutAlign="start center">
                                 <div fxFlex="25">Repartidor:</div>
                                 <div fxFlex>{{ a._delivery.name }}</div>
                             </div>
@@ -49,13 +117,17 @@
                                 <div fxFlex="25">Despacho:</div>
                                 <div fxFlex>{{ a.timeDispatch | date: 'dd/MM/yyyy HH:mm' }}</div>
                             </div>
+                            <div fxLayout="row wrap" fxLayoutAlign="start center">
+                                <div fxFlex="25">Detalles:</div>
+                                <div fxFlex>{{ a.details }}</div>
+                            </div>
                         </mat-card-content>
                         <mat-card-actions>
-                            <button mat-button>
+                            <button mat-button (click)="details(a)">
                                 Ver detalles
                             </button>
                             <span fxFlex></span>
-                            <button mat-button color="accent" matTooltip="Marcar como recibido">
+                            <button *ngIf="internalOrdersp && internalOrdersp.includes('update')" (click)="finish(a)" mat-button color="accent" matTooltip="Marcar como recibido">
                                 <mat-icon>task_alt</mat-icon>
                                 Recibido
                             </button>
@@ -63,98 +135,135 @@
                     </mat-card>
 
                 </div>
-            </mat-tab>
-            <mat-tab label="Envíos">
-                <div  data-simplebar class="tab">
-                    WENAS <br>
-                    WENAS <br>
-                    WENAS <br>
-                    WENAS <br>
-                    WENAS <br>
-                    WENAS <br>
-                    WENAS <br>
-                    WENAS <br>
-                    WENAS <br>
-                    WENAS <br>
-                    WENAS <br>
-                    WENAS <br>
-                    WENAS <br>
-                    WENAS <br>
-                    WENAS <br>
-                    WENAS <br>
-                    WENAS <br>
-                    WENAS <br>
-                    WENAS <br>
-                    WENAS <br>
-                    WENAS <br>
-                    WENAS <br>
-                    WENAS <br>
-                    WENAS <br>
-                    WENAS <br>
-                    WENAS <br>
-                    WENAS <br>
-                    WENAS <br>
-                    WENAS <br>
-                    WENAS <br>
-                    WENAS <br>
-                    WENAS <br>
-                    WENAS <br>
-                    WENAS <br>
-                    WENAS <br>
-                    WENAS <br>
-                    WENAS <br>
-                    WENAS <br>
-                    WENAS <br>
-                    WENAS <br>
-                    WENAS <br>
-                    WENAS <br>
-                    WENAS <br>
-                    WENAS <br>
-                    WENAS <br>
-                    WENAS <br>
-                    WENAS <br>
-                    WENAS <br>
-                    WENAS <br>
-                    WENAS <br>
-                    WENAS <br>
-                    WENAS <br>
-                    WENAS <br>
-                    WENAS <br>
-                    WENAS <br>
-                    WENAS <br>
-                    WENAS <br>
-                    WENAS <br>
-                    WENAS <br>
-                    WENAS <br>
-                    WENAS <br>
-                    WENAS <br>
-                    WENAS <br>
-                    WENAS <br>
-                    WENAS <br>
-                    WENAS <br>
-                    WENAS <br>
-                    WENAS <br>
-                    WENAS <br>
-                    WENAS <br>
-                    WENAS <br>
-                    WENAS <br>
-                    WENAS <br>
-                    WENAS <br>
-                    WENAS <br>
-                    WENAS <br>
-                    WENAS <br>
-                    WENAS <br>
-                    WENAS <br>
-                    WENAS <br>
-                    WENAS <br>
-                    WENAS <br>
-                    WENAS <br>
-                    WENAS <br>
-                    WENAS <br>
+
+                <div fxLayout="column wrap" fxLayoutAlign="center center"  class="tab" *ngIf="recibidos.length === 0">
+                    <mat-icon>list_alt</mat-icon>
+                    <span class="text-muted messagenot">Actualmente no hay ningún pedido recibido</span>
                 </div>
             </mat-tab>
         </mat-tab-group>
 
+    </div>
+
+
+    <!-- BIGSCREEN  -->
+    <div  *ngIf="!smallScreen && loading === false" class="space" data-simplebar>
+        <div fxLayout="row wrap">
+            <div fxFlex="50" class="tab-bg">
+                <div class="text-xlg title-row">
+                    <b>Pedidos Solicitados</b>
+                </div>
+
+                <mat-card class="order-card" *ngFor="let a of enviados | orderBy: 'date' : true">
+                    <mat-card-content>
+                        <div fxLayout="row wrap" fxLayoutAlign="start center">
+                            <div fxFlex="50px"><mat-icon class="pasive">local_shipping</mat-icon></div>
+                            <div fxFlex fxLayout="column wrap">
+                                <div fxLayout="row wrap" class="card-row">
+                                    <div class="text-lg"><b>{{ a._cellar.name }}</b></div>
+                                    <div fxFlex></div>
+                                    <div>No. {{ a.noOrder }}</div>
+                                </div>
+                                <div fxLayout="row wrap" fxLayoutAlign="start center" class="card-row">
+                                    <mat-chip-list>
+                                        <mat-chip *ngIf="a.state === 'ENVIO'"> Solicitado</mat-chip>
+                                        <mat-chip *ngIf="a.state === 'RECHAZO'" selected color="primary">Rechazado</mat-chip>
+                                        <mat-chip *ngIf="a.state === 'CONFIRMACION'" selected color="warn">Aceptado</mat-chip>
+                                        <mat-chip *ngIf="a.state === 'DESPACHO'" color="accent">Despachado</mat-chip>
+                                        <mat-chip *ngIf="a.state === 'ENTREGA'" color="accent">Entregado</mat-chip>
+                                        <mat-chip *ngIf="a.state === 'REVISION'" color="accent">Revisado</mat-chip>
+                                    </mat-chip-list> &nbsp; &nbsp;
+                                    {{ a.date | date: 'dd/MM/yyyy HH:mm' }}
+                                </div>
+                            </div>
+                        </div>
+                        <div fxLayout="row wrap" fxLayoutAlign="start center" style="margin-top: 10px">
+                            <div fxFlex="25">Usuario:</div>
+                            <div fxFlex>{{ a._user.name }}</div>
+                        </div>
+                        <div fxLayout="row wrap" *ngIf="a._delivery" fxLayoutAlign="start center">
+                            <div fxFlex="25">Aceptación:</div>
+                            <div fxFlex>{{ a.timeInit ? a.timeInit : '-' }}</div>
+                        </div>
+                        <div fxLayout="row wrap" fxLayoutAlign="start center">
+                            <div fxFlex="25">Detalles:</div>
+                            <div fxFlex>{{ a.details }}</div>
+                        </div>
+                    </mat-card-content>
+                    <mat-card-actions>
+                        <button mat-button (click)="details(a)">
+                            Ver detalles
+                        </button>
+                        <span fxFlex></span>
+                        <button mat-icon-button *ngIf="(a.state === 'ENVIO' || a.state === 'RECHAZO') && (internalOrdersp && internalOrdersp.includes('delete'))" (click)="delete(a)">
+                            <mat-icon>delete</mat-icon>
+                          </button>
+                    </mat-card-actions>
+                </mat-card>
+            </div>
+            <div fxFlex="50" class="tab-bg">
+                <div *ngIf="recibidos.length > 0">
+                    <div class="text-xlg title-row">
+                        <b>Pedidos Recibidos</b>
+                    </div>
+                    <mat-card class="order-card" *ngFor="let a of recibidos | orderBy: 'timeDispatch' : true">
+                        <mat-card-content>
+                            <div fxLayout="row wrap" fxLayoutAlign="start center">
+                                <div fxFlex="50px"><mat-icon class="active">call_received</mat-icon></div>
+                                <div fxFlex fxLayout="column wrap">
+                                    <div fxLayout="row wrap" class="card-row">
+                                        <div class="text-lg"><b>{{ a._cellar.name }}</b></div>
+                                        <div fxFlex></div>
+                                        <div>No. {{ a.noOrder }}</div>
+                                    </div>
+                                    <div fxLayout="row wrap" fxLayoutAlign="start center" class="card-row">
+                                        <mat-chip-list>
+                                            <mat-chip selected color="accent">Despachado</mat-chip>
+                                        </mat-chip-list>  &nbsp; &nbsp;
+                                        {{ a.date | date: 'dd/MM/yyyy HH:mm' }}
+                                    </div>
+                                </div>
+                            </div>
+                            <div fxLayout="row wrap" fxLayoutAlign="start center" style="margin-top: 10px">
+                                <div fxFlex="25">Usuario:</div>
+                                <div fxFlex>{{ a._user.name }}</div>
+                            </div>
+                            <div fxLayout="row wrap" *ngIf="a._delivery" fxLayoutAlign="start center">
+                                <div fxFlex="25">Repartidor:</div>
+                                <div fxFlex>{{ a._delivery.name }}</div>
+                            </div>
+                            <div fxLayout="row wrap" fxLayoutAlign="start center">
+                                <div fxFlex="25">Despacho:</div>
+                                <div fxFlex>{{ a.timeDispatch | date: 'dd/MM/yyyy HH:mm' }}</div>
+                            </div>
+                            <div fxLayout="row wrap" fxLayoutAlign="start center">
+                                <div fxFlex="25">Detalles:</div>
+                                <div fxFlex>{{ a.details }}</div>
+                            </div>
+                        </mat-card-content>
+                        <mat-card-actions>
+                            <button mat-button (click)="details(a)">
+                                Ver detalles
+                            </button>
+                            <span fxFlex></span>
+                            <button *ngIf="internalOrdersp && internalOrdersp.includes('update')" (click)="finish(a)" mat-button color="accent" matTooltip="Marcar como recibido">
+                                <mat-icon>task_alt</mat-icon>
+                                Recibido
+                            </button>
+                        </mat-card-actions>
+                    </mat-card>
+                </div>
+                <div  fxLayout="column wrap" fxLayoutAlign="center center" class="tab-bg" *ngIf="recibidos.length === 0">
+                    <mat-icon>list_alt</mat-icon>
+                    <span class="text-muted messagenot">Actualmente no hay ningún pedido recibido</span>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <div  *ngIf="!smallScreen && loading === true" class="space" fxLayout="column wrap" fxLayoutAlign="center center">
+        <mat-progress-spinner mode="indeterminate" diameter="40" color="primary"></mat-progress-spinner>
     </div>
 
     <!-- <div class="space" data-simplebar>

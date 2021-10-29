@@ -24,8 +24,6 @@ export class SymptomService implements IDataService<SymptomItem[]> {
       .get(this.apiConfigService.API_SYMPTOM)
       .pipe(
         map((response: any) => {
-          console.log(response);
-
           this.SymptomList = response.symptoms;
           this.SymptomSubject.next(this.SymptomList);
         })
