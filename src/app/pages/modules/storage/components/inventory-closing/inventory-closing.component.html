@@ -1,0 +1,34 @@
+<div class="section-content">
+    <header class="module-header" [ngClass]="{'padding-25': !smallScreen, 'padding-15': smallScreen }"
+        fxLayoutAlign="start center" fxLayout="row wrap">
+        <h1 class="product-font ma-0 module-title">
+            Inventario de Productos</h1>
+        <mat-chip-list>
+            <mat-chip>
+                BETA
+            </mat-chip>
+        </mat-chip-list>
+    </header>
+    <!-- <button mat-fab color="primary" class="fab mat-elevation-z10" (click)="addNewProduct()"> -->
+    <!-- <button mat-fab color="primary" class="fab mat-elevation-z10" (click)="addNewProduct()"> -->
+    <div fxLayoutAlign="center" fxLayout="row wrap">
+        <div fxFlex="15%" fxFlex.md="30%" fxFlex.lg="20%" fxFlex.xl="20%" fxFlex.sm="30%" fxFlex.xs="100%">
+            <button mat-menu-item (click)="inventoryPending = true" color="warn" active="true">
+                <mat-icon class="material-icons-outlined">inventory_2</mat-icon> Inventario Actual
+            </button>
+        </div>
+        <div fxFlex="17%" fxFlex.md="30%" fxFlex.lg="20%" fxFlex.xl="20%" fxFlex.sm="30%" fxFlex.xs="100%">
+            <button mat-menu-item (click)="inventoryPending = false" color="warn">
+                <mat-icon class="material-icons-outlined">pending_actions</mat-icon> Cierre de Inventario
+            </button>
+        </div>
+    </div>
+
+    <div *ngIf="inventoryPending">
+        <app-pending-inventory></app-pending-inventory>
+    </div>
+    <div *ngIf="!inventoryPending">
+    </div>
+
+
+</div>

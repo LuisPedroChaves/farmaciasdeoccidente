@@ -46,13 +46,7 @@ export class StorageComponent implements OnInit, OnDestroy, AfterViewInit {
 
   inventoryGeneral = true;
 
-  constructor(
-    public store: Store<AppState>,
-    public productService: ProductService,
-    public toasty: ToastyService,
-    public router: Router,
-    public dialog: MatDialog
-  ) {}
+  constructor() {}
   ngOnInit(): void {}
   ngOnDestroy(): void {}
 

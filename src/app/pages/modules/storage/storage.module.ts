@@ -10,16 +10,26 @@ import { ModalMovementsComponent } from './components/modal-movements/modal-move
 import { GeneralInventoryComponent } from './components/general-inventory/general-inventory.component';
 import { PendingInventoryComponent } from './components/pending-inventory/pending-inventory.component';
 import { LoteDetailsComponent } from './components/lote-details/lote-details.component';
-
-
+import { KardexOutputComponent } from './components/kardex-output/kardex-output.component';
+import { KardexIncomeComponent } from './components/kardex-income/kardex-income.component';
+import { InventoryClosingComponent } from './components/inventory-closing/inventory-closing.component';
 
 @NgModule({
-  declarations: [StorageComponent, ModalMovementsComponent, GeneralInventoryComponent, PendingInventoryComponent, LoteDetailsComponent],
+  declarations: [
+    StorageComponent,
+    ModalMovementsComponent,
+    GeneralInventoryComponent,
+    PendingInventoryComponent,
+    LoteDetailsComponent,
+    KardexOutputComponent,
+    KardexIncomeComponent,
+    InventoryClosingComponent,
+  ],
   imports: [
     CommonModule,
     RouterModule.forChild(StorageRoutes),
     SharedComponentsModule,
-    CoreModule
-  ]
+    CoreModule,
+  ],
 })
-export class StorageModule { }
+export class StorageModule {}
