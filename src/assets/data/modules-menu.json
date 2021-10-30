@@ -79,28 +79,12 @@
         "order": 7
     },
     {
-        "state": "PURCHASE",
-        "name": "Ingresos",
-        "type": "sub",
+        "state": "purchases",
+        "name": "Compras",
+        "type": "link",
         "icon": "shopping_basket",
         "iconType": "icon",
         "order": 8
-    },
-    {
-        "state": "purchases",
-        "name": "Facturas",
-        "type": "link",
-        "icon": "summarize",
-        "iconType": "icon",
-        "order": 1
-    },
-    {
-        "state": "adjusts",
-        "name": "Ajustes",
-        "type": "link",
-        "icon": "adjust",
-        "iconType": "icon",
-        "order": 2
     },
     {
         "state": "/admin",

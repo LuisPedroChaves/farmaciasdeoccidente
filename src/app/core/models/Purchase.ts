@@ -18,6 +18,7 @@ export interface PurchaseItem {
     total: number
     file: string,
     state: string,
+    _lastUpdate: UserItem,
     _userDeleted: UserItem,
     textDeleted: string,
     deleted: boolean
@@ -26,6 +27,7 @@ export interface PurchaseItem {
 export interface PurchaseDetailItem {
     _product: ProductItem;
     presentation: string,
+    requested: number,
     quantity: number,
     price: number,
     bonus: number,

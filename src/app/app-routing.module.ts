@@ -62,10 +62,6 @@ const routes: Routes = [
         path: 'purchases', loadChildren: () => import('./pages/modules/purchases/purchases.module').then(m => m.PurchasesModule),
         canActivate: [CheckTokenGuard]
       },
-      {
-        path: 'adjusts', pathMatch: 'full',  loadChildren: () => import('./pages/modules/adjusts/adjusts.module').then(m => m.AdjustsModule),
-        canActivate: [CheckTokenGuard]
-      },
     ]
   },
   {
