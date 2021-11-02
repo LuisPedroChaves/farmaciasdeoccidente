@@ -1,31 +1,17 @@
 import {
-  trigger,
-  state,
-  style,
-  transition,
-  animate,
-} from '@angular/animations';
-import {
   AfterViewInit,
   Component,
-  ElementRef,
   OnDestroy,
   OnInit,
   ViewChild,
 } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormControl } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { Subscription, fromEvent, Observable } from 'rxjs';
-import {
-  debounceTime,
-  distinctUntilChanged,
-  map,
-  startWith,
-  tap,
-} from 'rxjs/operators';
+import { Observable, Subscription } from 'rxjs';
+import { map, startWith } from 'rxjs/operators';
 import { BrandItem } from 'src/app/core/models/Brand';
 import { ProductItem } from 'src/app/core/models/Product';
 import { StorageItem } from 'src/app/core/models/Storage';
@@ -33,32 +19,15 @@ import { BrandService } from 'src/app/core/services/httpServices/brand.service';
 import { ProductService } from 'src/app/core/services/httpServices/product.service';
 import { ToastyService } from 'src/app/core/services/internal/toasty.service';
 import { AppState } from 'src/app/core/store/app.reducer';
-import { ModalMovementsComponent } from '../modal-movements/modal-movements.component';
 
 @Component({
-  selector: 'app-general-inventory',
-  templateUrl: './general-inventory.component.html',
-  styleUrls: ['./general-inventory.component.scss'],
-  animations: [
-    trigger('detailExpand', [
-      state('collapsed', style({ height: '0px', minHeight: '0' })),
-      state('expanded', style({ height: '*' })),
-      transition(
-        'expanded <=> collapsed',
-        animate('225ms cubic-bezier(0.4, 0.0, 0.2, 1)')
-      ),
-    ]),
-  ],
+  selector: 'app-storage-inventoried',
+  templateUrl: './storage-inventoried.component.html',
+  styleUrls: ['./storage-inventoried.component.scss'],
 })
-export class GeneralInventoryComponent
+export class StorageInventoriedComponent
   implements OnInit, OnDestroy, AfterViewInit
 {
-  searchBy = 'Producto';
-  smallScreen = window.innerWidth < 960 ? true : false;
-
-  @ViewChild(MatPaginator) paginator: MatPaginator;
-  // @ViewChild('search') search: ElementRef<HTMLInputElement>;
-
   // Autocomplete Brand
   orderFind = false;
   brandsSubscription: Subscription;
@@ -66,6 +35,11 @@ export class GeneralInventoryComponent
   brandOptions: BrandItem[] = [];
   brandFilteredOptions: Observable<BrandItem[]>;
   // END brand
+
+  searchBy = 'Producto';
+  smallScreen = window.innerWidth < 960 ? true : false;
+
+  @ViewChild(MatPaginator) paginator: MatPaginator;
 
   expandedElement: ProductItem | null;
 
@@ -80,7 +54,7 @@ export class GeneralInventoryComponent
     'healthProgram',
     'totalStock',
     'state',
-    // 'options',
+    'options',
   ];
   currentPage = 0;
 
@@ -97,7 +71,7 @@ export class GeneralInventoryComponent
   ) {}
 
   ngOnInit(): void {
-    // TODO: API to get all storage products
+    // TODO: Service to Get Storage Products with Inventoried is True
 
     // Brand Autocomplete
     this.brandsSubscription = this.brandService.readData().subscribe((data) => {
@@ -109,9 +83,9 @@ export class GeneralInventoryComponent
       map((value) => this._filterBrands(value))
     );
     // END Brand AUtocomplete
-
     console.log(this.dataSource);
   }
+
   ngOnDestroy(): void {
     this.sessionsubscription?.unsubscribe();
     this.brandsSubscription?.unsubscribe();
@@ -120,7 +94,6 @@ export class GeneralInventoryComponent
   ngAfterViewInit(): void {
     this.brandService.loadData();
   }
-
   private _filterBrands(value: string): BrandItem[] {
     if (value) {
       const filterValue = value.toLowerCase();
@@ -131,26 +104,6 @@ export class GeneralInventoryComponent
       return [];
     }
   }
-
-  showMovements(item: any): void {
-    const dialogRef = this.dialog.open(ModalMovementsComponent, {
-      width: this.smallScreen ? '100%' : '1200px',
-      data: {
-        by: 'NewPurchase',
-      },
-      minHeight: '78vh',
-      maxHeight: '78vh',
-      disableClose: true,
-      panelClass: ['farmacia-dialog', 'farmacia'],
-    });
-
-    dialogRef.afterClosed().subscribe((result) => {
-      if (result !== undefined) {
-        // this.loadProducts();
-      }
-    });
-  }
-
   filterByBrand(brandName: string): void {
     console.log(brandName);
   }
@@ -171,7 +124,6 @@ export class GeneralInventoryComponent
     }
   }
 }
-
 const storageItems: StorageItem[] = [
   {
     _id: '01',
@@ -345,7 +297,7 @@ const storageItems: StorageItem[] = [
       description: 'Huehuetenango',
       type: 'nose',
     },
-    inventoried: false,
+    inventoried: true,
     minStock: 0,
     maxStock: 0,
     cost: 2.5,

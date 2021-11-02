@@ -13,6 +13,8 @@ import { LoteDetailsComponent } from './components/lote-details/lote-details.com
 import { KardexOutputComponent } from './components/kardex-output/kardex-output.component';
 import { KardexIncomeComponent } from './components/kardex-income/kardex-income.component';
 import { InventoryClosingComponent } from './components/inventory-closing/inventory-closing.component';
+import { StorageInventoriedComponent } from './components/storage-inventoried/storage-inventoried.component';
+import { ActivityInventoryComponent } from './components/activity-inventory/activity-inventory.component';
 
 @NgModule({
   declarations: [
@@ -24,6 +26,8 @@ import { InventoryClosingComponent } from './components/inventory-closing/invent
     KardexOutputComponent,
     KardexIncomeComponent,
     InventoryClosingComponent,
+    StorageInventoriedComponent,
+    ActivityInventoryComponent,
   ],
   imports: [
     CommonModule,

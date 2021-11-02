@@ -10,6 +10,19 @@
     <textarea matInput [(ngModel)]="textArea" rows="4" placeholder="Describe los motivos..."></textarea>
   </mat-form-field>
 </div>
+<div *ngIf="data.number" fxLayout="row wrap" fxLayoutAlign="center center">
+  <mat-form-field appearance="outline" color="primary" class="width-all">
+    <mat-label>Cantidad Real de Productos</mat-label>
+    <input matInput [(ngModel)]="numberOne" type="number" placeholder="Ingrese la cantidad real de Productos...">
+  </mat-form-field>
+</div>
+<div *ngIf="data.reason" fxLayout="row wrap" fxLayoutAlign="center center">
+  <mat-form-field appearance="outline" color="primary" class="width-all">
+    <mat-label>Solución encontrada</mat-label>
+    <textarea matInput [(ngModel)]="reason" rows="4"
+      placeholder="Describa la solución acordada o encontrada..."></textarea>
+  </mat-form-field>
+</div>
 <mat-card-content *ngIf="data.isLogin">
   <mat-form-field class="width-all">
     <mat-label>Usuario</mat-label>
@@ -56,12 +69,15 @@
 <div fxLayout="row wrap" class="options">
   <button mat-button color="primary" (click)="dialogRef.close()">Cancelar</button>
   <span fxFlex></span>
+  <button mat-stroked-button *ngIf="data.number && data.reason" color="primary" [disabled]="reason === ''"
+    (click)="closeDialogInventoryPending(numberOne,reason)">Aceptar</button>
   <button mat-stroked-button *ngIf="data.description" color="primary" [disabled]="textArea === ''"
     (click)="dialogRef.close(textArea)">Aceptar</button>
   <button mat-stroked-button *ngIf="data.isDelivery" color="primary"
     (click)="dialogRef.close(delivery)">Aceptar</button>
   <button mat-stroked-button *ngIf="data.isLogin" color="primary" [disabled]="user === '' || pass === ''"
     (click)="login()">Aceptar</button>
-  <button mat-stroked-button *ngIf="!data.description && !data.isLogin && !data.isDelivery" color="primary"
+  <button mat-stroked-button
+    *ngIf="!data.description && !data.isLogin && !data.isDelivery&& !data.reason&& !data.number" color="primary"
     (click)="dialogRef.close(true)">Aceptar</button>
 </div>

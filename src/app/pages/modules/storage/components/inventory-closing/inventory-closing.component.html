@@ -14,12 +14,12 @@
     <div fxLayoutAlign="center" fxLayout="row wrap">
         <div fxFlex="15%" fxFlex.md="30%" fxFlex.lg="20%" fxFlex.xl="20%" fxFlex.sm="30%" fxFlex.xs="100%">
             <button mat-menu-item (click)="inventoryPending = true" color="warn" active="true">
-                <mat-icon class="material-icons-outlined">inventory_2</mat-icon> Inventario Actual
+                <mat-icon class="material-icons-outlined">pending_actions </mat-icon> Pendientes de Inventario
             </button>
         </div>
         <div fxFlex="17%" fxFlex.md="30%" fxFlex.lg="20%" fxFlex.xl="20%" fxFlex.sm="30%" fxFlex.xs="100%">
             <button mat-menu-item (click)="inventoryPending = false" color="warn">
-                <mat-icon class="material-icons-outlined">pending_actions</mat-icon> Cierre de Inventario
+                <mat-icon class="material-icons-outlined">inventory_2</mat-icon> Productos Inventariados
             </button>
         </div>
     </div>

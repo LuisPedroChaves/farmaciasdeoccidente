@@ -26,7 +26,7 @@ import { BrandService } from 'src/app/core/services/httpServices/brand.service';
 import { ProductService } from 'src/app/core/services/httpServices/product.service';
 import { ToastyService } from 'src/app/core/services/internal/toasty.service';
 import { AppState } from 'src/app/core/store/app.reducer';
-import { ModalMovementsComponent } from '../modal-movements/modal-movements.component';
+import { ConfirmationDialogComponent } from 'src/app/pages/shared-components/confirmation-dialog/confirmation-dialog.component';
 
 @Component({
   selector: 'app-pending-inventory',
@@ -72,7 +72,7 @@ export class PendingInventoryComponent
     'healthProgram',
     'totalStock',
     'state',
-    // 'options',
+    'options',
   ];
   currentPage = 0;
 
@@ -89,6 +89,8 @@ export class PendingInventoryComponent
   ) {}
 
   ngOnInit(): void {
+    // TODO: Service to Get Storage Products with Inventoried is False
+
     // Brand Autocomplete
     this.brandsSubscription = this.brandService.readData().subscribe((data) => {
       this.brands = data;
@@ -120,25 +122,6 @@ export class PendingInventoryComponent
     }
   }
 
-  showMovements(item: any): void {
-    const dialogRef = this.dialog.open(ModalMovementsComponent, {
-      width: this.smallScreen ? '100%' : '1200px',
-      data: {
-        by: 'NewPurchase',
-      },
-      minHeight: '78vh',
-      maxHeight: '78vh',
-      disableClose: true,
-      panelClass: ['farmacia-dialog', 'farmacia'],
-    });
-
-    dialogRef.afterClosed().subscribe((result) => {
-      if (result !== undefined) {
-        // this.loadProducts();
-      }
-    });
-  }
-
   filterByBrand(brandName: string): void {
     console.log(brandName);
   }
@@ -157,6 +140,37 @@ export class PendingInventoryComponent
       this.searchBrandField.setValue('');
       this.searchProductField.setValue('');
     }
+  }
+
+  InventoryProduct(product: ProductItem): void {
+    // TODO: SERVICIO PARA RECIBIR PRODUCTO INVENTARIADO
+    this.toasty.success('Producto Inventariado');
+  }
+  inventoryIncomplete(product: ProductItem): void {
+    const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
+      width: '350px',
+      data: {
+        title: 'Intentario Incompleto',
+        message: 'Ingrese la cantidad real en inventario',
+        number: true,
+        reason: true,
+      },
+      disableClose: true,
+      panelClass: ['farmacia-dialog', 'farmacia'],
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      console.log(result);
+
+      if (result !== undefined) {
+        // this.loading = true;
+        // TODO: SERVICIO PARA RECIBIR PRODUCTO INVENTARIADO, RECIBE 2 PARAMETROS,
+        // CANTIDAD REAL Y SOLUCION ENCONTRADA, ESTE SERVICIO MODIFICA EL STOCK
+        // DEL PRODUCTO PARA CUADRARLO
+
+        this.toasty.success('Producto Inventariado');
+      }
+    });
   }
 }
 const storageItems: StorageItem[] = [
@@ -241,6 +255,7 @@ const storageItems: StorageItem[] = [
       description: 'Huehuetenango',
       type: 'nose',
     },
+    inventoried: false,
     minStock: 10,
     maxStock: 25,
     cost: 2.5,
@@ -331,6 +346,7 @@ const storageItems: StorageItem[] = [
       description: 'Huehuetenango',
       type: 'nose',
     },
+    inventoried: false,
     minStock: 0,
     maxStock: 0,
     cost: 2.5,
@@ -421,6 +437,7 @@ const storageItems: StorageItem[] = [
       description: 'Huehuetenango',
       type: 'nose',
     },
+    inventoried: false,
     minStock: 10,
     maxStock: 100,
     cost: 2.5,
