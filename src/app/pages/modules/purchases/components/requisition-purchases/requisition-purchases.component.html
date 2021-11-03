@@ -1,1 +1,45 @@
-<p>requisition-purchases works!</p>
+<div fxLayout="row wrap" class="my-container " data-simplebar>
+    <!-- <div class="container-strech"> -->
+    <div fxLayout="row wrap" fxLayoutAlign="start center" class="costumers-header">
+        <mat-form-field appearance="outline" floatLabel="always" class="findinput">
+            <mat-label>Buscar</mat-label>
+            <mat-icon class="text-muted" matPrefix>search</mat-icon>
+            <input matInput [(ngModel)]="searchText" type="text" placeholder="Buscar requisición...">
+        </mat-form-field>
+    </div>
+    <div *ngIf="purchases !== undefined && purchasesp.includes('read')" fxLayout="row wrap" class="allspace" data-simplebar>
+        <div fxLayout="row wrap" fxLayoutGap="16px grid">
+            <div fxFlex.gt-lg="25" fxFlex.gt-md="33" fxFlex.gt-sm="50" fxFlex.gt-xs="50" fxFlex="100" *ngFor="let p of  (purchases | filter: searchText : ['requisition', 'payment'])">
+                <mat-card class="mat-elevation-z4">
+                    <mat-card-title-group>
+                        <mat-card-subtitle>{{p.created | date: 'dd/MM/yyyy HH:mm' }}</mat-card-subtitle>
+                        <mat-card-title>{{ p.requisition }}</mat-card-title>
+                        <mat-chip-list>
+                            <mat-chip *ngIf="p.payment === 'CONTADO'" selected color="warn">
+                                Contado
+                            </mat-chip>
+                            <mat-chip *ngIf="p.payment === 'CREDITO'">
+                                Crédito
+                            </mat-chip>
+                        </mat-chip-list>
+                    </mat-card-title-group>
+                    <mat-card-content>
+                        <p>{{ p._provider.name }}</p>
+                        <p>{{ p._user.name }}</p>
+                    </mat-card-content>
+                    <mat-divider inset></mat-divider>
+                    <mat-card-actions>
+                        <button mat-button *ngIf="purchasesp && purchasesp.includes('delete')" (click)="delete(p)" style="color:brown;">ANULAR</button>
+                        <button mat-button (click)="details(p)">DETALLES</button>
+                        <div fxFlex></div>
+                        <button mat-button [routerLink]="['enterInvoice/' + p._id]" color="warn">INGRESAR</button>
+                    </mat-card-actions>
+                </mat-card>
+            </div>
+        </div>
+    </div>
+    <div fxLayout="column wrap" fxLayoutAlign="center center" class="padding-15 loader-screen" *ngIf="purchases === undefined">
+        <mat-progress-spinner mode="indeterminate" diameter="60" color="warn"></mat-progress-spinner>
+    </div>
+    <!-- </div> -->
+</div>

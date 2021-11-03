@@ -1,21 +1,23 @@
 import { AfterContentInit, Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { STEPPER_GLOBAL_OPTIONS } from '@angular/cdk/stepper';
-import { CellarItem } from 'src/app/core/models/Cellar';
 import { FormControl, FormGroup, Validators, FormBuilder, FormArray, AbstractControl, ValidatorFn } from '@angular/forms';
-import { Subscription } from 'rxjs/internal/Subscription';
-import { ProviderItem } from 'src/app/core/models/Provider';
+import { STEPPER_GLOBAL_OPTIONS } from '@angular/cdk/stepper';
+import { Router } from '@angular/router';
+import { MatDialog } from '@angular/material/dialog';
+
 import { BehaviorSubject, Observable } from 'rxjs';
+import { debounceTime, finalize, map, startWith, switchMap, tap } from 'rxjs/operators';
+import { Subscription } from 'rxjs/internal/Subscription';
+
+import { CellarItem } from 'src/app/core/models/Cellar';
+import { ProviderItem } from 'src/app/core/models/Provider';
 import { ProductItem } from 'src/app/core/models/Product';
 import { ProviderService } from 'src/app/core/services/httpServices/provider.service';
 import { ProductService } from 'src/app/core/services/httpServices/product.service';
 import { ToastyService } from 'src/app/core/services/internal/toasty.service';
 import { PurchaseService } from 'src/app/core/services/httpServices/purchase.service';
-import { Router } from '@angular/router';
-import { MatDialog } from '@angular/material/dialog';
 import { NewProviderComponent } from 'src/app/pages/admin-modules/providers/components/new-provider/new-provider.component';
 import { ProductModalFormComponent } from 'src/app/pages/admin-modules/products/components/product-form/product-modal-form.component';
 import { PurchaseDetailItem, PurchaseItem } from 'src/app/core/models/Purchase';
-import { debounceTime, finalize, map, startWith, switchMap, tap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-new-requisition',
@@ -45,7 +47,6 @@ export class NewRequisitionComponent implements OnInit, AfterContentInit, OnDest
     _provider: new FormControl(null, Validators.required),
     payment: new FormControl('CONTADO'),
     detail: this.FormBuilder.array([]),
-    total: new FormControl(0, Validators.required),
   });
 
   formDetail = new FormGroup({
@@ -184,27 +185,22 @@ export class NewRequisitionComponent implements OnInit, AfterContentInit, OnDest
 
     this.loading = true;
     this.form.get('_cellar').setValue(this.currentCellar);
-    this.form.get('total').setValue(0);
-    console.log(this.form.get('detail').value);
 
     let purchase: PurchaseItem = { ...this.form.value };
-    console.log("🚀 ~ file: new-requisition.component.ts ~ line 235 ~ NewRequisitionComponent ~ savePurchase ~ purchase", purchase)
-    return;
-
     this.purchaseService.createPurchase(purchase).subscribe(
       (data) => {
         if (data.ok === true) {
-          this.toasty.success('Compra creada exitosamente');
+          this.toasty.success('Requisición creada exitosamente');
           this.router.navigate(['/purchases']);
           this.loading = false;
         } else {
           this.loading = false;
-          this.toasty.error('Error al crear la compra');
+          this.toasty.error('Error al crear la requisición');
         }
       },
       (err) => {
         this.loading = false;
-        this.toasty.error('Error al crear la compra');
+        this.toasty.error('Error al crear la requisición');
       }
     );
   }

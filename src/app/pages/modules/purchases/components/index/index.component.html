@@ -2,8 +2,8 @@
 <div class="section-content farmacia">
     <div>
         <header class="module-header" [ngClass]="{'padding-25': !smallScreen, 'padding-15': smallScreen }" fxLayoutAlign="start center" fxLayout="row wrap">
-            <h4 class="product-font ma-0 module-title">Facturas</h4> &nbsp;&nbsp;&nbsp;&nbsp;
-            <h2 class="title1 product-font ma-0">Listado general de facturas</h2>
+            <h4 class="product-font ma-0 module-title">Compras</h4> &nbsp;&nbsp;&nbsp;&nbsp;
+            <h2 class="title1 product-font ma-0">Control de ingresos</h2>
             <mat-chip-list>
                 <mat-chip>
                     BETA
@@ -12,16 +12,21 @@
         </header>
         <mat-divider></mat-divider>
         <mat-tab-group mat-align-tabs="start">
-            <mat-tab label="Requisiciones">
+            <mat-tab>
+                <ng-template mat-tab-label>
+                    <span [matBadge]="requisition" matBadgeOverlap="false" matBadgeColor="primary">
+            Requisiciones
+          </span>
+                </ng-template>
                 <ng-template matTabContent>
-                    <app-requisition-purchases></app-requisition-purchases>
+                    <app-requisition-purchases (sendTotal)="totalRequisition($event)"></app-requisition-purchases>
                 </ng-template>
             </mat-tab>
             <mat-tab>
                 <ng-template mat-tab-label>
                     <span [matBadge]="created" matBadgeOverlap="false" matBadgeColor="warn">
-              Actualizar precios
-            </span>
+            Actualizar precios
+          </span>
                 </ng-template>
                 <ng-template matTabContent>
                     <app-created-purchases (sendTotal)="totalCreated($event)"></app-created-purchases>
@@ -30,8 +35,8 @@
             <mat-tab>
                 <ng-template mat-tab-label>
                     <span [matBadge]="updated" matBadgeOverlap="false" matBadgeColor="accent">
-              Ingresos pendientes
-            </span>
+            Ingresos pendientes
+          </span>
                 </ng-template>
                 <ng-template matTabContent>
                     <app-updated-purchases (sendTotal)="totalUpdated($event)"></app-updated-purchases>
@@ -54,9 +59,9 @@
                 </ng-template>
             </mat-tab>
         </mat-tab-group>
-        <button *ngIf="!smallScreen && purchasesp.includes('create')" mat-fab color="primary" class="fab mat-elevation-z10" [routerLink]="'/purchases/new'">
-        <mat-icon>add</mat-icon><span class="extended-fab-button__text">Requisición</span>
-      </button>
+        <button *ngIf="purchasesp.includes('create')" mat-fab color="primary" class="fab mat-elevation-z10" [routerLink]="'/purchases/new'">
+      <mat-icon>add</mat-icon><span class="extended-fab-button__text">Requisición</span>
+    </button>
     </div>
 </div>
 <!-- </div> -->

@@ -11,12 +11,17 @@ export class IndexComponent implements OnInit {
   purchasesp: string[] = ["read", "update", "delete", "create"];
 
 
+  requisition: number = 0;
   created: number = 0;
   updated: number = 0;
 
   constructor() { }
 
   ngOnInit(): void {
+  }
+
+  totalRequisition(event: number) {
+    this.requisition = event;
   }
 
   totalCreated(event: number) {

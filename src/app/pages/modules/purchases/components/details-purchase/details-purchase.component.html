@@ -13,6 +13,7 @@
     <mat-divider></mat-divider>
     <div fxLayout="row wrap">
         <div class="headerTable" fxFlex fxLayout="row wrap">
+            <div fxFlex class="ellipsis-text cell header-cell">Solicitado</div>
             <div fxFlex class="ellipsis-text cell header-cell">Cantidad</div>
             <div fxFlex class="ellipsis-text cell header-cell">Precio Unitario (Q)</div>
             <div fxFlex class="ellipsis-text cell header-cell">Bono</div>
@@ -30,6 +31,7 @@
                     <mat-chip-list fxFlex="10">
                         <mat-chip selected color="warn">{{ p.presentation }}</mat-chip>
                     </mat-chip-list>
+                    <div fxFlex fxLayoutAlign="center center" class="ellipsis-text cell">{{p.requested}}</div>
                     <div fxFlex fxLayoutAlign="center center" class="ellipsis-text cell">{{p.quantity}}</div>
                     <div fxFlex fxLayoutAlign="center center" class="ellipsis-text cell">{{p.price}}</div>
                     <div fxFlex fxLayoutAlign="center center" class="ellipsis-text cell">{{p.bonus}}</div>

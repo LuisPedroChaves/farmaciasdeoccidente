@@ -1,0 +1,78 @@
+$blue: #0a1958;
+$blue-2: #045195;
+.my-container {
+    width: 100%;
+    height: calc(100vh - 192px) !important;
+}
+
+.padding-15 {
+    padding: 1s5px;
+}
+
+.component-title {
+    margin-left: 15px !important;
+}
+
+.component-space {
+    height: calc(100vh - 175px);
+}
+
+.component-space-sm {
+    height: calc(100vh - 225px);
+}
+
+.white-bg {
+    background-color: white !important;
+}
+
+table {
+    width: 100%;
+}
+
+tr.example-detail-row {
+    height: 0;
+}
+
+tr.example-element-row:not(.example-expanded-row):hover {
+    background: whitesmoke;
+    border: none !important;
+}
+
+tr.example-element-row:not(.example-expanded-row):active {
+    background: #efefef;
+    border: none !important;
+}
+
+.example-element-row td {
+    border-bottom-width: 0;
+}
+
+.example-element-detail {
+    overflow: hidden;
+    display: flex;
+}
+
+.example-element-description {
+    padding: 20px;
+}
+
+.example-element-description-attribution {
+    opacity: 0.5;
+}
+
+.costumers-header {
+    padding: 10px 10px;
+}
+
+.dateinput {
+    width: 100px;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    margin-left: 5px;
+    margin-right: 5px;
+    padding: 5px;
+}
+
+.allspace {
+    height: calc(100vh - 200px);
+    padding: 2px 10px;
+}
