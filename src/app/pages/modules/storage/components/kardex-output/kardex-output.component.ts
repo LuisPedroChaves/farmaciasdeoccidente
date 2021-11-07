@@ -60,6 +60,7 @@ const Outputs: CardexItem[] = [
     source: 'Sucursal: Pradera',
     destiny: 'Bodega Central',
     quantity: 50,
+    residue: 45,
   },
   {
     lote: 2,
@@ -68,6 +69,7 @@ const Outputs: CardexItem[] = [
     source: 'Sucursal: Pradera',
     destiny: 'Bodega Central',
     quantity: 50,
+    residue: 45,
   },
   {
     lote: 3,
@@ -76,6 +78,7 @@ const Outputs: CardexItem[] = [
     source: 'Sucursal: Centro',
     destiny: 'Bodega Central',
     quantity: 50,
+    residue: 45,
   },
   {
     lote: 4,
@@ -84,6 +87,7 @@ const Outputs: CardexItem[] = [
     source: 'Sucursal: Pradera',
     destiny: 'Bodega Central',
     quantity: 50,
+    residue: 45,
   },
   {
     lote: 5,
@@ -92,6 +96,7 @@ const Outputs: CardexItem[] = [
     source: 'Sucursal: Centro',
     destiny: 'Bodega Central',
     quantity: 50,
+    residue: 45,
   },
   {
     lote: 6,
@@ -100,6 +105,7 @@ const Outputs: CardexItem[] = [
     source: 'Sucursal: Pradera',
     destiny: 'Bodega Central',
     quantity: 50,
+    residue: 45,
   },
   {
     lote: 7,
@@ -108,6 +114,7 @@ const Outputs: CardexItem[] = [
     source: 'Sucursal: Pradera',
     destiny: 'Bodega Central',
     quantity: 50,
+    residue: 45,
   },
   {
     lote: 8,
@@ -116,6 +123,7 @@ const Outputs: CardexItem[] = [
     source: 'Bodega Central',
     destiny: 'Sucursal: Pradera',
     quantity: 50,
+    residue: 45,
   },
   {
     lote: 9,
@@ -124,6 +132,7 @@ const Outputs: CardexItem[] = [
     source: 'Sucursal: Pradera',
     destiny: 'Bodega Central',
     quantity: 50,
+    residue: 45,
   },
   {
     lote: 10,
@@ -132,5 +141,6 @@ const Outputs: CardexItem[] = [
     source: 'Sucursal: Farmacia 1',
     destiny: 'Bodega Central',
     quantity: 50,
+    residue: 45,
   },
 ];

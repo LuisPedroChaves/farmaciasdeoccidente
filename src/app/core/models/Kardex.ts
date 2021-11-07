@@ -6,5 +6,5 @@ export interface CardexItem {
   source: string;
   destiny?: string;
   quantity: number;
-  residue?: number;
+  residue: number;
 }
