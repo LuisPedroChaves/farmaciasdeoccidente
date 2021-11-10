@@ -15,12 +15,11 @@ export class ActivityInventoryComponent implements OnInit, AfterViewInit {
   displayedColumnsActivity: string[] = [
     'lote',
     'date',
+    'source',
+    'destiny',
     'income',
     'outcome',
     'residue',
-    'source',
-    'destiny',
-    'quantity',
   ];
   dataSource = new MatTableDataSource<CardexItem>(movements);
 
@@ -28,7 +27,9 @@ export class ActivityInventoryComponent implements OnInit, AfterViewInit {
 
   constructor(public dialog: MatDialog) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    // Todo: Servicio para Get Todos los movimientos del Cardex
+  }
   ngAfterViewInit(): void {
     this.dataSource.paginator = this.paginator;
   }
@@ -43,7 +44,7 @@ const movements: CardexItem[] = [
     source: 'Proveedor N',
     destiny: 'Bodega Central',
     quantity: 100,
-    residue: 45,
+    residue: 145,
   },
   {
     lote: 11,
@@ -53,7 +54,7 @@ const movements: CardexItem[] = [
     source: 'Sucursal: Farmacia',
     destiny: 'Bodega Central',
     quantity: 50,
-    residue: 45,
+    residue: 195,
   },
   {
     lote: 11,
@@ -62,8 +63,8 @@ const movements: CardexItem[] = [
     detail: '',
     source: 'Sucursal: Farmacia 4',
     destiny: 'Bodega Central',
-    quantity: 50,
-    residue: 45,
+    quantity: 13,
+    residue: 182,
   },
   {
     lote: 54,
@@ -71,8 +72,8 @@ const movements: CardexItem[] = [
     action: 'IN',
     source: 'Sucursal: Pradera',
     destiny: 'Bodega Central',
-    quantity: 50,
-    residue: 45,
+    quantity: 20,
+    residue: 65,
   },
   {
     lote: 54,
@@ -81,7 +82,7 @@ const movements: CardexItem[] = [
     source: 'Bodega Central',
     destiny: 'Sucursal: Farmacia 2',
     quantity: 50,
-    residue: 45,
+    residue: 115,
   },
   {
     lote: 75,
@@ -89,8 +90,8 @@ const movements: CardexItem[] = [
     action: 'IN',
     source: 'Sucursal: Farmacia 2',
     destiny: 'Sucursal: Pradera',
-    quantity: 50,
-    residue: 45,
+    quantity: 30,
+    residue: 75,
   },
   {
     lote: 75,
@@ -98,8 +99,8 @@ const movements: CardexItem[] = [
     action: 'OUT',
     source: 'Sucursal: Pradera',
     destiny: 'Bodega Central',
-    quantity: 50,
-    residue: 45,
+    quantity: 20,
+    residue: 55,
   },
   {
     lote: 75,
@@ -107,8 +108,8 @@ const movements: CardexItem[] = [
     action: 'OUT',
     source: 'Sucursal: Pradera',
     destiny: 'Bodega Central',
-    quantity: 50,
-    residue: 45,
+    quantity: 13,
+    residue: 42,
   },
   {
     lote: 19,
@@ -117,8 +118,8 @@ const movements: CardexItem[] = [
     detail: 'traslado',
     source: 'Sucursal: Farmacia 1',
     destiny: 'Bodega Central',
-    quantity: 50,
-    residue: 45,
+    quantity: 17,
+    residue: 33,
   },
   {
     lote: 19,
@@ -127,7 +128,7 @@ const movements: CardexItem[] = [
     detail: 'traslado',
     source: 'Sucursal: Pradera',
     destiny: 'Bodega Central',
-    quantity: 50,
-    residue: 45,
+    quantity: 7,
+    residue: 26,
   },
 ];
