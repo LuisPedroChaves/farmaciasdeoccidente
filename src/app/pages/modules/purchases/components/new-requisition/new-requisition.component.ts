@@ -62,7 +62,7 @@ export class NewRequisitionComponent implements OnInit, AfterContentInit, OnDest
   filteredProducts: Observable<ProductItem[]>[] = [];
   isLoading = false;
 
-  displayedColumns: string[] = ['requested', '_product', 'presentation', 'remove'];
+  displayedColumns: string[] = ['requested', '_product', 'remove'];
   dataSource = new BehaviorSubject<AbstractControl[]>([]);
 
   constructor(

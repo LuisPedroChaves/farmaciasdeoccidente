@@ -90,6 +90,7 @@ export class PurchaseService implements IDataService<PurchaseItem[]> {
   }
 
   statePurchase(body: PurchaseItem): Observable<any> {
+    body._lastUpdate = this.userID;
     return this.http.put(this.apiConfigService.API_PURCHASE + '/state/' + body._id, body);
   }
 

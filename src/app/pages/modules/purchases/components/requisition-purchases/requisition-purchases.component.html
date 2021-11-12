@@ -15,10 +15,10 @@
                         <mat-card-subtitle>{{p.created | date: 'dd/MM/yyyy HH:mm' }}</mat-card-subtitle>
                         <mat-card-title>{{ p.requisition }}</mat-card-title>
                         <mat-chip-list>
-                            <mat-chip *ngIf="p.payment === 'CONTADO'" selected color="warn">
+                            <mat-chip *ngIf="p.payment === 'CONTADO'">
                                 Contado
                             </mat-chip>
-                            <mat-chip *ngIf="p.payment === 'CREDITO'">
+                            <mat-chip *ngIf="p.payment === 'CREDITO'" selected color="accent">
                                 Crédito
                             </mat-chip>
                         </mat-chip-list>
@@ -32,7 +32,7 @@
                         <button mat-button *ngIf="purchasesp && purchasesp.includes('delete')" (click)="delete(p)" style="color:brown;">ANULAR</button>
                         <button mat-button (click)="details(p)">DETALLES</button>
                         <div fxFlex></div>
-                        <button mat-button [routerLink]="['enterInvoice/' + p._id]" color="warn">INGRESAR</button>
+                        <button mat-button [routerLink]="['enterInvoice/' + p._id]">INGRESAR</button>
                     </mat-card-actions>
                 </mat-card>
             </div>

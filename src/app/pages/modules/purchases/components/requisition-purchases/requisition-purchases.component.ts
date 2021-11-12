@@ -37,8 +37,10 @@ export class RequisitionPurchasesComponent implements OnInit, OnDestroy {
     this.currentCellar = JSON.parse(localStorage.getItem('currentstore'));
     this.loadPurchases();
     this.soketSubscription = this.purchaseService.getRequisitionSocket().subscribe((purchase: PurchaseItem) => {
-      this.purchases.push(purchase);
-      this.sendTotal.emit(this.purchases.length);
+      if (this.purchases) {
+        this.purchases.push(purchase);
+        this.sendTotal.emit(this.purchases.length);
+      }
     });
   }
 

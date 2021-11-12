@@ -29,7 +29,7 @@ export class CreatedPurchasesComponent implements OnInit, OnDestroy {
   purchasesp: string[] = ["read", "update", "delete", "create"];
 
   dataSource = new MatTableDataSource();
-  columns = ['image', 'noBill', '_provider', 'date', 'requisition', 'payment', 'total', '_userDeleted', 'options'];
+  columns = ['image', 'requisition',  'noBill', 'date', '_provider', 'payment', 'total', '_lastUpdate', 'options'];
 
   constructor(
     public dialog: MatDialog,

@@ -18,6 +18,7 @@ export interface PurchaseItem {
     total: number
     file: string,
     state: string,
+    created: Date,
     _lastUpdate: UserItem,
     _userDeleted: UserItem,
     textDeleted: string,
@@ -26,7 +27,7 @@ export interface PurchaseItem {
 
 export interface PurchaseDetailItem {
     _product: ProductItem;
-    presentation: string,
+    presentation: PurchaseDetailPresentationItem,
     requested: number,
     quantity: number,
     price: number,
@@ -34,10 +35,14 @@ export interface PurchaseDetailItem {
     discount: number,
     cost: number,
     realQuantity: number,
-    stockQuantity: number,
     expirationDate: Date,
     lastCost: number,
     updated: boolean
+}
+
+export interface PurchaseDetailPresentationItem {
+    name: string,
+    quantity: number
 }
 
 export interface PurchaseAdjustItem {
