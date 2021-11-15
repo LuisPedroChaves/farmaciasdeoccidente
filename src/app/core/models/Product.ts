@@ -54,3 +54,13 @@ export interface ProductPresentationsItem {
   retail_newPrice?: number;// SIRVE EN EL MODULO DE ACTUALIZAR PRECIOS
   cf_newPrice?: number;// SIRVE EN EL MODULO DE ACTUALIZAR PRECIOS
 }
+
+
+
+
+
+export interface ProductAddedItem {
+  _product: ProductItem;
+  quantity: number;
+  stock: number;
+}

@@ -1,22 +1,23 @@
-import { AfterContentInit, Component, Inject, OnDestroy, OnInit } from '@angular/core';
+import { AfterContentInit, Component, Inject, Input, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { Subscription } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
+import { map, startWith } from 'rxjs/operators';
 import { CellarItem } from 'src/app/core/models/Cellar';
-import { InternalOrderItem } from 'src/app/core/models/InternalOrder';
+import { InternalOrderItem, InternalOrderItemFull } from 'src/app/core/models/InternalOrder';
+import { ProductAddedItem, ProductItem, ProductItemResponse } from 'src/app/core/models/Product';
 import { CellarService } from 'src/app/core/services/httpServices/cellar.service';
 import { InternalOrderService } from 'src/app/core/services/httpServices/internal-order.service';
+import { ProductService } from 'src/app/core/services/httpServices/product.service';
 import { UploadFileService } from 'src/app/core/services/httpServices/upload-file.service';
 import { ToastyService } from 'src/app/core/services/internal/toasty.service';
 
+
 @Component({
-  selector: 'app-new-request',
+  selector: 'app-new-request-new',
   templateUrl: './new-request.component.html',
   styleUrls: ['./new-request.component.scss']
 })
 export class NewRequestComponent implements OnInit, AfterContentInit, OnDestroy {
-
-  loading = false;
 
   form = new FormGroup({
     _cellar: new FormControl(null, [Validators.required]),
@@ -24,25 +25,50 @@ export class NewRequestComponent implements OnInit, AfterContentInit, OnDestroy 
     noOrder: new FormControl(null, [Validators.required]),
     details: new FormControl(null),
     file: new FormControl(null),
-    type: new FormControl('PEDIDO',),
+    type: new FormControl('PEDIDO'),
   });
 
   // Sucursales tipo bodega
   cellarsSubscription: Subscription;
   cellars: CellarItem[];
+  @Input() currentCellar: CellarItem;
+  @Input() smallScreen: boolean;
+  
 
-  constructor(
-    public dialogRef: MatDialogRef<NewRequestComponent>, @Inject(MAT_DIALOG_DATA) public data: any,
-    public internalOrderService: InternalOrderService,
-    public toasty: ToastyService,
-    public cellarService: CellarService,
-    public uploadFileService: UploadFileService
-  ) { }
+  myControl = new FormControl();
+  options: string[] = ['One', 'Two', 'Three'];
+  filteredOptions: Observable<ProductItem[]>;
+  @Input() products: ProductItem[] = [];
+  currentProduct: ProductItem;
+  @Input() addedProducts: ProductAddedItem[] = [];
+  @Input() type: string;
+  aFindEdit: boolean = false;
+  quantity: number = null;
+  loading: boolean = false;
+
+
+
+  
+  constructor(public cellarService: CellarService, public internalOrderService: InternalOrderService, public toasty: ToastyService) { }
 
   ngOnInit(): void {
     this.cellarsSubscription = this.cellarService.readData().subscribe(data => {
       this.cellars = data.filter(cellar => cellar.type === 'BODEGA');
     });
+    console.log(this.type);
+    this.form = new FormGroup({
+      _cellar: new FormControl(this.currentCellar, [Validators.required]),
+      _destination: new FormControl(null),
+      noOrder: new FormControl(null, [Validators.required]),
+      details: new FormControl(null),
+      file: new FormControl(null),
+      type: new FormControl(this.type),
+    });
+
+    this.filteredOptions = this.myControl.valueChanges.pipe(
+      startWith(''),
+      map(value => this._filter(value)),
+    );
   }
 
   ngAfterContentInit() {
@@ -53,35 +79,87 @@ export class NewRequestComponent implements OnInit, AfterContentInit, OnDestroy 
     this.cellarsSubscription?.unsubscribe();
   }
 
+
+
+
+
+
+
+
+  /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  // OPERATIONAL FUNCTIONS ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  getType() {
+    switch(this.form.controls.type.value) {
+      case 'PEDIDO': return 'Sin tipo';
+      case 'REPOSICION': return 'Reposición';
+      case 'INGRESOS': return 'Nuevo Ingreso';
+      case 'FALTANTES': return 'Faltantes';
+
+    }
+  }
+
+
+
+  private _filter(value: string): ProductItem[] {
+    if (value !== null) {
+      const filterValue = value.toLocaleLowerCase();
+      return this.products.filter(prod => prod.code.toString().toLocaleLowerCase().includes(filterValue) || prod.description.toLocaleLowerCase().includes(filterValue) || prod.barcode.toLocaleLowerCase().includes(filterValue) || prod._brand.name.toLocaleLowerCase().includes(filterValue));
+    } else {
+       return this.products;
+    }
+  }
+
+
+  findThisEdit(value) {
+    this.aFindEdit = false;
+    let aFinded: ProductItem;
+    const index = this.products.findIndex(ac => ac.description === value);
+    if (index > -1) {
+      this.aFindEdit = true;
+      aFinded = this.products[index];
+      this.currentProduct = aFinded;
+    } else {
+      this.currentProduct = undefined;
+    }
+  }
+
+
+  add() {
+    this.aFindEdit = false;
+    if (this.quantity === 0 || this.currentProduct === undefined) { return; }
+    const index = this.addedProducts.findIndex(p => p._product._id === this.currentProduct._id);
+    if (index > -1) {} else {
+      this.addedProducts.push({
+        _product: this.currentProduct,
+        quantity: this.quantity,
+        stock: 0
+      });
+      this.quantity = null;
+      this.currentProduct = undefined;
+      this.myControl.setValue(null);
+    }
+  }
+
+
+  remove(p: ProductAddedItem) {
+    const index = this.addedProducts.findIndex(pr => pr._product._id === p._product._id);
+    console.log(index);
+    if (index > -1) {
+      this.addedProducts.splice(index, 1);
+    }
+  }
+
+
   saveInternalOrder() {
     if (this.form.invalid) { return; }
+    if (this.addedProducts.length === 0) { this.toasty.warning('Debe agregar productos a la lista'); }
     this.loading = true;
-    this.form.get('_destination').setValue(this.data.currentCellar);
-    let internalOrder: InternalOrderItem = { ...this.form.value };
-    const FILE: any = internalOrder.file;
-    if (FILE) {
-      internalOrder.file = 'archivo.temp';
-    }else {
-      internalOrder.file = null;
-    }
+    let internalOrder: InternalOrderItemFull = { ...this.form.value, detail: this.addedProducts };
     this.internalOrderService.createInternalOrder(internalOrder).subscribe(data => {
       if (data.ok === true) {
-        if (FILE) {
-          this.uploadFileService.uploadFile(FILE.files[0], 'internalOrders', data.internalOrder._id)
-            .then((resp: any) => {
-              this.toasty.success('Pedido creado exitosamente');
-              this.dialogRef.close('ok');
-              this.loading = false;
-            })
-            .catch(err => {
-              this.loading = false;
-              this.toasty.error('Error al cargar el archivo');
-            });
-        } else {
-          this.toasty.success('Pedido creado exitosamente');
-          this.dialogRef.close('ok');
-          this.loading = false;
-        }
+        this.toasty.success('Pedido creado exitosamente');
+        this.loading = false;
       } else {
         this.loading = false;
         this.toasty.error('Error al crear el pedido');
@@ -91,5 +169,9 @@ export class NewRequestComponent implements OnInit, AfterContentInit, OnDestroy 
       this.toasty.error('Error al crear el pedido');
     });
   }
+
+
+
+
 
 }

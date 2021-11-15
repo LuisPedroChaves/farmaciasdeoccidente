@@ -11,11 +11,14 @@ import { HistoryComponent } from './components/history/history.component';
 import { OrderDetailsComponent } from './components/order-details/order-details.component';
 import { NewRequestComponent } from './components/new-request/new-request.component';
 import { CoreModule } from 'src/app/core/core.module';
+import { NewEntryComponent } from './components/new-entry/new-entry.component';
+import { NewPendingComponent } from './components/new-pending/new-pending.component';
+import { NewMissingComponent } from './components/new-missing/new-missing.component';
 
 
 
 @NgModule({
-  declarations: [OrdersInternalComponent, OutgoingComponent, IncomingScreenComponent, IncomingComponent, HistoryComponent, OrderDetailsComponent, NewRequestComponent],
+  declarations: [OrdersInternalComponent, OutgoingComponent, IncomingScreenComponent, IncomingComponent, HistoryComponent, OrderDetailsComponent, NewRequestComponent, NewEntryComponent, NewPendingComponent, NewMissingComponent],
   imports: [
     CommonModule,
     RouterModule.forChild(OrdersInternalRoutes),

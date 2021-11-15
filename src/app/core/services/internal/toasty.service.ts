@@ -45,6 +45,20 @@ export class ToastyService {
     this.toastaService.success(toastOptions);
   }
 
+  warning(title: string, message?: string) {
+    const t = title ? title : '';
+    const m = message ? message : '';
+    const toastOptions: ToastOptions = {
+      title: t,
+      msg: m,
+      showClose: true,
+      timeout: 4000,
+      theme: 'default',
+    };
+
+    this.toastaService.warning(toastOptions);
+  }
+
 
   error(title: string, message?: string) {
     const t = title ? title : '';

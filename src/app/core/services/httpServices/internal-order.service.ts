@@ -4,7 +4,7 @@ import { Observable, Subject } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { ApiConfigService } from '../config/api-config.service';
 import { map } from 'rxjs/operators';
-import { InternalOrderItem } from '../../models/InternalOrder';
+import { InternalOrderItem, InternalOrderItemFull } from '../../models/InternalOrder';
 import { WebsocketService } from './websocket.service';
 
 @Injectable({
@@ -86,6 +86,13 @@ export class InternalOrderService implements IDataService<InternalOrderItem[]> {
   }
 
   createInternalOrder(u: InternalOrderItem): Observable<any> {
+    // const jsonParms = JSON.stringify(u);
+    u._user = this.userID;
+    return this.http.post(this.apiConfigService.API_INTERNAL_ORDER, u);
+  }
+
+
+  createInternalOrderNew(u: InternalOrderItemFull): Observable<any> {
     // const jsonParms = JSON.stringify(u);
     u._user = this.userID;
     return this.http.post(this.apiConfigService.API_INTERNAL_ORDER, u);

@@ -5,11 +5,16 @@ import { Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
 import { CellarItem } from 'src/app/core/models/Cellar';
 import { InternalOrderItem } from 'src/app/core/models/InternalOrder';
+import { ProductAddedItem, ProductItem } from 'src/app/core/models/Product';
 import { InternalOrderService } from 'src/app/core/services/httpServices/internal-order.service';
+import { ProductService } from 'src/app/core/services/httpServices/product.service';
 import { WebsocketService } from 'src/app/core/services/httpServices/websocket.service';
 import { ToastyService } from 'src/app/core/services/internal/toasty.service';
 import { AppState } from 'src/app/core/store/app.reducer';
 import { ConfirmationDialogComponent } from 'src/app/pages/shared-components/confirmation-dialog/confirmation-dialog.component';
+import { NewEntryComponent } from '../new-entry/new-entry.component';
+import { NewMissingComponent } from '../new-missing/new-missing.component';
+import { NewPendingComponent } from '../new-pending/new-pending.component';
 import { NewRequestComponent } from '../new-request/new-request.component';
 import { OrderDetailsComponent } from '../order-details/order-details.component';
 
@@ -25,16 +30,22 @@ export class OutgoingComponent implements OnInit {
   enviados: InternalOrderItem[] = [];
   recibidos: InternalOrderItem[] = [];
   currentCellar: CellarItem;
+  sidePanelOpened: boolean = false;
+  collapse: boolean = false;
 
   sessionsubscription: Subscription;
   outgoingSubscription: Subscription;
   internalOrdersp: string[] = [];
+  products: ProductItem[] = [];
+  addedProducts: ProductAddedItem[] = [];
+  type: string;
   constructor(
     public store: Store<AppState>,
     public dialog: MatDialog,
     public internalOrderService: InternalOrderService,
     public toasty: ToastyService,
-    public wsService: WebsocketService
+    public wsService: WebsocketService,
+    public productService: ProductService
   ) { }
 
   ngOnInit(): void {
@@ -46,7 +57,9 @@ export class OutgoingComponent implements OnInit {
     });
     this.currentCellar = JSON.parse(localStorage.getItem('currentstore'));
     this.loadInternalsOrders();
-
+    this.productService.loadData(0, 900000).subscribe(data => {
+      this.products = data;
+    });
     this.outgoingSubscription = this.internalOrderService.getUpdateOutgoing().subscribe((internalOrder: InternalOrderItem) => {
       if (internalOrder.type === 'PEDIDO') {
         if (internalOrder.state === 'DESPACHO') {
@@ -135,18 +148,14 @@ export class OutgoingComponent implements OnInit {
 
 
   newOrder(type?: string) {
-    const dialogRef = this.dialog.open(NewRequestComponent, {
-      width: this.smallScreen ? '100%' : '700px',
-      data: { currentCellar: this.currentCellar },
-      disableClose: true,
-      panelClass: ['farmacia-dialog', 'farmacia'],
-    });
-
-    // dialogRef.afterClosed().subscribe(result => {
-    //   if (result !== undefined) {
-    //     this.loadInternalsOrders();
-    //   }
-    // });
+    this.type = type;
+    this.addedProducts = [];
+    switch(type) {
+      case 'PEDIDO' :  this.collapse = true; break;
+      case 'INGRESOS': this.newTypeOrder(); break;
+      case 'REPOSICION': this.pendingOrder(); break;
+      case 'FALTANTES': this.missingOrder(); break;
+    }
   }
 
 
@@ -172,6 +181,59 @@ export class OutgoingComponent implements OnInit {
           });
         }
         this.loadInternalsOrders();
+      }
+    });
+  }
+
+
+
+
+
+
+  newTypeOrder() {
+    const dialogRef = this.dialog.open(NewEntryComponent, {
+      width: this.smallScreen ? '100%' : '700px',
+      data: { },
+      disableClose: true,
+      panelClass: ['farmacia-dialog', 'farmacia'],
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result !== undefined) {
+        this.addedProducts = result;
+        this.collapse = true;
+      }
+    });
+  }
+
+  pendingOrder() {
+    const dialogRef = this.dialog.open(NewPendingComponent, {
+      width: this.smallScreen ? '100%' : '700px',
+      data: { },
+      disableClose: true,
+      panelClass: ['farmacia-dialog', 'farmacia'],
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result !== undefined) {
+        this.addedProducts = result;
+        this.collapse = true;
+      }
+    });
+  }
+
+  missingOrder() {
+    const dialogRef = this.dialog.open(NewMissingComponent, {
+      width: this.smallScreen ? '100%' : '700px',
+      data: { },
+      disableClose: true,
+      panelClass: ['farmacia-dialog', 'farmacia'],
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result !== undefined) {
+        this.addedProducts = result;
+        this.collapse = true;
       }
     });
   }
