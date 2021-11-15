@@ -1,8 +1,11 @@
 import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
+import { FormControl, FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
+import { debounceTime } from 'rxjs/operators';
 import { CardexItem } from 'src/app/core/models/Kardex';
+import { LoteDetailsComponent } from '../lote-details/lote-details.component';
 
 @Component({
   selector: 'app-activity-inventory',
@@ -11,6 +14,15 @@ import { CardexItem } from 'src/app/core/models/Kardex';
 })
 export class ActivityInventoryComponent implements OnInit, AfterViewInit {
   smallScreen = window.innerWidth < 960 ? true : false;
+
+  cellarType = '';
+
+  range = new FormGroup({
+    start: new FormControl(new Date()),
+    end: new FormControl(new Date()),
+  });
+
+  rangeSelected = false;
 
   displayedColumnsActivity: string[] = [
     'lote',
@@ -21,17 +33,69 @@ export class ActivityInventoryComponent implements OnInit, AfterViewInit {
     'outcome',
     'residue',
   ];
-  dataSource = new MatTableDataSource<CardexItem>(movements);
+  dataMovements = new MatTableDataSource<CardexItem>(movements);
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
   constructor(public dialog: MatDialog) {}
 
   ngOnInit(): void {
-    // Todo: Servicio para Get Todos los movimientos del Cardex
+    this.cellarType = JSON.parse(localStorage.getItem('currentstore'));
+    console.log(this.cellarType);
+
+    this.range.valueChanges.pipe(debounceTime(500)).subscribe((range) => {
+      if (range.start && range.end) {
+        this.rangeSelected = true;
+      }
+    });
+    // TODO: Servicio para Get Todos los movimientos del Cardex
   }
   ngAfterViewInit(): void {
-    this.dataSource.paginator = this.paginator;
+    this.dataMovements.paginator = this.paginator;
+  }
+  showLote(item: any): void {
+    const dialogRef = this.dialog.open(LoteDetailsComponent, {
+      width: this.smallScreen ? '100%' : '30%',
+      data: {
+        idLote: item.id,
+        currentStore: item.store,
+        cellarType: this.cellarType,
+        showLoteMovements: false,
+      },
+      minHeight: '78vh',
+      maxHeight: '78vh',
+      disableClose: true,
+      panelClass: ['farmacia-dialog', 'farmacia'],
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result !== undefined) {
+        this.showLoteActivity(item);
+        // this.loadProducts();
+      }
+    });
+  }
+
+  showLoteActivity(item: any): void {
+    const dialogRef = this.dialog.open(LoteDetailsComponent, {
+      width: this.smallScreen ? '100%' : '70%',
+      data: {
+        idLote: item.id,
+        currentStore: item.store,
+        cellarType: this.cellarType,
+        showLoteMovements: true,
+      },
+      minHeight: '78vh',
+      maxHeight: '78vh',
+      disableClose: true,
+      panelClass: ['farmacia-dialog', 'farmacia'],
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result !== undefined) {
+        // this.loadProducts();
+      }
+    });
   }
 }
 

@@ -77,7 +77,6 @@ export class GeneralInventoryComponent
     'code',
     'description',
     '_brand',
-    'healthProgram',
     'totalStock',
     'state',
     // 'options',

@@ -1,6 +1,20 @@
 <div class="section" fxLayout="row wrap">
-    <div class="mat-elevation-z8" fxFlex="100% ">
-        <table mat-table [dataSource]="dataSource">
+    <span fxFlex></span>
+
+    <mat-form-field appearance="outline">
+        <mat-label>Introduzca un rango de fechas</mat-label>
+        <mat-date-range-input [formGroup]="range" [rangePicker]="picker">
+            <input matStartDate formControlName="start" placeholder="Fecha de inicio">
+            <input matEndDate formControlName="end" placeholder="Fecha de finalización">
+        </mat-date-range-input>
+        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-date-range-picker #picker></mat-date-range-picker>
+
+        <mat-error *ngIf="range.get('start').hasError('matStartDateInvalid')">Fecha de inicio no válida</mat-error>
+        <mat-error *ngIf="range.controls.end.hasError('matEndDateInvalid')">Fecha de finalización no válida</mat-error>
+    </mat-form-field>
+    <div class="mat-elevation-z8" fxFlex="100%">
+        <table mat-table [dataSource]="dataMovements">
             <!-- Position lote -->
             <ng-container matColumnDef="lote">
                 <th mat-header-cell *matHeaderCellDef> Lote </th>
@@ -51,8 +65,10 @@
             <tr mat-header-row *matHeaderRowDef="displayedColumnsActivity"></tr>
             <tr mat-row *matRowDef="let row; columns: displayedColumnsActivity;"></tr>
         </table>
+
         <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons
-            aria-label="Select page of periodic elements">
+            aria-label="Seleccione una pagina de movimientos">
         </mat-paginator>
     </div>
+
 </div>

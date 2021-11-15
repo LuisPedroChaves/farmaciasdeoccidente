@@ -96,11 +96,6 @@
                 <th mat-header-cell *matHeaderCellDef> Laboratorio </th>
                 <td mat-cell *matCellDef="let element"> {{element.product._brand.name }} </td>
             </ng-container>
-
-            <ng-container matColumnDef="healthProgram">
-                <th mat-header-cell *matHeaderCellDef> Programa </th>
-                <td mat-cell *matCellDef="let element"> {{element.product.healthProgram }} </td>
-            </ng-container>
             <ng-container matColumnDef="totalStock">
                 <th mat-header-cell *matHeaderCellDef> Total de Unidades </th>
                 <td mat-cell *matCellDef="let element"> {{element.totalStock }} </td>
