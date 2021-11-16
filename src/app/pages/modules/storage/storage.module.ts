@@ -15,6 +15,7 @@ import { KardexIncomeComponent } from './components/kardex-income/kardex-income.
 import { InventoryClosingComponent } from './components/inventory-closing/inventory-closing.component';
 import { StorageInventoriedComponent } from './components/storage-inventoried/storage-inventoried.component';
 import { ActivityInventoryComponent } from './components/activity-inventory/activity-inventory.component';
+import { InventoriedProductsComponent } from './components/inventoried-products/inventoried-products.component';
 
 @NgModule({
   declarations: [
@@ -28,6 +29,7 @@ import { ActivityInventoryComponent } from './components/activity-inventory/acti
     InventoryClosingComponent,
     StorageInventoriedComponent,
     ActivityInventoryComponent,
+    InventoriedProductsComponent,
   ],
   imports: [
     CommonModule,
