@@ -13,6 +13,8 @@ import { LoteDetailsComponent } from '../lote-details/lote-details.component';
 export class KardexIncomeComponent implements OnInit, AfterViewInit {
   smallScreen = window.innerWidth < 960 ? true : false;
 
+  cellarType = '';
+
   displayedColumnsIncome: string[] = [
     'lote',
     'date',
@@ -28,7 +30,9 @@ export class KardexIncomeComponent implements OnInit, AfterViewInit {
 
   constructor(public dialog: MatDialog) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.cellarType = JSON.parse(localStorage.getItem('currentstore'));
+  }
 
   ngAfterViewInit(): void {
     this.dataSource.paginator = this.paginator;
@@ -40,6 +44,31 @@ export class KardexIncomeComponent implements OnInit, AfterViewInit {
       data: {
         idLote: item.id,
         currentStore: item.store,
+        cellarType: this.cellarType,
+        showLoteMovements: false,
+      },
+      minHeight: '78vh',
+      maxHeight: '78vh',
+      disableClose: true,
+      panelClass: ['farmacia-dialog', 'farmacia'],
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result !== undefined) {
+        this.showLoteActivity(item);
+        // this.loadProducts();
+      }
+    });
+  }
+
+  showLoteActivity(item: any): void {
+    const dialogRef = this.dialog.open(LoteDetailsComponent, {
+      width: this.smallScreen ? '100%' : '70%',
+      data: {
+        idLote: item.id,
+        currentStore: item.store,
+        cellarType: this.cellarType,
+        showLoteMovements: true,
       },
       minHeight: '78vh',
       maxHeight: '78vh',

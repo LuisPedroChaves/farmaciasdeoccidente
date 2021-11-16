@@ -1,5 +1,13 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  Inject,
+  OnInit,
+  ViewChild,
+} from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatTableDataSource } from '@angular/material/table';
 import { CardexItem } from 'src/app/core/models/Kardex';
 import { LoteItem } from 'src/app/core/models/Lote';
 
@@ -8,10 +16,27 @@ import { LoteItem } from 'src/app/core/models/Lote';
   templateUrl: './lote-details.component.html',
   styleUrls: ['./lote-details.component.scss'],
 })
-export class LoteDetailsComponent implements OnInit {
+export class LoteDetailsComponent implements OnInit, AfterViewInit {
+  smallScreen = window.innerWidth < 960 ? true : false;
+
   showMovements = false;
   loteExample = loteExample;
+
   movements = LoteMovements;
+
+  displayedColumnsActivity: string[] = [
+    'lote',
+    'date',
+    'source',
+    'destiny',
+    'income',
+    'outcome',
+    'residue',
+  ];
+
+  dataMovements = new MatTableDataSource<CardexItem>(this.movements);
+
+  @ViewChild(MatPaginator) paginator: MatPaginator;
 
   constructor(
     public dialogRef: MatDialogRef<LoteDetailsComponent>,
@@ -20,6 +45,9 @@ export class LoteDetailsComponent implements OnInit {
 
   ngOnInit(): void {
     this.showMovements = this.data.showLoteMovements;
+  }
+  ngAfterViewInit(): void {
+    this.dataMovements.paginator = this.paginator;
   }
 
   showLoteMovements(): void {
