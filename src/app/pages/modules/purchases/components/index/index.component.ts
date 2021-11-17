@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
+import { PurchaseService } from '../../../../../core/services/httpServices/purchase.service';
+
 @Component({
   selector: 'app-index',
   templateUrl: './index.component.html',
@@ -15,7 +17,9 @@ export class IndexComponent implements OnInit {
   created: number = 0;
   updated: number = 0;
 
-  constructor() { }
+  constructor(
+    public purchaseService: PurchaseService
+  ) { }
 
   ngOnInit(): void {
   }

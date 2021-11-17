@@ -65,6 +65,11 @@ export class CreatedPurchasesComponent implements OnInit, OnDestroy {
     });
   }
 
+  getExtfile(file: string) {
+    const nameFile = file.split('.');
+    return nameFile[nameFile.length - 1];
+  }
+
   applyFilter2(event: Event): void {
     const filterValue = (event.target as HTMLInputElement).value;
     this.dataSource.filter = filterValue.trim().toLowerCase();

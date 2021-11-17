@@ -16,6 +16,7 @@ import {
   PurchaseItem,
 } from '../../../../../core/models/Purchase';
 import { PurchaseService } from '../../../../../core/services/httpServices/purchase.service';
+import { UploadFileService } from '../../../../../core/services/httpServices/upload-file.service';
 
 @Component({
   selector: 'app-new-purchase',
@@ -76,7 +77,8 @@ export class NewPurchaseComponent
     public purchaseService: PurchaseService,
     private router: Router,
     public activatedRoute: ActivatedRoute,
-    private FormBuilder: FormBuilder
+    private FormBuilder: FormBuilder,
+    public uploadFileService: UploadFileService
   ) { }
 
   ngOnInit(): void {
@@ -190,9 +192,23 @@ export class NewPurchaseComponent
 
     this.loading = true;
     this.form.get('total').setValue(this.getTotal());
-    let purchase: PurchaseItem = { ...this.form.value };
-    console.log("🚀 ~ file: new-purchase.component.ts ~ line 188 ~ savePurchase ~ purchase", purchase)
+    const PURCHASE: PurchaseItem = { ...this.form.value };
+    const FILE: any = PURCHASE.file;
+    if (FILE) {
+      this.uploadFileService.uploadFile(FILE.files[0], 'purchases', PURCHASE._id)
+      .then((resp: any) => {
+      this.putPurchase(PURCHASE);
+      })
+      .catch(err => {
+        this.loading = false;
+        this.toasty.error('Error al cargar el archivo');
+      });
+    }else {
+      this.putPurchase(PURCHASE);
+    }
+  }
 
+  putPurchase(purchase: PurchaseItem): void {
     this.purchaseService.statePurchase(purchase).subscribe(
       (data) => {
         if (data.ok === true) {

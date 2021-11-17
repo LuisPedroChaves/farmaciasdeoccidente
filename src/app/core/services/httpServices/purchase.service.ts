@@ -55,6 +55,10 @@ export class PurchaseService implements IDataService<PurchaseItem[]> {
     }
   }
 
+  getAlls( _cellar ): Observable<any> {
+    return this.http.get(this.apiConfigService.API_PURCHASE + '/alls/' + _cellar);
+  }
+
   getRequisitions( _cellar ): Observable<any> {
     return this.http.get(this.apiConfigService.API_PURCHASE + '/requisitions/' + _cellar);
   }
