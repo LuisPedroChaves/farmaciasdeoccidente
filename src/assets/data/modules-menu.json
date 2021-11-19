@@ -119,12 +119,20 @@
         "order": 4
     },
     {
+        "state": "uploads",
+        "name": "Carga de archivos",
+        "type": "link",
+        "icon": "upload_file",
+        "iconType": "icon",
+        "order": 5
+    },
+    {
         "state": "adminProducts",
         "name": "Catálogo de productos",
         "type": "link",
         "icon": "category",
         "iconType": "icon",
-        "order": 5
+        "order": 6
     },
     {
         "state": "providers",
@@ -132,7 +140,7 @@
         "type": "link",
         "icon": "business",
         "iconType": "icon",
-        "order": 6
+        "order": 7
     },
     {
         "state": "users",
@@ -140,6 +148,6 @@
         "type": "link",
         "icon": "people",
         "iconType": "icon",
-        "order": 7
+        "order": 8
     }
 ]

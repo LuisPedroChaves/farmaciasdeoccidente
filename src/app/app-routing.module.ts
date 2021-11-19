@@ -116,6 +116,10 @@ const routes: Routes = [
         path: 'providers', pathMatch: 'full',  loadChildren: () => import('./pages/admin-modules/providers/providers.module').then(m => m.ProvidersModule),
         canActivate: [CheckTokenGuard]
       },
+      {
+        path: 'uploads', pathMatch: 'full',  loadChildren: () => import('./pages/admin-modules/uploads/uploads.module').then(m => m.UploadsModule),
+        canActivate: [CheckTokenGuard]
+      },
     ]
   },
   {
