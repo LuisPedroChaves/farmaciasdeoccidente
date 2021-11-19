@@ -71,12 +71,36 @@
         "order": 6
     },
     {
-        "state": "storage",
+        "state": "STORAGE",
         "name": "Inventario",
-        "type": "link",
+        "type": "sub",
         "icon": "inventory",
         "iconType": "icon",
         "order": 7
+    },
+    {
+        "state": "storage",
+        "name": "Inventario",
+        "type": "link",
+        "icon": "summarize",
+        "iconType": "icon",
+        "order": 1
+    },
+    {
+        "state": "storage/storageclosing",
+        "name": "Cierre",
+        "type": "link",
+        "icon": "summarize",
+        "iconType": "icon",
+        "order": 2
+    },
+    {
+        "state": "storage/storagehistory",
+        "name": "Historial",
+        "type": "link",
+        "icon": "summarize",
+        "iconType": "icon",
+        "order": 3
     },
     {
         "state": "PURCHASE",

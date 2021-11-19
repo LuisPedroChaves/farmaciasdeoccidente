@@ -1,6 +1,7 @@
 import { Routes } from '@angular/router';
 import { InventoryClosingComponent } from './components/inventory-closing/inventory-closing.component';
 import { StorageComponent } from './components/storage/storage.component';
+import { StorageHistoryComponent } from './components/storage-history/storage-history.component';
 
 export const StorageRoutes: Routes = [
   {
@@ -10,5 +11,9 @@ export const StorageRoutes: Routes = [
   {
     path: 'storageclosing',
     component: InventoryClosingComponent,
+  },
+  {
+    path: 'storagehistory',
+    component: StorageHistoryComponent,
   },
 ];

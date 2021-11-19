@@ -16,6 +16,7 @@ import { InventoryClosingComponent } from './components/inventory-closing/invent
 import { StorageInventoriedComponent } from './components/storage-inventoried/storage-inventoried.component';
 import { ActivityInventoryComponent } from './components/activity-inventory/activity-inventory.component';
 import { InventoriedProductsComponent } from './components/inventoried-products/inventoried-products.component';
+import { StorageHistoryComponent } from './components/storage-history/storage-history.component';
 
 @NgModule({
   declarations: [
@@ -30,6 +31,7 @@ import { InventoriedProductsComponent } from './components/inventoried-products/
     StorageInventoriedComponent,
     ActivityInventoryComponent,
     InventoriedProductsComponent,
+    StorageHistoryComponent,
   ],
   imports: [
     CommonModule,
