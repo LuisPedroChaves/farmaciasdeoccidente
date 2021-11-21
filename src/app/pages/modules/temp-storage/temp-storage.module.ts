@@ -6,11 +6,12 @@ import { CoreModule } from 'src/app/core/core.module';
 import { TempStorageComponent } from './components/temp-storage/temp-storage.component';
 import { SharedComponentsModule } from '../../shared-components/shared-components.module';
 import { TempStorageRoutes } from './temp-storage.routing';
+import { ModalStatisticsComponent } from './components/modal-statistics/modal-statistics.component';
 
 
 
 @NgModule({
-  declarations: [TempStorageComponent],
+  declarations: [TempStorageComponent, ModalStatisticsComponent],
   imports: [
     CommonModule,
     RouterModule.forChild(TempStorageRoutes),

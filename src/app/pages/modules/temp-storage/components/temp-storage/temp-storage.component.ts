@@ -24,6 +24,7 @@ import { StorageItem } from 'src/app/core/models/Storage';
 import { ProductService } from 'src/app/core/services/httpServices/product.service';
 import { ToastyService } from 'src/app/core/services/internal/toasty.service';
 import { AppState } from 'src/app/core/store/app.reducer';
+import { ModalStatisticsComponent } from '../modal-statistics/modal-statistics.component';
 
 @Component({
   selector: 'app-temp-storage',
@@ -80,6 +81,21 @@ export class TempStorageComponent implements OnInit, OnDestroy, AfterViewInit {
       .subscribe();
 
     // this.paginator.page.pipe(tap(() => this.loadProductsPage())).subscribe();
+  }
+
+  showStatistic(): void {
+    const dialogRef = this.dialog.open(ModalStatisticsComponent, {
+      width: this.smallScreen ? '100%' : '35%',
+      minHeight: '78vh',
+      maxHeight: '78vh',
+      disableClose: true,
+      panelClass: ['farmacia-dialog', 'farmacia'],
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result !== undefined) {
+      }
+    });
   }
 }
 
