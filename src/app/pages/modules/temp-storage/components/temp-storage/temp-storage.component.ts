@@ -46,6 +46,7 @@ export class TempStorageComponent implements OnInit, OnDestroy, AfterViewInit {
     '_brand',
     'healthProgram',
     'totalStock',
+    'supply',
     // 'state',
     'options',
   ];

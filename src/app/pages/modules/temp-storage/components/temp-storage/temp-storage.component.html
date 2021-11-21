@@ -43,16 +43,8 @@
                 <ng-container matColumnDef="code">
                     <th mat-header-cell *matHeaderCellDef> Código </th>
                     <td mat-cell *matCellDef="let element">
-                        <mat-chip-list>
-                            <mat-chip #tooltip="matTooltip" matTooltip="Tienes productos por debajo del minimo"
-                                matTooltipPosition="above" matTooltipHideDelay="1000"
-                                *ngIf="element.totalStock <= element.minStock" selected color="warn">
+ 
                                 {{element.product.code}}
-                            </mat-chip>
-                            <mat-chip *ngIf="element.totalStock > element.minStock" color="blue">
-                                {{element.product.code}}
-                            </mat-chip>
-                        </mat-chip-list>
                     </td>
                 </ng-container>
 
@@ -77,9 +69,12 @@
                 </ng-container>
                 <ng-container matColumnDef="totalStock">
                     <th mat-header-cell *matHeaderCellDef> Total de Unidades </th>
-                    <td mat-cell *matCellDef="let element"> {{element.totalStock }} </td>
+                    <td mat-cell *matCellDef="let element"> {{element.totalStock }} Unidades </td>
                 </ng-container>
-
+                <ng-container matColumnDef="supply">
+                    <th mat-header-cell *matHeaderCellDef> Total de Abastecimiento </th>
+                    <td mat-cell *matCellDef="let element"> 765 Unidades </td>
+                </ng-container>
 
 
                 <ng-container matColumnDef="options">
