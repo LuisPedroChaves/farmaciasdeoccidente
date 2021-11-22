@@ -4,3 +4,12 @@
 .cell { padding: 3px 5px; }
 .pasive { color: rgb(179, 61, 61);}
 .active { color: rgb(78, 129, 73);}
+.avatar-image {
+    width: inherit;
+    height: inherit;
+    object-fit: cover;
+}
+
+.row { padding: 10px 0px; }
+.section { border-bottom: 1px solid rgba(0,0,0,0.1); }
+.microsection { border: 1px solid white; border-radius: 5px; padding: 10px; background-color: rgba(0,0,0,0.05); }

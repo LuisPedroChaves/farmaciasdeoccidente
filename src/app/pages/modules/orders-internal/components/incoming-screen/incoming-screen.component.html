@@ -1,4 +1,126 @@
-<div fxLayout="column wrap" fxLayoutAlign="center center" class="screen-space">
-    <mat-icon style="transform: scale(2);">construction</mat-icon>
-    <h2>Sección en construcción</h2>
+
+
+<div fxLayout="row wrap" *ngIf="!smallScreen" fxLayoutAlign="start center">
+  <div fxFlex="100" fxLayout="row wrap" class="mat-elevation-z5 monitor-header">
+    <div fxFlex="33.33">
+      <div class="margin-T" fxLayout="row wrap" fxLayoutAlign="start center">
+        <div fxFlex fxLayout="column wrap">
+          <div class="pasive count"><b>{{pendientes.length}}</b></div>
+          <div class="product-font pasive">Pendientes</div>
+        </div>
+        <mat-icon class="fa pasive">pending</mat-icon>
+      </div>
+    </div>
+    <div fxFlex="33.33">
+      <div class="margin-T centersection" fxLayout="row wrap" fxLayoutAlign="start center">
+        
+        <div fxFlex fxLayout="column wrap">
+          <div class="count"><b>{{enProceso.length}}</b></div>
+          <div class="product-font">En Proceso</div>
+        </div>
+        <mat-icon class="fa">pending_actions</mat-icon>
+
+      </div>
+    </div>
+    <div fxFlex="33.33">
+      <div class="margin-T" fxLayout="row wrap" fxLayoutAlign="start center">
+        
+        <div fxFlex fxLayout="column wrap">
+          <div class="count active"><b>{{enRuta.length}}</b></div>
+          <div class="product-font active">En Ruta</div>
+        </div>
+        <mat-icon class="fa active">local_shipping</mat-icon>
+
+
+      </div>
+    </div>
+  </div>
+
+
+  <div fxFlex="100" class="space" data-simplebar>
+
+    <div fxLayout="row wrap">
+
+      <div fxFlex="33.33" class="margin-T">
+        <mat-list *ngFor="let a of pendientes" style="padding-top: 10px;">
+          <mat-list-item class="assigned-job mat-elevation-z4">
+            <h4 mat-line>{{ a.date | date: 'dd/MM/yyyy HH:mm' }}</h4>
+            <small mat-line class="text-muted">{{ a._destination.name }}</small>
+            <h2 class="padding-5n V"><b>{{ a.noOrder }}</b> </h2>
+          </mat-list-item>
+        </mat-list>
+      </div>
+  
+  
+  
+      <div fxFlex="33.33" class="margin-T">
+        <mat-list *ngFor="let a of enProceso" style="padding-top: 10px;">
+          <mat-list-item class="assigned-job mat-elevation-z4">
+            <h4 mat-line>{{ a.date | date: 'dd/MM/yyyy HH:mm' }}</h4>
+            <small mat-line class="text-muted">{{ a._destination.name }}</small>
+            <h2 class="padding-5n V"><b>{{ a.noOrder }}</b> </h2>
+          </mat-list-item>
+        </mat-list>
+      </div>
+  
+  
+  
+      <div fxFlex="33.33" class="margin-T">
+        <mat-list *ngFor="let a of enRuta" style="padding-top: 10px;">
+          <mat-list-item class="assigned-job mat-elevation-z4">
+            <h4 mat-line>{{ a.date | date: 'dd/MM/yyyy HH:mm' }}</h4>
+            <small mat-line class="text-muted">{{ a._destination.name }}</small>
+            <h2 class="padding-5n V"><b>{{ a.noOrder }}</b> </h2>
+          </mat-list-item>
+        </mat-list>
+      </div>
+
+
+    </div>
+
+  </div>
 </div>
+
+
+
+
+
+
+<div fxLayout="row wrap" *ngIf="smallScreen" fxLayoutAlign="start center">
+  <mat-tab-group mat-stretch-tabs color="accent" class="tab-space" fxFlex="100">
+    <mat-tab [label]="'Pendientes   ' + pendientes.length">
+      <div  data-simplebar class="tab-sm">
+        <mat-list *ngFor="let a of pendientes" style="padding-top: 10px;">
+          <mat-list-item class="assigned-job mat-elevation-z4">
+            <h4 mat-line>{{ a.date | date: 'dd/MM/yyyy HH:mm' }}</h4>
+            <small mat-line class="text-muted">{{ a._destination.name }}</small>
+            <h2 class="padding-5n V"><b>{{ a.noOrder }}</b> </h2>
+          </mat-list-item>
+        </mat-list>
+      </div>
+    </mat-tab>
+    <mat-tab [label]="'En Proceso   ' + enProceso.length">
+      <div  data-simplebar class="tab-sm">
+        <mat-list *ngFor="let a of enProceso" style="padding-top: 10px;">
+          <mat-list-item class="assigned-job mat-elevation-z4">
+            <h4 mat-line>{{ a.date | date: 'dd/MM/yyyy HH:mm' }}</h4>
+            <small mat-line class="text-muted">{{ a._destination.name }}</small>
+            <h2 class="padding-5n V"><b>{{ a.noOrder }}</b> </h2>
+          </mat-list-item>
+        </mat-list>
+      </div>
+    </mat-tab>
+    <mat-tab [label]="'En Ruta   ' + enRuta.length">
+      <div  data-simplebar class="tab-sm">
+        <mat-list *ngFor="let a of enRuta" style="padding-top: 10px;">
+          <mat-list-item class="assigned-job mat-elevation-z4">
+            <h4 mat-line>{{ a.date | date: 'dd/MM/yyyy HH:mm' }}</h4>
+            <small mat-line class="text-muted">{{ a._destination.name }}</small>
+            <h2 class="padding-5n V"><b>{{ a.noOrder }}</b> </h2>
+          </mat-list-item>
+        </mat-list>
+      </div>
+    </mat-tab>
+  </mat-tab-group>
+</div>
+  

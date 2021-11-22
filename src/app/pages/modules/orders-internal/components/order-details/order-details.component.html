@@ -1,53 +1,66 @@
 <header class="header" fxLayout="row wrap" fxLayoutAlign="start center">
     <div fxFlex="40px">
-        <mat-icon [ngClass]="{'active': ORDER.state === 'DESPACHO', 'pasive' : ORDER.state !== 'DESPACHO'}">{{ ORDER.state === 'DESPACHO' ? 'call_received': 'local_shipping'}}</mat-icon>
+        <mat-icon [ngClass]="{'active': color === 'active' , 'pasive' : color === 'pasive'}">{{ icon }}</mat-icon>
     </div>
-    <h2 class="product-font ma-0">Detalles de la solicitud</h2>
+    <h2 class="product-font ma-0">Detalles</h2>
     <span fxFlex></span>
-    <mat-chip-list>
-        <mat-chip *ngIf="ORDER.state === 'ENVIO'"> Solicitado</mat-chip>
-        <mat-chip *ngIf="ORDER.state === 'RECHAZO'" selected color="primary">Rechazado</mat-chip>
-        <mat-chip *ngIf="ORDER.state === 'CONFIRMACION'" selected color="warn">Aceptado</mat-chip>
-        <mat-chip *ngIf="ORDER.state === 'DESPACHO'" selected color="accent">Despachado</mat-chip>
-        <mat-chip *ngIf="ORDER.state === 'ENTREGA'" selected color="accent">Entregado</mat-chip>
-        <mat-chip *ngIf="ORDER.state === 'REVISION'" selected color="accent">Revisado</mat-chip>
-    </mat-chip-list>
+
+    <div fxFlex="nogrow">
+        No. {{ ORDER.noOrder }}
+    </div>
     <button mat-icon-button (click)="dialogRef.close()">
         <mat-icon>close</mat-icon>
     </button>
 </header>
 <div>
     <div fxLayout="row wrap" fxLayoutAlign="start center">
-        <div fxFlex>
-            <h3 class="ma-0"><b>{{ ORDER._cellar.name }}</b></h3>
-            <span class="text-md">{{ ORDER.date | date: 'dd/MM/yyyy HH:mm' }}</span>
-        </div> 
-        <div fxFlex="nogrow">
-            No. {{ ORDER.noOrder }}
-        </div>
-        
+        <mat-chip-list >
+            <mat-chip *ngIf="ORDER.state === 'ENVIO'" selected> Solicitado</mat-chip>
+            <mat-chip *ngIf="ORDER.state === 'RECHAZO'" selected color="primary">Rechazado</mat-chip>
+            <mat-chip *ngIf="ORDER.state === 'CONFIRMACION'" selected color="warn">Aceptado</mat-chip>
+            <mat-chip *ngIf="ORDER.state === 'DESPACHO'" selected color="accent">Despachado</mat-chip>
+            <mat-chip *ngIf="ORDER.state === 'ENTREGA'" selected color="accent">Entregado</mat-chip>
+            <mat-chip *ngIf="ORDER.state === 'REVISION'" selected color="accent">Revisado</mat-chip>
+
+            <mat-chip *ngIf="ORDER.timeDispatch" selected color="accent">
+                <mat-chip-avatar><img class="avatar-image"  src="assets/images/deliver.jpg"/></mat-chip-avatar>
+                {{ ORDER._delivery ? (ORDER._delivery.name + ' -') : '' }}  &nbsp;{{ORDER.timeDispatch | date: 'dd/MM/yyyy HH:mm'}}
+            </mat-chip>
+
+            
+        </mat-chip-list>        
     </div>
-    <div fxLayout="row wrap" fxLayoutAlign="start center" style="margin-top: 10px">
-        <div fxFlex fxLayout="row wrap">
-            <div fxFlex="35px"><mat-icon>person</mat-icon></div>
-            <div fxFlex="75px">Usuario</div>
-            <div fxFlex>{{ ORDER._user.name }}</div>
+
+    <div fxLayout="row wrap" class="row section" fxLayoutAlign="start center">
+        <div *ngIf="!ORDER._cellar.name" fxFlex="50" class="microsection" fxLayout="row wrap" fxLayoutAlign="start center">
+            <div fxFlex="35px"><mat-icon class="material-icons-outlined" >date_range</mat-icon></div>
+            <div fxFlex fxLayout="column wrap">
+                <div class="text-muted text-sm">Fecha</div>
+                <div>{{  ORDER.date | date: 'dd/MM/yyyy HH:mm'  }}</div>
+            </div>
         </div>
-        <div fxFlex="50" *ngIf="ORDER._delivery" fxLayout="row wrap">
-            <div fxFlex="35px"><mat-icon>account_box</mat-icon></div>
-            <div fxFlex="75px">Repartidor:</div>
-            <div fxFlex>{{ ORDER._delivery.name }}</div>
+        <div *ngIf="ORDER._cellar.name" fxFlex="50" class="microsection" fxLayout="row wrap" fxLayoutAlign="start center">
+            <div fxFlex="35px"><mat-icon class="material-icons-outlined" >store</mat-icon></div>
+            <div fxFlex fxLayout="column wrap">
+                <div class="text-muted text-sm">Origen</div>
+                <div>{{ ORDER._cellar.name }} - {{  ORDER.date | date: 'dd/MM/yyyy HH:mm'  }}</div>
+            </div>
         </div>
-    </div>
-    <div fxLayout="row wrap" fxLayoutAlign="start center">
-        <div fxFlex="35px"><mat-icon>event_available</mat-icon></div>
-        <div fxFlex="75px">Despacho:</div>
-        <div fxFlex>{{ ORDER.timeDispatch | date: 'dd/MM/yyyy HH:mm' }}</div>
-    </div>
-    <div fxLayout="row wrap" fxLayoutAlign="start center">
-        <div fxFlex="35px"><mat-icon>info</mat-icon></div>
-        <div fxFlex="75px">Detalles: </div>
-        <div fxFlex="100">{{ ORDER.details }}</div>
+        <div fxFlex="50" class="microsection" fxLayout="row wrap" fxLayoutAlign="start center">
+            <div fxFlex="35px"><mat-icon class="material-icons-outlined" >person</mat-icon></div>
+            <div fxFlex fxLayout="column wrap">
+                <div class="text-muted text-sm">Usuario</div>
+                <div>{{ ORDER._user.name }}</div>
+            </div>
+        </div>
+        <div fxFlex="100" class="microsection" fxLayout="row wrap" fxLayoutAlign="start center">
+            <div fxFlex="35px"><mat-icon class="material-icons-outlined" >info</mat-icon></div>
+            <div fxFlex fxLayout="column wrap">
+                <div class="text-muted text-sm">detalles</div>
+                <div>{{ ORDER.details }}</div>
+            </div>
+        </div>
+
     </div>
 </div>
 <div fxLayout="row wrap" fxLayoutAlign="start center" class="list-header">
@@ -67,12 +80,29 @@
 <div class="footer" fxLayout="row wrap">
     <button mat-button (click)="print()"><mat-icon>print</mat-icon> Imprimir</button>
      <span fxFlex></span>
-     <button *ngIf="internalOrdersp && internalOrdersp.includes('update') && ORDER.state === 'DESPACHO'" (click)="finish(ORDER)" mat-button color="accent" matTooltip="Marcar como recibido">
-        <mat-icon>task_alt</mat-icon>
-        Recibido
-    </button>
 
-    <button mat-icon-button *ngIf="(ORDER.state === 'ENVIO' || ORDER.state === 'RECHAZO') && (internalOrdersp && internalOrdersp.includes('delete'))" (click)="delete(ORDER)">
-        <mat-icon>delete</mat-icon>
-    </button>
+     <!-- SHIPS  -->
+     <button (click)="reject(ORDER)" *ngIf="module === 'SHIPS' && internalOrdersp.includes('update') && ORDER.state === 'ENVIO'" mat-stroked-button color="primary">
+        <mat-icon>highlight_off</mat-icon> Rechazar
+     </button>
+     <button (click)="accept(ORDER)" *ngIf="module === 'SHIPS' && internalOrdersp.includes('update') && ORDER.state === 'ENVIO'" mat-stroked-button color="accent">
+        <mat-icon>task_alt</mat-icon> Aceptar
+     </button>
+
+     <button  (click)="dispatch(ORDER)" *ngIf="module === 'SHIPS' && internalOrdersp.includes('update') && ORDER.state === 'CONFIRMACION'" mat-stroked-button>
+        <mat-icon>move_to_inbox</mat-icon> Despachar
+     </button>
+    
+
+
+     <!-- ORDERS  -->
+     <button (click)="delete(ORDER)" *ngIf="module === 'ORDERS' && internalOrdersp.includes('update') && ORDER.state === 'ENVIO'" mat-stroked-button>
+        <mat-icon>delete</mat-icon> Eliminar
+     </button>
+     <button (click)="delete(ORDER)" *ngIf="module === 'ORDERS' && internalOrdersp.includes('update') && ORDER.state === 'RECHAZO'" mat-stroked-button>
+        <mat-icon>delete</mat-icon> Eliminar
+     </button>
+     <button (click)="finish(ORDER)" *ngIf="module === 'ORDERS' && internalOrdersp.includes('update') && ORDER.state === 'DESPACHO'" mat-stroked-button>
+        <mat-icon>task_alt</mat-icon> Recibido
+     </button>
 </div>

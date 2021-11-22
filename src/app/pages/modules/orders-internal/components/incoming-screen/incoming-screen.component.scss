@@ -1,9 +1,70 @@
-.screen-space {
-    height: calc(100vh - 161px);
-    background-color: white;
+$blue: #2979ff;
+$blue-2: #0c50c7;
+.T1 {
+    color: #045195;
+    font-size: 20px;
+}
+.count { font-size: 26px; padding: 5px 0px; }
+
+.padding-25 {
+    padding: 25px;
 }
 
-.screen-space-sm {
-    height: calc(100vh - 189px);
-    background-color: white;
+.padding-15 {
+    padding: 20px;
 }
+
+.component-title {
+    margin-left: 25px !important;
+}
+
+.padding {
+    padding-left: 5px;
+}
+
+.margin-T {
+    padding: 20px;
+}
+.centersection { border-right: 1px solid rgba(0,0,0,0.1); border-left: 1px solid rgba(0,0,0,0.1); }
+
+.total {
+    float: right;
+}
+
+.pasive {
+    color: rgb(179, 61, 61);
+}
+
+.active {
+    color: rgb(78, 129, 73);
+}
+
+.V {
+    color: #0a1958;
+}
+
+.assigned-job {
+    margin-bottom: 10px;
+    border-radius: 10px;
+    background-color: white;
+    .whitebg {
+        background-color: white!important;
+    }
+}
+
+.padding-5 {
+    padding-left: 50px;
+    position: absolute;
+}
+
+.fa {
+    font-size: 30px;
+}
+
+.monitor-header { background-color: white; border-bottom: 1px solid rgba(0,0,0,0.1); }
+.space {  height: calc(100vh - 252px); }
+
+
+
+.tab-space { height: calc(100%);}
+.tab-sm { height: calc(100vh - 212px); padding: 10px; background-color: rgba(0,0,0,0.05); }

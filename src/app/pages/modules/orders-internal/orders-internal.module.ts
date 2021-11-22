@@ -14,11 +14,12 @@ import { CoreModule } from 'src/app/core/core.module';
 import { NewEntryComponent } from './components/new-entry/new-entry.component';
 import { NewPendingComponent } from './components/new-pending/new-pending.component';
 import { NewMissingComponent } from './components/new-missing/new-missing.component';
+import { DispatchFormComponent } from './components/dispatch-form/dispatch-form.component';
 
 
 
 @NgModule({
-  declarations: [OrdersInternalComponent, OutgoingComponent, IncomingScreenComponent, IncomingComponent, HistoryComponent, OrderDetailsComponent, NewRequestComponent, NewEntryComponent, NewPendingComponent, NewMissingComponent],
+  declarations: [OrdersInternalComponent, OutgoingComponent, IncomingScreenComponent, IncomingComponent, HistoryComponent, OrderDetailsComponent, NewRequestComponent, NewEntryComponent, NewPendingComponent, NewMissingComponent, DispatchFormComponent],
   imports: [
     CommonModule,
     RouterModule.forChild(OrdersInternalRoutes),

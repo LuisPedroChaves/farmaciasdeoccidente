@@ -1,0 +1,196 @@
+
+<header class="header" *ngIf="smallScreen">
+    <div fxLayout="row wrap" fxLayoutAlign="start start">
+        <div fxFlex class="microsectionsm" fxLayout="row wrap" fxLayoutAlign="start center">
+            <div fxFlex="35px"><mat-icon class="material-icons-outlined" >date_range</mat-icon></div>
+            <div fxFlex fxLayout="column wrap">
+                <div class="text-muted text-sm">Fecha</div>
+                <div>{{  ORDER.date | date: 'dd/MM/yyyy HH:mm'  }}</div>
+            </div>
+        </div>
+        <div fxFlex="nogrow" class="buttondis" fxLayout="column wrap">
+            <button mat-flat-button color="primary" (click)="dispatch()">
+                <mat-icon>move_to_inbox</mat-icon> DESPACHAR
+            </button>
+        </div>
+    </div>
+    <div fxLayout="row wrap" fxLayoutAlign="start start">
+        <div fxFlex class="microsectionsm" fxLayout="row wrap" fxLayoutAlign="start center">
+            <div fxFlex="35px"><mat-icon class="material-icons-outlined" >person</mat-icon></div>
+            <div fxFlex fxLayout="column wrap"  class="ellipsis-text">
+                <div class="text-muted text-sm">Usuario</div>
+                <div>{{ ORDER._user.name }}</div>
+            </div>
+        </div>
+        <div fxFlex class="microsectionsm" fxLayout="row wrap" fxLayoutAlign="start center">
+            <div fxFlex="35px"><mat-icon class="material-icons-outlined" >store</mat-icon></div>
+            <div fxFlex fxLayout="column wrap" class="ellipsis-text">
+                <div class="text-muted text-sm">Destino</div>
+                <div>{{ ORDER._destination.name }}</div>
+            </div>
+        </div>
+        <div fxFlex="nogrow" class="microsection" fxLayout="row wrap" fxLayoutAlign="start center">
+            <div fxFlex fxLayout="column wrap" class="ellipsis-text">
+                <div class="text-muted text-sm">No.</div>
+                <div>{{  ORDER.noOrder }}</div>
+            </div>
+        </div>
+    </div>
+
+</header>
+
+<div fxLayout="row wrap" class="headerlist">
+    <div fxFlex="15" class="cell cell-header">Cantidad</div>
+    <div fxFlex class="cell cell-header">Producto</div>
+    <div fxFlex="15" class="cell cell-header">Unidad</div>
+    <div fxFlex="15" class="cell cell-header">Opciones</div>
+</div>
+
+
+<div fxLayout="row wrap" *ngIf="smallScreen">
+    <div fxFlex="100" class="space-sm list-space" data-simplebar>
+        <div *ngIf="dispatchProducts.length > 0">
+            <div *ngFor="let p of dispatchProducts" class="row" fxLayout="row wrap">
+                <div fxFlex="15" class="cell">
+                    <input type="text" [(ngModel)]="p.quantity">
+                </div>
+                <div fxFlex class="cell">{{ p._product.description }}</div>
+                <div fxFlex="15" class="cell">{{ p._product.unity }}</div>
+                <div fxFlex="15" class="cell">
+                    <mat-button mat-icon-button (click)="remove(p)"><mat-icon>highlight_off</mat-icon></mat-button>
+                </div>
+            </div>
+        </div>
+        <div *ngIf="dispatchProducts.length === 0" class="space" fxLayout="column wrap" fxLayoutAlign="center center">
+            Agregue a esta lista los productos a despachar
+        </div>
+    </div>
+</div>
+
+
+
+
+<header class="header" fxLayout="row wrap" fxLayoutAlign="start start" *ngIf="!smallScreen">
+    <div fxLayout="row wrap" fxFlex >
+        <div fxFlex="100" fxLayout="row wrap">
+
+            <div *ngIf="ORDER._cellar.name" fxFlex="50" class="microsection" fxLayout="row wrap" fxLayoutAlign="start center">
+                <div fxFlex="35px"><mat-icon class="material-icons-outlined" >store</mat-icon></div>
+                <div fxFlex fxLayout="column wrap">
+                    <div class="text-muted text-sm">Origen</div>
+                    <div>{{ ORDER._cellar.name }}</div>
+                </div>
+            </div>
+            <div fxFlex class="microsection" fxLayout="row wrap" fxLayoutAlign="start center">
+                <div fxFlex="35px"><mat-icon class="material-icons-outlined" >date_range</mat-icon></div>
+                <div fxFlex fxLayout="column wrap">
+                    <div class="text-muted text-sm">Fecha</div>
+                    <div>{{  ORDER.date | date: 'dd/MM/yyyy HH:mm'  }}</div>
+                </div>
+            </div>
+    
+            <div fxFlex class="microsection" fxLayout="row wrap" fxLayoutAlign="start center">
+                <div fxFlex="35px"><mat-icon class="material-icons-outlined" >person</mat-icon></div>
+                <div fxFlex fxLayout="column wrap">
+                    <div class="text-muted text-sm">Usuario</div>
+                    <div>{{ ORDER._user.name }}</div>
+                </div>
+            </div>
+            <div fxFlex class="microsection" fxLayout="row wrap" fxLayoutAlign="start center">
+                <div fxFlex="35px"><mat-icon class="material-icons-outlined" >store</mat-icon></div>
+                <div fxFlex fxLayout="column wrap">
+                    <div class="text-muted text-sm">Destino</div>
+                    <div>{{ ORDER._destination.name }}</div>
+                </div>
+            </div>
+            <div fxFlex="nogrow" class="microsection" fxLayout="row wrap" fxLayoutAlign="start center">
+                <div fxFlex fxLayout="column wrap">
+                    <div class="text-muted text-sm">No.</div>
+                    <div>{{  ORDER.noOrder }}</div>
+                </div>
+            </div>
+        </div>
+        <div fxFlex="100" fxLayout="row wrap">
+
+            <div fxFlex class="microsection" fxLayout="row wrap" fxLayoutAlign="start center">
+                <div fxFlex="35px"><mat-icon class="material-icons-outlined" >info</mat-icon></div>
+                <div fxFlex fxLayout="column wrap">
+                    <div class="text-muted text-sm">detalles</div>
+                    <div>{{ ORDER.details }}</div>
+                </div>
+            </div>
+            <div fxFlex="nogrow" class="microsection2" fxLayout="row wrap" fxLayoutAlign="start center">
+                <div fxFlex fxLayout="column wrap">
+                    <mat-form-field color="primary" appearance="fill">
+                        <mat-label>Repartidor</mat-label>
+                        <img matPrefix class="avatar-image"  src="assets/images/deliver.jpg"/>
+                        <mat-select>
+                            <mat-option>Ninguno</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div fxFlex="nogrow" class="buttondis" fxLayout="column wrap">
+        
+        <button mat-flat-button color="primary"  (click)="dispatch()">
+            <mat-icon>move_to_inbox</mat-icon> DESPACHAR
+        </button>
+    </div>
+</header>
+<div fxLayout="row wrap" *ngIf="!smallScreen" class="headerlist">
+    <div fxFlex="50" fxLayout="row wrap" class="section">
+        <div fxFlex="15" class="cell cell-header">Cantidad</div>
+        <div fxFlex class="cell cell-header">Producto</div>
+        <div fxFlex="15" class="cell cell-header">Unidad</div>
+        <div fxFlex="15" class="cell cell-header">Opciones</div>
+    </div>
+    <div fxFlex="50" fxLayout="row wrap">
+        <div fxFlex="15" class="cell cell-header">Cantidad</div>
+        <div fxFlex class="cell cell-header">Producto</div>
+        <div fxFlex="15" class="cell cell-header">Unidad</div>
+        <div fxFlex="15" class="cell cell-header">Opciones</div>
+    </div>
+</div>
+<div fxLayout="row wrap" *ngIf="!smallScreen">
+
+    <div fxFlex="50" class="space section list-space" data-simplebar>
+        <div *ngIf="ORDER.detail.length > 0">
+
+            <div *ngFor="let p of ORDER.detail" class="row" fxLayout="row wrap">
+                <div fxFlex="15" class="cell">
+                    {{p.quantity}}
+                </div>
+                <div fxFlex class="cell">{{ p._product.description }}</div>
+                <div fxFlex="15" class="cell">{{ p._product.unity }}</div>
+                 <div fxFlex="15" class="cell">
+                    <mat-button mat-icon-button (click)="add(p)"><mat-icon>control_point</mat-icon></mat-button>
+                </div>
+            </div>
+        </div>
+
+
+        <div *ngIf="ORDER.detail.length === 0" class="space"  fxLayoutAlign="center center" fxLayout="column wrap">
+            Este pedido no tiene productos agregados
+        </div>
+
+    </div>
+    <div fxFlex="50" class="space list-space" data-simplebar>
+        <div *ngIf="dispatchProducts.length > 0">
+            <div *ngFor="let p of dispatchProducts" class="row" fxLayout="row wrap">
+                <div fxFlex="15" class="cell">
+                    <input type="text" [(ngModel)]="p.quantity">
+                </div>
+                <div fxFlex class="cell">{{ p._product.description }}</div>
+                <div fxFlex="15" class="cell">{{ p._product.unity }}</div>
+                <div fxFlex="15" class="cell">
+                    <mat-button mat-icon-button (click)="remove(p)"><mat-icon>highlight_off</mat-icon></mat-button>
+                </div>
+            </div>
+        </div>
+        <div *ngIf="dispatchProducts.length === 0" class="space" fxLayout="column wrap" fxLayoutAlign="center center">
+            Agregue a esta lista los productos a despachar
+        </div>
+    </div>
+</div>

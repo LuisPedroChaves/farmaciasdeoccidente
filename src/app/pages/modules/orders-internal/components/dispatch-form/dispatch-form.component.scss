@@ -1,0 +1,19 @@
+.header, .footer { padding: 10px; }
+.list-space { background-color: rgba(0,0,0,0.035); }
+.space { height: calc(100vh - 404px); width: 100%;  }
+.space-sm { height: calc(100vh - 360px); width: 100%;  }
+.microsectionsm { border: 1px solid white; border-radius: 5px; padding: 2px 10px; background-color: rgba(0,0,0,0.05); }
+.microsection { border: 1px solid white; border-radius: 5px; padding: 10px; background-color: rgba(0,0,0,0.05); }
+.microsection2 { border: 1px solid white; border-radius: 5px; padding: 0px 0px; background-color: rgba(0,0,0,0.05); }
+.avatar-image {
+    width: 24px;
+    height: 24px;
+    border-radius: 24px;
+    object-fit: cover;
+}
+.buttondis { padding: 0px 10px; }
+.section { border-right: 1px solid rgba(0,0,0,0.1); }
+.cell { padding: 8px; }
+.cell-header { font-size: 11px; color: rgba(0,0,0,0.54); }
+.headerlist { border-bottom: 1px solid rgba(0,0,0,0.1); }
+.row { border-bottom: 1px solid rgba(0,0,0,0.1); background-color: white; }

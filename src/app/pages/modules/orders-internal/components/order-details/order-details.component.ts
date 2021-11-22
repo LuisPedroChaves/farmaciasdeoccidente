@@ -14,11 +14,17 @@ import * as moment from 'moment';
 export class OrderDetailsComponent implements OnInit {
   ORDER:InternalOrderFullItem;
   internalOrdersp: string[] = [];
+  icon: string;
+  color: string;
+  module: string;
   constructor(public dialogRef: MatDialogRef<OrderDetailsComponent>, @Inject(MAT_DIALOG_DATA) public data: any, public dialog: MatDialog, public internalOrderService: InternalOrderService, public toasty: ToastyService, public printService: PrintService) { }
 
   ngOnInit(): void {
     this.ORDER = this.data.order;
     this.internalOrdersp = this.data.internalOrdersp;
+    this.icon = this.data.icon;
+    this.color = this.data.color;
+    this.module = this.data.module;
     console.log(this.ORDER);
   }
 
@@ -104,6 +110,79 @@ export class OrderDetailsComponent implements OnInit {
           this.dialogRef.close('DELETE');
         }, error => {
           this.toasty.error('Error al eliminar el pedido');
+        });
+      }
+    });
+  }
+
+
+
+
+
+
+
+
+
+
+  accept(internalOrder: InternalOrderItem) {
+    const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
+      width: '350px',
+      data: { title: 'Aceptar Pedido', message: '¿Confirma que desea aceptar el pedido  ' + internalOrder.noOrder + '?' },
+      disableClose: true,
+      panelClass: ['farmacia-dialog', 'farmacia'],
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result !== undefined) {
+        internalOrder.state = 'CONFIRMACION';
+        this.internalOrderService.updateInternalOrderState(internalOrder).subscribe(data => {
+          this.toasty.success('Pedido aceptado exitosamente');
+          this.dialogRef.close('ACCEPT');
+        }, error => {
+          this.toasty.error('Error al aceptar el pedido');
+        });
+      }
+    });
+  }
+
+  reject(internalOrder: InternalOrderItem) {
+    const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
+      width: '350px',
+      data: { title: 'Rechazar Pedido', message: '¿Confirma que desea rechazar el pedido  ' + internalOrder.noOrder + '?' },
+      disableClose: true,
+      panelClass: ['farmacia-dialog', 'farmacia'],
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result !== undefined) {
+        internalOrder.state = 'RECHAZO';
+        this.internalOrderService.updateInternalOrderState(internalOrder).subscribe(data => {
+          this.toasty.success('Pedido rechazado exitosamente');
+          this.dialogRef.close('REJECT');
+        }, error => {
+          this.toasty.error('Error al rechazar el pedido');
+        });
+      }
+    });
+  }
+
+  dispatch(internalOrder: InternalOrderItem) {
+    const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
+      width: '350px',
+      data: { title: 'Despachar Pedido', message: '¿Confirma que desea despachar el pedido  ' + internalOrder.noOrder + '?', internalOrder },
+      disableClose: true,
+      panelClass: ['farmacia-dialog', 'farmacia'],
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result !== undefined) {
+
+        internalOrder.state = 'DESPACHO';
+        this.internalOrderService.updateInternalOrderState(internalOrder).subscribe(data => {
+          this.toasty.success('Pedido despachado exitosamente');
+          this.dialogRef.close('DISPATCH');
+        }, error => {
+          this.toasty.error('Error al despachar el pedido');
         });
       }
     });

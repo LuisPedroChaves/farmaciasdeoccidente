@@ -160,10 +160,10 @@ export class OutgoingComponent implements OnInit {
 
 
 
-  details(order: InternalOrderItem) {
+  details(order: InternalOrderItem, icon: string, color: string) {
     const dialogRef = this.dialog.open(OrderDetailsComponent, {
       width: this.smallScreen ? '100%' : '600px',
-      data: { order: order,internalOrdersp: this.internalOrdersp },
+      data: { order: order,internalOrdersp: this.internalOrdersp, icon: icon, color: color, module: 'ORDERS' },
       disableClose: true,
       panelClass: ['farmacia-dialog', 'farmacia'],
     });
