@@ -71,12 +71,20 @@
         "order": 6
     },
     {
+        "state": "tempStorage",
+        "name": "Inventario Temp.",
+        "type": "link",
+        "icon": "inventory",
+        "iconType": "icon",
+        "order": 7
+    },
+    {
         "state": "storage",
         "name": "Inventario",
         "type": "link",
         "icon": "inventory",
         "iconType": "icon",
-        "order": 7
+        "order": 8
     },
     {
         "state": "purchases",
@@ -84,7 +92,7 @@
         "type": "link",
         "icon": "shopping_basket",
         "iconType": "icon",
-        "order": 8
+        "order": 9
     },
     {
         "state": "/admin",

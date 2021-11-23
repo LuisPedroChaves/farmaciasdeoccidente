@@ -59,6 +59,10 @@ const routes: Routes = [
         canActivate: [CheckTokenGuard]
       },
       {
+        path: 'tempStorage', pathMatch: 'full',  loadChildren: () => import('./pages/modules/temp-storage/temp-storage.module').then(m => m.TempStorageModule),
+        canActivate: [CheckTokenGuard]
+      },
+      {
         path: 'purchases', loadChildren: () => import('./pages/modules/purchases/purchases.module').then(m => m.PurchasesModule),
         canActivate: [CheckTokenGuard]
       },

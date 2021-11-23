@@ -19,7 +19,12 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatDatepickerModule } from '@angular/material/datepicker';
-import { DateAdapter, MatNativeDateModule, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
+import {
+  DateAdapter,
+  MatNativeDateModule,
+  MAT_DATE_FORMATS,
+  MAT_DATE_LOCALE,
+} from '@angular/material/core';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatBottomSheetModule } from '@angular/material/bottom-sheet';
@@ -28,13 +33,16 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatRippleModule } from '@angular/material/core';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatBadgeModule } from '@angular/material/badge';
-import { MatPaginatorIntl, MatPaginatorModule } from '@angular/material/paginator';
+import {
+  MatPaginatorIntl,
+  MatPaginatorModule,
+} from '@angular/material/paginator';
 import { MatSortModule } from '@angular/material/sort';
 import { MatStepperModule } from '@angular/material/stepper';
+import { MatDividerModule } from '@angular/material/divider';
 
 /* FLEX ----------------------*/
 import { FlexLayoutModule, CoreModule } from '@angular/flex-layout';
-
 
 /* STYLE ----------------------*/
 import { ToastaModule } from 'ngx-toasta';
@@ -51,7 +59,11 @@ import { UpdateNotificationsComponent } from './update-notifications/update-noti
 import { getSpanishPaginatorIntl } from './spanish-paginator-intl';
 import { LoaderComponent } from './loader/loader.component';
 
-import { MatMomentDateModule, MAT_MOMENT_DATE_ADAPTER_OPTIONS, MomentDateAdapter } from "@angular/material-moment-adapter";
+import {
+  MatMomentDateModule,
+  MAT_MOMENT_DATE_ADAPTER_OPTIONS,
+  MomentDateAdapter,
+} from '@angular/material-moment-adapter';
 import 'moment/locale/es';
 import { UserComponent } from './user/user.component';
 // Tambien hay que instalar MOMENT JS
@@ -63,12 +75,20 @@ export const MY_DATE_FORMATS = {
     dateInput: 'DD/MM/YYYY',
     monthYearLabel: 'MMMM YYYY',
     dateA11yLabel: 'LL',
-    monthYearA11yLabel: 'MMMM YYYY'
+    monthYearA11yLabel: 'MMMM YYYY',
   },
 };
 @NgModule({
-  declarations: [NewCellarComponent, ConfirmationDialogComponent, NotificationsComponent, UpdateNotificationsComponent, LoaderComponent, UserComponent],
+  declarations: [
+    NewCellarComponent,
+    ConfirmationDialogComponent,
+    NotificationsComponent,
+    UpdateNotificationsComponent,
+    LoaderComponent,
+    UserComponent,
+  ],
   imports: [
+    MatDividerModule,
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
@@ -111,7 +131,7 @@ export const MY_DATE_FORMATS = {
     MatPaginatorModule,
     MatSortModule,
     MatStepperModule,
-    MatMomentDateModule
+    MatMomentDateModule,
   ],
   exports: [
     FormsModule,
@@ -156,22 +176,23 @@ export const MY_DATE_FORMATS = {
     MatSortModule,
     MatStepperModule,
     MatMomentDateModule,
+    MatDividerModule,
     // components
     NewCellarComponent,
     ConfirmationDialogComponent,
     NotificationsComponent,
-    LoaderComponent
-  ]
-  , providers: [
+    LoaderComponent,
+  ],
+  providers: [
     { provide: MAT_DATE_LOCALE, useValue: 'es' },
     {
       provide: DateAdapter,
       useClass: MomentDateAdapter,
-      deps: [MAT_DATE_LOCALE, MAT_MOMENT_DATE_ADAPTER_OPTIONS]
+      deps: [MAT_DATE_LOCALE, MAT_MOMENT_DATE_ADAPTER_OPTIONS],
     },
     { provide: MAT_DATE_FORMATS, useValue: MY_DATE_FORMATS },
     { provide: MatPaginatorIntl, useValue: getSpanishPaginatorIntl() },
-    DatePipe
-  ]
+    DatePipe,
+  ],
 })
-export class SharedComponentsModule { }
+export class SharedComponentsModule {}
