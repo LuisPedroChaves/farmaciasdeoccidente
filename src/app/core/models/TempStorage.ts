@@ -5,4 +5,5 @@ export interface TempStorageItem {
     _cellar: CellarItem;
     _product: ProductItem;
     stock: number,
+    supply: number,
 }
