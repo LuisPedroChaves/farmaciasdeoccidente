@@ -6,9 +6,10 @@ import { CoreModule } from 'src/app/core/core.module';
 import { UploadsComponent } from './components/uploads/uploads.component';
 import { UploadsRoutes } from './uploads.routing';
 import { SharedComponentsModule } from '../../shared-components/shared-components.module';
+import { StatisticsComponent } from './components/statistics/statistics.component';
 
 @NgModule({
-  declarations: [UploadsComponent],
+  declarations: [UploadsComponent, StatisticsComponent],
   imports: [
     CommonModule,
     RouterModule.forChild(UploadsRoutes),
