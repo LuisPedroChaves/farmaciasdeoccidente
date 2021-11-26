@@ -108,5 +108,4 @@ export class UploadsComponent implements OnInit, AfterContentInit, OnDestroy {
       return;
     }
   }
-
 }
