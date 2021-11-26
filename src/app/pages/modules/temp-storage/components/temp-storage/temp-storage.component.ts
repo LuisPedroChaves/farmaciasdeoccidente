@@ -13,7 +13,13 @@ import { Store } from '@ngrx/store';
 import { FormControl } from '@angular/forms';
 
 import { fromEvent, Observable, Subscription } from 'rxjs';
-import { debounceTime, distinctUntilChanged, map, startWith, tap } from 'rxjs/operators';
+import {
+  debounceTime,
+  distinctUntilChanged,
+  map,
+  startWith,
+  tap,
+} from 'rxjs/operators';
 
 import { ToastyService } from 'src/app/core/services/internal/toasty.service';
 import { AppState } from 'src/app/core/store/app.reducer';
@@ -28,9 +34,10 @@ import { BrandService } from 'src/app/core/services/httpServices/brand.service';
   selector: 'app-temp-storage',
   templateUrl: './temp-storage.component.html',
   styleUrls: ['./temp-storage.component.scss'],
-
 })
-export class TempStorageComponent implements OnInit, AfterViewInit, AfterContentInit, OnDestroy {
+export class TempStorageComponent
+  implements OnInit, AfterViewInit, AfterContentInit, OnDestroy
+{
   smallScreen = window.innerWidth < 960 ? true : false;
   currentCellar: CellarItem;
 
@@ -39,9 +46,9 @@ export class TempStorageComponent implements OnInit, AfterViewInit, AfterContent
 
   dataSource: tempStorageDataSource;
   columns = [
-    'barcode',
-    'description',
-    '_brand',
+    // 'barcode',
+    // 'description',
+    // '_brand',
     'stock',
     'supply',
     'options',
@@ -59,14 +66,13 @@ export class TempStorageComponent implements OnInit, AfterViewInit, AfterContent
     public toasty: ToastyService,
     public router: Router,
     public dialog: MatDialog,
-    public brandService: BrandService,
+    public brandService: BrandService
   ) {}
 
   ngOnInit(): void {
     this.currentCellar = JSON.parse(localStorage.getItem('currentstore'));
 
-    this.dataSource = new tempStorageDataSource(this.tempStorageService);
-    this.dataSource.loadTempStorage(this.currentCellar._id, this.currentPage, 10, '', '');
+    this.loadProducts();
 
     this.brandsSubscription = this.brandService.readData().subscribe((data) => {
       this.brands = data;
@@ -102,6 +108,17 @@ export class TempStorageComponent implements OnInit, AfterViewInit, AfterContent
     this.brandsSubscription?.unsubscribe();
   }
 
+  loadProducts(): void {
+    this.dataSource = new tempStorageDataSource(this.tempStorageService);
+    this.dataSource.loadTempStorage(
+      this.currentCellar._id,
+      this.currentPage,
+      10,
+      '',
+      ''
+    );
+  }
+
   loadTempStorages(): void {
     const BRAND = this.brand.value ? this.brand.value._id : '';
 
@@ -134,6 +151,12 @@ export class TempStorageComponent implements OnInit, AfterViewInit, AfterContent
     this.loadTempStorages();
   }
 
+  editProduct(element: any): void {
+    console.log(element);
+    // TODO: ModalEdit
+    this.loadProducts();
+  }
+
   showStatistic(): void {
     const dialogRef = this.dialog.open(ModalStatisticsComponent, {
       width: this.smallScreen ? '100%' : '35%',
@@ -143,7 +166,7 @@ export class TempStorageComponent implements OnInit, AfterViewInit, AfterContent
       panelClass: ['farmacia-dialog', 'farmacia'],
     });
 
-    dialogRef.afterClosed().subscribe(result => {
+    dialogRef.afterClosed().subscribe((result) => {
       if (result !== undefined) {
       }
     });

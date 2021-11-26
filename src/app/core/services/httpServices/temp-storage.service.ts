@@ -7,7 +7,7 @@ import { ApiConfigService } from 'src/app/core/services/config/api-config.servic
 import { TempStorageItem } from '../../models/TempStorage';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class TempStorageService {
   TOTAL_STORAGES = 0;
@@ -15,9 +15,10 @@ export class TempStorageService {
   constructor(
     public http: HttpClient,
     public apiConfigService: ApiConfigService
-  ) { }
+  ) {}
 
   loadData(
+    // tslint:disable-next-line: variable-name
     _cellar,
     pageNumber: number = 1,
     pageSize: number = 20,
@@ -30,7 +31,7 @@ export class TempStorageService {
           .set('page', pageNumber.toString())
           .set('size', pageSize.toString())
           .set('search', search.toString())
-          .set('brand', brand.toString())
+          .set('brand', brand.toString()),
       })
       .pipe(
         map((response: any) => {
@@ -40,23 +41,26 @@ export class TempStorageService {
       );
   }
 
-  uploadFile(file: File, _cellar: string) {
+  // tslint:disable-next-line: variable-name
+  uploadFile(file: File, _cellar: string): Promise<any> {
     return new Promise((resolve, reject) => {
       const formData = new FormData();
       const xhr = new XMLHttpRequest();
 
-      formData.append( 'archivo', file, file.name );
+      formData.append('archivo', file, file.name);
 
       xhr.onreadystatechange = () => {
         if (xhr.readyState === 4) {
-
           if (xhr.status === 200) {
-            console.log( 'Archivo Subido' );
-            resolve( JSON.parse(xhr.response));
+            console.log('Archivo Subido');
+            resolve(JSON.parse(xhr.response));
           } else {
-            console.log( 'Fallo la subida' );
-            console.log("🚀 ~ file: upload-file.service.ts ~ line 31 ~ UploadFileService ~ returnnewPromise ~ xhr.response", xhr)
-            reject( xhr.response );
+            console.log('Fallo la subida');
+            console.log(
+              '🚀 ~ file: upload-file.service.ts ~ line 31 ~ UploadFileService ~ returnnewPromise ~ xhr.response',
+              xhr
+            );
+            reject(xhr.response);
           }
         }
       };
@@ -64,7 +68,7 @@ export class TempStorageService {
       const url = this.apiConfigService.API_TEMP_STORAGE + '/xlsx/' + _cellar;
 
       xhr.open('POST', url, true);
-      xhr.send( formData );
+      xhr.send(formData);
     });
   }
 }
