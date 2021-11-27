@@ -16,14 +16,15 @@ export class TempSaleService {
     private http: HttpClient,
   ) { }
 
-  getStatics( _cellar, _brand, startDate, endDate, x ): Observable<any> {
+  getStatics( _cellar, _brand, startDate, endDate, minX, maxX ): Observable<any> {
     return this.http.get(this.apiConfigService.API_TEMP_SALE + '/', {
       params: new HttpParams()
         .set('_cellar', _cellar.toString())
         .set('_brand', _brand.toString())
         .set('startDate', startDate.toString())
         .set('endDate', endDate.toString())
-        .set('x', endDate.toString())
+        .set('minX', minX.toString())
+        .set('maxX', maxX.toString())
     });
   }
 
