@@ -63,11 +63,11 @@ const routes: Routes = [
         canActivate: [CheckTokenGuard]
       },
       {
-        path: 'purchases', loadChildren: () => import('./pages/modules/purchases/purchases.module').then(m => m.PurchasesModule),
+        path: 'tempStorage', pathMatch: 'full',  loadChildren: () => import('./pages/modules/temp-storage/temp-storage.module').then(m => m.TempStorageModule),
         canActivate: [CheckTokenGuard]
       },
       {
-        path: 'adjusts', pathMatch: 'full',  loadChildren: () => import('./pages/modules/adjusts/adjusts.module').then(m => m.AdjustsModule),
+        path: 'purchases', loadChildren: () => import('./pages/modules/purchases/purchases.module').then(m => m.PurchasesModule),
         canActivate: [CheckTokenGuard]
       },
     ]
@@ -122,6 +122,10 @@ const routes: Routes = [
       },
       {
         path: 'providers', pathMatch: 'full',  loadChildren: () => import('./pages/admin-modules/providers/providers.module').then(m => m.ProvidersModule),
+        canActivate: [CheckTokenGuard]
+      },
+      {
+        path: 'uploads', pathMatch: 'full',  loadChildren: () => import('./pages/admin-modules/uploads/uploads.module').then(m => m.UploadsModule),
         canActivate: [CheckTokenGuard]
       },
     ]

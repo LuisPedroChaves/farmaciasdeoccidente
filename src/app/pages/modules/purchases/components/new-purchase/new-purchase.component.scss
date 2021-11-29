@@ -3,20 +3,12 @@
 }
 
 .my-container {
-    height: calc(100vh - 251px) !important;
+    height: calc(100vh - 201px) !important;
     margin-top: 5px;
 }
 
-.header-container {
-    height: calc(100vh - 231px) !important;
-}
-
 .detail-container {
-    height: calc(100vh - 472px) !important;
-}
-
-.p-10 {
-    padding: 10px;
+    height: calc(100vh - 261px) !important;
 }
 
 .close-button {
@@ -36,12 +28,6 @@
 
 .section {
     padding: 15px 15px;
-}
-
-.searchSection {
-    // padding-top: 15px;
-    padding-right: 15px;
-    padding-left: 15px;
 }
 
 .width-all {
@@ -120,22 +106,6 @@ $blue: #0a1958;
     padding-right: 15px;
 }
 
-.chip-color {
-    background-color: #cbe870;
-}
-
-::ng-deep .mat-progress-bar-fill::after {
-    background-color: #0a1958;
-}
-
-::ng-deep .mat-progress-bar-buffer {
-    background: rgba(15, 26, 86, 0.20);
-}
-
-::ng-deep .mat-progress-bar {
-    border-radius: 2px;
-}
-
 .ng-valid[required],
 .ng-valid.required {
     border-left: 5px solid #cbe870;
@@ -145,12 +115,47 @@ $blue: #0a1958;
     margin-top: 16px;
 }
 
-.mat-stepper-horizontal {
-    background-color: transparent !important;
+.detalle:hover {
+    transition: 0.3s;
+    border: 2px solid #045195;
+    // background-color: #e0e0e0;
 }
 
-.detalle:hover {
-        transition: 0.3s;
-        border: 2px solid #045195;
-        // background-color: #e0e0e0;
+table {
+    width: 100%;
+}
+
+.mat-column-presentation {
+    width: 20px;
+    text-align: center;
+}
+
+.mat-column-_product {
+    border-right: 1px solid currentColor;
+    padding-right: 24px;
+    text-align: center;
+}
+
+.mat-column-quantity {
+    padding-left: 16px;
+}
+
+.mat-column-cost {
+    text-align: center;
+}
+
+.mat-header-cell {
+    background-color: white;
+}
+
+.mat-row:hover {
+    background: whitesmoke;
+}
+
+.inputWidth {
+    max-width: 110px;
+}
+
+.inputDateWidth {
+    max-width: 140px;
 }

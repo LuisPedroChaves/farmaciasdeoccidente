@@ -65,5 +65,11 @@ export class ApiConfigService {
   // Purchase
   public API_PURCHASE = this.API_URL + '/purchase';
 
+    // tempStorage
+    public API_TEMP_STORAGE = this.API_URL + '/tempStorage';
+
+    // tempSale
+    public API_TEMP_SALE = this.API_URL + '/tempSale';
+
   /* #endregion */
 }

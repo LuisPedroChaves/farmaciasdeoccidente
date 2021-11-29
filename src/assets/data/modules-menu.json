@@ -79,36 +79,28 @@
         "order": 6
     },
     {
-        "state": "storage",
-        "name": "Inventario",
+        "state": "tempStorage",
+        "name": "Inventario Temp.",
         "type": "link",
         "icon": "inventory",
         "iconType": "icon",
         "order": 7
     },
     {
-        "state": "PURCHASE",
-        "name": "Ingresos",
-        "type": "sub",
-        "icon": "shopping_basket",
+        "state": "storage",
+        "name": "Inventario",
+        "type": "link",
+        "icon": "inventory",
         "iconType": "icon",
         "order": 8
     },
     {
         "state": "purchases",
-        "name": "Facturas",
+        "name": "Compras",
         "type": "link",
-        "icon": "summarize",
+        "icon": "shopping_basket",
         "iconType": "icon",
-        "order": 1
-    },
-    {
-        "state": "adjusts",
-        "name": "Ajustes",
-        "type": "link",
-        "icon": "adjust",
-        "iconType": "icon",
-        "order": 2
+        "order": 9
     },
     {
         "state": "/admin",
@@ -143,12 +135,20 @@
         "order": 4
     },
     {
+        "state": "uploads",
+        "name": "Carga de archivos",
+        "type": "link",
+        "icon": "upload_file",
+        "iconType": "icon",
+        "order": 5
+    },
+    {
         "state": "adminProducts",
         "name": "Catálogo de productos",
         "type": "link",
         "icon": "category",
         "iconType": "icon",
-        "order": 5
+        "order": 6
     },
     {
         "state": "providers",
@@ -156,7 +156,7 @@
         "type": "link",
         "icon": "business",
         "iconType": "icon",
-        "order": 6
+        "order": 7
     },
     {
         "state": "users",
@@ -164,6 +164,6 @@
         "type": "link",
         "icon": "people",
         "iconType": "icon",
-        "order": 7
+        "order": 8
     }
 ]

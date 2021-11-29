@@ -28,7 +28,7 @@ export class FilterPipe implements PipeTransform {
       return items.filter( it => {
         let returnThisItem = false;
         properties.forEach(p => {
-            if (it[p].toLowerCase().includes(searchText)) { returnThisItem = true; }
+            if (it[p].toString().toLowerCase().includes(searchText)) { returnThisItem = true; }
         });
         if (returnThisItem !== false) { return it; }
       });
