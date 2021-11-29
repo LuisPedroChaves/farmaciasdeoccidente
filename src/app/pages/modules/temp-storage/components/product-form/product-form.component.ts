@@ -179,28 +179,6 @@ export class ProductFormComponent implements OnInit, AfterContentInit, OnDestroy
 
     product._brand = { name: this.form.value._brand };
 
-    this.productService.createProduct(product).subscribe(
-      (res) => {
-        if (res.ok) {
-          this.form.reset();
-          this.refreshForms();
-          this.toasty.success('Producto Creado Exitosamente');
-          this.loading = false;
-          if (this.isMatDialog) {
-            this.dialogRef.close('ok');
-          }
-          this.barcode.nativeElement.focus();
-          this.defaultPresentations();
-        } else {
-          this.loading = false;
-          this.toasty.error('Error al crear producto');
-        }
-      },
-      (error) => {
-        this.loading = false;
-        this.toasty.error('Error al crear producto');
-      }
-    );
   }
 
 }

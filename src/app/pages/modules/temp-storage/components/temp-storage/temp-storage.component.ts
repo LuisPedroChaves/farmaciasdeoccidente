@@ -148,11 +148,10 @@ export class TempStorageComponent
 
   editProduct(element: any): void {
     console.log(element);
-    // TODO: ModalEdit
     const dialogRef = this.dialog.open(ProductEditFormComponent, {
       width: this.smallScreen ? '100%' : '800px',
       data: {
-        by: 'NewPurchase',
+        product: element,
       },
       minHeight: '78vh',
       maxHeight: '78vh',

@@ -1,6 +1,14 @@
-import { AfterContentInit, Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import {
+  AfterContentInit,
+  Component,
+  ElementRef,
+  Inject,
+  OnDestroy,
+  OnInit,
+  ViewChild,
+} from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { MatDialogRef } from '@angular/material/dialog';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { Observable, Subscription } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
@@ -13,23 +21,18 @@ import { ToastyService } from 'src/app/core/services/internal/toasty.service';
 @Component({
   selector: 'app-product-edit-form',
   templateUrl: './product-edit-form.component.html',
-  styleUrls: ['./product-edit-form.component.scss']
+  styleUrls: ['./product-edit-form.component.scss'],
 })
-export class ProductEditFormComponent implements OnInit, AfterContentInit, OnDestroy {
-
-  isMatDialog = false;
-
+export class ProductEditFormComponent
+  implements OnInit, AfterContentInit, OnDestroy
+{
   @ViewChild('barcode') barcode: ElementRef<HTMLInputElement>;
 
   form = new FormGroup({
     _brand: new FormControl(null, [Validators.required]),
     barcode: new FormControl(null, [Validators.required]),
     description: new FormControl(null, [Validators.required]),
-
   });
-
-  loading = false;
-  public data: any;
 
   // Autocompletado
   // Brand
@@ -45,12 +48,12 @@ export class ProductEditFormComponent implements OnInit, AfterContentInit, OnDes
     public brandService: BrandService,
     public productService: ProductService,
     public router: Router,
-    public dialogRef: MatDialogRef<ProductEditFormComponent>
-  ) {
-
-  }
+    public dialogRef: MatDialogRef<ProductEditFormComponent>,
+    @Inject(MAT_DIALOG_DATA) public info: any
+  ) {}
 
   ngOnInit(): void {
+    this.loadProduct();
     this.brandsSubscription = this.brandService.readData().subscribe((data) => {
       this.brands = data;
       this.options = [...this.brands];
@@ -60,7 +63,6 @@ export class ProductEditFormComponent implements OnInit, AfterContentInit, OnDes
       startWith(''),
       map((value) => this._filterBrands(value))
     );
-
   }
 
   ngAfterContentInit(): void {
@@ -69,6 +71,15 @@ export class ProductEditFormComponent implements OnInit, AfterContentInit, OnDes
 
   ngOnDestroy(): void {
     this.brandsSubscription?.unsubscribe();
+  }
+
+  loadProduct(): void {
+    console.log(this.info);
+    this.form.setValue({
+      _brand: this.info.product._product._brand.name,
+      barcode: this.info.product._product.barcode,
+      description: this.info.product._product.description,
+    });
   }
 
   private _filterBrands(value: string): BrandItem[] {
@@ -86,30 +97,11 @@ export class ProductEditFormComponent implements OnInit, AfterContentInit, OnDes
     if (this.form.invalid) {
       return;
     }
-    this.loading = true;
-    const product: ProductItem = { ...this.form.value };
+    this.info.product._product._brand.name = this.form.controls._brand;
+    this.info.product._product.barcode = this.form.controls.barcode;
+    this.info.product._product.description = this.form.controls.description;
 
-    product._brand = { name: this.form.value._brand };
-
-    this.productService.createProduct(product).subscribe(
-      (res) => {
-        if (res.ok) {
-          this.form.reset();
-          this.toasty.success('Producto Creado Exitosamente');
-          this.loading = false;
-          if (this.isMatDialog) {
-            this.dialogRef.close('ok');
-          }
-          this.barcode.nativeElement.focus();
-        } else {
-          this.loading = false;
-          this.toasty.error('Error al crear producto');
-        }
-      },
-      (error) => {
-        this.loading = false;
-        this.toasty.error('Error al crear producto');
-      }
-    );
+    const response = this.info.product;
+    this.dialogRef.close();
   }
 }

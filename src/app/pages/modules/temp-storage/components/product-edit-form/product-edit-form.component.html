@@ -1,8 +1,8 @@
 <form [formGroup]="form" autocomplete="off">
-    <header *ngIf="isMatDialog" fxLayout="row wrap" fxLayoutAlign="center center" class="header">
-        <h2 style="margin: 0;" class="h2">Nuevo Producto</h2>
+    <header fxLayout="row wrap" fxLayoutAlign="center center" class="header">
+        <h2 style="margin: 0;" class="h2">Editar Producto</h2>
         <span fxFlex></span>
-        <button mat-icon-button *ngIf="!loading" (click)="dialogRef.close()">
+        <button mat-icon-button (click)="dialogRef.close()">
             <mat-icon>close</mat-icon>
         </button>
     </header>
@@ -72,18 +72,15 @@
         </div>
         <mat-divider></mat-divider>
         <div fxLayout="row" class="header">
-            <button mat-button *ngIf="!loading && !isMatDialog" [routerLink]="'/admin/adminProducts'" class="info-row">
-                CANCELAR
-            </button>
-            <button mat-button *ngIf="!loading && isMatDialog" (click)="dialogRef.close()" class="info-row">
+
+            <button mat-button  (click)="dialogRef.close()" class="info-row">
                 CANCELAR
             </button>
             <span fxFlex></span>
-            <button mat-button *ngIf="!loading" (click)="saveProduct()" [disabled]="this.form.invalid" color="primary">
+            <button mat-button (click)="saveProduct()" [disabled]="this.form.invalid" color="primary">
                 GUARDAR
             </button>
-            <mat-progress-spinner *ngIf="loading" mode="indeterminate" diameter="30" color="warn">
-            </mat-progress-spinner>
+
         </div>
     </div>
 </form>
