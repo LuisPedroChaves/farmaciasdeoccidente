@@ -18,7 +18,6 @@ import { ToastyService } from 'src/app/core/services/internal/toasty.service';
 export class StatisticsComponent
   implements OnInit, AfterContentInit, OnDestroy
 {
-
   smallScreen = window.innerWidth < 960 ? true : false;
   loading = false;
   loadSalesComplete = false;
@@ -28,7 +27,6 @@ export class StatisticsComponent
 
   currentCellar2: string;
   currentDate: Date;
-
 
   orderFind = false;
   brandsSubscription: Subscription;
@@ -42,12 +40,16 @@ export class StatisticsComponent
     brand: new FormControl(),
   });
 
+  daysOfRequest = '';
+  supplyDays = '';
+
+  calculationsRequest!: Calculations;
+
   constructor(
     public cellarService: CellarService,
     public tempStorageService: TempStorageService,
     public tempSaleService: TempSaleService,
-    public brandService: BrandService,
-
+    public brandService: BrandService
   ) {
     this.cellarsSubscription = this.cellarService
       .readData()
@@ -76,10 +78,6 @@ export class StatisticsComponent
     this.cellarsSubscription.unsubscribe();
   }
 
-  loadSale(): void {
-    this.loadSalesComplete = true;
-  }
-
   private _filterBrands(value: string): BrandItem[] {
     if (value) {
       const filterValue = value.toLowerCase();
@@ -90,4 +88,19 @@ export class StatisticsComponent
       return [];
     }
   }
+
+  loadSettings(): void {
+    this.calculationsRequest._cellar = this.currentCellar2;
+    // this.calculationsRequest._brand = this.range.controls._brand;
+    // TODO:Service to generate calculations
+  }
+}
+
+interface Calculations {
+  _cellar: string;
+  _brand: string;
+  startDate: string;
+  endDate: string;
+  minX: number;
+  maxX: number;
 }

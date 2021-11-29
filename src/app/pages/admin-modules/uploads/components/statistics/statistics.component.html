@@ -46,15 +46,9 @@
                     </mat-error>
                 </mat-form-field>
             </div>
-            <div fxFlex class="inputpadding" fxFlexAlign="center" fxFlexFill>
-                <button *ngIf="!loading" mat-raised-button (click)="loadSale()" color="warn">Generar Promedio de
-                    Ventas</button>
-                <mat-progress-spinner *ngIf="loading" mode="indeterminate" diameter="30" color="warn">
-                </mat-progress-spinner>
-            </div>
             <div fxFlex="20px"></div>
         </div>
-        <div fxLayout="row" *ngIf="loadSalesComplete">
+        <div fxLayout="row">
             <div fxFlex="20px"></div>
             <div fxFlex="50px" fxHide.xs fxLayoutAlign="center center">
                 <mat-icon color="accent" class="material-icons-outlined">calculate
@@ -62,12 +56,18 @@
             </div>
             <div fxFlex class="inputpadding">
                 <mat-form-field appearance="outline" color="primary" class="width-all">
-                    <mat-label>Abastecer la cantidad de dias</mat-label>
+                    <mat-label>Dias que tarda un proveedor en realizar entrega</mat-label>
                     <input [(ngModel)]="daysOfRequest" matInput type="number">
                 </mat-form-field>
             </div>
+            <div fxFlex class="inputpadding">
+                <mat-form-field appearance="outline" color="primary" class="width-all">
+                    <mat-label>Días que se desea mantener abastecido</mat-label>
+                    <input [(ngModel)]="supplyDays" matInput type="number">
+                </mat-form-field>
+            </div>
             <div fxFlex class="inputpadding" fxFlexAlign="center" fxFlexFill>
-                <button *ngIf="!loading" mat-raised-button (click)="loadSale()" color="warn">Generar Cálculo</button>
+                <button *ngIf="!loading" mat-raised-button (click)="loadSettings()" color="warn">Generar Cálculos</button>
                 <mat-progress-spinner *ngIf="loading" mode="indeterminate" diameter="30" color="warn">
                 </mat-progress-spinner>
             </div>
