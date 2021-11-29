@@ -29,6 +29,8 @@ import { ModalStatisticsComponent } from '../modal-statistics/modal-statistics.c
 import { tempStorageDataSource } from '../../../../../core/services/cdks/tempStorages.datasource';
 import { CellarItem } from '../../../../../core/models/Cellar';
 import { BrandService } from 'src/app/core/services/httpServices/brand.service';
+import { ProductFormComponent } from '../product-form/product-form.component';
+import { ProductEditFormComponent } from '../product-edit-form/product-edit-form.component';
 
 @Component({
   selector: 'app-temp-storage',
@@ -45,14 +47,7 @@ export class TempStorageComponent
   @ViewChild('search') search: ElementRef<HTMLInputElement>;
 
   dataSource: tempStorageDataSource;
-  columns = [
-    // 'barcode',
-    // 'description',
-    // '_brand',
-    'stock',
-    'supply',
-    'options',
-  ];
+  columns = ['barcode', 'description', '_brand', 'stock', 'supply', 'options'];
   currentPage = 0;
 
   brandsSubscription: Subscription;
@@ -154,7 +149,38 @@ export class TempStorageComponent
   editProduct(element: any): void {
     console.log(element);
     // TODO: ModalEdit
-    this.loadProducts();
+    const dialogRef = this.dialog.open(ProductEditFormComponent, {
+      width: this.smallScreen ? '100%' : '800px',
+      data: {
+        by: 'NewPurchase',
+      },
+      minHeight: '78vh',
+      maxHeight: '78vh',
+      disableClose: true,
+      panelClass: ['farmacia-dialog', 'farmacia'],
+    });
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result !== undefined) {
+      }
+      this.loadProducts();
+    });
+  }
+
+  addNewProduct(): void {
+    const dialogRef = this.dialog.open(ProductFormComponent, {
+      width: this.smallScreen ? '100%' : '800px',
+      data: {
+        by: 'NewPurchase',
+      },
+      minHeight: '78vh',
+      maxHeight: '78vh',
+      disableClose: true,
+      panelClass: ['farmacia-dialog', 'farmacia'],
+    });
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result !== undefined) {
+      }
+    });
   }
 
   showStatistic(): void {

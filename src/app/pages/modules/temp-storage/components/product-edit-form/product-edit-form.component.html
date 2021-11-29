@@ -1,0 +1,89 @@
+<form [formGroup]="form" autocomplete="off">
+    <header *ngIf="isMatDialog" fxLayout="row wrap" fxLayoutAlign="center center" class="header">
+        <h2 style="margin: 0;" class="h2">Nuevo Producto</h2>
+        <span fxFlex></span>
+        <button mat-icon-button *ngIf="!loading" (click)="dialogRef.close()">
+            <mat-icon>close</mat-icon>
+        </button>
+    </header>
+    <div class="clientspace" data-simplebar>
+        <div fxLayout="row wrap" style="margin-top: 8px;">
+            <mat-divider inset=“true”></mat-divider>
+            <h3 color="accent" class="ma-0 info-row T1"> Detalle del Producto</h3>
+        </div>
+
+        <div fxLayout="row wrap" fxLayoutAlign="start center" style="margin-top: 8px;">
+            <div fxFlex="50px"></div>
+
+            <div fxFlex="50px" fxHide.xs>
+                <mat-icon color="accent" class="mSaterial-icons-outlined grayicon">integration_instructions
+                </mat-icon>
+            </div>
+
+            <div fxFlex fxLayout="row wrap">
+                <!-- BarCode -->
+                <div fxFlex="50%" fxFlex.xs="100%" class="inputpadding">
+                    <mat-form-field appearance="outline" color="primary" class="width-all">
+                        <mat-label>Código de Barras</mat-label>
+                        <input #barcode formControlName="barcode" type="text" matInput placeholder="Ingrese el codigo del producto">
+                    </mat-form-field>
+                </div>
+                <!-- END BarCode -->
+                <!-- Brand -->
+                <div fxFlex="50%" fxFlex.xs="100%" class="inputpadding">
+                    <mat-form-field appearance="outline" color="primary" class="width-all">
+                        <mat-label>Laboratorio</mat-label>
+                        <input type="text" placeholder="Ingrese un laboratorio" aria-label="text" matInput formControlName="_brand" [matAutocomplete]="auto1">
+                        <mat-autocomplete id="_brand" autoActiveFirstOption #auto1="matAutocomplete">
+                            <mat-option *ngFor="let option of filteredOptions | async" [value]="option.name">
+                                <span>{{option.name}}</span>
+                            </mat-option>
+                        </mat-autocomplete>
+                    </mat-form-field>
+                </div>
+                <!-- END Brand -->
+            </div>
+
+            <div fxFlex="50px"></div>
+
+        </div>
+
+        <!-- Description -->
+        <div fxLayout="row wrap" fxLayoutAlign="start center" style="margin-top: 8px;">
+            <div fxFlex="50px"></div>
+            <div fxFlex="50px" fxHide.xs>
+                <mat-icon color="accent" class="material-icons-outlined grayicon">description
+                </mat-icon>
+            </div>
+            <div fxFlex fxLayout="row wrap">
+                <div fxFlex="75%" class="inputpadding">
+                    <mat-form-field appearance="outline" color="primary" class="width-all">
+                        <mat-label>Nombre Comercial</mat-label>
+                        <input formControlName="description" type="text" matInput placeholder="Añade el Nombre Comercial del Medicamento">
+                    </mat-form-field>
+                </div>
+            </div>
+            <div fxFlex="50px"></div>
+        </div>
+        <!-- END Description -->
+
+        <div fxLayout="row wrap">
+            <div fxFlex="100px" fxHide.xs></div>
+        </div>
+        <mat-divider></mat-divider>
+        <div fxLayout="row" class="header">
+            <button mat-button *ngIf="!loading && !isMatDialog" [routerLink]="'/admin/adminProducts'" class="info-row">
+                CANCELAR
+            </button>
+            <button mat-button *ngIf="!loading && isMatDialog" (click)="dialogRef.close()" class="info-row">
+                CANCELAR
+            </button>
+            <span fxFlex></span>
+            <button mat-button *ngIf="!loading" (click)="saveProduct()" [disabled]="this.form.invalid" color="primary">
+                GUARDAR
+            </button>
+            <mat-progress-spinner *ngIf="loading" mode="indeterminate" diameter="30" color="warn">
+            </mat-progress-spinner>
+        </div>
+    </div>
+</form>

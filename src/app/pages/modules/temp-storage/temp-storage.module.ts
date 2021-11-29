@@ -7,11 +7,13 @@ import { TempStorageComponent } from './components/temp-storage/temp-storage.com
 import { SharedComponentsModule } from '../../shared-components/shared-components.module';
 import { TempStorageRoutes } from './temp-storage.routing';
 import { ModalStatisticsComponent } from './components/modal-statistics/modal-statistics.component';
+import { ProductFormComponent } from './components/product-form/product-form.component';
+import { ProductEditFormComponent } from './components/product-edit-form/product-edit-form.component';
 
 
 
 @NgModule({
-  declarations: [TempStorageComponent, ModalStatisticsComponent],
+  declarations: [TempStorageComponent, ModalStatisticsComponent, ProductFormComponent, ProductEditFormComponent],
   imports: [
     CommonModule,
     RouterModule.forChild(TempStorageRoutes),
