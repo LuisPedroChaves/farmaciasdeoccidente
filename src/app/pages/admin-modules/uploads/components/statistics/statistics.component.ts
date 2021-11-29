@@ -35,21 +35,23 @@ export class StatisticsComponent
   filteredOptions: Observable<BrandItem[]>;
 
   range = new FormGroup({
-    start: new FormControl(new Date()),
-    end: new FormControl(new Date()),
-    brand: new FormControl(),
+    startDate: new FormControl(new Date()),
+    endDate: new FormControl(new Date()),
+    _brand: new FormControl(),
   });
 
   daysOfRequest = '';
   supplyDays = '';
-
-  calculationsRequest!: Calculations;
+  loadingData = false;
+  setData = false;
 
   constructor(
     public cellarService: CellarService,
     public tempStorageService: TempStorageService,
     public tempSaleService: TempSaleService,
-    public brandService: BrandService
+    public brandService: BrandService,
+    private toastyService: ToastyService,
+
   ) {
     this.cellarsSubscription = this.cellarService
       .readData()
@@ -63,7 +65,7 @@ export class StatisticsComponent
       this.brands = data;
       this.options = [...this.brands];
     });
-    this.filteredOptions = this.range.controls.brand.valueChanges.pipe(
+    this.filteredOptions = this.range.controls._brand.valueChanges.pipe(
       startWith(''),
       map((value) => this._filterBrands(value))
     );
@@ -90,17 +92,39 @@ export class StatisticsComponent
   }
 
   loadSettings(): void {
-    this.calculationsRequest._cellar = this.currentCellar2;
-    // this.calculationsRequest._brand = this.range.controls._brand;
-    // TODO:Service to generate calculations
-  }
-}
+    if (!this.currentCellar2) {
+      this.toastyService.error('Debe seleccionar una sucursal');
+      return;
+    }
+    const brand = this.brands.find(
+      (e) => e.name === this.range.controls._brand.value
+    );
+    if (brand) {
+      this.loadingData = true;
+      this.setData = true;
+      console.log(        brand._id,
+        this.getDate(this.range.controls.startDate.value),
+        this.getDate(this.range.get('endDate').value),
+        this.daysOfRequest,
+        this.supplyDays);
+      this.tempSaleService.getStatics( this.currentCellar2,
+        brand._id,
+        this.range.controls.startDate.value,
+        this.range.get('endDate').value,
+        this.daysOfRequest,
+        this.supplyDays).subscribe((res) => {
+          console.log(res);
+          this.loadingData = false;
+        });
 
-interface Calculations {
-  _cellar: string;
-  _brand: string;
-  startDate: string;
-  endDate: string;
-  minX: number;
-  maxX: number;
+    } else {
+      this.toastyService.error('Seleccione un laboratorio válido');
+    }
+
+  }
+
+  getDate(date: any): string {
+    return date._d;
+  }
+
 }

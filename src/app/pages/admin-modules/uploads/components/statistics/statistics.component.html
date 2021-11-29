@@ -22,7 +22,8 @@
             <div fxFlex class="inputpadding" [formGroup]="range">
                 <mat-form-field appearance="outline" color="primary" class="width-all">
                     <mat-label>Laboratorio</mat-label>
-                    <input type="text" placeholder="Ingrese un laboratorio" aria-label="text" matInput  formControlName="brand" [matAutocomplete]="auto1">
+                    <input type="text" placeholder="Ingrese un laboratorio" aria-label="text" matInput
+                        formControlName="_brand" [matAutocomplete]="auto1">
                     <mat-autocomplete id="_brand" autoActiveFirstOption #auto1="matAutocomplete">
                         <mat-option *ngFor="let option of filteredOptions | async" [value]="option.name">
                             <span>{{option.name}}</span>
@@ -35,14 +36,15 @@
                 <mat-form-field appearance="outline" color="primary" class="width-all">
                     <mat-label>Introduzca un rango de fechas</mat-label>
                     <mat-date-range-input [formGroup]="range" [rangePicker]="picker">
-                        <input matStartDate formControlName="start" placeholder="Fecha de inicio">
-                        <input matEndDate formControlName="end" placeholder="Fecha de finalización">
+                        <input matStartDate formControlName="startDate" placeholder="Fecha de inicio">
+                        <input matEndDate formControlName="endDate" placeholder="Fecha de finalización">
                     </mat-date-range-input>
                     <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                     <mat-date-range-picker #picker></mat-date-range-picker>
-                    <mat-error *ngIf="range.get('start').hasError('matStartDateInvalid')">Fecha de inicio no válida
+                    <mat-error *ngIf="range.get('startDate').hasError('matStartDateInvalid')">Fecha de inicio no válida
                     </mat-error>
-                    <mat-error *ngIf="range.controls.end.hasError('matEndDateInvalid')">Fecha de finalización no válida
+                    <mat-error *ngIf="range.controls.endDate.hasError('matEndDateInvalid')">Fecha de finalización no
+                        válida
                     </mat-error>
                 </mat-form-field>
             </div>
@@ -67,7 +69,8 @@
                 </mat-form-field>
             </div>
             <div fxFlex class="inputpadding" fxFlexAlign="center" fxFlexFill>
-                <button *ngIf="!loading" mat-raised-button (click)="loadSettings()" color="warn">Generar Cálculos</button>
+                <button *ngIf="!loading" mat-raised-button (click)="loadSettings()" color="warn">Generar
+                    Cálculos</button>
                 <mat-progress-spinner *ngIf="loading" mode="indeterminate" diameter="30" color="warn">
                 </mat-progress-spinner>
             </div>
@@ -75,10 +78,13 @@
         </div>
         <br>
         <hr>
-        <div fxLayout="row">
+        <div *ngIf="!loadingData && !setData" fxLayout="row">
             <div fxFlex fxFlexAlign="center" fxFlexFill>
                 <h3>Obteniendo datos para realizar calculos.</h3>
             </div>
+        </div>
+        <div *ngIf="loadingData && setData" fxLayout="column wrap" fxLayoutAlign="center center" class="padding-15 loader-screen">
+            <mat-progress-spinner mode="indeterminate" diameter="60" color="warn"></mat-progress-spinner>
         </div>
         <div fxLayout="row">
             <mat-list role="list">
