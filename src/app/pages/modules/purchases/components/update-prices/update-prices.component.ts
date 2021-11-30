@@ -56,15 +56,19 @@ export class UpdatePricesComponent implements OnInit {
       this.toasty.error('Este producto ya fue actualizado')
     }
     this.selectedProduct = detail._product;
-    let newPresentations: any[] = this.selectedProduct.presentations.filter(p => p.name === detail.presentation.name);
-    if (newPresentations[0]) {
-      newPresentations[0].wholesale_newPrice = (newPresentations[0].wholesale_price + ((newPresentations[0].wholesale_price * this.calcPercent(detail.cost, detail.lastCost)) / 100)).toFixed(2) ;
-      newPresentations[0].distributor_newPrice = (newPresentations[0].distributor_price + ((newPresentations[0].distributor_price * this.calcPercent(detail.cost, detail.lastCost))) / 100).toFixed(2) ;
-      newPresentations[0].retail_newPrice = (newPresentations[0].retail_price + ((newPresentations[0].retail_price * this.calcPercent(detail.cost, detail.lastCost)) / 100)).toFixed(2) ;
-      newPresentations[0].cf_newPrice = (newPresentations[0].cf_price + ((newPresentations[0].cf_price * this.calcPercent(detail.cost, detail.lastCost)) / 100)).toFixed(2) ;
+    const isarray = Array.isArray(this.selectedProduct.presentations);
+    if (isarray) {
+      const presentationsarray = this.selectedProduct.presentations as any;
+      let newPresentations: any[] = presentationsarray.filter(p => p.name === detail.presentation.name);
+      if (newPresentations[0]) {
+        newPresentations[0].wholesale_newPrice = (newPresentations[0].wholesale_price + ((newPresentations[0].wholesale_price * this.calcPercent(detail.cost, detail.lastCost)) / 100)).toFixed(2) ;
+        newPresentations[0].distributor_newPrice = (newPresentations[0].distributor_price + ((newPresentations[0].distributor_price * this.calcPercent(detail.cost, detail.lastCost))) / 100).toFixed(2) ;
+        newPresentations[0].retail_newPrice = (newPresentations[0].retail_price + ((newPresentations[0].retail_price * this.calcPercent(detail.cost, detail.lastCost)) / 100)).toFixed(2) ;
+        newPresentations[0].cf_newPrice = (newPresentations[0].cf_price + ((newPresentations[0].cf_price * this.calcPercent(detail.cost, detail.lastCost)) / 100)).toFixed(2) ;
+      }
+      this.selectedProduct.presentations = newPresentations;
+      this.selectedProduct.index = index;
     }
-    this.selectedProduct.presentations = newPresentations;
-    this.selectedProduct.index = index;
   }
 
   updateProduct() {

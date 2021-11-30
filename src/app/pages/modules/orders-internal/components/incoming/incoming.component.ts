@@ -5,7 +5,9 @@ import { Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
 import { CellarItem } from 'src/app/core/models/Cellar';
 import { InternalOrderItem, InternalOrderItemFull } from 'src/app/core/models/InternalOrder';
+import { UserItem } from 'src/app/core/models/User';
 import { InternalOrderService } from 'src/app/core/services/httpServices/internal-order.service';
+import { UserService } from 'src/app/core/services/httpServices/user.service';
 import { ToastyService } from 'src/app/core/services/internal/toasty.service';
 import { AppState } from 'src/app/core/store/app.reducer';
 import { ConfirmationDialogComponent } from 'src/app/pages/shared-components/confirmation-dialog/confirmation-dialog.component';
@@ -32,9 +34,16 @@ export class IncomingComponent implements OnInit {
   incomingSubscription: Subscription;
   internalOrdersp: string[] = [];
   currentOrder: InternalOrderItemFull;
+
+  usersSubscription: Subscription;
+  delivers: UserItem[];
+  searchtext: string;
+
+  component = 'dispatch';
   constructor(public store: Store<AppState>,
     public dialog: MatDialog,
     public internalOrderService: InternalOrderService,
+    public userService: UserService,
     public toasty: ToastyService) { }
 
   ngOnInit(): void {
@@ -49,6 +58,10 @@ export class IncomingComponent implements OnInit {
 
     this.loadInternalsOrders();
 
+    this.usersSubscription = this.userService.readData().subscribe(data => {
+      this.delivers = data.filter(user => user._role.type === 'DELIVERY');
+    });
+    this.userService.loadData();
     this.incomingSubscription = this.internalOrderService.getUpdateIncoming().subscribe((internalOrder: InternalOrderItem) => {
       if (internalOrder.type === 'PEDIDO') {
         switch (internalOrder.state) {
@@ -107,10 +120,7 @@ export class IncomingComponent implements OnInit {
           this.loading = false;
         }
         if (result === 'DISPATCH') {
-          this.enProceso = this.enProceso.filter(p => {
-            return p._id !== order._id
-          });
-          this.loading = false;
+          this.dispatch(order);
         }
         this.loadInternalsOrders();
       }
@@ -174,6 +184,7 @@ export class IncomingComponent implements OnInit {
   }
 
   dispatch(internalOrder: InternalOrderItem) {
+    this.component = 'dispatch';
     this.currentOrder = {...internalOrder, detail: []};
     this.collapse = true;
   }
@@ -185,6 +196,13 @@ export class IncomingComponent implements OnInit {
     this.currentOrder = undefined;
     this.collapse = false;
     this.loading = false;
+  }
+
+
+  newInternalOrder() {
+    this.component = 'shipment';
+    this.currentOrder = undefined;
+    this.collapse = true;
   }
 
 }

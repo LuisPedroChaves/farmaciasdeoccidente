@@ -49,8 +49,8 @@ export interface InternalOrderItemFull {
     timeInit: string;
     timeDispatch?: string;
     timeDelivery?: string;
-    file: string;
-    dispatchFile: string;
+    file?: string;
+    dispatchFile?: string;
 
     detail: ProductAddedItem[];
     deleted?: boolean;

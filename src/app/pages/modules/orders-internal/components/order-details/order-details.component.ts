@@ -167,25 +167,7 @@ export class OrderDetailsComponent implements OnInit {
   }
 
   dispatch(internalOrder: InternalOrderItem) {
-    const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
-      width: '350px',
-      data: { title: 'Despachar Pedido', message: '¿Confirma que desea despachar el pedido  ' + internalOrder.noOrder + '?', internalOrder },
-      disableClose: true,
-      panelClass: ['farmacia-dialog', 'farmacia'],
-    });
-
-    dialogRef.afterClosed().subscribe(result => {
-      if (result !== undefined) {
-
-        internalOrder.state = 'DESPACHO';
-        this.internalOrderService.updateInternalOrderState(internalOrder).subscribe(data => {
-          this.toasty.success('Pedido despachado exitosamente');
-          this.dialogRef.close('DISPATCH');
-        }, error => {
-          this.toasty.error('Error al despachar el pedido');
-        });
-      }
-    });
+    this.dialogRef.close('DISPATCH');
   }
 
 }

@@ -39,6 +39,8 @@ export class OutgoingComponent implements OnInit {
   products: ProductItem[] = [];
   addedProducts: ProductAddedItem[] = [];
   type: string;
+
+  searchtext: string;
   constructor(
     public store: Store<AppState>,
     public dialog: MatDialog,
@@ -106,7 +108,34 @@ export class OutgoingComponent implements OnInit {
     dialogRef.afterClosed().subscribe(result => {
       if (result !== undefined) {
         this.loading = true;
+        // internalOrder.state = 'ENTREGA';
+        internalOrder.state = 'REVISION';
+
+        this.internalOrderService.updateInternalOrderState(internalOrder).subscribe(data => {
+          this.toasty.success('Pedido aceptado exitosamente');
+          this.loading = false;
+        }, error => {
+          this.loading = false;
+          this.toasty.error('Error al aceptar el pedido');
+        });
+      }
+    });
+  }
+
+  approved(internalOrder: InternalOrderItem) {
+    const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
+      width: '350px',
+      data: { title: 'Marcar como recibido', message: '¿Confirma que desea marcar como aprobado el pedido  ' + internalOrder.noOrder + '?' },
+      disableClose: true,
+      panelClass: ['farmacia-dialog', 'farmacia'],
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result !== undefined) {
+        this.loading = true;
         internalOrder.state = 'ENTREGA';
+
+
         this.internalOrderService.updateInternalOrderState(internalOrder).subscribe(data => {
           this.toasty.success('Pedido aceptado exitosamente');
           this.recibidos = this.recibidos.filter(p => {

@@ -12,6 +12,12 @@ textarea { resize: none; }
 .autocompletetext { padding: 0px 8px; }
 .cell-row { padding: 8px; border: 1px solid rgba(0,0,0,0.1); height: 42px; }
 .cell-input { padding: 10px 8px; border: 1px solid rgba(0,0,0,0.1); height: 42px; }
+.avatar-image {
+    width: 24px;
+    height: 24px;
+    border-radius: 24px;
+    object-fit: cover;
+}
 .chip-padding {
     padding-top: 8px;
 }
@@ -40,7 +46,3 @@ textarea { resize: none; }
 .inputrequested {
     max-width: 100px;
 }
-
-// .inputPresentation {
-//     font-size: 16px;
-// }

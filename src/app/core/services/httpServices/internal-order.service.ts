@@ -4,7 +4,7 @@ import { Observable, Subject } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { ApiConfigService } from '../config/api-config.service';
 import { map } from 'rxjs/operators';
-import { InternalOrderItem, InternalOrderItemFull } from '../../models/InternalOrder';
+import { InternalOrderItem } from '../../models/InternalOrder';
 import { WebsocketService } from './websocket.service';
 
 @Injectable({
@@ -85,26 +85,26 @@ export class InternalOrderService implements IDataService<InternalOrderItem[]> {
     return this.http.get(this.apiConfigService.API_INTERNAL_ORDER + '/incoming/' + _cellar + '?type=' + type);
   }
 
-  createInternalOrder(u: InternalOrderItem): Observable<any> {
+  createInternalOrder(u: any): Observable<any> {
     // const jsonParms = JSON.stringify(u);
     u._user = this.userID;
     return this.http.post(this.apiConfigService.API_INTERNAL_ORDER, u);
   }
 
 
-  createInternalOrderNew(u: InternalOrderItemFull): Observable<any> {
+  createInternalOrderNew(u: any): Observable<any> {
     // const jsonParms = JSON.stringify(u);
     u._user = this.userID;
     return this.http.post(this.apiConfigService.API_INTERNAL_ORDER, u);
   }
 
-  updateInternalOrder(u: InternalOrderItem): Observable<any> {
+  updateInternalOrder(u: any): Observable<any> {
     // const jsonParms = JSON.stringify(u);
     u._user = this.userID;
     return this.http.put(this.apiConfigService.API_INTERNAL_ORDER + '/' + u._id, u);
   }
 
-  updateInternalOrderState(u: InternalOrderItem): Observable<any> {
+  updateInternalOrderState(u: any): Observable<any> {
     return this.http.put(this.apiConfigService.API_INTERNAL_ORDER + '/state/' + u._id, u);
   }
 

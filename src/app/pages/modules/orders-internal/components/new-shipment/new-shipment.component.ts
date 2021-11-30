@@ -1,23 +1,33 @@
-import { AfterContentInit, Component, Inject, Input, OnDestroy, OnInit } from '@angular/core';
+import { AfterContentInit, Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { Store } from '@ngrx/store';
 import { Observable, Subscription } from 'rxjs';
-import { debounceTime, finalize, map, startWith, switchMap, tap } from 'rxjs/operators';
+import { debounceTime, filter, map, startWith, tap } from 'rxjs/operators';
 import { CellarItem } from 'src/app/core/models/Cellar';
-import { InternalOrderItem, InternalOrderItemFull } from 'src/app/core/models/InternalOrder';
-import { ProductAddedItem, ProductItem, ProductItemResponse } from 'src/app/core/models/Product';
+import { InternalOrderItemFull } from 'src/app/core/models/InternalOrder';
+import { ProductAddedItem, ProductItem } from 'src/app/core/models/Product';
+import { UserItem } from 'src/app/core/models/User';
 import { CellarService } from 'src/app/core/services/httpServices/cellar.service';
 import { InternalOrderService } from 'src/app/core/services/httpServices/internal-order.service';
 import { ProductService } from 'src/app/core/services/httpServices/product.service';
-import { UploadFileService } from 'src/app/core/services/httpServices/upload-file.service';
 import { ToastyService } from 'src/app/core/services/internal/toasty.service';
-
+import { AppState } from 'src/app/core/store/app.reducer';
 
 @Component({
-  selector: 'app-new-request-new',
-  templateUrl: './new-request.component.html',
-  styleUrls: ['./new-request.component.scss']
+  selector: 'app-new-shipment',
+  templateUrl: './new-shipment.component.html',
+  styleUrls: ['./new-shipment.component.scss']
 })
-export class NewRequestComponent implements OnInit, AfterContentInit, OnDestroy {
+export class NewShipmentComponent implements OnInit, AfterContentInit, OnDestroy {
+  @Input() smallScreen: boolean;
+  ORDER: InternalOrderItemFull;
+  @Output() saving = new EventEmitter<any>();
+  @Input() delivers:  UserItem[] = [];
+  currentDeliver:  UserItem[] = [];
+  loading: boolean = false;
+
+  dispatchProducts: ProductAddedItem[] = [];
+
 
   form = new FormGroup({
     _cellar: new FormControl(null, [Validators.required]),
@@ -26,35 +36,33 @@ export class NewRequestComponent implements OnInit, AfterContentInit, OnDestroy 
     details: new FormControl(null),
     file: new FormControl(null),
     type: new FormControl('PEDIDO'),
+    _deliver: new FormControl(null),
   });
 
   // Sucursales tipo bodega
   cellarsSubscription: Subscription;
   cellars: CellarItem[];
   @Input() currentCellar: CellarItem;
-  @Input() smallScreen: boolean;
-  
 
-  myControl = new FormControl();
-  options: string[] = ['One', 'Two', 'Three'];
-  filteredOptions: Observable<ProductItem[]>;
-  @Input() products: ProductItem[] = [];
-  currentProduct: ProductItem;
-  @Input() addedProducts: ProductAddedItem[] = [];
-  @Input() type: string;
+  addedProducts: ProductAddedItem[] = [];
+  type: string;
   aFindEdit: boolean = false;
   quantity: number = null;
-  loading: boolean = false;
+  currentProduct: ProductItem;
+  myControl = new FormControl();
+
+  products: ProductItem[] = [];
+
   filteredProducts: Observable<ProductItem[]>[] = [];
   isLoading = false;
-
-
-  
-  constructor(public cellarService: CellarService, public internalOrderService: InternalOrderService, public toasty: ToastyService, public productService: ProductService) { }
+  filteredOptions: Observable<ProductItem[]>;
+  currentUser: UserItem;
+  constructor(public toasty: ToastyService, public store: Store<AppState>, public internalOrderService: InternalOrderService, public cellarService: CellarService, public productService: ProductService) { }
 
   ngOnInit(): void {
+
     this.cellarsSubscription = this.cellarService.readData().subscribe(data => {
-      this.cellars = data.filter(cellar => cellar.type === 'BODEGA');
+      this.cellars = data;
     });
     this.form = new FormGroup({
       _cellar: new FormControl(this.currentCellar, [Validators.required]),
@@ -63,6 +71,7 @@ export class NewRequestComponent implements OnInit, AfterContentInit, OnDestroy 
       details: new FormControl(null),
       file: new FormControl(null),
       type: new FormControl(this.type),
+      _deliver: new FormControl(null),
     });
 
     this.filteredOptions = this.myControl.valueChanges.pipe(
@@ -71,9 +80,8 @@ export class NewRequestComponent implements OnInit, AfterContentInit, OnDestroy 
     );
 
     this.manageProductControl();
-
-    
   }
+
 
   ngAfterContentInit() {
     this.cellarService.loadData();
@@ -82,28 +90,6 @@ export class NewRequestComponent implements OnInit, AfterContentInit, OnDestroy 
   ngOnDestroy() {
     this.cellarsSubscription?.unsubscribe();
   }
-
-
-
-
-
-
-
-
-  /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-  // OPERATIONAL FUNCTIONS ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-  ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-  getType() {
-    switch(this.form.controls.type.value) {
-      case 'PEDIDO': return 'Sin tipo';
-      case 'REPOSICION': return 'Reposición';
-      case 'INGRESOS': return 'Nuevo Ingreso';
-      case 'FALTANTES': return 'Faltantes';
-
-    }
-  }
-
-
 
   private _filter(value: string): ProductItem[] {
     if (value !== null) {
@@ -114,35 +100,14 @@ export class NewRequestComponent implements OnInit, AfterContentInit, OnDestroy 
     }
   }
 
-  getShowDescription(product: ProductItem): string {
-    return product ? product.description : '';
-  }
 
-  manageProductControl() {
-    this.myControl.valueChanges.pipe(
-        debounceTime(500),
-        tap(() => { this.filteredProducts = []; this.isLoading = true; }),
-      ).subscribe((data) => {
-        if (typeof data === 'string') {
-          this.productService.search(data).subscribe(prods => {
-            this.filteredProducts = prods['products'];
-            this.isLoading = false;
-          });
-        }
-      });
-  }
+  getType() {
+    switch(this.form.controls.type.value) {
+      case 'PEDIDO': return 'Sin tipo';
+      case 'REPOSICION': return 'Reposición';
+      case 'INGRESOS': return 'Nuevo Ingreso';
+      case 'FALTANTES': return 'Faltantes';
 
-
-  findThisEdit(value) {
-    this.aFindEdit = false;
-    let aFinded: ProductItem;
-    const index = this.products.findIndex(ac => ac.description === value);
-    if (index > -1) {
-      this.aFindEdit = true;
-      aFinded = this.products[index];
-      this.currentProduct = aFinded;
-    } else {
-      this.currentProduct = undefined;
     }
   }
 
@@ -172,12 +137,30 @@ export class NewRequestComponent implements OnInit, AfterContentInit, OnDestroy 
     }
   }
 
+  getShowDescription(product: ProductItem): string {
+    return product ? product.description : '';
+  }
+
 
   saveInternalOrder() {
     if (this.form.invalid) { return; }
     if (this.addedProducts.length === 0) { this.toasty.warning('Debe agregar productos a la lista'); }
     this.loading = true;
-    let internalOrder: InternalOrderItemFull = { ...this.form.value, detail: this.addedProducts };
+    let internalOrder: InternalOrderItemFull = {
+      _cellar: this.currentCellar,
+      _user: null,
+      _delivery: this.form.controls._deliver.value,
+      _destination: this.form.controls._destination.value,
+      noOrder: this.form.controls.noOrder.value,
+      date: null,
+      details: this.form.controls.details.value,
+      type: this.form.controls.type.value,
+      state: 'DESPACHO',
+      timeInit: null,
+      timeDispatch: null,
+      timeDelivery: null,
+      detail: this.addedProducts,
+    };
     this.internalOrderService.createInternalOrder(internalOrder).subscribe(data => {
       if (data.ok === true) {
         this.toasty.success('Pedido creado exitosamente');
@@ -193,7 +176,18 @@ export class NewRequestComponent implements OnInit, AfterContentInit, OnDestroy 
   }
 
 
-
-
+  manageProductControl() {
+    this.myControl.valueChanges.pipe(
+        debounceTime(500),
+        tap(() => { this.filteredProducts = []; this.isLoading = true; }),
+      ).subscribe((data) => {
+        if (typeof data === 'string') {
+          this.productService.search(data).subscribe(prods => {
+            this.filteredProducts = prods['products'];
+            this.isLoading = false;
+          });
+        }
+      });
+  }
 
 }

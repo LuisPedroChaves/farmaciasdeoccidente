@@ -15,11 +15,12 @@ import { NewEntryComponent } from './components/new-entry/new-entry.component';
 import { NewPendingComponent } from './components/new-pending/new-pending.component';
 import { NewMissingComponent } from './components/new-missing/new-missing.component';
 import { DispatchFormComponent } from './components/dispatch-form/dispatch-form.component';
+import { NewShipmentComponent } from './components/new-shipment/new-shipment.component';
 
 
 
 @NgModule({
-  declarations: [OrdersInternalComponent, OutgoingComponent, IncomingScreenComponent, IncomingComponent, HistoryComponent, OrderDetailsComponent, NewRequestComponent, NewEntryComponent, NewPendingComponent, NewMissingComponent, DispatchFormComponent],
+  declarations: [OrdersInternalComponent, OutgoingComponent, IncomingScreenComponent, IncomingComponent, HistoryComponent, OrderDetailsComponent, NewRequestComponent, NewEntryComponent, NewPendingComponent, NewMissingComponent, DispatchFormComponent, NewShipmentComponent],
   imports: [
     CommonModule,
     RouterModule.forChild(OrdersInternalRoutes),

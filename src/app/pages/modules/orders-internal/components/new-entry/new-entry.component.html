@@ -6,7 +6,16 @@
     </button>
 </header>
 <div class="header">
-    Seleccione los productos de nuevo ingreso que desea solicitar.
+  <div fxFlex>
+      Seleccione los productos de nuevo ingreso que desea solicitar.
+    </div>
+    <div fxFlex="nogrow">
+      <mat-form-field appearance="standard">
+        <mat-icon matPrefix>search</mat-icon>
+        <mat-label>Buscar</mat-label>
+        <input matInput (keyup)="applyFilter($event)" placeholder="Buscar producto..." #input>
+      </mat-form-field>
+    </div>
 </div>
 <div class="space" data-simplebar *ngIf="products !== undefined">
     

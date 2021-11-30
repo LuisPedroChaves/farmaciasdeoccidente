@@ -32,6 +32,9 @@ export class NewEntryComponent implements OnInit {
         });
       });
       this.dataSource = new MatTableDataSource<ProductAddedItem>(prods);
+      this.dataSource.filterPredicate = (datas, filtervalue) => {
+        return datas._product.description.toString().toLowerCase().includes(filtervalue) || datas._product._brand.name.toLowerCase().includes(filtervalue);
+      };
     })
   }
 
@@ -59,6 +62,11 @@ export class NewEntryComponent implements OnInit {
     }
 
     this.selection.select(...this.dataSource.data);
+  }
+
+  applyFilter(event: Event) {
+    const filterValue = (event.target as HTMLInputElement).value;
+    this.dataSource.filter = filterValue.trim().toLowerCase();
   }
 
   /** The label for the checkbox on the passed row */

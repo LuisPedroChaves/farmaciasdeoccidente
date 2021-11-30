@@ -1,3 +1,7 @@
+<button *ngIf="(internalOrdersp && internalOrdersp.includes('create')) && collapse === false" mat-fab color="primary"
+  class="fab mat-elevation-z10" (click)="newInternalOrder()">
+  <mat-icon>add</mat-icon><span class="extended-fab-button__text">ENVÍO</span>
+</button>
 <mat-sidenav-container [ngClass]="{'screen-space': !smallScreen, 'screen-space-sm': smallScreen}">
     <mat-sidenav opened="true" mode="over" [(opened)]="collapse" position="end" class="orderpanel" (open)="sidePanelOpened = true" (close)="sidePanelOpened = false">
         <div fxLayout="row wrap" fxLayoutAlign="start center" class="orderheader">
@@ -6,7 +10,8 @@
         </div>
         
         <div *ngIf="collapse">
-            <app-dispatch-form (saving)="dispatched()" [smallScreen]="smallScreen" [ORDER]="currentOrder"></app-dispatch-form>
+            <app-dispatch-form *ngIf="delivers !== undefined && component === 'dispatch'" (saving)="dispatched()" [delivers]="delivers" [smallScreen]="smallScreen" [ORDER]="currentOrder"></app-dispatch-form>
+            <app-new-shipment *ngIf="delivers !== undefined && component === 'shipment'" (saving)="dispatched()" [currentCellar]="currentCellar" [delivers]="delivers" [smallScreen]="smallScreen"></app-new-shipment>
         </div>
     </mat-sidenav>
     <mat-sidenav-content>
@@ -17,7 +22,13 @@
                 <h2 class="product-font ma-0 T1">Envíos</h2>
                 <h3 class="product-font ma-0 ">Listado den envíos pendientes, en proceso y en ruta</h3>
             </div>
-            <span fxFlex></span>
+            <div fxFlex fxLayoutAlign="end center" style="padding-right: 10px;">
+                <mat-form-field color="primary" appearance="outline" floatLabel="always" class="findinput">
+                    <mat-label>Buscar</mat-label>
+                    <mat-icon matPrefix>search</mat-icon>
+                    <input matInput [(ngModel)]="searchtext">
+                </mat-form-field>
+            </div>
             <div [fxFlex]="smallScreen ? 33.33 : 'nogrow'" fxLayout="column wrap" class="ammounttitle pasive">
                 <h1 class="ma-0 pasive"> {{ pendientes.length }} </h1>
                 <small>Pendientes</small>
@@ -45,7 +56,7 @@
                             <mat-icon class="list-icon">schedule_send</mat-icon> <b>Pendientes</b>
                         </div>
 
-                        <mat-card class="order-card" *ngFor="let a of pendientes | orderBy: 'date' : true">
+                        <mat-card class="order-card" *ngFor="let a of (pendientes | filter : searchtext : ['noOrder']) | orderBy: 'date' : true">
                             <mat-card-content>
                                 <div fxLayout="row wrap" fxLayoutAlign="start center">
                                     <div fxFlex="50px"><mat-icon class="pasive">schedule_send</mat-icon></div>
@@ -69,7 +80,7 @@
                                 </div>
                                 <div fxLayout="row wrap" *ngIf="a._delivery" fxLayoutAlign="start center">
                                     <div fxFlex="25">Aceptación:</div>
-                                    <div fxFlex>{{ a.timeInit ? a.timeInit : '-' }}</div>
+                                    <div fxFlex>{{ a.timeInit ? (a.timeInit | date : 'dd/MM/yyyy hh:mm') : '-' }}</div>
                                 </div>
                                 <div fxLayout="row wrap" fxLayoutAlign="start center">
                                     <div fxFlex="25">Detalles:</div>
@@ -104,7 +115,7 @@
                         </div>
 
 
-                        <mat-card class="order-card" *ngFor="let a of enProceso | orderBy: 'date' : true">
+                        <mat-card class="order-card" *ngFor="let a of (enProceso | filter : searchtext : ['noOrder']) | orderBy: 'date' : true">
                             <mat-card-content>
                                 <div fxLayout="row wrap" fxLayoutAlign="start center">
                                     <div fxFlex="50px"><mat-icon>pending_actions</mat-icon></div>
@@ -128,7 +139,7 @@
                                 </div>
                                 <div fxLayout="row wrap" *ngIf="a._delivery" fxLayoutAlign="start center">
                                     <div fxFlex="25">Aceptación:</div>
-                                    <div fxFlex>{{ a.timeInit ? a.timeInit : '-' }}</div>
+                                    <div fxFlex>{{ a.timeInit ? (a.timeInit | date : 'dd/MM/yyyy hh:mm') : '-' }}</div>
                                 </div>
                                 <div fxLayout="row wrap" fxLayoutAlign="start center">
                                     <div fxFlex="25">Detalles:</div>
@@ -157,7 +168,7 @@
                             <mat-icon class="list-icon">local_shipping</mat-icon> <b>En ruta</b>
                         </div>
 
-                        <mat-card class="order-card" *ngFor="let a of enRuta | orderBy: 'date' : true">
+                        <mat-card class="order-card" *ngFor="let a of (enRuta | filter : searchtext : ['noOrder']) | orderBy: 'date' : true">
                             <mat-card-content>
                                 <div fxLayout="row wrap" fxLayoutAlign="start center">
                                     <div fxFlex="50px"><mat-icon class="active">local_shipping</mat-icon></div>
@@ -190,7 +201,7 @@
                                 </div>
                                 <div fxLayout="row wrap" *ngIf="a._delivery" fxLayoutAlign="start center">
                                     <div fxFlex="25">Aceptación:</div>
-                                    <div fxFlex>{{ a.timeInit ? a.timeInit : '-' }}</div>
+                                    <div fxFlex>{{ a.timeInit ? (a.timeInit | date : 'dd/MM/yyyy hh:mm') : '-' }}</div>
                                 </div>
                                 <div fxLayout="row wrap" fxLayoutAlign="start center">
                                     <div fxFlex="25">Detalles:</div>
@@ -219,9 +230,14 @@
         <div *ngIf="smallScreen" class="space-sm">
             <mat-tab-group mat-stretch-tabs color="accent" class="tab-space">
                 
-                <mat-tab label="Pedidos Pendientes">
+                <mat-tab>
+                    <ng-template mat-tab-label>
+                        <span [matBadge]="pendientes.length" matBadgeOverlap="false" matBadgeColor="primary">
+                        Pedidos Pendientes
+                        </span>
+                    </ng-template>
                     <div  data-simplebar class="tab-sm" *ngIf="pendientes.length > 0">
-                        <mat-card class="order-card" *ngFor="let a of pendientes | orderBy: 'date' : true">
+                        <mat-card class="order-card" *ngFor="let a of (pendientes | filter : searchtext : ['noOrder']) | orderBy: 'date' : true">
                             <mat-card-content>
                                 <div fxLayout="row wrap" fxLayoutAlign="start center">
                                     <div fxFlex="50px"><mat-icon class="pasive">schedule_send</mat-icon></div>
@@ -245,7 +261,7 @@
                                 </div>
                                 <div fxLayout="row wrap" *ngIf="a._delivery" fxLayoutAlign="start center">
                                     <div fxFlex="25">Aceptación:</div>
-                                    <div fxFlex>{{ a.timeInit ? a.timeInit : '-' }}</div>
+                                    <div fxFlex>{{ a.timeInit ? (a.timeInit | date : 'dd/MM/yyyy hh:mm') : '-' }}</div>
                                 </div>
                                 <div fxLayout="row wrap" fxLayoutAlign="start center">
                                     <div fxFlex="25">Detalles:</div>
@@ -273,10 +289,15 @@
                     </div>
                 </mat-tab>
 
-                <mat-tab label="Procesando">
+                <mat-tab>
+                    <ng-template mat-tab-label>
+                        <span [matBadge]="enProceso.length" matBadgeOverlap="false" matBadgeColor="primary">
+                        Procesando
+                        </span>
+                    </ng-template>
                     <div  data-simplebar class="tab-sm" *ngIf="enProceso.length > 0">
                     
-                        <mat-card class="order-card" *ngFor="let a of enProceso | orderBy: 'date' : true">
+                        <mat-card class="order-card" *ngFor="let a of (enProceso | filter : searchtext : ['noOrder']) | orderBy: 'date' : true">
                             <mat-card-content>
                                 <div fxLayout="row wrap" fxLayoutAlign="start center">
                                     <div fxFlex="50px"><mat-icon>pending_actions</mat-icon></div>
@@ -300,7 +321,7 @@
                                 </div>
                                 <div fxLayout="row wrap" *ngIf="a._delivery" fxLayoutAlign="start center">
                                     <div fxFlex="25">Aceptación:</div>
-                                    <div fxFlex>{{ a.timeInit ? a.timeInit : '-' }}</div>
+                                    <div fxFlex>{{ a.timeInit ? (a.timeInit | date : 'dd/MM/yyyy hh:mm') : '-' }}</div>
                                 </div>
                                 <div fxLayout="row wrap" fxLayoutAlign="start center">
                                     <div fxFlex="25">Detalles:</div>
@@ -327,9 +348,14 @@
                 </mat-tab>
 
                 <mat-tab label="En Ruta">
+                    <ng-template mat-tab-label>
+                        <span [matBadge]="enRuta.length" matBadgeOverlap="false" matBadgeColor="primary">
+                            En Ruta
+                        </span>
+                    </ng-template>
                     <div  data-simplebar class="tab-sm" *ngIf="enRuta.length > 0">
                     
-                        <mat-card class="order-card" *ngFor="let a of enRuta | orderBy: 'date' : true">
+                        <mat-card class="order-card" *ngFor="let a of (enRuta | filter : searchtext : ['noOrder']) | orderBy: 'date' : true">
                             <mat-card-content>
                                 <div fxLayout="row wrap" fxLayoutAlign="start center">
                                     <div fxFlex="50px"><mat-icon class="active">local_shipping</mat-icon></div>
@@ -362,7 +388,7 @@
                                 </div>
                                 <div fxLayout="row wrap" *ngIf="a._delivery" fxLayoutAlign="start center">
                                     <div fxFlex="25">Aceptación:</div>
-                                    <div fxFlex>{{ a.timeInit ? a.timeInit : '-' }}</div>
+                                    <div fxFlex>{{ a.timeInit ? (a.timeInit | date : 'dd/MM/yyyy hh:mm') : '-' }}</div>
                                 </div>
                                 <div fxLayout="row wrap" fxLayoutAlign="start center">
                                     <div fxFlex="25">Detalles:</div>

@@ -13,7 +13,7 @@ export interface ProductItem {
   distributor_price: number;
   retail_price: number;
   cf_price: number;
-  presentations: ProductPresentationsItem[];
+  presentations: ProductPresentationsItem[] | ProductPresentationsItem;
   substances: string[];
   symptoms: string[];
   lastUpdate?: string;

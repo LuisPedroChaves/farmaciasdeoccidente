@@ -12,6 +12,9 @@
             <button mat-flat-button color="primary" (click)="dispatch()">
                 <mat-icon>move_to_inbox</mat-icon> DESPACHAR
             </button>
+            <button mat-stroked-button color="primary" style="margin-top: 10px" (click)="print()">
+                <mat-icon>print</mat-icon> IMPRIMIR
+            </button>
         </div>
     </div>
     <div fxLayout="row wrap" fxLayoutAlign="start start">
@@ -38,13 +41,6 @@
     </div>
 
 </header>
-
-<div fxLayout="row wrap" class="headerlist">
-    <div fxFlex="15" class="cell cell-header">Cantidad</div>
-    <div fxFlex class="cell cell-header">Producto</div>
-    <div fxFlex="15" class="cell cell-header">Unidad</div>
-    <div fxFlex="15" class="cell cell-header">Opciones</div>
-</div>
 
 
 <div fxLayout="row wrap" *ngIf="smallScreen">
@@ -126,6 +122,7 @@
                         <img matPrefix class="avatar-image"  src="assets/images/deliver.jpg"/>
                         <mat-select>
                             <mat-option>Ninguno</mat-option>
+                            <mat-option *ngFor="let d of delivers" [value]="d">{{d.name}}</mat-option>
                         </mat-select>
                     </mat-form-field>
                 </div>
@@ -137,6 +134,11 @@
         <button mat-flat-button color="primary"  (click)="dispatch()">
             <mat-icon>move_to_inbox</mat-icon> DESPACHAR
         </button>
+        <button mat-stroked-button color="primary" style="margin-top: 10px" (click)="print()">
+            <mat-icon>print</mat-icon> IMPRIMIR
+        </button>
+
+
     </div>
 </header>
 <div fxLayout="row wrap" *ngIf="!smallScreen" class="headerlist">

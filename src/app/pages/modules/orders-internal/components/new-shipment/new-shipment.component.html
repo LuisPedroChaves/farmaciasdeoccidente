@@ -19,12 +19,25 @@
                 </mat-select>
             </mat-form-field>
         </div>
+        <div fxFlex.gt-lg="15" fxFlex.gt-md="20"  fxFlex.gt-sm="25" fxFlex.gt-xs="30" fxFlex="40" class="inputpadding">
+    
+            <mat-form-field color="primary" appearance="outline">
+                <mat-label>Repartidor</mat-label>
+                <img matPrefix class="avatar-image"  src="assets/images/deliver.jpg"/>
+                <mat-select formControlName="_deliver">
+                    <mat-option>Ninguno</mat-option>
+                    <mat-option *ngFor="let d of delivers" [value]="d">{{d.name}}</mat-option>
+                </mat-select>
+            </mat-form-field>
+        </div>
     
         <div fxFlex *ngIf="!smallScreen" class="inputpadding">Tipo: {{ getType() }}</div>
     
     
         <div fxFlex="nogrow" class="ordertype">
-            <button mat-flat-button color="primary" (click)="saveInternalOrder()">Hacer pedido</button>
+            <button mat-flat-button color="primary" (click)="saveInternalOrder()">
+                <mat-icon>send</mat-icon> Enviar
+            </button>
         </div>
     
         <div fxFlex="100" >
@@ -37,6 +50,10 @@
 
 
 </form>
+
+
+
+
 <div fxLayout="row wrap">
 
 

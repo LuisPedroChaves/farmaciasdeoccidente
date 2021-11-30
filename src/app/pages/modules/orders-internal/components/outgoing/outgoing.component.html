@@ -25,7 +25,13 @@
 
         <div class="header" fxLayout="row wrap" fxLayoutAlign="start center">
             <h2 *ngIf="!smallScreen" class="product-font ma-0 T1">Solicitudes de pedidos</h2>
-            <span fxFlex></span>
+            <div fxFlex fxLayoutAlign="end center" style="padding-right: 10px;">
+                <mat-form-field color="primary" appearance="outline" floatLabel="always" class="findinput">
+                    <mat-label>Buscar</mat-label>
+                    <mat-icon matPrefix>search</mat-icon>
+                    <input matInput [(ngModel)]="searchtext">
+                </mat-form-field>
+            </div>
             <div [fxFlex]="smallScreen ? 50 : 'nogrow'" fxLayout="column wrap" class="ammounttitle active">
                 <h1 class="ma-0 active"> {{ recibidos.length }}</h1>
                 <small>Pedidos recibidos</small>
@@ -43,11 +49,16 @@
         <div *ngIf="smallScreen" class="space-sm">
             <mat-tab-group mat-stretch-tabs color="accent" class="tab-space">
                 
-                <mat-tab label="Pedidos Solicitados">
+                <mat-tab>
+                    <ng-template mat-tab-label>
+                        <span [matBadge]="enviados.length" matBadgeOverlap="false" matBadgeColor="primary">
+                            Pedidos Solicitados
+                        </span>
+                    </ng-template>
                     <div  data-simplebar class="tab-sm" *ngIf="enviados.length > 0">
                         
 
-                        <mat-card class="order-card" *ngFor="let a of enviados | orderBy: 'date' : true">
+                        <mat-card class="order-card" *ngFor="let a of (enviados | filter : searchtext : ['noOrder']) | orderBy: 'date' : true">
                             <mat-card-content>
                                 <div fxLayout="row wrap" fxLayoutAlign="start center">
                                     <div fxFlex="50px"><mat-icon class="pasive">local_shipping</mat-icon></div>
@@ -102,9 +113,14 @@
                 </mat-tab>
 
                 <mat-tab label="Pedidos Recibidos">
+                    <ng-template mat-tab-label>
+                        <span [matBadge]="recibidos.length" matBadgeOverlap="false" matBadgeColor="primary">
+                            Pedidos Recibidos
+                        </span>
+                    </ng-template>
                     <div  data-simplebar class="tab-sm" *ngIf="recibidos.length > 0">
                     
-                        <mat-card class="order-card" *ngFor="let a of recibidos | orderBy: 'timeDispatch' : true">
+                        <mat-card class="order-card" *ngFor="let a of (recibidos | filter : searchtext : ['noOrder']) | orderBy: 'timeDispatch' : true">
                             <mat-card-content>
                                 <div fxLayout="row wrap" fxLayoutAlign="start center">
                                     <div fxFlex="50px"><mat-icon class="active">call_received</mat-icon></div>
@@ -144,9 +160,13 @@
                                     Ver detalles
                                 </button>
                                 <span fxFlex></span>
-                                <button *ngIf="internalOrdersp && internalOrdersp.includes('update')" (click)="finish(a)" mat-button color="accent" matTooltip="Marcar como recibido">
-                                    <mat-icon>task_alt</mat-icon>
+                                <button *ngIf="internalOrdersp && internalOrdersp.includes('update') && a.state === 'DESPACHO'" (click)="finish(a)" mat-button color="accent" matTooltip="Marcar como recibido">
+                                    <mat-icon>check</mat-icon>
                                     Recibido
+                                </button>
+                                <button *ngIf="internalOrdersp && internalOrdersp.includes('update') && a.state === 'REVISION'" (click)="approved(a)" mat-button color="accent" matTooltip="Marcar como recibido">
+                                    <mat-icon>task_alt</mat-icon>
+                                    Aprobado
                                 </button>
                             </mat-card-actions>
                         </mat-card>
@@ -175,7 +195,7 @@
                         <b>Pedidos Solicitados</b>
                     </div>
 
-                    <mat-card class="order-card" *ngFor="let a of enviados | orderBy: 'date' : true">
+                    <mat-card class="order-card" *ngFor="let a of (enviados | filter : searchtext : ['noOrder']) | orderBy: 'date' : true">
                         <mat-card-content>
                             <div fxLayout="row wrap" fxLayoutAlign="start center">
                                 <div fxFlex="50px"><mat-icon class="pasive">local_shipping</mat-icon></div>
@@ -227,7 +247,7 @@
                         <div class="text-xlg title-row">
                             <b>Pedidos Recibidos</b>
                         </div>
-                        <mat-card class="order-card" *ngFor="let a of recibidos | orderBy: 'timeDispatch' : true">
+                        <mat-card class="order-card" *ngFor="let a of (recibidos | filter : searchtext : ['noOrder']) | orderBy: 'timeDispatch' : true">
                             <mat-card-content>
                                 <div fxLayout="row wrap" fxLayoutAlign="start center">
                                     <div fxFlex="50px"><mat-icon class="active">call_received</mat-icon></div>
@@ -267,9 +287,13 @@
                                     Ver detalles
                                 </button>
                                 <span fxFlex></span>
-                                <button *ngIf="internalOrdersp && internalOrdersp.includes('update')" (click)="finish(a)" mat-button color="accent" matTooltip="Marcar como recibido">
-                                    <mat-icon>task_alt</mat-icon>
+                                <button *ngIf="internalOrdersp && internalOrdersp.includes('update') && a.state === 'DESPACHO'" (click)="finish(a)" mat-button color="accent" matTooltip="Marcar como recibido">
+                                    <mat-icon>check</mat-icon>
                                     Recibido
+                                </button>
+                                <button *ngIf="internalOrdersp && internalOrdersp.includes('update') && a.state === 'REVISION'" (click)="approved(a)" mat-button color="accent" matTooltip="Marcar como recibido">
+                                    <mat-icon>task_alt</mat-icon>
+                                    Aprobado
                                 </button>
                             </mat-card-actions>
                         </mat-card>

@@ -5,8 +5,17 @@
         <mat-icon>close</mat-icon>
     </button>
 </header>
-<div class="header">
+<div class="header" fxLayout="row wrap">
+  <div fxFlex>
     Seleccione los productos que quedaron pendientes de pedidos anteriores y desea agregar a este nuevo pedido
+  </div>
+  <div fxFlex="nogrow">
+    <mat-form-field appearance="standard">
+      <mat-icon matPrefix>search</mat-icon>
+      <mat-label>Buscar</mat-label>
+      <input matInput (keyup)="applyFilter($event)" placeholder="Buscar producto..." #input>
+    </mat-form-field>
+  </div>
 </div>
 <div class="space" data-simplebar *ngIf="products !== undefined">
     

@@ -18,6 +18,7 @@ export class NewPendingComponent implements OnInit {
   selection = new SelectionModel<ProductAddedItem>(true, []);
 
   products: ProductItem[];
+  
   constructor(public dialogRef: MatDialogRef<NewPendingComponent>, @Inject(MAT_DIALOG_DATA) public data: any, public productsService: ProductService) { }
 
   ngOnInit(): void {
@@ -32,6 +33,9 @@ export class NewPendingComponent implements OnInit {
         });
       });
       this.dataSource = new MatTableDataSource<ProductAddedItem>(prods);
+      this.dataSource.filterPredicate = (datas, filtervalue) => {
+        return datas._product.description.toString().toLowerCase().includes(filtervalue) || datas._product._brand.name.toLowerCase().includes(filtervalue);
+      };
     })
   }
 
@@ -59,6 +63,11 @@ export class NewPendingComponent implements OnInit {
     }
 
     this.selection.select(...this.dataSource.data);
+  }
+
+  applyFilter(event: Event) {
+    const filterValue = (event.target as HTMLInputElement).value;
+    this.dataSource.filter = filterValue.trim().toLowerCase();
   }
 
   /** The label for the checkbox on the passed row */
