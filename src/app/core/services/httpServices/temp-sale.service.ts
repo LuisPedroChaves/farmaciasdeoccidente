@@ -1,4 +1,8 @@
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+
+import { Observable } from 'rxjs';
+
 import { ApiConfigService } from 'src/app/core/services/config/api-config.service';
 import { TempSaleItem } from '../../models/TempSale';
 
@@ -8,8 +12,21 @@ import { TempSaleItem } from '../../models/TempSale';
 export class TempSaleService {
 
   constructor(
-    public apiConfigService: ApiConfigService
+    public apiConfigService: ApiConfigService,
+    private http: HttpClient,
   ) { }
+
+  getStatics( _cellar, _brand, startDate, endDate, minX, maxX ): Observable<any> {
+    return this.http.get(this.apiConfigService.API_TEMP_SALE + '/', {
+      params: new HttpParams()
+        .set('_cellar', _cellar.toString())
+        .set('_brand', _brand.toString())
+        .set('startDate', startDate.toString())
+        .set('endDate', endDate.toString())
+        .set('minX', minX.toString())
+        .set('maxX', maxX.toString())
+    });
+  }
 
   uploadFile(file: File, tempSale: any) {
     return new Promise((resolve, reject) => {
