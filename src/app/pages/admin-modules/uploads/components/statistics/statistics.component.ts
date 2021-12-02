@@ -53,12 +53,15 @@ export class StatisticsComponent
   supplyDays = '';
   loadingData = false;
   setData = false;
+  isEmpty = false;
 
   // Table
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
   dataSource: any;
   columns = [
+    'barcode',
+    'description',
     'avgSalesMonths',
     'avgSalesYear',
     'salesLastMonth',
@@ -152,6 +155,11 @@ export class StatisticsComponent
         .subscribe((res) => {
           const response = res;
           this.dataSource = new MatTableDataSource<any>(response.tempSales);
+          if (response.tempSales.length === 0) {
+            this.isEmpty = true;
+          }else {
+            this.isEmpty = false;
+          }
           this.dataSource.paginator = this.paginator;
           this.loadingData = false;
         });
@@ -164,4 +172,3 @@ export class StatisticsComponent
     return date._d;
   }
 }
-

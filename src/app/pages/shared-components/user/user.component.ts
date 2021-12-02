@@ -64,7 +64,8 @@ export class UserComponent implements OnInit {
       username: new FormControl(this.user.username, [Validators.required]),
       password: new FormControl(this.user.password, [Validators.required]),
       email: new FormControl(this.user.email),
-      _role: new FormControl(this.user._role, [Validators.required])
+      _role: new FormControl(this.user._role, [Validators.required]),
+      _cellar: new FormControl(this.user._cellar),
     });
     this.cu = this.user.imageIndex;
   }
