@@ -92,7 +92,7 @@
 
         <div *ngIf="!loadingData && setData">
 
-            <div class="allspace">
+            <div class="allspace" *ngIf="dataSource.length">
                 <!-- *****Tabla responsiva agregar: matSort matTableResponsive -------------- e importar el módulo en sharedCompnents y tambien en el style SCSS -->
                 <table mat-table matSort matTableResponsive [dataSource]="dataSource" multiTemplateDataRows
                     class="mat-elevation-z2 noborder-table ">
@@ -164,10 +164,18 @@
                     </tr>
                 </table>
             </div>
+            <div *ngIf="!dataSource.length" fxLayout="row">
+                <div fxFlex fxFlexAlign="center" fxFlexFill>
+                    <h3>No encontramos datos relacionados a los parametros que fueron ingresados, Intenta ingresando parametros diferentes.</h3>
+                </div>
+            </div>
 
         </div>
 
+        
         <!-- END Table -->
+
+
         <div fxLayout="row">
             <mat-list role="list">
                 <mat-list-item role="listitem" *ngFor="let error of errores2">{{error.barcode}}
