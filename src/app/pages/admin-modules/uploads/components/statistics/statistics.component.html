@@ -1,4 +1,4 @@
-<div fxFlex="column" class="my-container">
+<div fxFlex="column" class="my-container" data-simplebar>
     <div fxFlex="row" class="card mat-elevation-z2">
         <div fxLayout="row">
             <h2>Configuración de Estadísticas</h2>
@@ -33,7 +33,7 @@
             <!-- END Brand -->
             <div fxFlex class="inputpadding">
                 <mat-form-field appearance="outline" color="primary" class="width-all">
-                    <mat-label>Introduzca un rango de fechas</mat-label>
+                    <mat-label>Rango de fechas historial</mat-label>
                     <mat-date-range-input [formGroup]="range" [rangePicker]="picker">
                         <input matStartDate formControlName="startDate" placeholder="Fecha de inicio">
                         <input matEndDate formControlName="endDate" placeholder="Fecha de finalización">
@@ -43,6 +43,21 @@
                     <mat-error *ngIf="range.get('startDate').hasError('matStartDateInvalid')">Fecha de inicio no válida
                     </mat-error>
                     <mat-error *ngIf="range.controls.endDate.hasError('matEndDateInvalid')">Fecha de finalización no válida
+                    </mat-error>
+                </mat-form-field>
+            </div>
+            <div fxFlex class="inputpadding">
+                <mat-form-field appearance="outline" color="primary" class="width-all">
+                    <mat-label>Rango de fechas último mes</mat-label>
+                    <mat-date-range-input [formGroup]="range" [rangePicker]="picker2">
+                        <input matStartDate formControlName="startDate2" placeholder="Fecha de inicio">
+                        <input matEndDate formControlName="endDate2" placeholder="Fecha de finalización">
+                    </mat-date-range-input>
+                    <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+                    <mat-date-range-picker #picker2></mat-date-range-picker>
+                    <mat-error *ngIf="range.get('startDate2').hasError('matStartDateInvalid')">Fecha de inicio no válida
+                    </mat-error>
+                    <mat-error *ngIf="range.controls.endDate2.hasError('matEndDateInvalid')">Fecha de finalización no válida
                     </mat-error>
                 </mat-form-field>
             </div>
@@ -123,22 +138,27 @@
                         <td mat-cell *matCellDef="let element"> {{element.salesMonth }} </td>
                     </ng-container>
 
+                    <ng-container matColumnDef="avgSalesMonth">
+                        <th mat-header-cell *matHeaderCellDef> x̄ de Ventas mensual (Ajustado) </th>
+                        <td mat-cell *matCellDef="let element"> {{element.promAdjustMonth }} </td>
+                    </ng-container>
+
                     <ng-container matColumnDef="avgSalesDay">
                         <th mat-header-cell *matHeaderCellDef> x̄ de Ventas diario (Ajustado) </th>
-                        <td mat-cell *matCellDef="let element"> {{element.promAdjust }} </td>
+                        <td mat-cell *matCellDef="let element"> {{element.promAdjustDay }} </td>
                     </ng-container>
 
                     <ng-container matColumnDef="inventory">
                         <th mat-header-cell *matHeaderCellDef> Inventario </th>
                         <td mat-cell *matCellDef="let element"> {{ element.stock }} </td>
                     </ng-container>
-                    <ng-container matColumnDef="sales">
-                        <th mat-header-cell *matHeaderCellDef> Ventas</th>
-                        <td mat-cell *matCellDef="let element"> {{ element.lastSales }} </td>
-                    </ng-container>
                     <ng-container matColumnDef="suggestedOrder">
                         <th mat-header-cell *matHeaderCellDef> Pedido Sugerido </th>
                         <td mat-cell *matCellDef="let element"> {{ element.request }} </td>
+                    </ng-container>
+                    <ng-container matColumnDef="stockCellar">
+                        <th mat-header-cell *matHeaderCellDef> Inventario Bodega </th>
+                        <td mat-cell *matCellDef="let element"> {{ element.stockCellar }} </td>
                     </ng-container>
                     <ng-container matColumnDef="minExistence">
                         <th mat-header-cell *matHeaderCellDef> Existencia Mínima </th>

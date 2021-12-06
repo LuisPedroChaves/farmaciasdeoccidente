@@ -25,8 +25,7 @@ import { ToastyService } from 'src/app/core/services/internal/toasty.service';
   styleUrls: ['./statistics.component.scss'],
 })
 export class StatisticsComponent
-  implements OnInit, AfterContentInit, OnDestroy
-{
+  implements OnInit, AfterContentInit, OnDestroy {
   smallScreen = window.innerWidth < 960 ? true : false;
   loading = false;
   loadSalesComplete = false;
@@ -46,6 +45,8 @@ export class StatisticsComponent
   range = new FormGroup({
     startDate: new FormControl(new Date()),
     endDate: new FormControl(new Date()),
+    startDate2: new FormControl(new Date()),
+    endDate2: new FormControl(new Date()),
     _brand: new FormControl(),
   });
 
@@ -65,10 +66,11 @@ export class StatisticsComponent
     'avgSalesMonths',
     'avgSalesYear',
     'salesLastMonth',
+    'avgSalesMonth',
     'avgSalesDay',
     'inventory',
-    'sales',
     'suggestedOrder',
+    'stockCellar',
     'minExistence',
     'maxExistence',
   ];
@@ -126,46 +128,41 @@ export class StatisticsComponent
       this.toastyService.error('Debe seleccionar una sucursal');
       return;
     }
-    if ( this.daysOfRequest === '' || this.supplyDays === '') {
+    if (this.daysOfRequest === '' || this.supplyDays === '') {
       this.toastyService.error('Llene los campos solicitados');
       return;
     }
     const brand = this.brands.find(
       (e) => e.name === this.range.controls._brand.value
     );
+    this.loadingData = true;
+    this.setData = true;
+    let selectedBrand = 'null';
     if (brand) {
-      this.loadingData = true;
-      this.setData = true;
-      console.log(
-        brand._id,
-        this.getDate(this.range.controls.startDate.value),
-        this.getDate(this.range.get('endDate').value),
+      selectedBrand = brand._id;
+    }
+    this.tempSaleService
+      .getStatics(
+        this.currentCellar2,
+        selectedBrand,
+        this.range.controls.startDate.value,
+        this.range.get('endDate').value,
+        this.range.controls.startDate2.value,
+        this.range.get('endDate2').value,
         this.daysOfRequest,
         this.supplyDays
-      );
-      this.tempSaleService
-        .getStatics(
-          this.currentCellar2,
-          brand._id,
-          this.range.controls.startDate.value,
-          this.range.get('endDate').value,
-          this.daysOfRequest,
-          this.supplyDays
-        )
-        .subscribe((res) => {
-          const response = res;
-          this.dataSource = new MatTableDataSource<any>(response.tempSales);
-          if (response.tempSales.length === 0) {
-            this.isEmpty = true;
-          }else {
-            this.isEmpty = false;
-          }
-          this.dataSource.paginator = this.paginator;
-          this.loadingData = false;
-        });
-    } else {
-      this.toastyService.error('Seleccione un laboratorio válido');
-    }
+      )
+      .subscribe((res) => {
+        const response = res;
+        this.dataSource = new MatTableDataSource<any>(response.tempSales);
+        if (response.tempSales.length === 0) {
+          this.isEmpty = true;
+        } else {
+          this.isEmpty = false;
+        }
+        this.dataSource.paginator = this.paginator;
+        this.loadingData = false;
+      });
   }
 
   getDate(date: any): string {
