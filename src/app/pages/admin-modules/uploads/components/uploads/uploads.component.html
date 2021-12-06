@@ -1,8 +1,7 @@
 <div [ngClass]="{ 'app': !smallScreen, 'app-sm': smallScreen } ">
     <div class="section-content">
         <div>
-            <header class="module-header" [ngClass]="{'padding-25': !smallScreen, 'padding-15': smallScreen }"
-                fxLayoutAlign="start center" fxLayout="row wrap">
+            <header class="module-header" [ngClass]="{'padding-25': !smallScreen, 'padding-15': smallScreen }" fxLayoutAlign="start center" fxLayout="row wrap">
                 <h1 class="product-font ma-0 module-title">Carga de archivos</h1>
             </header>
             <mat-divider></mat-divider>
@@ -35,11 +34,9 @@
                                             <mat-label>
                                                 .xlsx
                                             </mat-label>
-                                            <ngx-mat-file-input #removableInput [(ngModel)]="currentFile"
-                                                placeholder="Ingrese un archivo">
+                                            <ngx-mat-file-input #removableInput [(ngModel)]="currentFile" placeholder="Ingrese un archivo">
                                             </ngx-mat-file-input>
-                                            <button mat-icon-button matSuffix *ngIf="!removableInput.empty"
-                                                (click)="removableInput.clear($event)">
+                                            <button mat-icon-button matSuffix *ngIf="!removableInput.empty" (click)="removableInput.clear($event)">
                                                 <mat-icon>clear</mat-icon>
                                             </button>
                                         </mat-form-field>
@@ -48,10 +45,8 @@
                                 </div>
                                 <div fxLayout="row">
                                     <span fxFlex></span>
-                                    <button *ngIf="!loading" mat-raised-button (click)="loadStorage()"
-                                        color="warn">Cargar archivo</button>
-                                    <mat-progress-spinner *ngIf="loading" mode="indeterminate" diameter="30"
-                                        color="warn">
+                                    <button *ngIf="!loading" mat-raised-button (click)="loadStorage()" color="warn">Cargar archivo</button>
+                                    <mat-progress-spinner *ngIf="loading" mode="indeterminate" diameter="30" color="warn">
                                     </mat-progress-spinner>
                                     <span fxFlex></span>
                                 </div>
@@ -94,8 +89,7 @@
                                     <div fxFlex class="inputpadding">
                                         <mat-form-field appearance="outline" color="primary" class="width-all">
                                             <mat-label>Fecha</mat-label>
-                                            <input matInput [matDatepicker]="picker" [(ngModel)]="currentDate"
-                                                title="Fecha de venta" placeholder="Ingrese una fecha">
+                                            <input matInput [matDatepicker]="picker" [(ngModel)]="currentDate" title="Fecha de venta" placeholder="Ingrese una fecha">
                                             <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                                             <mat-datepicker #picker></mat-datepicker>
                                         </mat-form-field>
@@ -105,11 +99,9 @@
                                             <mat-label>
                                                 .xlsx
                                             </mat-label>
-                                            <ngx-mat-file-input #removableInput [(ngModel)]="currentFile2"
-                                                placeholder="Ingrese un archivo">
+                                            <ngx-mat-file-input #removableInput [(ngModel)]="currentFile2" placeholder="Ingrese un archivo">
                                             </ngx-mat-file-input>
-                                            <button mat-icon-button matSuffix *ngIf="!removableInput.empty"
-                                                (click)="removableInput.clear($event)">
+                                            <button mat-icon-button matSuffix *ngIf="!removableInput.empty" (click)="removableInput.clear($event)">
                                                 <mat-icon>clear</mat-icon>
                                             </button>
                                         </mat-form-field>
@@ -118,11 +110,11 @@
                                 </div>
                                 <div fxLayout="row">
                                     <span fxFlex></span>
+                                    <button *ngIf="!loading" mat-raised-button (click)="loadSaleDelete()" style="color: brown;">Anular archivo</button>
+                                    <mat-progress-spinner *ngIf="loading" mode="indeterminate" diameter="30" color="warn">
+                                    </mat-progress-spinner>
                                     <button *ngIf="!loading" mat-raised-button (click)="loadSale()" color="warn">Cargar
                                         archivo</button>
-                                    <mat-progress-spinner *ngIf="loading" mode="indeterminate" diameter="30"
-                                        color="warn">
-                                    </mat-progress-spinner>
                                     <span fxFlex></span>
                                 </div>
                                 <br>
