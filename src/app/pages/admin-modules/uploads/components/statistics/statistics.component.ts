@@ -18,6 +18,8 @@ import { CellarService } from 'src/app/core/services/httpServices/cellar.service
 import { TempSaleService } from 'src/app/core/services/httpServices/temp-sale.service';
 import { TempStorageService } from 'src/app/core/services/httpServices/temp-storage.service';
 import { ToastyService } from 'src/app/core/services/internal/toasty.service';
+import { MatDialog } from '@angular/material/dialog';
+import { ConfirmationDialogComponent } from 'src/app/pages/shared-components/confirmation-dialog/confirmation-dialog.component';
 
 @Component({
   selector: 'app-statistics',
@@ -82,7 +84,8 @@ export class StatisticsComponent
     public tempStorageService: TempStorageService,
     public tempSaleService: TempSaleService,
     public brandService: BrandService,
-    private toastyService: ToastyService
+    private toastyService: ToastyService,
+    private dialog: MatDialog
   ) {
     this.cellarsSubscription = this.cellarService
       .readData()
@@ -135,37 +138,64 @@ export class StatisticsComponent
     const brand = this.brands.find(
       (e) => e.name === this.range.controls._brand.value
     );
-    this.loadingData = true;
-    this.setData = true;
-    let selectedBrand = 'null';
     if (brand) {
-      selectedBrand = brand._id;
+      this.loadingData = true;
+      this.setData = true;
+      this.tempSaleService
+        .getStatics(
+          this.currentCellar2,
+          brand._id,
+          this.range.controls.startDate.value,
+          this.range.get('endDate').value,
+          this.range.controls.startDate2.value,
+          this.range.get('endDate2').value,
+          this.daysOfRequest,
+          this.supplyDays
+        )
+        .subscribe((res) => {
+          const response = res;
+          this.dataSource = new MatTableDataSource<any>(response.tempSales);
+          if (response.tempSales.length === 0) {
+            this.isEmpty = true;
+          } else {
+            this.isEmpty = false;
+          }
+          this.dataSource.paginator = this.paginator;
+          this.loadingData = false;
+        });
+    } else {
+      this.toastyService.error('Por favor seleccione un laboratorio');
     }
-    this.tempSaleService
-      .getStatics(
-        this.currentCellar2,
-        selectedBrand,
-        this.range.controls.startDate.value,
-        this.range.get('endDate').value,
-        this.range.controls.startDate2.value,
-        this.range.get('endDate2').value,
-        this.daysOfRequest,
-        this.supplyDays
-      )
-      .subscribe((res) => {
-        const response = res;
-        this.dataSource = new MatTableDataSource<any>(response.tempSales);
-        if (response.tempSales.length === 0) {
-          this.isEmpty = true;
-        } else {
-          this.isEmpty = false;
-        }
-        this.dataSource.paginator = this.paginator;
-        this.loadingData = false;
-      });
   }
 
   getDate(date: any): string {
     return date._d;
+  }
+
+  updateTempStorage(): void {
+    if (!this.dataSource || this.dataSource.filteredData.length === 0) {
+      this.toastyService.error('No hay cálculos generados');
+      return;
+    }
+    const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
+      width: '350px',
+      data: {
+        title: 'INGRESAR A INVENTARIO',
+        message:
+          '¿Confirma que desea actualizar las estadisticas en la sucursal seleccionada?',
+      },
+      disableClose: true,
+      panelClass: ['farmacia-dialog', 'farmacia'],
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result !== undefined) {
+        this.loading = true;
+        this.tempStorageService.update(this.dataSource.filteredData).subscribe(resp => {
+          this.toastyService.success('Inventario actualizado correctamente');
+          this.loading = false;
+        });
+      }
+    });
   }
 }

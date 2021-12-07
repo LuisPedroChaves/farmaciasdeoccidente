@@ -67,4 +67,8 @@ export class TempStorageService {
       xhr.send( formData );
     });
   }
+
+  update(body: any[]): Observable<any> {
+    return this.http.put(this.apiConfigService.API_TEMP_STORAGE + '/', body);
+  }
 }
