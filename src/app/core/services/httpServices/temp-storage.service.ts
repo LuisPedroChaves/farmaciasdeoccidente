@@ -40,6 +40,23 @@ export class TempStorageService {
       );
   }
 
+  loadConsolidated(
+    _cellar,
+    _brand
+  ): Observable<TempStorageItem[]> {
+    return this.http
+      .get(`${this.apiConfigService.API_TEMP_STORAGE}/`, {
+        params: new HttpParams()
+          .set('_cellar', _cellar.toString())
+          .set('_brand', _brand.toString())
+      })
+      .pipe(
+        map((response: any) => {
+          return response.products;
+        })
+      );
+  }
+
   uploadFile(file: File, _cellar: string) {
     return new Promise((resolve, reject) => {
       const formData = new FormData();

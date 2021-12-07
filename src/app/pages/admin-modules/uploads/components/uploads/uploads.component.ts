@@ -1,5 +1,5 @@
 import { Component, OnInit, AfterContentInit, OnDestroy, ViewChild, ElementRef } from '@angular/core';
-import { Subscription } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 
 import { CellarItem } from 'src/app/core/models/Cellar';
 import { CellarService } from 'src/app/core/services/httpServices/cellar.service';
@@ -8,6 +8,10 @@ import { TempStorageService } from '../../../../../core/services/httpServices/te
 import { TempSaleService } from '../../../../../core/services/httpServices/temp-sale.service';
 import { ConfirmationDialogComponent } from 'src/app/pages/shared-components/confirmation-dialog/confirmation-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
+import { BrandItem } from 'src/app/core/models/Brand';
+import { BrandService } from '../../../../../core/services/httpServices/brand.service';
+import { FormControl, FormGroup } from '@angular/forms';
+import { map, startWith } from 'rxjs/operators';
 
 @Component({
   selector: 'app-uploads',
@@ -21,6 +25,7 @@ export class UploadsComponent implements OnInit, AfterContentInit, OnDestroy {
 
   cellarsSubscription: Subscription;
   cellars: CellarItem[];
+  centrals: CellarItem[];
   errores: any[];
   errores2: any[];
 
@@ -31,21 +36,40 @@ export class UploadsComponent implements OnInit, AfterContentInit, OnDestroy {
   currentDate: Date;
   currentFile2: any;
 
+  brandsSubscription: Subscription;
+  brands: BrandItem[];
+  options: BrandItem[] = [];
+  filteredOptions: Observable<BrandItem[]>;
+  currentCellar3: string;
+  range = new FormGroup({
+    _brand: new FormControl(),
+  });
+
   constructor(
     public cellarService: CellarService,
     private toastyService: ToastyService,
     public tempStorageService: TempStorageService,
     public tempSaleService: TempSaleService,
     public dialog: MatDialog,
+    public brandService: BrandService
   ) {
     this.cellarsSubscription = this.cellarService
     .readData()
     .subscribe((data) => {
       this.cellars = data;
+      this.centrals = this.cellars.filter(c => c.type === 'BODEGA');
     });
   }
 
   ngOnInit(): void {
+    this.brandsSubscription = this.brandService.readData().subscribe((data) => {
+      this.brands = data;
+      this.options = [...this.brands];
+    });
+    this.filteredOptions = this.range.controls._brand.valueChanges.pipe(
+      startWith(''),
+      map((value) => this._filterBrands(value))
+    );
   }
 
   ngAfterContentInit() {
@@ -185,5 +209,38 @@ export class UploadsComponent implements OnInit, AfterContentInit, OnDestroy {
         }
       }
     });
+  }
+
+  private _filterBrands(value: string): BrandItem[] {
+    if (value) {
+      const filterValue = value.toLowerCase();
+      return this.options.filter((option) =>
+        option.name.toLowerCase().includes(filterValue)
+      );
+    } else {
+      return [];
+    }
+  }
+
+  getConsolidated(): void {
+    if (!this.currentCellar3) {
+      this.toastyService.error('Debe seleccionar una sucursal');
+      return;
+    }
+    const BRAND = this.brands.find(
+      (e) => e.name === this.range.controls._brand.value
+    );
+    if (BRAND) {
+      this.loading = true;
+      this.tempStorageService.loadConsolidated(
+        this.currentCellar3,
+        BRAND._id
+      ).subscribe(resp => {
+        console.log(resp);
+        this.loading = false;
+      });
+    }else {
+      this.toastyService.error('Debe seleccionar un laboratorio');
+    }
   }
 }
