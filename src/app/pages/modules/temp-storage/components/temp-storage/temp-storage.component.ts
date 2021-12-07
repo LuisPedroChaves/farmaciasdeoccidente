@@ -19,7 +19,6 @@ import { ToastyService } from 'src/app/core/services/internal/toasty.service';
 import { AppState } from 'src/app/core/store/app.reducer';
 import { BrandItem } from 'src/app/core/models/Brand';
 import { TempStorageService } from 'src/app/core/services/httpServices/temp-storage.service';
-import { ModalStatisticsComponent } from '../modal-statistics/modal-statistics.component';
 import { tempStorageDataSource } from '../../../../../core/services/cdks/tempStorages.datasource';
 import { CellarItem } from '../../../../../core/models/Cellar';
 import { BrandService } from 'src/app/core/services/httpServices/brand.service';
@@ -137,20 +136,5 @@ export class TempStorageComponent implements OnInit, AfterViewInit, AfterContent
   clearBrand(): void {
     this.brand.setValue('');
     this.loadTempStorages();
-  }
-
-  showStatistic(): void {
-    const dialogRef = this.dialog.open(ModalStatisticsComponent, {
-      width: this.smallScreen ? '100%' : '35%',
-      minHeight: '78vh',
-      maxHeight: '78vh',
-      disableClose: true,
-      panelClass: ['farmacia-dialog', 'farmacia'],
-    });
-
-    dialogRef.afterClosed().subscribe(result => {
-      if (result !== undefined) {
-      }
-    });
   }
 }
