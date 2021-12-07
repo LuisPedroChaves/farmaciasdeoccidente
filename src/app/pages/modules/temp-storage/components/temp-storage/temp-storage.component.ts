@@ -44,7 +44,11 @@ export class TempStorageComponent implements OnInit, AfterViewInit, AfterContent
     '_brand',
     'stock',
     'supply',
-    'options',
+    'minExistence',
+    'maxExistence',
+    'exceeds',
+    'missing',
+    // 'options',
   ];
   currentPage = 0;
 
@@ -76,6 +80,7 @@ export class TempStorageComponent implements OnInit, AfterViewInit, AfterContent
       startWith(''),
       map((value) => this._filterBrands(value))
     );
+    console.log(this.dataSource);
   }
 
   ngAfterViewInit(): void {
