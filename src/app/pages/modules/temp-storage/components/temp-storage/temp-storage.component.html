@@ -80,24 +80,51 @@
                 </ng-container>
                 <ng-container matColumnDef="minExistence">
                     <th mat-header-cell *matHeaderCellDef> Existencia minima </th>
-                    <td mat-cell *matCellDef="let element"> {{ element.minStock }} </td>
+
+                    <td mat-cell *matCellDef="let element">
+                        <div *ngIf="element.minStock">
+                            {{ element.minStock }}
+                        </div>
+                        <div *ngIf="!element.minStock">
+                            Sin Registros
+                        </div>
+                    </td>
                 </ng-container>
                 <ng-container matColumnDef="maxExistence">
                     <th mat-header-cell *matHeaderCellDef> Existencia máxima </th>
-                    <td mat-cell *matCellDef="let element"> {{ element.maxStock }} </td>
+                    <td mat-cell *matCellDef="let element">
+                        <div *ngIf="element.maxStock">
+                            {{ element.maxStock }}
+                        </div>
+                        <div *ngIf="!element.maxStock">
+                            Sin Registros
+                        </div>
+                    </td>
                 </ng-container>
                 <ng-container matColumnDef="exceeds">
                     <th mat-header-cell *matHeaderCellDef> Sobrantes </th>
                     <td mat-cell *matCellDef="let element">
-                        <label style="color:orange" *ngIf="element.stock > element.maxStock"> {{element.stock - element.maxStock}} </label>
-                        <label *ngIf="element.stock <= element.maxStock"> 0 </label>
+                        <div *ngIf="element.minStock">
+                            <label style="color:orange" *ngIf="element.stock > element.maxStock"> {{element.stock -
+                                element.maxStock}} </label>
+                            <label *ngIf="element.stock <= element.maxStock"> 0 </label>
+                        </div>
+                        <div *ngIf="!element.minStock">
+                            Sin Registros
+                        </div>
                     </td>
                 </ng-container>
                 <ng-container matColumnDef="missing">
                     <th mat-header-cell *matHeaderCellDef> Faltantes </th>
-                    <td mat-cell *matCellDef="let element" > 
-                        <label style="color:red" *ngIf="element.stock < element.minStock"> {{element.minStock - element.stock}} </label>
-                        <label *ngIf="element.stock >= element.maxStock"> 0 </label>
+                    <td mat-cell *matCellDef="let element">
+                        <div *ngIf="element.minStock">
+                            <label style="color:red" *ngIf="element.stock < element.minStock"> {{element.minStock -
+                                element.stock}} </label>
+                            <label *ngIf="element.stock >= element.maxStock"> 0 </label>
+                        </div>
+                        <div *ngIf="!element.minStock">
+                            Sin Registros
+                        </div>
                     </td>
                 </ng-container>
                 <!-- <ng-container matColumnDef="options">
