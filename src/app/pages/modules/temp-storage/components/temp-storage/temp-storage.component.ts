@@ -137,4 +137,30 @@ export class TempStorageComponent implements OnInit, AfterViewInit, AfterContent
     this.brand.setValue('');
     this.loadTempStorages();
   }
+
+  downloadTempStorageXlsx(): void {
+    const body = [
+      [this.currentCellar.name, this.currentCellar.description],
+      [ 'Codigo de Barras', 'Descripción', 'Laboratorio', 'Inventario', 'Abastecimiento', 'Existencia Mínima', 'Existencia Máxima', 'Sobrantes', 'Faltantes']
+    ];
+
+    const ArrayToPrint: any[] = [];
+
+    // .registers.forEach(r => {
+    //   const row: any[] = [
+    //     r.number,
+    //     moment(r.date).format('DD/MM/YYYY'),
+    //     r.concept,
+    //     r.credit === null ? '' : this._decimalPipe.transform(r.credit, '.2'),
+    //     r.debit === null ? '' : this._decimalPipe.transform(r.debit, '.2'),
+    //     this._decimalPipe.transform(r.balance, '.2')
+    //   ];
+    //   ArrayToPrint.push(row);
+    // });
+
+    // ArrayToPrint.forEach(row => body.push(row));
+
+    // this.xlsxService.
+    // (body, moment(this.startDate).format('DD-MM-YYYY') + ' ' + moment(this.endDate).format('DD-MM-YYYY') , this.currentAccount.name);
+  }
 }
