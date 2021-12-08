@@ -186,7 +186,7 @@ export class TempStorageComponent
             exceeds = 0;
           }
         } else {
-          exceeds = 'Sin Registro';
+          exceeds = 0;
         }
         if (item.minStock) {
           if (item.stock < item.minStock) {
@@ -195,7 +195,7 @@ export class TempStorageComponent
             missing = 0;
           }
         } else {
-          missing = 'Sin Registro';
+          missing = 0;
         }
 
         const row: any[] = [
@@ -204,8 +204,8 @@ export class TempStorageComponent
           item._product._brand.name,
           item.stock,
           item.supply,
-          item.minStock,
-          item.maxStock,
+          item.minStock? item.minStock: 0,
+          item.maxStock ? item.maxStock: 0,
           exceeds,
           missing,
         ];
