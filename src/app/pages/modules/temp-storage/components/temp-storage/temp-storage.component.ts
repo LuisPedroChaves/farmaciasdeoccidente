@@ -13,7 +13,13 @@ import { Store } from '@ngrx/store';
 import { FormControl } from '@angular/forms';
 
 import { fromEvent, Observable, Subscription } from 'rxjs';
-import { debounceTime, distinctUntilChanged, map, startWith, tap } from 'rxjs/operators';
+import {
+  debounceTime,
+  distinctUntilChanged,
+  map,
+  startWith,
+  tap,
+} from 'rxjs/operators';
 
 import { ToastyService } from 'src/app/core/services/internal/toasty.service';
 import { AppState } from 'src/app/core/store/app.reducer';
@@ -22,14 +28,16 @@ import { TempStorageService } from 'src/app/core/services/httpServices/temp-stor
 import { tempStorageDataSource } from '../../../../../core/services/cdks/tempStorages.datasource';
 import { CellarItem } from '../../../../../core/models/Cellar';
 import { BrandService } from 'src/app/core/services/httpServices/brand.service';
+import { XlsxService } from '../../../../../core/services/internal/XlsxService.service';
 
 @Component({
   selector: 'app-temp-storage',
   templateUrl: './temp-storage.component.html',
   styleUrls: ['./temp-storage.component.scss'],
-
 })
-export class TempStorageComponent implements OnInit, AfterViewInit, AfterContentInit, OnDestroy {
+export class TempStorageComponent
+  implements OnInit, AfterViewInit, AfterContentInit, OnDestroy
+{
   smallScreen = window.innerWidth < 960 ? true : false;
   currentCellar: CellarItem;
 
@@ -63,13 +71,20 @@ export class TempStorageComponent implements OnInit, AfterViewInit, AfterContent
     public router: Router,
     public dialog: MatDialog,
     public brandService: BrandService,
+    public xlsxService: XlsxService
   ) {}
 
   ngOnInit(): void {
     this.currentCellar = JSON.parse(localStorage.getItem('currentstore'));
 
     this.dataSource = new tempStorageDataSource(this.tempStorageService);
-    this.dataSource.loadTempStorage(this.currentCellar._id, this.currentPage, 10, '', '');
+    this.dataSource.loadTempStorage(
+      this.currentCellar._id,
+      this.currentPage,
+      10,
+      '',
+      ''
+    );
 
     this.brandsSubscription = this.brandService.readData().subscribe((data) => {
       this.brands = data;
@@ -141,26 +156,69 @@ export class TempStorageComponent implements OnInit, AfterViewInit, AfterContent
   downloadTempStorageXlsx(): void {
     const body = [
       [this.currentCellar.name, this.currentCellar.description],
-      [ 'Codigo de Barras', 'Descripción', 'Laboratorio', 'Inventario', 'Abastecimiento', 'Existencia Mínima', 'Existencia Máxima', 'Sobrantes', 'Faltantes']
+      [
+        'Codigo de Barras',
+        'Descripción',
+        'Laboratorio',
+        'Inventario',
+        'Abastecimiento',
+        'Existencia Mínima',
+        'Existencia Máxima',
+        'Sobrantes',
+        'Faltantes',
+      ],
     ];
 
     const ArrayToPrint: any[] = [];
 
-    // .registers.forEach(r => {
-    //   const row: any[] = [
-    //     r.number,
-    //     moment(r.date).format('DD/MM/YYYY'),
-    //     r.concept,
-    //     r.credit === null ? '' : this._decimalPipe.transform(r.credit, '.2'),
-    //     r.debit === null ? '' : this._decimalPipe.transform(r.debit, '.2'),
-    //     this._decimalPipe.transform(r.balance, '.2')
-    //   ];
-    //   ArrayToPrint.push(row);
-    // });
+    if (this.dataSource.tempStorageSubject.value.length === 0) {
+      this.toasty.error('No hay información en la tabla para exportar');
+      return;
+    } else {
+      console.log(this.dataSource.tempStorageSubject.value);
+      this.dataSource.tempStorageSubject.value.forEach((item) => {
+        let exceeds: number | string = 0;
+        let missing: number | string = 0;
+        if (item.maxStock) {
+          if (item.stock > item.maxStock) {
+            exceeds = item.stock - item.maxStock;
+          } else if (item.stock <= item.maxStock) {
+            exceeds = 0;
+          }
+        } else {
+          exceeds = 'Sin Registro';
+        }
+        if (item.minStock) {
+          if (item.stock < item.minStock) {
+            missing = item.minStock - item.stock;
+          } else if (item.stock >= item.minStock) {
+            missing = 0;
+          }
+        } else {
+          missing = 'Sin Registro';
+        }
 
-    // ArrayToPrint.forEach(row => body.push(row));
+        const row: any[] = [
+          item._product.barcode,
+          item._product.description,
+          item._product._brand.name,
+          item.stock,
+          item.supply,
+          item.minStock,
+          item.maxStock,
+          exceeds,
+          missing,
+        ];
+        ArrayToPrint.push(row);
+      });
+    }
 
-    // this.xlsxService.
-    // (body, moment(this.startDate).format('DD-MM-YYYY') + ' ' + moment(this.endDate).format('DD-MM-YYYY') , this.currentAccount.name);
+    ArrayToPrint.forEach((row) => body.push(row));
+
+    this.xlsxService.downloadSinglePage(
+      body,
+      'Inventario Temporal',
+      this.currentCellar.name
+    );
   }
 }
