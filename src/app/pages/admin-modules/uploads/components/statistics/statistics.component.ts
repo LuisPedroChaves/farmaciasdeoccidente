@@ -20,6 +20,7 @@ import { TempStorageService } from 'src/app/core/services/httpServices/temp-stor
 import { ToastyService } from 'src/app/core/services/internal/toasty.service';
 import { MatDialog } from '@angular/material/dialog';
 import { ConfirmationDialogComponent } from 'src/app/pages/shared-components/confirmation-dialog/confirmation-dialog.component';
+import { MatSort } from '@angular/material/sort';
 
 @Component({
   selector: 'app-statistics',
@@ -27,7 +28,7 @@ import { ConfirmationDialogComponent } from 'src/app/pages/shared-components/con
   styleUrls: ['./statistics.component.scss'],
 })
 export class StatisticsComponent
-  implements OnInit, AfterContentInit, OnDestroy {
+  implements OnInit, AfterContentInit, OnDestroy, AfterViewInit {
   smallScreen = window.innerWidth < 960 ? true : false;
   loading = false;
   loadSalesComplete = false;
@@ -60,8 +61,9 @@ export class StatisticsComponent
 
   // Table
   @ViewChild(MatPaginator) paginator: MatPaginator;
+  @ViewChild(MatSort) sort: MatSort;
 
-  dataSource: any;
+  dataSource = new MatTableDataSource();
   columns = [
     'barcode',
     'description',
@@ -109,6 +111,10 @@ export class StatisticsComponent
     this.brandService.loadData();
     this.cellarService.loadData();
   }
+
+  ngAfterViewInit() {
+    this.dataSource.sort = this.sort;
+  }
   ngOnDestroy(): void {
     this.brandsSubscription?.unsubscribe();
     this.cellarsSubscription.unsubscribe();
@@ -155,12 +161,38 @@ export class StatisticsComponent
         .subscribe((res) => {
           const response = res;
           this.dataSource = new MatTableDataSource<any>(response.tempSales);
+          /* #region  función para poder filtrar subdocumentos dentro de la tabla */
+          this.dataSource.filterPredicate = (data: any, filter) => {
+            const dataStr = data._id.barcode + data._id.description;
+            return dataStr.trim().toLowerCase().indexOf(filter) != -1;
+          }
+          /* #endregion */
+          /* #region función para poder ordenar subdocumentos dentro de la tabla */
+          this.dataSource.sortingDataAccessor = (item: any, property) => {
+            switch (property) {
+              case 'barcode': return item._id.barcode;
+              case 'description': return item._id.description;
+              // case 'avgSalesMonths': return item.promMonth;
+              // case 'avgSalesYear': return item.promDays;
+              // case 'salesLastMonth': return item.salesMonth;
+              // case 'avgSalesMonth': return item.promAdjustMonth;
+              // case 'avgSalesDay': return item.promAdjustDay;
+              // case 'inventory': return item.stock;
+              // case 'suggestedOrder': return item.request;
+              // case 'stockCellar': return item.stockCellar;
+              // case 'minExistence': return item.minStock;
+              // case 'maxExistence': return item.maxStock;
+              default: return item[property];
+            }
+          };
+          this.dataSource.sort = this.sort;
+          /* #endregion */
           if (response.tempSales.length === 0) {
             this.isEmpty = true;
           } else {
             this.isEmpty = false;
           }
-          this.dataSource.paginator = this.paginator;
+          // this.dataSource.paginator = this.paginator;
           this.loadingData = false;
         });
     } else {
@@ -170,6 +202,11 @@ export class StatisticsComponent
 
   getDate(date: any): string {
     return date._d;
+  }
+
+  applyFilter(event: Event) {
+    const filterValue = (event.target as HTMLInputElement).value;
+    this.dataSource.filter = filterValue.trim().toLowerCase();
   }
 
   updateTempStorage(): void {
