@@ -71,12 +71,20 @@
         "order": 6
     },
     {
+        "state": "checkStock",
+        "name": "Consultar existencias",
+        "type": "link",
+        "icon": "checklist",
+        "iconType": "icon",
+        "order": 7
+    },
+    {
         "state": "tempStorage",
         "name": "Inventario Temp.",
         "type": "link",
         "icon": "inventory",
         "iconType": "icon",
-        "order": 7
+        "order": 8
     },
     {
         "state": "storage",
@@ -84,7 +92,7 @@
         "type": "link",
         "icon": "inventory",
         "iconType": "icon",
-        "order": 8
+        "order": 9
     },
     {
         "state": "purchases",
@@ -92,7 +100,7 @@
         "type": "link",
         "icon": "shopping_basket",
         "iconType": "icon",
-        "order": 9
+        "order": 10
     },
     {
         "state": "/admin",

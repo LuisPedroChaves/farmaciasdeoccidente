@@ -55,6 +55,10 @@ const routes: Routes = [
         canActivate: [CheckTokenGuard]
       },
       {
+        path: 'checkStock', pathMatch: 'full',  loadChildren: () => import('./pages/modules/check-stock/check-stock.module').then(m => m.CheckStockModule),
+        canActivate: [CheckTokenGuard]
+      },
+      {
         path: 'storage', pathMatch: 'full',  loadChildren: () => import('./pages/modules/storage/storage.module').then(m => m.StorageModule),
         canActivate: [CheckTokenGuard]
       },
