@@ -7,6 +7,7 @@ import { ProductItem } from 'src/app/core/models/Product';
 import { ProductService } from '../../../../../core/services/httpServices/product.service';
 import { TempStorageItem } from '../../../../../core/models/TempStorage';
 import { TempStorageService } from '../../../../../core/services/httpServices/temp-storage.service';
+import { CellarItem } from 'src/app/core/models/Cellar';
 
 @Component({
   selector: 'app-check-stock',
@@ -28,7 +29,8 @@ export class CheckStockComponent implements OnInit {
   loading = false;
 
   dataSource = new MatTableDataSource();
-  columns = ['image', 'cellarName', 'cellarDescription', 'stock'];
+  columns = ['image', 'cellarName', 'cellarDescription','availability', 'stock'];
+  currentCellar: CellarItem;
 
   constructor(
     public productService: ProductService,
@@ -36,6 +38,8 @@ export class CheckStockComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    this.currentCellar = JSON.parse(localStorage.getItem('currentstore'));
+
     this.myGroup.get('search').valueChanges
       .pipe(
         debounceTime(500),
@@ -66,7 +70,7 @@ export class CheckStockComponent implements OnInit {
 
   searchStock(product: ProductItem) {
     this.loading = true;
-    this.tempStorageService.searchByProduct(product._id)
+    this.tempStorageService.searchByProduct(product._id, this.currentCellar._id)
       .subscribe((storages: TempStorageItem[]) => {
         this.storages = storages;
         this.dataSource = new MatTableDataSource<TempStorageItem>(this.storages);

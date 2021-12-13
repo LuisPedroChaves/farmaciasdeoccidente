@@ -260,7 +260,7 @@ export class UploadsComponent implements OnInit, AfterContentInit, OnDestroy {
               body[1].push('Sucursal');
               body[1].push('Inventario');
               body[1].push('Pedido');
-              body[1].push('Sobrantes');
+              body[1].push('Devoluciones');
               body[1].push('Faltantes');
             }
 

@@ -164,7 +164,7 @@ export class TempStorageComponent
         'Abastecimiento',
         'Existencia Mínima',
         'Existencia Máxima',
-        'Sobrantes',
+        'Devoluciones',
         'Faltantes',
       ],
     ];
