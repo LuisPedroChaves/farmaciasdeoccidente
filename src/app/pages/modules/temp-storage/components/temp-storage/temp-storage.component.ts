@@ -161,7 +161,7 @@ export class TempStorageComponent
         'Descripción',
         'Laboratorio',
         'Inventario',
-        'Abastecimiento',
+        'Pedido sugerido',
         'Existencia Mínima',
         'Existencia Máxima',
         'Devoluciones',
