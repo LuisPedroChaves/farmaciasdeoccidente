@@ -1,13 +1,8 @@
-import {
-  AfterContentInit,
-  AfterViewInit,
-  Component,
-  OnDestroy,
-  OnInit,
-  ViewChild,
-} from '@angular/core';
+import { AfterContentInit, AfterViewInit, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
+import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
+import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { Observable, Subscription } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
@@ -18,17 +13,15 @@ import { CellarService } from 'src/app/core/services/httpServices/cellar.service
 import { TempSaleService } from 'src/app/core/services/httpServices/temp-sale.service';
 import { TempStorageService } from 'src/app/core/services/httpServices/temp-storage.service';
 import { ToastyService } from 'src/app/core/services/internal/toasty.service';
-import { MatDialog } from '@angular/material/dialog';
 import { ConfirmationDialogComponent } from 'src/app/pages/shared-components/confirmation-dialog/confirmation-dialog.component';
-import { MatSort } from '@angular/material/sort';
 
 @Component({
-  selector: 'app-statistics',
-  templateUrl: './statistics.component.html',
-  styleUrls: ['./statistics.component.scss'],
+  selector: 'app-load-statistics',
+  templateUrl: './load-statistics.component.html',
+  styleUrls: ['./load-statistics.component.scss']
 })
-export class StatisticsComponent
-  implements OnInit, AfterContentInit, OnDestroy, AfterViewInit {
+export class LoadStatisticsComponent implements OnInit, AfterContentInit, OnDestroy, AfterViewInit {
+
   smallScreen = window.innerWidth < 960 ? true : false;
   loading = false;
   loadSalesComplete = false;
@@ -90,10 +83,10 @@ export class StatisticsComponent
     private dialog: MatDialog
   ) {
     this.cellarsSubscription = this.cellarService
-      .readData()
-      .subscribe((data) => {
-        this.cellars = data;
-      });
+    .readData()
+    .subscribe((data) => {
+      this.cellars = data;
+    });
   }
 
   ngOnInit(): void {
@@ -235,4 +228,5 @@ export class StatisticsComponent
       }
     });
   }
+
 }

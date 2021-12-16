@@ -1,0 +1,62 @@
+<div [ngClass]="{ 'app': !smallScreen, 'app-sm': smallScreen } ">
+    <div class="section-content">
+        <div>
+            <header class="module-header" [ngClass]="{'padding-25': !smallScreen, 'padding-15': smallScreen }" fxLayoutAlign="start center" fxLayout="row wrap">
+                <h1 class="product-font ma-0 module-title">Carga de archivos</h1>
+            </header>
+            <mat-divider></mat-divider>
+            <div fxLayout="row wrap" class="module-container" data-simplebar>
+                <mat-tab-group mat-align-tabs="center">
+                    <mat-tab label="Generar Estadisticas">
+                        <app-load-statistics></app-load-statistics>
+                    </mat-tab>
+                    <mat-tab label="Generar Consolidado">
+                        <div fxFlex="column" class="my-container">
+                            <div fxFlex="row" class="card mat-elevation-z2">
+                                <div fxLayout="row">
+                                    <h2>Consolidado de estadisticas por sucursal</h2>
+                                </div>
+                                <div fxLayout="row">
+                                    <div fxFlex="20px"></div>
+                                    <div fxFlex="50px" fxHide.xs fxLayoutAlign="center center">
+                                        <mat-icon color="accent" class="material-icons-outlined">search
+                                        </mat-icon>
+                                    </div>
+                                    <div fxFlex class="inputpadding">
+                                        <mat-form-field appearance="outline" color="primary" class="width-all">
+                                            <mat-label>Bodega</mat-label>
+                                            <mat-select [(ngModel)]="currentCellar3">
+                                                <mat-option *ngFor="let c of centrals" [value]="c._id">
+                                                    {{ c.name }}
+                                                </mat-option>
+                                            </mat-select>
+                                        </mat-form-field>
+                                    </div>
+                                    <div fxFlex class="inputpadding" [formGroup]="range">
+                                        <mat-form-field appearance="outline" color="primary" class="width-all">
+                                            <mat-label>Laboratorio</mat-label>
+                                            <input type="text" placeholder="Ingrese un laboratorio" aria-label="text" matInput formControlName="_brand" [matAutocomplete]="auto1">
+                                            <mat-autocomplete id="_brand" autoActiveFirstOption #auto1="matAutocomplete">
+                                                <mat-option *ngFor="let option of filteredOptions | async" [value]="option.name">
+                                                    <span>{{option.name}}</span>
+                                                </mat-option>
+                                            </mat-autocomplete>
+                                        </mat-form-field>
+                                    </div>
+                                    <div fxFlex="20px"></div>
+                                </div>
+                                <div fxLayout="row">
+                                    <span fxFlex></span>
+                                    <button *ngIf="!loading" mat-icon-button (click)="getConsolidated()" color="warn">Descargar en excel  <mat-icon class="material-icons-outlined">get_app</mat-icon></button>
+                                    <mat-progress-spinner *ngIf="loading" mode="indeterminate" diameter="30" color="warn">
+                                    </mat-progress-spinner>
+                                    <span fxFlex></span>
+                                </div>
+                            </div>
+                        </div>
+                    </mat-tab>
+                </mat-tab-group>
+            </div>
+        </div>
+    </div>
+</div>

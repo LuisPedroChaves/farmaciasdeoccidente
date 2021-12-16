@@ -128,6 +128,10 @@ const routes: Routes = [
         path: 'uploads', pathMatch: 'full',  loadChildren: () => import('./pages/admin-modules/uploads/uploads.module').then(m => m.UploadsModule),
         canActivate: [CheckTokenGuard]
       },
+      {
+        path: 'statistics', pathMatch: 'full',  loadChildren: () => import('./pages/admin-modules/statistics/statistics.module').then(m => m.StatisticsModule),
+        canActivate: [CheckTokenGuard]
+      },
     ]
   },
   {

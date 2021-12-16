@@ -27,7 +27,6 @@ export class UploadsComponent implements OnInit, AfterContentInit, OnDestroy {
 
   cellarsSubscription: Subscription;
   cellars: CellarItem[];
-  centrals: CellarItem[];
   errores: any[];
   errores2: any[];
 
@@ -39,15 +38,6 @@ export class UploadsComponent implements OnInit, AfterContentInit, OnDestroy {
   currentFile2: any;
 
   currentFile3: any;
-
-  brandsSubscription: Subscription;
-  brands: BrandItem[];
-  options: BrandItem[] = [];
-  filteredOptions: Observable<BrandItem[]>;
-  currentCellar3: string;
-  range = new FormGroup({
-    _brand: new FormControl(),
-  });
 
   constructor(
     public cellarService: CellarService,
@@ -63,19 +53,11 @@ export class UploadsComponent implements OnInit, AfterContentInit, OnDestroy {
     .readData()
     .subscribe((data) => {
       this.cellars = data;
-      this.centrals = this.cellars.filter(c => c.type === 'BODEGA');
     });
   }
 
   ngOnInit(): void {
-    this.brandsSubscription = this.brandService.readData().subscribe((data) => {
-      this.brands = data;
-      this.options = [...this.brands];
-    });
-    this.filteredOptions = this.range.controls._brand.valueChanges.pipe(
-      startWith(''),
-      map((value) => this._filterBrands(value))
-    );
+
   }
 
   ngAfterContentInit() {
@@ -277,98 +259,5 @@ export class UploadsComponent implements OnInit, AfterContentInit, OnDestroy {
         }
       }
     });
-  }
-
-  private _filterBrands(value: string): BrandItem[] {
-    if (value) {
-      const filterValue = value.toLowerCase();
-      return this.options.filter((option) =>
-        option.name.toLowerCase().includes(filterValue)
-      );
-    } else {
-      return [];
-    }
-  }
-
-  getConsolidated(): void {
-    if (!this.currentCellar3) {
-      this.toastyService.error('Debe seleccionar una sucursal');
-      return;
-    }
-    const BRAND = this.brands.find(
-      (e) => e.name === this.range.controls._brand.value
-    );
-    if (BRAND) {
-      this.loading = true;
-      this.tempStorageService.loadConsolidated(
-        this.currentCellar3,
-        BRAND._id
-      ).subscribe((resp: any) => {
-        console.log(resp);
-        const body = [
-          [BRAND.name],
-          ['Código', 'Producto'],
-        ];
-
-        const ArrayToPrint: any[] = [];
-
-        let bandera = true;
-        resp.forEach(item => {
-
-          let suma = 0;
-          const row: any[] = [
-            item.barcode,
-            item.description
-          ];
-
-          item.results.forEach(storage => {
-            if (bandera) {
-              body[1].push('Sucursal');
-              body[1].push('Inventario');
-              body[1].push('Pedido');
-              body[1].push('Devoluciones');
-              body[1].push('Faltantes');
-            }
-
-            row.push(storage.cellar)
-            row.push(storage.stock)
-            row.push(storage.supply)
-            suma += storage.supply;
-
-            if (storage.stock > storage.maxStock) {
-              row.push(+storage.stock - +storage.maxStock)
-            } else {
-              row.push(0);
-            }
-            if (storage.stock < storage.minStock) {
-              row.push(+storage.minStock - +storage.stock);
-            } else {
-              row.push(0);
-            }
-          });
-          bandera = false;
-
-          row.push(suma);
-          row.push(item.stockCellar);
-          row.push(+suma - +item.stockCellar);
-
-          ArrayToPrint.push(row);
-        });
-        body[1].push('SUBTOTAL');
-        body[1].push('BODEGA');
-        body[1].push('TOTAL');
-
-        ArrayToPrint.forEach((row) => body.push(row));
-
-        this.xlsxService.downloadSinglePage(
-          body,
-          'Inventario Consolidado',
-          BRAND.name
-        );
-        this.loading = false;
-      });
-    }else {
-      this.toastyService.error('Debe seleccionar un laboratorio');
-    }
   }
 }

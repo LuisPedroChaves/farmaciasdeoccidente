@@ -29,7 +29,7 @@ export class CheckStockComponent implements OnInit {
   loading = false;
 
   dataSource = new MatTableDataSource();
-  columns = ['image', 'cellarName', 'cellarDescription','availability', 'stock'];
+  columns = ['image', 'cellarName', 'availability', 'stock', 'lastUpdateStock'];
   currentCellar: CellarItem;
 
   constructor(
@@ -59,9 +59,9 @@ export class CheckStockComponent implements OnInit {
         this.filteredProducts = data['products'];
       });
 
-      setTimeout(() => {
-        this.search.nativeElement.focus();
-      }, 500);
+    setTimeout(() => {
+      this.search.nativeElement.focus();
+    }, 500);
   }
 
   getShowDescription(product: ProductItem): string {

@@ -49,10 +49,6 @@
                         <th mat-header-cell *matHeaderCellDef> Sucursal </th>
                         <td mat-cell *matCellDef="let element"> {{element._cellar.name}} </td>
                     </ng-container>
-                    <ng-container matColumnDef="cellarDescription">
-                        <th mat-header-cell *matHeaderCellDef> </th>
-                        <td mat-cell *matCellDef="let element"> {{element._cellar.description}} </td>
-                    </ng-container>
                     <ng-container matColumnDef="availability">
                         <th mat-header-cell *matHeaderCellDef> Inventario </th>
                         <td mat-cell *matCellDef="let element">
@@ -70,6 +66,12 @@
                         <th mat-header-cell *matHeaderCellDef> Inventario </th>
                         <td mat-cell *matCellDef="let element">
                             {{ element.stock }}
+                        </td>
+                    </ng-container>
+                    <ng-container matColumnDef="lastUpdateStock">
+                        <th mat-header-cell *matHeaderCellDef>Última actualización</th>
+                        <td mat-cell *matCellDef="let element">
+                            <span class="text-muted"> {{ element.lastUpdateStock | date: 'dd/MM/yyyy HH:mm' }}</span>
                         </td>
                     </ng-container>
                     <tr mat-header-row *matHeaderRowDef="columns"></tr>
