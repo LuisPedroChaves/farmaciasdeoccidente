@@ -29,6 +29,7 @@ import { tempStorageDataSource } from '../../../../../core/services/cdks/tempSto
 import { CellarItem } from '../../../../../core/models/Cellar';
 import { BrandService } from 'src/app/core/services/httpServices/brand.service';
 import { XlsxService } from '../../../../../core/services/internal/XlsxService.service';
+import { TimeFormatPipe } from 'src/app/core/shared/pipes/timePipes/time-format.pipe';
 
 @Component({
   selector: 'app-temp-storage',
@@ -36,8 +37,7 @@ import { XlsxService } from '../../../../../core/services/internal/XlsxService.s
   styleUrls: ['./temp-storage.component.scss'],
 })
 export class TempStorageComponent
-  implements OnInit, AfterViewInit, AfterContentInit, OnDestroy
-{
+  implements OnInit, AfterViewInit, AfterContentInit, OnDestroy {
   smallScreen = window.innerWidth < 960 ? true : false;
   currentCellar: CellarItem;
 
@@ -50,11 +50,13 @@ export class TempStorageComponent
     'description',
     '_brand',
     'stock',
+    'lastUpdateStock',
     'supply',
     'minExistence',
     'maxExistence',
     'exceeds',
     'missing',
+    'lastUpdateStatics',
     // 'options',
   ];
   currentPage = 0;
@@ -71,8 +73,9 @@ export class TempStorageComponent
     public router: Router,
     public dialog: MatDialog,
     public brandService: BrandService,
-    public xlsxService: XlsxService
-  ) {}
+    public xlsxService: XlsxService,
+    public timeFormat: TimeFormatPipe,
+  ) { }
 
   ngOnInit(): void {
     this.currentCellar = JSON.parse(localStorage.getItem('currentstore'));
@@ -161,11 +164,13 @@ export class TempStorageComponent
         'Descripción',
         'Laboratorio',
         'Inventario',
+        'Último ingreso',
         'Pedido sugerido',
         'Existencia Mínima',
         'Existencia Máxima',
         'Devoluciones',
         'Faltantes',
+        'Última estadística'
       ],
     ];
 
@@ -198,16 +203,30 @@ export class TempStorageComponent
           missing = 0;
         }
 
+        const LAST_UPDATE_STOCK = item.lastUpdateStock ? this.timeFormat.transform(
+          String(item.lastUpdateStock),
+          'DD/MM/YYYY hh:mm',
+          'es'
+        ) : '';
+
+        const LAST_UPDATE_STATICS = item.lastUpdateStatics ? this.timeFormat.transform(
+          String(item.lastUpdateStatics),
+          'DD/MM/YYYY hh:mm',
+          'es'
+        ) : '';
+
         const row: any[] = [
           item._product.barcode,
           item._product.description,
           item._product._brand.name,
           item.stock,
+          LAST_UPDATE_STOCK,
           item.supply,
-          item.minStock? item.minStock: 0,
-          item.maxStock ? item.maxStock: 0,
+          item.minStock ? item.minStock : 0,
+          item.maxStock ? item.maxStock : 0,
           exceeds,
           missing,
+          LAST_UPDATE_STATICS
         ];
         ArrayToPrint.push(row);
       });

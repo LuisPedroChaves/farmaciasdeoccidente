@@ -84,7 +84,6 @@ export class TempStorageService {
             resolve(JSON.parse(xhr.response));
           } else {
             console.log('Fallo la subida');
-            console.log("🚀 ~ file: upload-file.service.ts ~ line 31 ~ UploadFileService ~ returnnewPromise ~ xhr.response", xhr)
             reject(xhr.response);
           }
         }
@@ -99,5 +98,9 @@ export class TempStorageService {
 
   update(body: any[]): Observable<any> {
     return this.http.put(this.apiConfigService.API_TEMP_STORAGE + '/', body);
+  }
+
+  stockReset(_cellar: string): Observable<any> {
+    return this.http.put(`${this.apiConfigService.API_TEMP_STORAGE}/stockReset/${_cellar}`, null);
   }
 }

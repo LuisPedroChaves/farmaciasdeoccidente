@@ -1,18 +1,19 @@
 import { Component, OnInit, AfterContentInit, OnDestroy, ViewChild, ElementRef } from '@angular/core';
+import { FormControl, FormGroup } from '@angular/forms';
+import { MatDialog } from '@angular/material/dialog';
 import { Observable, Subscription } from 'rxjs';
+import { map, startWith } from 'rxjs/operators';
 
 import { CellarItem } from 'src/app/core/models/Cellar';
 import { CellarService } from 'src/app/core/services/httpServices/cellar.service';
+import { ConfirmationDialogComponent } from 'src/app/pages/shared-components/confirmation-dialog/confirmation-dialog.component';
 import { ToastyService } from '../../../../../core/services/internal/toasty.service';
 import { TempStorageService } from '../../../../../core/services/httpServices/temp-storage.service';
 import { TempSaleService } from '../../../../../core/services/httpServices/temp-sale.service';
-import { ConfirmationDialogComponent } from 'src/app/pages/shared-components/confirmation-dialog/confirmation-dialog.component';
-import { MatDialog } from '@angular/material/dialog';
 import { BrandItem } from 'src/app/core/models/Brand';
 import { BrandService } from '../../../../../core/services/httpServices/brand.service';
-import { FormControl, FormGroup } from '@angular/forms';
-import { map, startWith } from 'rxjs/operators';
 import { XlsxService } from '../../../../../core/services/internal/XlsxService.service';
+import { ProductService } from '../../../../../core/services/httpServices/product.service';
 
 @Component({
   selector: 'app-uploads',
@@ -37,6 +38,8 @@ export class UploadsComponent implements OnInit, AfterContentInit, OnDestroy {
   currentDate: Date;
   currentFile2: any;
 
+  currentFile3: any;
+
   brandsSubscription: Subscription;
   brands: BrandItem[];
   options: BrandItem[] = [];
@@ -53,7 +56,8 @@ export class UploadsComponent implements OnInit, AfterContentInit, OnDestroy {
     public tempSaleService: TempSaleService,
     public dialog: MatDialog,
     public brandService: BrandService,
-    public xlsxService: XlsxService
+    public xlsxService: XlsxService,
+    public productService: ProductService
   ) {
     this.cellarsSubscription = this.cellarService
     .readData()
@@ -80,6 +84,40 @@ export class UploadsComponent implements OnInit, AfterContentInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.cellarsSubscription.unsubscribe();
+  }
+
+  loadProducts(): void {
+    const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
+      width: '350px',
+      data: {
+        title: 'Cargar PRODUCTOS',
+        message:
+          '¿Confirma que desea ingresar el archivo de productos?'
+      },
+      disableClose: true,
+      panelClass: ['farmacia-dialog', 'farmacia'],
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result !== undefined) {
+        this.loading = true;
+        if (this.currentFile3) {
+          this.productService.uploadFile(this.currentFile3.files[0])
+          .then((resp: any) => {
+            this.loading = false;
+            this.toastyService.success('Productos actualizados correctamente');
+          })
+          .catch(err => {
+            this.loading = false;
+            this.toastyService.error('Error al cargar el archivo');
+          });
+        }else {
+          this.loading = false;
+          this.toastyService.error('Debe seleccionar un archivo');
+          return;
+        }
+      }
+    });
   }
 
   loadStorage(): void {
@@ -119,6 +157,34 @@ export class UploadsComponent implements OnInit, AfterContentInit, OnDestroy {
           this.toastyService.error('Debe seleccionar un archivo');
           return;
         }
+      }
+    });
+  }
+
+  stockReset(): void {
+    const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
+      width: '350px',
+      data: {
+        title: 'Restablecer inventario',
+        message:
+          '¿Confirma que desea restablecer el inventario a CERO existencias?'
+      },
+      disableClose: true,
+      panelClass: ['farmacia-dialog', 'farmacia'],
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result !== undefined) {
+        if (!this.currentCellar) {
+          this.toastyService.error('Debe seleccionar una sucursal');
+          return;
+        }
+        this.loading = true;
+        this.tempStorageService.stockReset(this.currentCellar)
+        .subscribe((resp: any) => {
+          this.loading = false;
+          this.toastyService.success('Inventario restablecido correctamente');
+        });
       }
     });
   }
