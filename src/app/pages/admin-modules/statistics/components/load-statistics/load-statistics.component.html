@@ -1,4 +1,4 @@
-<div fxFlex="column" class="my-container" data-simplebar>
+<div fxFlex="column" class="my-container">
     <div fxFlex="row" class="card mat-elevation-z2">
         <div fxLayout="row">
             <h2>Configuración de Estadísticas</h2>
@@ -105,7 +105,7 @@
         <!-- Table -->
 
         <div *ngIf="!loadingData && setData">
-            <div class="allspace" *ngIf="!isEmpty">
+            <div class="allspace" *ngIf="!isEmpty" data-simplebar>
                 <mat-form-field appearance="standard">
                     <mat-label>Filtro</mat-label>
                     <input matInput (keyup)="applyFilter($event)" placeholder="Ej. patrimadol" #input>
