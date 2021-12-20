@@ -18,6 +18,7 @@
     { "name": "receivables", "label": "Cuentas por cobrar", "parent": "ADMIN", "level": 1, "options": ["read", "update", "delete", "create"] },
     { "name": "uploads", "label": "Carga de archivos", "parent": "ADMIN", "level": 1, "options": ["read", "update", "delete", "create"] },
     { "name": "statistics", "label": "Estadísticas", "parent": "ADMIN", "level": 1, "options": ["read", "update", "delete", "create"] },
+    { "name": "tempStatistics", "label": "Estadísticas Temp.", "parent": "ADMIN", "level": 1, "options": ["read", "update", "delete", "create"] },
     { "name": "adminProducts", "label": "Catálogo de productos", "parent": "ADMIN", "level": 1, "options": ["read", "update", "delete", "create"] },
     { "name": "providers", "label": "Proveedores", "parent": "ADMIN", "level": 1, "options": ["read", "update", "delete", "create"] },
     { "name": "users", "label": "Usuarios", "parent": "ADMIN", "level": 1, "options": ["read", "update", "delete", "create"] }

@@ -162,10 +162,7 @@
                         <th mat-header-cell *matHeaderCellDef> Pedido Sugerido </th>
                         <td mat-cell *matCellDef="let element"> {{ element.request }} </td>
                     </ng-container>
-                    <ng-container matColumnDef="stockCellar">
-                        <th mat-header-cell *matHeaderCellDef> Inventario Bodega </th>
-                        <td mat-cell *matCellDef="let element"> {{ element.stockCellar }} </td>
-                    </ng-container>
+
                     <ng-container matColumnDef="minExistence">
                         <th mat-header-cell *matHeaderCellDef> Existencia Mínima </th>
                         <td mat-cell *matCellDef="let element"> {{ element.minStock }} </td>

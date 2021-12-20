@@ -132,6 +132,10 @@ const routes: Routes = [
         path: 'statistics', pathMatch: 'full',  loadChildren: () => import('./pages/admin-modules/statistics/statistics.module').then(m => m.StatisticsModule),
         canActivate: [CheckTokenGuard]
       },
+      {
+        path: 'tempStatistics', pathMatch: 'full',  loadChildren: () => import('./pages/admin-modules/temp-statistics/temp-statistics.module').then(m => m.TempStatisticsModule),
+        canActivate: [CheckTokenGuard]
+      },
     ]
   },
   {

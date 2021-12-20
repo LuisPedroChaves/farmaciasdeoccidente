@@ -151,12 +151,20 @@
         "order": 6
     },
     {
+        "state": "tempStatistics",
+        "name": "Estadísticas Temp.",
+        "type": "link",
+        "icon": "trending_up",
+        "iconType": "icon",
+        "order": 7
+    },
+    {
         "state": "adminProducts",
         "name": "Catálogo de productos",
         "type": "link",
         "icon": "category",
         "iconType": "icon",
-        "order": 7
+        "order": 8
     },
     {
         "state": "providers",
@@ -164,7 +172,7 @@
         "type": "link",
         "icon": "business",
         "iconType": "icon",
-        "order": 8
+        "order": 9
     },
     {
         "state": "users",
@@ -172,6 +180,6 @@
         "type": "link",
         "icon": "people",
         "iconType": "icon",
-        "order": 9
+        "order": 10
     }
 ]

@@ -30,6 +30,16 @@ export class TempSaleService {
     });
   }
 
+  getTempStatics( _cellar, _brand, startDate, endDate): Observable<any> {
+    return this.http.get(this.apiConfigService.API_TEMP_SALE + '/tempStatistics', {
+      params: new HttpParams()
+        .set('_cellar', _cellar.toString())
+        .set('_brand', _brand.toString())
+        .set('startDate', startDate.toString())
+        .set('endDate', endDate.toString())
+    });
+  }
+
   uploadFile(file: File, tempSale: any) {
     return new Promise((resolve, reject) => {
       const formData = new FormData();
