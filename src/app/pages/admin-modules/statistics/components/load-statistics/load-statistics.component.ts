@@ -66,6 +66,8 @@ export class LoadStatisticsComponent implements OnInit, AfterContentInit, OnDest
     'avgSalesMonth',
     'avgSalesDay',
     'inventory',
+    'supply',
+    'aproxSupply',
     'suggestedOrder',
     'minExistence',
     'maxExistence',
