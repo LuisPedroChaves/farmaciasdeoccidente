@@ -6,9 +6,10 @@ import { StatisticsComponent } from './pages/statistics/statistics.component';
 import { StatisticsRoutes } from './statistics.routing';
 import { SharedComponentsModule } from '../../shared-components/shared-components.module';
 import { LoadStatisticsComponent } from './components/load-statistics/load-statistics.component';
+import { StockConsolidatedComponent } from './components/stock-consolidated/stock-consolidated.component';
 
 @NgModule({
-  declarations: [StatisticsComponent, LoadStatisticsComponent],
+  declarations: [StatisticsComponent, LoadStatisticsComponent, StockConsolidatedComponent],
   imports: [
     CommonModule,
     RouterModule.forChild(StatisticsRoutes),

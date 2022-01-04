@@ -1,0 +1,42 @@
+.my-container {
+    height: calc(100vh - 178px) !important;
+    padding: 15px;
+}
+
+.header {
+    margin: 0px 16px;
+}
+
+.card {
+    height: 731px;
+}
+
+button {
+    margin: 12px 12px;
+}
+
+mat-card-content {
+    height: 630px;
+    width: 100%;
+    max-width: 100%;
+    overflow: auto;
+}
+
+.column {
+    min-width: 70px;
+    padding-left: 16px;
+    text-align: center;
+}
+
+.mat-table-sticky {
+    background: #f6fbe6;
+    opacity: 1;
+}
+
+.example-sticky-toggle-group {
+    margin: 8px;
+}
+
+.mat-row:hover {
+    background: whitesmoke;
+}
