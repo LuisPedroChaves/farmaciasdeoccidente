@@ -7,9 +7,13 @@ import { StatisticsRoutes } from './statistics.routing';
 import { SharedComponentsModule } from '../../shared-components/shared-components.module';
 import { LoadStatisticsComponent } from './components/load-statistics/load-statistics.component';
 import { ConsolidatedComponent } from './components/consolidated/consolidated.component';
+import { StockConsolidatedComponent } from './components/stock-consolidated/stock-consolidated.component';
 
 @NgModule({
   declarations: [StatisticsComponent, LoadStatisticsComponent, ConsolidatedComponent],
+
+@NgModule({
+  declarations: [StatisticsComponent, LoadStatisticsComponent, StockConsolidatedComponent],
   imports: [
     CommonModule,
     RouterModule.forChild(StatisticsRoutes),

@@ -57,6 +57,21 @@ export class TempStorageService {
       );
   }
 
+  loadStockConsolidated(
+    _brand
+  ): Observable<TempStorageItem[]> {
+    return this.http
+      .get(`${this.apiConfigService.API_TEMP_STORAGE}/stockConsolidated`, {
+        params: new HttpParams()
+          .set('_brand', _brand.toString())
+      })
+      .pipe(
+        map((response: any) => {
+          return response.tempStorages;
+        })
+      );
+  }
+
   searchByProduct(_product: string, _cellar: string): Observable<TempStorageItem[]> {
     return this.http.get(`${this.apiConfigService.API_TEMP_STORAGE}/checkStock/${_cellar}`, {
       params: new HttpParams()

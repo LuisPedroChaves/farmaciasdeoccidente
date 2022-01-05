@@ -6,6 +6,9 @@
         </header>
         <mat-divider></mat-divider>
         <mat-tab-group mat-align-tabs="start">
+            <mat-tab label="Inventario Consolidado">
+                <app-stock-consolidated></app-stock-consolidated>
+            </mat-tab>
             <mat-tab label="Reporte de sucursales">
                 <ng-template matTabContent>
                     <app-load-statistics></app-load-statistics>
