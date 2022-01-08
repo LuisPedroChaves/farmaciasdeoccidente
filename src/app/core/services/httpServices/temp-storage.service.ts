@@ -40,23 +40,6 @@ export class TempStorageService {
       );
   }
 
-  loadConsolidated(
-    _cellar,
-    _brand
-  ): Observable<TempStorageItem[]> {
-    return this.http
-      .get(`${this.apiConfigService.API_TEMP_STORAGE}/`, {
-        params: new HttpParams()
-          .set('_cellar', _cellar.toString())
-          .set('_brand', _brand.toString())
-      })
-      .pipe(
-        map((response: any) => {
-          return response.products;
-        })
-      );
-  }
-
   loadStockConsolidated(
     _brand
   ): Observable<TempStorageItem[]> {
@@ -113,6 +96,11 @@ export class TempStorageService {
 
   update(body: any[]): Observable<any> {
     return this.http.put(this.apiConfigService.API_TEMP_STORAGE + '/', body);
+  }
+
+  updateGlobal(body: any): Observable<any> {
+    console.log("🚀 ~ file: temp-storage.service.ts ~ line 102 ~ TempStorageService ~ updateGlobal ~ body", body)
+    return this.http.put(`${this.apiConfigService.API_TEMP_STORAGE}/global`, body);
   }
 
   stockReset(_cellar: string): Observable<any> {

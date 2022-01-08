@@ -1,11 +1,8 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
-import { Observable, Subscription } from 'rxjs';
-import { map, startWith } from 'rxjs/operators';
+import { MatPaginator } from '@angular/material/paginator';
 
 import { BrandItem } from 'src/app/core/models/Brand';
-import { BrandService } from '../../../../../core/services/httpServices/brand.service';
 import { ToastyService } from '../../../../../core/services/internal/toasty.service';
 import { TempStorageService } from '../../../../../core/services/httpServices/temp-storage.service';
 import { XlsxService } from '../../../../../core/services/internal/XlsxService.service';
@@ -15,61 +12,42 @@ import { XlsxService } from '../../../../../core/services/internal/XlsxService.s
   templateUrl: './stock-consolidated.component.html',
   styleUrls: ['./stock-consolidated.component.scss']
 })
-export class StockConsolidatedComponent implements OnInit, OnDestroy {
+export class StockConsolidatedComponent implements OnInit {
 
   loading = false;
 
-  brandsSubscription: Subscription;
-  brands: BrandItem[];
-  options: BrandItem[] = [];
-  filteredOptions: Observable<BrandItem[]>;
+  brand: BrandItem;
+  data: any[] = [];
 
-  FORM = new FormGroup({
-    _brand: new FormControl(),
-  });
-
-  DATA: any[] = [];
-
+  @ViewChild(MatPaginator) paginator: MatPaginator;
   displayedColumns: string[] = [];
   columnsToDisplay: string[] = [];
   dataSource = new MatTableDataSource();
 
   constructor(
-    private brandService: BrandService,
     private toastyService: ToastyService,
     private tempStorageService: TempStorageService,
     private xlsxService: XlsxService
   ) { }
 
   ngOnInit(): void {
-    this.brandsSubscription = this.brandService.readData().subscribe((data) => {
-      this.brands = data;
-      this.options = [...this.brands];
-    });
-    this.filteredOptions = this.FORM.controls._brand.valueChanges.pipe(
-      startWith(''),
-      map((value) => this._filterBrands(value))
-    );
   }
 
-  ngOnDestroy(): void {
-    this.brandsSubscription?.unsubscribe();
-  }
-
-  private _filterBrands(value: string): BrandItem[] {
-    if (value) {
-      const filterValue = value.toLowerCase();
-      return this.options.filter((option) =>
-        option.name.toLowerCase().includes(filterValue)
-      );
-    } else {
-      return [];
+  getBrand(brand: BrandItem) {
+    if (this.loading) {
+      this.toastyService.error('No ha finalizado la consulta anterior');
+      return;
     }
+    this.brand = brand;
+    this.getConsolidated();
   }
 
-  applyFilter(event: Event) {
-    const filterValue = (event.target as HTMLInputElement).value;
-    this.dataSource.filter = filterValue.trim().toLowerCase();
+  applyFilter(filter: string) {
+    this.dataSource.filter = filter
+
+    if (this.dataSource.paginator) {
+      this.dataSource.paginator.firstPage();
+    }
   }
 
   isSticky(name: string): boolean {
@@ -81,13 +59,13 @@ export class StockConsolidatedComponent implements OnInit, OnDestroy {
   }
 
   getConsolidated(): void {
-    const BRAND = this.brands.find(
-      (e) => e.name === this.FORM.controls._brand.value
-    );
-    if (BRAND) {
+    if (this.brand) {
+      this.data = [];
+      this.dataSource = new MatTableDataSource<any>(this.data);
+      this.dataSource.paginator = this.paginator;
       this.loading = true;
       this.tempStorageService.loadStockConsolidated(
-        BRAND._id
+        this.brand._id
       ).subscribe((resp: any) => {
         // console.log(resp);
         this.displayedColumns = []
@@ -98,8 +76,7 @@ export class StockConsolidatedComponent implements OnInit, OnDestroy {
         this.columnsToDisplay.push('Producto');
         this.displayedColumns.push('Costo (Q)');
         this.columnsToDisplay.push('Costo (Q)');
-        let countColumn = 3;
-        this.DATA = resp.map(element => {
+        this.data = resp.map(element => {
           let row: any = {};
           row.Código = element._id.barcode
           row.Producto = element._id.description
@@ -110,6 +87,7 @@ export class StockConsolidatedComponent implements OnInit, OnDestroy {
           row[`Costo (Q)`] = `${cost}`
 
           let stockGlobal = 0;
+
           element.cellars.forEach(item => {
             // Agregando filas en la data
             row[item._cellar.name] = item.stock;
@@ -124,7 +102,6 @@ export class StockConsolidatedComponent implements OnInit, OnDestroy {
               this.displayedColumns.push(`Total${COLUMN} (Q)`);
               this.columnsToDisplay.push(`Total${COLUMN} (Q)`);
               row[`Total${COLUMN} (Q)`] = (item.stock * cost).toFixed(2);
-              countColumn++
             } else {
               row[`Total${INDEX + 1} (Q)`] = (item.stock * cost).toFixed(2);
             }
@@ -138,31 +115,27 @@ export class StockConsolidatedComponent implements OnInit, OnDestroy {
         this.columnsToDisplay.push('INVENTARIO GLOBAL');
         this.displayedColumns.push('TOTAL GLOBAL (Q)');
         this.columnsToDisplay.push('TOTAL GLOBAL (Q)');
-        this.dataSource = new MatTableDataSource<any>(this.DATA);
+        this.dataSource = new MatTableDataSource<any>(this.data);
+        this.dataSource.paginator = this.paginator;
         this.loading = false;
       });
-    } else {
-      this.toastyService.error('Debe seleccionar un laboratorio');
     }
   }
 
   downloadXlsx(): void {
-    if (this.DATA.length === 0) {
+    if (this.data.length === 0) {
       this.toastyService.error('No hay datos para descargar, por favor realice una consulta');
       return;
     }
-    const BRAND = this.brands.find(
-      (e) => e.name === this.FORM.controls._brand.value
-    );
-    if (BRAND) {
+    if (this.brand) {
       const body = [
-        [BRAND.name],
+        [this.brand.name],
         this.displayedColumns
       ];
 
       const ArrayToPrint: any[] = [];
 
-      this.DATA.forEach(item => {
+      this.data.forEach(item => {
         const row: any[] = [];
 
         this.displayedColumns.forEach(column => {
@@ -177,7 +150,7 @@ export class StockConsolidatedComponent implements OnInit, OnDestroy {
       this.xlsxService.downloadSinglePage(
         body,
         'Inventario Consolidado',
-        BRAND.name
+        this.brand.name
       );
     }else {
       this.toastyService.error('No hay un laboratorio seleccionado');
