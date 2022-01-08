@@ -1,15 +1,12 @@
-import { Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
-import { Observable, Subscription } from 'rxjs';
-import { map, startWith } from 'rxjs/operators';
-
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatTableDataSource } from '@angular/material/table';
 import { BrandItem } from 'src/app/core/models/Brand';
-import { CellarItem } from 'src/app/core/models/Cellar';
-import { CellarService } from '../../../../../core/services/httpServices/cellar.service';
-import { BrandService } from '../../../../../core/services/httpServices/brand.service';
-import { ToastyService } from '../../../../../core/services/internal/toasty.service';
-import { TempStorageService } from '../../../../../core/services/httpServices/temp-storage.service';
+import { TempStorageService } from 'src/app/core/services/httpServices/temp-storage.service';
+import { ToastyService } from 'src/app/core/services/internal/toasty.service';
+
 import { XlsxService } from '../../../../../core/services/internal/XlsxService.service';
+import { CellarItem } from '../../../../../core/models/Cellar';
 
 @Component({
   selector: 'app-consolidated',
@@ -20,134 +17,174 @@ export class ConsolidatedComponent implements OnInit {
 
   loading = false;
 
-  cellarsSubscription: Subscription;
-  centrals: CellarItem[];
-  currentCellar3: string;
+  cellar: CellarItem;
+  brand: BrandItem;
+  data: any[] = [];
 
-  brandsSubscription: Subscription;
-  brands: BrandItem[];
-  options: BrandItem[] = [];
-  filteredOptions: Observable<BrandItem[]>;
-  range = new FormGroup({
-    _brand: new FormControl(),
-  });
+  @ViewChild(MatPaginator) paginator: MatPaginator;
+  displayedColumns: string[] = [];
+  columnsToDisplay: string[] = [];
+  dataSource = new MatTableDataSource();
 
   constructor(
-    public cellarService: CellarService,
-    public brandService: BrandService,
-    public toastyService: ToastyService,
-    public tempStorageService: TempStorageService,
+    private toastyService: ToastyService,
+    private tempStorageService: TempStorageService,
     public xlsxService: XlsxService
   ) {
-    this.cellarsSubscription = this.cellarService
-    .readData()
-    .subscribe((data) => {
-      this.centrals = data.filter(c => c.type === 'BODEGA');
-    });
-   }
 
-  ngOnInit(): void {
-    this.brandsSubscription = this.brandService.readData().subscribe((data) => {
-      this.brands = data;
-      this.options = [...this.brands];
-    });
-    this.filteredOptions = this.range.controls._brand.valueChanges.pipe(
-      startWith(''),
-      map((value) => this._filterBrands(value))
-    );
   }
 
-  private _filterBrands(value: string): BrandItem[] {
-    if (value) {
-      const filterValue = value.toLowerCase();
-      return this.options.filter((option) =>
-        option.name.toLowerCase().includes(filterValue)
-      );
-    } else {
-      return [];
+  ngOnInit(): void {
+
+  }
+
+  getCellar(cellar: CellarItem) {
+    this.cellar = cellar;
+  }
+
+  getBrand(brand: BrandItem) {
+    this.brand = brand;
+  }
+
+  applyFilter(filter: string) {
+    this.dataSource.filter = filter
+
+    if (this.dataSource.paginator) {
+      this.dataSource.paginator.firstPage();
     }
+  }
+
+  isSticky(name: string): boolean {
+    return (name === 'CODIGO' || name === 'PRODUCTO') ? true : false
+  }
+
+  isStickyEnd(name: string): boolean {
+    return (name === 'PEDIDO GLOBAL' || name === 'INVENTARIO BODEGA' || name === 'TOTAL') ? true : false
   }
 
   getConsolidated(): void {
-    if (!this.currentCellar3) {
-      this.toastyService.error('Debe seleccionar una sucursal');
+    if (!this.cellar || !this.brand) {
+      this.toastyService.error('Por favor seleccione una bodega y un laboratorio');
       return;
     }
-    const BRAND = this.brands.find(
-      (e) => e.name === this.range.controls._brand.value
-    );
-    if (BRAND) {
-      this.loading = true;
-      this.tempStorageService.loadConsolidated(
-        this.currentCellar3,
-        BRAND._id
-      ).subscribe((resp: any) => {
-        console.log(resp);
-        const body = [
-          [BRAND.name],
-          ['Código', 'Producto'],
-        ];
+    this.data = [];
+    this.dataSource = new MatTableDataSource<any>(this.data);
+    this.dataSource.paginator = this.paginator;
+    this.loading = true;
+    this.tempStorageService.loadStockConsolidated(
+      this.brand._id
+    ).subscribe((resp: any) => {
+      // console.log(resp);
+      this.displayedColumns = []
+      this.columnsToDisplay = []
+      this.displayedColumns.push('CODIGO');
+      this.columnsToDisplay.push('CODIGO');
+      this.displayedColumns.push('PRODUCTO');
+      this.columnsToDisplay.push('PRODUCTO');
 
-        const ArrayToPrint: any[] = [];
+      this.data = resp.map(element => {
+        let row: any = {};
+        row.CODIGO = element._id.barcode
+        row.PRODUCTO = element._id.description
 
-        let bandera = true;
-        resp.forEach(item => {
+        let supplyGlobal = 0;
+        let stockBodega = 0;
 
-          let suma = 0;
-          const row: any[] = [
-            item.barcode,
-            item.description
-          ];
+        element.cellars.forEach(item => {
+          if (item._cellar._id === this.cellar._id) {
+            // Buscamos la bodega seleccionada
+            // Para mostrar su stock al final de la tabla
+            stockBodega = item.stock;
+          } else {
+            // Agregando filas en la data
+            row[item._cellar.name] = item.stock;
+            supplyGlobal += item.supply;
 
-          item.results.forEach(storage => {
-            if (bandera) {
-              body[1].push('Sucursal');
-              body[1].push('Inventario');
-              body[1].push('Pedido');
-              body[1].push('Devoluciones');
-              body[1].push('Faltantes');
-            }
-
-            row.push(storage.cellar)
-            row.push(storage.stock)
-            row.push(storage.supply)
-            suma += storage.supply;
-
-            if (storage.stock > storage.maxStock) {
-              row.push(+storage.stock - +storage.maxStock)
+            // Buscando si ya fueron agregadas las columnas
+            const INDEX = this.displayedColumns.findIndex(c => c === item._cellar.name);
+            if (INDEX < 0) {
+              // Columnas por sucursales
+              const COLUMN = this.displayedColumns.push(item._cellar.name);
+              this.columnsToDisplay.push(item._cellar.name);
+              this.displayedColumns.push(`Pedido${COLUMN}`);
+              this.columnsToDisplay.push(`Pedido${COLUMN}`);
+              this.displayedColumns.push(`Devoluciones${COLUMN}`);
+              this.columnsToDisplay.push(`Devoluciones${COLUMN}`);
+              this.displayedColumns.push(`Faltantes${COLUMN}`);
+              this.columnsToDisplay.push(`Faltantes${COLUMN}`);
+              row[`Pedido${COLUMN}`] = item.supply;
+              if (item.stock > item.maxStock) {
+                row[`Devoluciones${COLUMN}`] = +item.stock - +item.maxStock;
+              } else {
+                row[`Devoluciones${COLUMN}`] = 0;
+              }
+              if (item.stock < item.minStock) {
+                row[`Faltantes${COLUMN}`] = +item.minStock - +item.stock;
+              } else {
+                row[`Faltantes${COLUMN}`] = 0;
+              }
             } else {
-              row.push(0);
+              row[`Pedido${INDEX + 1}`] = item.supply;
+              if (item.stock > item.maxStock) {
+                row[`Devoluciones${INDEX + 1}`] = +item.stock - +item.maxStock;
+              } else {
+                row[`Devoluciones${INDEX + 1}`] = 0;
+              }
+              if (item.stock < item.minStock) {
+                row[`Faltantes${INDEX + 1}`] = +item.minStock - +item.stock;
+              } else {
+                row[`Faltantes${INDEX + 1}`] = 0;
+              }
             }
-            if (storage.stock < storage.minStock) {
-              row.push(+storage.minStock - +storage.stock);
-            } else {
-              row.push(0);
-            }
-          });
-          bandera = false;
-
-          row.push(suma);
-          row.push(item.stockCellar);
-          row.push(+suma - +item.stockCellar);
-
-          ArrayToPrint.push(row);
+          }
         });
-        body[1].push('SUBTOTAL');
-        body[1].push('BODEGA');
-        body[1].push('TOTAL');
+        row['PEDIDO GLOBAL'] = supplyGlobal;
+        row['INVENTARIO BODEGA'] = stockBodega;
+        row['TOTAL'] = supplyGlobal - stockBodega;
 
-        ArrayToPrint.forEach((row) => body.push(row));
-
-        this.xlsxService.downloadSinglePage(
-          body,
-          'Inventario Consolidado',
-          BRAND.name
-        );
-        this.loading = false;
+        return row;
       });
-    }else {
-      this.toastyService.error('Debe seleccionar un laboratorio');
+      this.displayedColumns.push('PEDIDO GLOBAL');
+      this.columnsToDisplay.push('PEDIDO GLOBAL');
+      this.displayedColumns.push('INVENTARIO BODEGA');
+      this.columnsToDisplay.push('INVENTARIO BODEGA');
+      this.displayedColumns.push('TOTAL');
+      this.columnsToDisplay.push('TOTAL');
+      this.dataSource = new MatTableDataSource<any>(this.data);
+      this.dataSource.paginator = this.paginator;
+      this.loading = false;
+    });
+  }
+
+  downloadXlsx(): void {
+    if (this.data.length === 0) {
+      this.toastyService.error('No hay datos para descargar, por favor realice una consulta');
+      return;
     }
+    const body = [
+      [this.cellar.name, this.brand.name],
+      this.displayedColumns
+    ];
+
+    const ArrayToPrint: any[] = [];
+
+    this.data.forEach(item => {
+      const row: any[] = [];
+
+      this.displayedColumns.forEach(column => {
+        row.push(item[column]);
+      });
+
+      ArrayToPrint.push(row);
+    });
+
+    ArrayToPrint.forEach((row) => body.push(row));
+
+    this.xlsxService.downloadSinglePage(
+      body,
+      'Estadísticas Consolidado',
+      `${this.cellar.name} - ${this.brand.name}`
+    );
   }
 
 }

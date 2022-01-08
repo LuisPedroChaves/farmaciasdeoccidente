@@ -1,25 +1,31 @@
 .my-container {
-    height: calc(100vh - 178px) !important;
-    padding: 15px;
+    height: calc(100vh - 150px) !important;
+    padding: 20px;
 }
 
 .header {
-    margin: 0px 16px;
+    margin-bottom: 24px;
 }
 
 .card {
-    height: 731px;
+    height: 644px;
+    border-radius: 12px;
 }
 
 button {
     margin: 12px 12px;
 }
 
-mat-card-content {
-    height: 630px;
+.table {
+    height: 588px;
     width: 100%;
     max-width: 100%;
     overflow: auto;
+    border-radius: 12px;
+}
+
+mat-paginator {
+    border-radius: 12px;
 }
 
 .column {

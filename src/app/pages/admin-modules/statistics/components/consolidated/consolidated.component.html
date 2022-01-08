@@ -1,210 +1,45 @@
-<div class="my-container" fxLayout="row wrap" data-simplebar>
-    <div fxFlex fxLayout="row wrap" fxLayout.lt-md="column" fxLayoutGap.gt-sm="20px grid" fxLayoutGap.lt-md="10px" style=" background-color: orange;">
-        <div fxFlex.gt-md="43" fxFlex.gt-sm="47" fxFlex.gt-xs="100" fxFlex.xs="100" style=" background-color: yellow;">
-            <mat-card class=" mat-elevation-z2">
-                <mat-card-subtitle>Dog Breed</mat-card-subtitle>
-                <mat-card-title>Shiba Inu</mat-card-title>
-                <mat-card-content>
-                    <p>This card has divider and indeterminate progress as footer</p>
-                    <p>sldflskdjflksdj flksdjflksjdlfkjsldkfjlskdjfksjdlkfjs </p>
-                </mat-card-content>
-                <mat-divider inset></mat-divider>
-                <mat-card-actions>
-                    <button mat-button>LIKE</button>
-                    <button mat-button>SHARE</button>
-                </mat-card-actions>
-                <mat-card-footer>
-                    <mat-progress-bar mode="indeterminate"></mat-progress-bar>
-                </mat-card-footer>
-            </mat-card>
+<div class="my-container">
+    <div fxLayout="row wrap" fxLayoutGap="10px" class="header">
+        <div fxFlex>
+            <app-cellar [onlyBodegas]="true" (send)="getCellar($event)"></app-cellar>
         </div>
-        <div fxFlex.gt-md="43" fxFlex.gt-sm="47" fxFlex.gt-xs="100" fxFlex.xs="100" style=" background-color: yellow;">
-            <mat-card class=" mat-elevation-z2">
-                <mat-card-subtitle>Dog Breed</mat-card-subtitle>
-                <mat-card-title>Shiba Inu</mat-card-title>
-                <mat-card-content>
-                    <p>This card has divider and indeterminate progress as footer</p>
-                    <p>sldflskdjflksdj flksdjflksjdlfkjsldkfjlskdjfksjdlkfjs </p>
-                </mat-card-content>
-                <mat-divider inset></mat-divider>
-                <mat-card-actions>
-                    <button mat-button>LIKE</button>
-                    <button mat-button>SHARE</button>
-                </mat-card-actions>
-                <mat-card-footer>
-                    <mat-progress-bar mode="indeterminate"></mat-progress-bar>
-                </mat-card-footer>
-            </mat-card>
+        <div fxFlex>
+            <app-brand (send)="getBrand($event)"></app-brand>
         </div>
-        <div fxFlex.gt-md="43" fxFlex.gt-sm="47" fxFlex.gt-xs="100" fxFlex.xs="100" style=" background-color: yellow;">
-            <mat-card class=" mat-elevation-z2">
-                <mat-card-subtitle>Dog Breed</mat-card-subtitle>
-                <mat-card-title>Shiba Inu</mat-card-title>
-                <mat-card-content>
-                    <p>This card has divider and indeterminate progress as footer</p>
-                    <p>sldflskdjflksdj flksdjflksjdlfkjsldkfjlskdjfksjdlkfjs </p>
-                </mat-card-content>
-                <mat-divider inset></mat-divider>
-                <mat-card-actions>
-                    <button mat-button>LIKE</button>
-                    <button mat-button>SHARE</button>
-                </mat-card-actions>
-                <mat-card-footer>
-                    <mat-progress-bar mode="indeterminate"></mat-progress-bar>
-                </mat-card-footer>
-            </mat-card>
+        <div fxFlex>
+            <button mat-raised-button (click)="getConsolidated()" [disabled]="loading" color="accent">Consultar</button>
         </div>
-        <div fxFlex.gt-md="43" fxFlex.gt-sm="47" fxFlex.gt-xs="100" fxFlex.xs="100" style=" background-color: yellow;">
-            <mat-card class=" mat-elevation-z2">
-                <mat-card-subtitle>Dog Breed</mat-card-subtitle>
-                <mat-card-title>Shiba Inu</mat-card-title>
-                <mat-card-content>
-                    <p>This card has divider and indeterminate progress as footer</p>
-                    <p>sldflskdjflksdj flksdjflksjdlfkjsldkfjlskdjfksjdlkfjs </p>
-                </mat-card-content>
-                <mat-divider inset></mat-divider>
-                <mat-card-actions>
-                    <button mat-button>LIKE</button>
-                    <button mat-button>SHARE</button>
-                </mat-card-actions>
-                <mat-card-footer>
-                    <mat-progress-bar mode="indeterminate"></mat-progress-bar>
-                </mat-card-footer>
-            </mat-card>
-        </div>
-        <div fxFlex.gt-md="43" fxFlex.gt-sm="47" fxFlex.gt-xs="100" fxFlex.xs="100" style=" background-color: yellow;">
-            <mat-card class=" mat-elevation-z2">
-                <mat-card-subtitle>Dog Breed</mat-card-subtitle>
-                <mat-card-title>Shiba Inu</mat-card-title>
-                <mat-card-content>
-                    <p>This card has divider and indeterminate progress as footer</p>
-                    <p>sldflskdjflksdj flksdjflksjdlfkjsldkfjlskdjfksjdlkfjs </p>
-                </mat-card-content>
-                <mat-divider inset></mat-divider>
-                <mat-card-actions>
-                    <button mat-button>LIKE</button>
-                    <button mat-button>SHARE</button>
-                </mat-card-actions>
-                <mat-card-footer>
-                    <mat-progress-bar mode="indeterminate"></mat-progress-bar>
-                </mat-card-footer>
-            </mat-card>
-        </div>
-        <div fxFlex.gt-md="43" fxFlex.gt-sm="47" fxFlex.gt-xs="100" fxFlex.xs="100" style=" background-color: yellow;">
-            <mat-card class=" mat-elevation-z2">
-                <mat-card-subtitle>Dog Breed</mat-card-subtitle>
-                <mat-card-title>Shiba Inu</mat-card-title>
-                <mat-card-content>
-                    <p>This card has divider and indeterminate progress as footer</p>
-                    <p>sldflskdjflksdj flksdjflksjdlfkjsldkfjlskdjfksjdlkfjs </p>
-                </mat-card-content>
-                <mat-divider inset></mat-divider>
-                <mat-card-actions>
-                    <button mat-button>LIKE</button>
-                    <button mat-button>SHARE</button>
-                </mat-card-actions>
-                <mat-card-footer>
-                    <mat-progress-bar mode="indeterminate"></mat-progress-bar>
-                </mat-card-footer>
-            </mat-card>
-        </div>
-        <div fxFlex.gt-md="43" fxFlex.gt-sm="47" fxFlex.gt-xs="100" fxFlex.xs="100" style=" background-color: yellow;">
-            <mat-card class=" mat-elevation-z2">
-                <mat-card-subtitle>Dog Breed</mat-card-subtitle>
-                <mat-card-title>Shiba Inu</mat-card-title>
-                <mat-card-content>
-                    <p>This card has divider and indeterminate progress as footer</p>
-                    <p>sldflskdjflksdj flksdjflksjdlfkjsldkfjlskdjfksjdlkfjs </p>
-                </mat-card-content>
-                <mat-divider inset></mat-divider>
-                <mat-card-actions>
-                    <button mat-button>LIKE</button>
-                    <button mat-button>SHARE</button>
-                </mat-card-actions>
-                <mat-card-footer>
-                    <mat-progress-bar mode="indeterminate"></mat-progress-bar>
-                </mat-card-footer>
-            </mat-card>
-        </div>
-        <div fxFlex.gt-md="43" fxFlex.gt-sm="47" fxFlex.gt-xs="100" fxFlex.xs="100" style=" background-color: yellow;">
-            <mat-card class=" mat-elevation-z2">
-                <mat-card-subtitle>Dog Breed</mat-card-subtitle>
-                <mat-card-title>Shiba Inu</mat-card-title>
-                <mat-card-content>
-                    <p>This card has divider and indeterminate progress as footer</p>
-                    <p>sldflskdjflksdj flksdjflksjdlfkjsldkfjlskdjfksjdlkfjs </p>
-                </mat-card-content>
-                <mat-divider inset></mat-divider>
-                <mat-card-actions>
-                    <button mat-button>LIKE</button>
-                    <button mat-button>SHARE</button>
-                </mat-card-actions>
-                <mat-card-footer>
-                    <mat-progress-bar mode="indeterminate"></mat-progress-bar>
-                </mat-card-footer>
-            </mat-card>
-        </div>
-        <div fxFlex.gt-md="43" fxFlex.gt-sm="47" fxFlex.gt-xs="100" fxFlex.xs="100" style=" background-color: red;">
-            <mat-card class=" mat-elevation-z2">
-                <mat-card-subtitle>Estadísticas por sucursal</mat-card-subtitle>
-                <mat-card-title>Consolidado</mat-card-title>
-                <mat-card-content>
-                    <p>This card has divider and indeterminate progress as footer</p>
-                    <p>sldflskdjflksdj flksdjflksjdlfkjsldkfjlskdjfksjdlkfjs </p>
-                </mat-card-content>
-                <mat-divider inset></mat-divider>
-                <mat-card-actions>
-                    <button mat-button>LIKE</button>
-                    <button mat-button>SHARE</button>
-                </mat-card-actions>
-                <mat-card-footer>
-                    <mat-progress-bar mode="indeterminate"></mat-progress-bar>
-                </mat-card-footer>
-            </mat-card>
+        <div fxFlex></div>
+        <div fxFlex fxLayoutAlign="end center">
+            <app-filter (send)="applyFilter($event)"></app-filter>
+            <button mat-fab color="warn" (click)="downloadXlsx()">
+        <mat-icon>get_app</mat-icon>
+      </button>
         </div>
     </div>
+    <mat-card class="card mat-elevation-z2">
+        <mat-card-content>
+            <div *ngIf="loading" class="table">
+                <mat-progress-bar mode="indeterminate" color="warn"></mat-progress-bar>
+            </div>
+            <ngx-simplebar *ngIf="!loading" class="table">
+                <table mat-table [dataSource]="dataSource">
+                    <ng-container [matColumnDef]="column" *ngFor="let column of displayedColumns" [sticky]="isSticky(column)" [stickyEnd]="isStickyEnd(column)">
+                        <th mat-header-cell *matHeaderCellDef class="column"> {{column}} </th>
+                        <td mat-cell *matCellDef="let element"> {{element[column]}} </td>
+                    </ng-container>
+                    <tr mat-header-row *matHeaderRowDef="columnsToDisplay;  sticky: true"></tr>
+                    <tr mat-row *matRowDef="let row; columns: columnsToDisplay;"></tr>
+                    <!-- Fila mostrada cuando no hay datos coincidentes. -->
+                    <tr class="mat-row" *matNoDataRow>
+                        <td class="mat-cell" colspan="13">No hay datos que coincidan con algún filtro o busqueda</td>
+                    </tr>
+                </table>
+            </ngx-simplebar>
+        </mat-card-content>
+        <mat-card-footer>
+            <mat-paginator [pageSizeOptions]="[10, 50, 100]" showFirstLastButtons>
+            </mat-paginator>
+        </mat-card-footer>
+    </mat-card>
 </div>
-
-<!-- <div fxFlex="column" class="my-container">
-    <div fxFlex="row" class="card mat-elevation-z2">
-        <div fxLayout="row">
-            <h2>Consolidado de Estadísticas por sucursal</h2>
-        </div>
-        <div fxLayout="row">
-            <div fxFlex="20px"></div>
-            <div fxFlex="50px" fxHide.xs fxLayoutAlign="center center">
-                <mat-icon color="accent" class="material-icons-outlined">search
-                </mat-icon>
-            </div>
-            <div fxFlex class="inputpadding">
-                <mat-form-field appearance="outline" color="primary" class="width-all">
-                    <mat-label>Bodega</mat-label>
-                    <mat-select [(ngModel)]="currentCellar3">
-                        <mat-option *ngFor="let c of centrals" [value]="c._id">
-                            {{ c.name }}
-                        </mat-option>
-                    </mat-select>
-                </mat-form-field>
-            </div>
-            <div fxFlex class="inputpadding" [formGroup]="range">
-                <mat-form-field appearance="outline" color="primary" class="width-all">
-                    <mat-label>Laboratorio</mat-label>
-                    <input type="text" placeholder="Ingrese un laboratorio" aria-label="text" matInput formControlName="_brand" [matAutocomplete]="auto1">
-                    <mat-autocomplete id="_brand" autoActiveFirstOption #auto1="matAutocomplete">
-                        <mat-option *ngFor="let option of filteredOptions | async" [value]="option.name">
-                            <span>{{option.name}}</span>
-                        </mat-option>
-                    </mat-autocomplete>
-                </mat-form-field>
-            </div>
-            <div fxFlex="20px"></div>
-        </div>
-        <div fxLayout="row">
-            <span fxFlex></span>
-            <button *ngIf="!loading" mat-icon-button (click)="getConsolidated()" color="warn">Descargar en excel  <mat-icon class="material-icons-outlined">get_app</mat-icon></button>
-            <mat-progress-spinner *ngIf="loading" mode="indeterminate" diameter="30" color="warn">
-            </mat-progress-spinner>
-            <span fxFlex></span>
-        </div>
-    </div>
-</div> -->

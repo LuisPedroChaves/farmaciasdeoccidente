@@ -1,23 +1,22 @@
-<div class="section-content farmacia">
+<div class="section-content farmacia" data-simplebar>
     <div>
         <header class="module-header padding-15" fxLayoutAlign="start center" fxLayout="row wrap">
             <h4 class="product-font ma-0 module-title">Estadísticas</h4> &nbsp;&nbsp;&nbsp;&nbsp;
             <h2 class="title1 product-font ma-0">Control de pedidos, mínimos y máximos globales</h2>
         </header>
         <mat-divider></mat-divider>
-        <mat-tab-group mat-align-tabs="start">
-            <mat-tab label="Inventario Consolidado">
+        <mat-tab-group mat-align-tabs="center">
+            <mat-tab label="Ingreso de Estadísticas Globales">
+                <app-load-statistics-global></app-load-statistics-global>
+            </mat-tab>
+            <mat-tab label="Reporte Inventario Consolidado">
                 <app-stock-consolidated></app-stock-consolidated>
             </mat-tab>
-            <mat-tab label="Reporte de sucursales">
-                <ng-template matTabContent>
-                    <app-load-statistics></app-load-statistics>
-                </ng-template>
+            <mat-tab label="Reporte de Estadísticas">
+                <app-load-statistics></app-load-statistics>
             </mat-tab>
-            <mat-tab label="Consolidado">
-                <ng-template matTabContent>
-                    <app-consolidated></app-consolidated>
-                </ng-template>
+            <mat-tab label="Reporte Estadísticas Consolidado">
+                <app-consolidated></app-consolidated>
             </mat-tab>
         </mat-tab-group>
     </div>

@@ -1,44 +1,43 @@
-.section-content {
-    height: calc(100%);
-}
-
 .my-container {
-    height: calc(100vh - 192px) !important;
-    padding: 15px;
-}
-
-.allspace {
-    height: calc(100vh - 465px);
-}
-
-.padding-25 {
-    padding: 25px;
+    height: calc(100vh - 150px) !important;
+    padding: 20px;
 }
 
 .card {
-    background-color: white;
-    border-radius: 10px;
-    padding: 10px;
+    height: 650px;
+    border-radius: 12px;
+    border-radius: 12px;
+    margin-top: 15px;
 }
 
-.width-all {
+mat-vertical-stepper {
+    background-color: #fafafa !important;
+    border-radius: 12px;
+}
+
+.form {
+    margin-top: 10px;
+    border-top-left-radius: 12px;
+    border-top-right-radius: 12px;
+}
+
+.table {
+    height: 594px;
     width: 100%;
-    font-size: 13px;
-}
-
-.inputpadding {
-    padding-left: 3px;
-    padding-right: 3px;
-}
-
-.mat-form-field {
-    font-size: 14px;
-}
-
-.mat-header-cell {
-    background-color: white;
+    max-width: 100%;
+    overflow: auto;
+    border-radius: 12px;
 }
 
 .mat-row:hover {
     background: whitesmoke;
+}
+
+.mat-table-sticky {
+    background: #f6fbe6;
+    opacity: 1;
+}
+
+mat-paginator {
+    border-radius: 12px;
 }

@@ -1,61 +1,41 @@
-import { AfterContentInit, AfterViewInit, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
-import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
-import { Observable, Subscription } from 'rxjs';
-import { map, startWith } from 'rxjs/operators';
-import { BrandItem } from 'src/app/core/models/Brand';
+
 import { CellarItem } from 'src/app/core/models/Cellar';
-import { BrandService } from 'src/app/core/services/httpServices/brand.service';
-import { CellarService } from 'src/app/core/services/httpServices/cellar.service';
 import { TempSaleService } from 'src/app/core/services/httpServices/temp-sale.service';
 import { TempStorageService } from 'src/app/core/services/httpServices/temp-storage.service';
 import { ToastyService } from 'src/app/core/services/internal/toasty.service';
 import { ConfirmationDialogComponent } from 'src/app/pages/shared-components/confirmation-dialog/confirmation-dialog.component';
+import { BrandItem } from '../../../../../core/models/Brand';
+import { XlsxService } from '../../../../../core/services/internal/XlsxService.service';
 
 @Component({
   selector: 'app-load-statistics',
   templateUrl: './load-statistics.component.html',
   styleUrls: ['./load-statistics.component.scss']
 })
-export class LoadStatisticsComponent implements OnInit, AfterContentInit, OnDestroy, AfterViewInit {
+export class LoadStatisticsComponent implements OnInit {
 
-  smallScreen = window.innerWidth < 960 ? true : false;
   loading = false;
-  loadSalesComplete = false;
-  cellarsSubscription: Subscription;
-  cellars: CellarItem[];
-  errores2: any[];
 
-  currentCellar2: string;
-  currentDate: Date;
-
-  orderFind = false;
-  brandsSubscription: Subscription;
-  brands: BrandItem[];
-  options: BrandItem[] = [];
-  filteredOptions: Observable<BrandItem[]>;
-
-  range = new FormGroup({
-    startDate: new FormControl(new Date()),
-    endDate: new FormControl(new Date()),
-    startDate2: new FormControl(new Date()),
-    endDate2: new FormControl(new Date()),
-    _brand: new FormControl(),
+  form = new FormGroup({
+    cellar: new FormControl(undefined, Validators.required),
+    brand: new FormControl(undefined, Validators.required),
+    startDate: new FormControl(new Date(), Validators.required),
+    endDate: new FormControl(new Date(), Validators.required),
+    startDate2: new FormControl(new Date(), Validators.required),
+    endDate2: new FormControl(new Date(), Validators.required),
+    daysRequest: new FormControl('', Validators.required),
+    supplyDays: new FormControl('', Validators.required)
   });
-
-  daysOfRequest = '';
-  supplyDays = '';
-  loadingData = false;
-  setData = false;
-  isEmpty = false;
 
   // Table
   @ViewChild(MatPaginator) paginator: MatPaginator;
-  @ViewChild(MatSort) sort: MatSort;
 
+  data: any[] = [];
   dataSource = new MatTableDataSource();
   columns = [
     'barcode',
@@ -72,139 +52,127 @@ export class LoadStatisticsComponent implements OnInit, AfterContentInit, OnDest
     'minExistence',
     'maxExistence',
   ];
-  currentPage = 0;
   // End Table
 
   constructor(
-    public cellarService: CellarService,
     public tempStorageService: TempStorageService,
     public tempSaleService: TempSaleService,
-    public brandService: BrandService,
     private toastyService: ToastyService,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    private xlsxService: XlsxService
   ) {
-    this.cellarsSubscription = this.cellarService
-    .readData()
-    .subscribe((data) => {
-      this.cellars = data;
-    });
+
   }
 
   ngOnInit(): void {
-    this.brandsSubscription = this.brandService.readData().subscribe((data) => {
-      this.brands = data;
-      this.options = [...this.brands];
-    });
-    this.filteredOptions = this.range.controls._brand.valueChanges.pipe(
-      startWith(''),
-      map((value) => this._filterBrands(value))
-    );
+
   }
 
-  ngAfterContentInit(): void {
-    this.brandService.loadData();
-    this.cellarService.loadData();
+  getCellar(cellar: CellarItem) {
+    this.form.get('cellar').setValue(cellar);
   }
 
-  ngAfterViewInit() {
-    this.dataSource.sort = this.sort;
-  }
-  ngOnDestroy(): void {
-    this.brandsSubscription?.unsubscribe();
-    this.cellarsSubscription.unsubscribe();
+  getBrand(brand: BrandItem) {
+    this.form.get('brand').setValue(brand);
   }
 
+  applyFilter(filter: string) {
+    this.dataSource.filter = filter
 
-  private _filterBrands(value: string): BrandItem[] {
-    if (value) {
-      const filterValue = value.toLowerCase();
-      return this.options.filter((option) =>
-        option.name.toLowerCase().includes(filterValue)
-      );
-    } else {
-      return [];
+    if (this.dataSource.paginator) {
+      this.dataSource.paginator.firstPage();
     }
   }
 
   loadSettings(): void {
-    if (!this.currentCellar2) {
-      this.toastyService.error('Debe seleccionar una sucursal');
+    if (this.form.invalid) {
+      this.toastyService.error('Todos los campos son obligatorios');
       return;
     }
-    if (this.daysOfRequest === '' || this.supplyDays === '') {
-      this.toastyService.error('Llene los campos solicitados');
+    this.loading = true;
+    this.tempSaleService
+      .getStatics(
+        this.form.controls.cellar.value._id,
+        this.form.controls.brand.value._id,
+        this.form.controls.startDate.value,
+        this.form.controls.endDate.value,
+        this.form.controls.startDate2.value,
+        this.form.controls.endDate2.value,
+        this.form.controls.daysRequest.value,
+        this.form.controls.supplyDays.value
+      )
+      .subscribe((res) => {
+        this.data = res.tempSales;
+        this.dataSource = new MatTableDataSource<any>(this.data);
+        this.dataSource.paginator = this.paginator;
+        /* #region  función para poder filtrar subdocumentos dentro de la tabla */
+        this.dataSource.filterPredicate = (data: any, filter) => {
+          const dataStr = data._id.barcode + data._id.description;
+          return dataStr.trim().toLowerCase().indexOf(filter) != -1;
+        }
+        /* #endregion */
+        this.loading = false;
+      });
+  }
+
+  downloadXlsx(): void {
+    if (this.data.length === 0) {
+      this.toastyService.error('No hay datos para descargar, por favor realice una consulta');
       return;
     }
-    const brand = this.brands.find(
-      (e) => e.name === this.range.controls._brand.value
+
+    const body = [
+      [this.form.controls.cellar.value.name, this.form.controls.brand.value.name],
+      [
+        'Código',
+        'Producto',
+        'Promedio mes',
+        'Promedio días',
+        'Último mes',
+        'Promedio mes (Ajustado)',
+        'Promedio días (Ajustado)',
+        'Inventario',
+        'Provisión',
+        'Provisión aprox.',
+        'Pedido Sugerido',
+        'Existencia Mínima',
+        'Existencia Máxima'
+      ]
+    ];
+
+    const ArrayToPrint: any[] = [];
+
+    this.data.forEach(item => {
+      const row: any[] = [];
+
+      row.push(item._id.barcode);
+      row.push(item._id.description);
+      row.push(item.promMonth);
+      row.push(item.promDays);
+      row.push(item.salesMonth);
+      row.push(item.promAdjustMonth);
+      row.push(item.promAdjustDay);
+      row.push(item.stock);
+      row.push(item.supply);
+      row.push(item.aproxSupply);
+      row.push(item.request);
+      row.push(item.minStock);
+      row.push(item.maxStock);
+
+      ArrayToPrint.push(row);
+    });
+
+    ArrayToPrint.forEach((row) => body.push(row));
+
+    this.xlsxService.downloadSinglePage(
+      body,
+      'Reporte de estadísticas',
+      `${this.form.controls.cellar.value.name} - ${this.form.controls.brand.value.name}`
     );
-    if (brand) {
-      this.loadingData = true;
-      this.setData = true;
-      this.tempSaleService
-        .getStatics(
-          this.currentCellar2,
-          brand._id,
-          this.range.controls.startDate.value,
-          this.range.get('endDate').value,
-          this.range.controls.startDate2.value,
-          this.range.get('endDate2').value,
-          this.daysOfRequest,
-          this.supplyDays
-        )
-        .subscribe((res) => {
-          const response = res;
-          this.dataSource = new MatTableDataSource<any>(response.tempSales);
-          /* #region  función para poder filtrar subdocumentos dentro de la tabla */
-          this.dataSource.filterPredicate = (data: any, filter) => {
-            const dataStr = data._id.barcode + data._id.description;
-            return dataStr.trim().toLowerCase().indexOf(filter) != -1;
-          }
-          /* #endregion */
-          /* #region función para poder ordenar subdocumentos dentro de la tabla */
-          this.dataSource.sortingDataAccessor = (item: any, property) => {
-            switch (property) {
-              case 'barcode': return item._id.barcode;
-              case 'description': return item._id.description;
-              // case 'avgSalesMonths': return item.promMonth;
-              // case 'avgSalesYear': return item.promDays;
-              // case 'salesLastMonth': return item.salesMonth;
-              // case 'avgSalesMonth': return item.promAdjustMonth;
-              // case 'avgSalesDay': return item.promAdjustDay;
-              // case 'inventory': return item.stock;
-              // case 'suggestedOrder': return item.request;
-              // case 'stockCellar': return item.stockCellar;
-              // case 'minExistence': return item.minStock;
-              // case 'maxExistence': return item.maxStock;
-              default: return item[property];
-            }
-          };
-          this.dataSource.sort = this.sort;
-          /* #endregion */
-          if (response.tempSales.length === 0) {
-            this.isEmpty = true;
-          } else {
-            this.isEmpty = false;
-          }
-          // this.dataSource.paginator = this.paginator;
-          this.loadingData = false;
-        });
-    } else {
-      this.toastyService.error('Por favor seleccione un laboratorio');
-    }
-  }
-
-  getDate(date: any): string {
-    return date._d;
-  }
-
-  applyFilter(event: Event) {
-    const filterValue = (event.target as HTMLInputElement).value;
-    this.dataSource.filter = filterValue.trim().toLowerCase();
   }
 
   updateTempStorage(): void {
-    if (!this.dataSource || this.dataSource.filteredData.length === 0) {
+    if (this.data.length === 0) {
       this.toastyService.error('No hay cálculos generados');
       return;
     }
