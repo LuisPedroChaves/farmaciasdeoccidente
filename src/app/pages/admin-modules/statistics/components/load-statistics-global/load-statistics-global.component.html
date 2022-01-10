@@ -10,9 +10,9 @@
                 <hr>
                 <mat-card-content fxLayout="column">
                     <br>
-                    <div fxLayout="row">
-                        <mat-label>Opcional</mat-label>
+                    <div fxLayout="row" fxLayoutGap="5px">
                         <app-brand fxFlex (send)="getBrand($event)" [focus]="true"></app-brand>
+                        <mat-hint>*Opcional</mat-hint>
                     </div>
                     <div fxLayout="row wrap" fxLayoutGap="10px">
                         <mat-form-field fxFlex appearance="outline" color="accent">
