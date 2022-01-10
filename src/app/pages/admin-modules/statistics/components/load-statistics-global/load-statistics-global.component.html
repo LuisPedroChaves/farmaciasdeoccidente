@@ -10,6 +10,10 @@
                 <hr>
                 <mat-card-content fxLayout="column">
                     <br>
+                    <div fxLayout="row">
+                        <mat-label>Opcional</mat-label>
+                        <app-brand fxFlex (send)="getBrand($event)" [focus]="true"></app-brand>
+                    </div>
                     <div fxLayout="row wrap" fxLayoutGap="10px">
                         <mat-form-field fxFlex appearance="outline" color="accent">
                             <mat-label>Rango de fechas</mat-label>
@@ -55,7 +59,11 @@
                 </mat-card-content>
                 <mat-card-footer>
                     <button fxFill mat-raised-button (click)="loadStatistics()" [disabled]="loading" color="primary">Ingresar Estadísticas</button>
-                    <mat-progress-bar *ngIf="loading" mode="indeterminate" color="warn"></mat-progress-bar>
+                    <div *ngIf="loading" fxLayout="column" fxLayoutAlign="center center" class="mt">
+                        <h2>{{ cellarName }}</h2>
+                        <h3>Cargando... {{ progress | number: '.2' }}%</h3>
+                    </div>
+                    <mat-progress-bar *ngIf="loading" [value]="progress" mode="determinate" color="warn"></mat-progress-bar>
                 </mat-card-footer>
             </mat-card>
         </form>

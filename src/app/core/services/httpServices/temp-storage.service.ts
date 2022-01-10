@@ -99,7 +99,6 @@ export class TempStorageService {
   }
 
   updateGlobal(body: any): Observable<any> {
-    console.log("🚀 ~ file: temp-storage.service.ts ~ line 102 ~ TempStorageService ~ updateGlobal ~ body", body)
     return this.http.put(`${this.apiConfigService.API_TEMP_STORAGE}/global`, body);
   }
 
