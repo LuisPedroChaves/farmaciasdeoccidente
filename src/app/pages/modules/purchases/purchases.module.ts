@@ -14,11 +14,14 @@ import { NewAdjustComponent } from './components/new-adjust/new-adjust.component
 import { CreatedPurchasesComponent } from './components/created-purchases/created-purchases.component';
 import { UpdatedPurchasesComponent } from './components/updated-purchases/updated-purchases.component';
 import { HistoryPurchasesComponent } from './components/history-purchases/history-purchases.component';
+import { RequisitionPurchasesComponent } from './components/requisition-purchases/requisition-purchases.component';
+import { NewRequisitionComponent } from './components/new-requisition/new-requisition.component';
+import { AdjustsComponent } from './components/adjusts/adjusts.component';
 
 
 
 @NgModule({
-  declarations: [NewPurchaseComponent, IndexComponent, DeletedPurchasesComponent, DetailsPurchaseComponent, UpdatePricesComponent, NewAdjustComponent, CreatedPurchasesComponent, UpdatedPurchasesComponent, HistoryPurchasesComponent],
+  declarations: [NewPurchaseComponent, IndexComponent, DeletedPurchasesComponent, DetailsPurchaseComponent, UpdatePricesComponent, NewAdjustComponent, CreatedPurchasesComponent, UpdatedPurchasesComponent, HistoryPurchasesComponent, RequisitionPurchasesComponent, NewRequisitionComponent, AdjustsComponent],
   imports: [
     CommonModule,
     RouterModule.forChild(PurchasesRoutes),

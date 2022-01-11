@@ -1,0 +1,92 @@
+.section-content {
+    height: calc(100%) !important;
+}
+
+.my-container {
+    height: calc(100vh - 155px) !important;
+    padding: 15px;
+}
+
+.detail-container {
+    height: calc(100vh - 379px) !important;
+}
+
+.close-button {
+    margin-right: 10px;
+}
+
+.T {
+    color: #045195;
+    font-size: 25px;
+}
+
+.card {
+    background-color: white;
+    border-radius: 10px;
+    padding: 10px;
+}
+
+.section {
+    padding: 20px 10px;
+}
+
+.width-all {
+    width: 100%;
+    font-size: 13px;
+}
+
+.inputpadding {
+    padding-left: 3px;
+    padding-right: 3px;
+}
+
+.demo-table {
+    width: 100%;
+}
+
+.mat-column-requested {
+    width: 12px;
+    border-right: 1px solid currentColor;
+    padding-right: 24px;
+    padding-top: 8px;
+    text-align: center;
+}
+
+.mat-column-_product {
+    padding-left: 16px;
+    padding-top: 8px;
+    font-size: 20px;
+}
+
+.chip-padding {
+    padding-top: 8px;
+}
+
+.chip-color {
+    background-color: #cbe870;
+}
+
+::ng-deep .mat-progress-bar-fill::after {
+    background-color: #0a1958;
+}
+
+::ng-deep .mat-progress-bar-buffer {
+    background: rgba(15, 26, 86, 0.20);
+}
+
+::ng-deep .mat-progress-bar {
+    border-radius: 2px;
+}
+
+.ng-valid[required],
+.ng-valid.required {
+    border-left: 5px solid #cbe870;
+}
+
+.inputrequested {
+    max-width: 100px;
+}
+
+.inputPresentation {
+    font-size: 16px;
+}

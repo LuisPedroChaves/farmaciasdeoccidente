@@ -1,11 +1,13 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
+
 import { Observable, Subject } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 import { ApiConfigService } from '../config/api-config.service';
 import { PurchaseItem } from '../../models/Purchase';
 import { IDataService } from '../config/i-data-service';
+import { WebsocketService } from './websocket.service';
 
 @Injectable({
   providedIn: 'root'
@@ -19,7 +21,8 @@ export class PurchaseService implements IDataService<PurchaseItem[]> {
 
   constructor(
     private http: HttpClient,
-    public apiConfigService: ApiConfigService
+    public apiConfigService: ApiConfigService,
+    public websocketS: WebsocketService
   ) { }
 
   loadData({ startDate, endDate, _cellar }) {
@@ -52,6 +55,18 @@ export class PurchaseService implements IDataService<PurchaseItem[]> {
     }
   }
 
+  getAlls( _cellar ): Observable<any> {
+    return this.http.get(this.apiConfigService.API_PURCHASE + '/alls/' + _cellar);
+  }
+
+  getRequisitions( _cellar ): Observable<any> {
+    return this.http.get(this.apiConfigService.API_PURCHASE + '/requisitions/' + _cellar);
+  }
+
+  getRequisitionSocket() {
+    return this.websocketS.listen('newRequisition');
+  }
+
   getCreated( _cellar ): Observable<any> {
     return this.http.get(this.apiConfigService.API_PURCHASE + '/createds/' + _cellar);
   }
@@ -79,6 +94,7 @@ export class PurchaseService implements IDataService<PurchaseItem[]> {
   }
 
   statePurchase(body: PurchaseItem): Observable<any> {
+    body._lastUpdate = this.userID;
     return this.http.put(this.apiConfigService.API_PURCHASE + '/state/' + body._id, body);
   }
 

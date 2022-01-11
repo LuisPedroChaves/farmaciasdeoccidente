@@ -65,7 +65,11 @@ export class PaySaleComponent implements OnInit {
   addPay() {
     this.error = false;
     delete this.newPay._id;
-    if ((this.newPay.amount > (+this.data.sale.total - +this.getTotalBalance())) || (+this.newPay.amount === 0)) {
+    console.log(this.newPay.amount);
+console.log(+(+this.data.sale.total - +this.getTotalBalance()).toFixed(2));
+
+
+    if ((this.newPay.amount > +(+this.data.sale.total - +this.getTotalBalance()).toFixed(2)) || (+this.newPay.amount === 0)) {
       this.error = true;
     } else {
       this.data.sale.balance.push(this.newPay);

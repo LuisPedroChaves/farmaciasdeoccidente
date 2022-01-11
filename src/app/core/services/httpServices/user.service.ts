@@ -71,6 +71,10 @@ export class UserService implements IDataService<UserItem[]>  {
     return this.http.put(this.apiConfigService.API_USER + '/' + u._id, u);
   }
 
+  saveNewPass(id: string, newpass: any): Observable<any> {
+    return this.http.put(this.apiConfigService.API_USER + '/changepass/' + id, JSON.stringify(newpass));
+  }
+
   deleteUser(u: UserItem): Observable<any> {
     return this.http.delete(this.apiConfigService.API_USER + '/' + u._id);
   }

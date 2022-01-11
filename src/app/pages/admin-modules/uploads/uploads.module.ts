@@ -3,19 +3,17 @@ import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 
 import { CoreModule } from 'src/app/core/core.module';
+import { UploadsComponent } from './components/uploads/uploads.component';
+import { UploadsRoutes } from './uploads.routing';
 import { SharedComponentsModule } from '../../shared-components/shared-components.module';
-import { AdjustsRoutes } from './adjusts.routing';
-import { AdjustsComponent } from './components/adjusts/adjusts.component';
-
-
 
 @NgModule({
-  declarations: [AdjustsComponent],
+  declarations: [UploadsComponent],
   imports: [
     CommonModule,
-    RouterModule.forChild(AdjustsRoutes),
+    RouterModule.forChild(UploadsRoutes),
     SharedComponentsModule,
     CoreModule
   ]
 })
-export class AdjustsModule { }
+export class UploadsModule { }

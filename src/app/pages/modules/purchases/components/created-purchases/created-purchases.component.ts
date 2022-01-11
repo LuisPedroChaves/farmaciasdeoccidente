@@ -2,6 +2,7 @@ import { Component, OnInit, ViewChild, OnDestroy, Output, EventEmitter } from '@
 import { MatDialog } from '@angular/material/dialog';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
+
 import { Subscription } from 'rxjs';
 
 import { CellarItem } from 'src/app/core/models/Cellar';
@@ -28,7 +29,7 @@ export class CreatedPurchasesComponent implements OnInit, OnDestroy {
   purchasesp: string[] = ["read", "update", "delete", "create"];
 
   dataSource = new MatTableDataSource();
-  columns = ['image', 'noBill', '_provider', 'date', 'requisition', 'payment', 'total', '_userDeleted', 'options'];
+  columns = ['image', 'requisition',  'noBill', 'date', '_provider', 'payment', 'total', '_lastUpdate', 'options'];
 
   constructor(
     public dialog: MatDialog,
@@ -62,6 +63,11 @@ export class CreatedPurchasesComponent implements OnInit, OnDestroy {
       disableClose: true,
       panelClass: ['farmacia-dialog', 'farmacia'],
     });
+  }
+
+  getExtfile(file: string) {
+    const nameFile = file.split('.');
+    return nameFile[nameFile.length - 1];
   }
 
   applyFilter2(event: Event): void {

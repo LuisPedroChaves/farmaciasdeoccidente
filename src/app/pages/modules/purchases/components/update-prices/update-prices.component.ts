@@ -56,7 +56,7 @@ export class UpdatePricesComponent implements OnInit {
       this.toasty.error('Este producto ya fue actualizado')
     }
     this.selectedProduct = detail._product;
-    let newPresentations: any[] = this.selectedProduct.presentations.filter(p => p.name === detail.presentation);
+    let newPresentations: any[] = this.selectedProduct.presentations.filter(p => p.name === detail.presentation.name);
     if (newPresentations[0]) {
       newPresentations[0].wholesale_newPrice = (newPresentations[0].wholesale_price + ((newPresentations[0].wholesale_price * this.calcPercent(detail.cost, detail.lastCost)) / 100)).toFixed(2) ;
       newPresentations[0].distributor_newPrice = (newPresentations[0].distributor_price + ((newPresentations[0].distributor_price * this.calcPercent(detail.cost, detail.lastCost))) / 100).toFixed(2) ;

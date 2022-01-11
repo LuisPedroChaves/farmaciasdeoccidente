@@ -101,10 +101,29 @@ const routes: Routes = [
         canActivate: [CheckTokenGuard],
       },
       {
+        path: 'checkStock',
+        pathMatch: 'full',
+        loadChildren: () =>
+          import('./pages/modules/check-stock/check-stock.module').then(
+            (m) => m.CheckStockModule
+          ),
+        canActivate: [CheckTokenGuard],
+      },
+      {
         path: 'storage',
+        pathMatch: 'full',
         loadChildren: () =>
           import('./pages/modules/storage/storage.module').then(
             (m) => m.StorageModule
+          ),
+        canActivate: [CheckTokenGuard],
+      },
+      {
+        path: 'tempStorage',
+        pathMatch: 'full',
+        loadChildren: () =>
+          import('./pages/modules/temp-storage/temp-storage.module').then(
+            (m) => m.TempStorageModule
           ),
         canActivate: [CheckTokenGuard],
       },
@@ -113,15 +132,6 @@ const routes: Routes = [
         loadChildren: () =>
           import('./pages/modules/purchases/purchases.module').then(
             (m) => m.PurchasesModule
-          ),
-        canActivate: [CheckTokenGuard],
-      },
-      {
-        path: 'adjusts',
-        pathMatch: 'full',
-        loadChildren: () =>
-          import('./pages/modules/adjusts/adjusts.module').then(
-            (m) => m.AdjustsModule
           ),
         canActivate: [CheckTokenGuard],
       },
@@ -196,7 +206,8 @@ const routes: Routes = [
       },
       // {
       //   // tslint:disable-next-line: max-line-length
-      //   path: 'employees', pathMatch: 'full', loadChildren: () => import('./pages/modules/employees/employees.module').then(m => m.EmployeesModule),
+      //   path: 'employees', pathMatch:
+      // 'full', loadChildren: () => import('./pages/modules/employees/employees.module').then(m => m.EmployeesModule),
       //   canActivate: [CheckTokenGuard]
       // },
       {
@@ -224,6 +235,33 @@ const routes: Routes = [
           import('./pages/admin-modules/providers/providers.module').then(
             (m) => m.ProvidersModule
           ),
+        canActivate: [CheckTokenGuard],
+      },
+      {
+        path: 'uploads',
+        pathMatch: 'full',
+        loadChildren: () =>
+          import('./pages/admin-modules/uploads/uploads.module').then(
+            (m) => m.UploadsModule
+          ),
+        canActivate: [CheckTokenGuard],
+      },
+      {
+        path: 'statistics',
+        pathMatch: 'full',
+        loadChildren: () =>
+          import('./pages/admin-modules/statistics/statistics.module').then(
+            (m) => m.StatisticsModule
+          ),
+        canActivate: [CheckTokenGuard],
+      },
+      {
+        path: 'tempStatistics',
+        pathMatch: 'full',
+        loadChildren: () =>
+          import(
+            './pages/admin-modules/temp-statistics/temp-statistics.module'
+          ).then((m) => m.TempStatisticsModule),
         canActivate: [CheckTokenGuard],
       },
     ],

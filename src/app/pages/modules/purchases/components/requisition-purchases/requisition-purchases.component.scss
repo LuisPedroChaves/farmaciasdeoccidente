@@ -1,21 +1,29 @@
-.section-content {
-    height: calc(100%);
-    background-color: white;
-}
-
-.padding-25 {
-    padding: 25px;
-}
-
+$blue: #0a1958;
+$blue-2: #045195;
 .my-container {
     width: 100%;
-    height: calc(100vh - 134px) !important;
+    height: calc(100vh - 192px) !important;
 }
 
 .padding-15 {
     padding: 1s5px;
 }
 
+.component-title {
+    margin-left: 15px !important;
+}
+
+.component-space {
+    height: calc(100vh - 175px);
+}
+
+.component-space-sm {
+    height: calc(100vh - 225px);
+}
+
+.white-bg {
+    background-color: white !important;
+}
 
 table {
     width: 100%;
@@ -39,8 +47,21 @@ tr.example-element-row:not(.example-expanded-row):active {
     border-bottom-width: 0;
 }
 
+.example-element-detail {
+    overflow: hidden;
+    display: flex;
+}
+
+.example-element-description {
+    padding: 20px;
+}
+
+.example-element-description-attribution {
+    opacity: 0.5;
+}
+
 .costumers-header {
-    padding: 15px 15px;
+    padding: 10px 10px;
 }
 
 .dateinput {
@@ -53,4 +74,5 @@ tr.example-element-row:not(.example-expanded-row):active {
 
 .allspace {
     height: calc(100vh - 200px);
+    padding: 2px 10px;
 }

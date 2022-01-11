@@ -71,7 +71,7 @@ $blue-2: #0c50c7;
 .more {
     color: white;
     width: 50%;
-    height:  100%;
+    height: 100%;
 }
 
 .cover {
@@ -176,9 +176,22 @@ div.scrollmenu a:hover {
     flex: 1 1 70px;
     min-width: 60px;
     overflow: auto;
-  }
+}
 
-  .T1 {
+.T1 {
     color: #045195;
     font-size: 20px;
+}
+
+// grid de cards
+.mat-card {
+    border-radius: 10px;
+    padding: 0px !important;
+    .mat-card-content {
+        padding: 16px;
+    }
+}
+
+.content>mat-card {
+    width: 200px;
 }

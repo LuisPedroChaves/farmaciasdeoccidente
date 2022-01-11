@@ -24,7 +24,6 @@ export class BrandService implements IDataService<BrandItem[]> {
       .get(this.apiConfigService.API_BRAND)
       .pipe(
         map((response: any) => {
-          console.log(response);
 
           this.brandList = response.brands;
           this.brandSubject.next(this.brandList);

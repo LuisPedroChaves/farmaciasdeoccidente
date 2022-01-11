@@ -14,7 +14,7 @@
           <button  mat-icon-button class="optionbutton" (click)="showPanel('messages')">
               <mat-icon matBadge="5" matBadgeColor="warn">chat_bubble_outline</mat-icon>
           </button> -->
-          <button mat-icon-button class="optionbutton avatartopbutton" [matMenuTriggerFor]="menu">
+        <button mat-icon-button class="optionbutton avatartopbutton" [matMenuTriggerFor]="menu">
             <img [src]="getImage()" alt="Avatar" class="avatar-top">
         </button>
         <!-- <mat-menu #menu="matMenu"> -->
@@ -22,6 +22,10 @@
             <button mat-menu-item (click)="logout()">
           <mat-icon>exit_to_app</mat-icon>
           <span>Cerrar Sesión</span>
+        </button>
+            <button mat-menu-item (click)="showProfile()">
+          <mat-icon>account_circle</mat-icon>
+          <span>Mi perfil</span>
         </button>
         </mat-menu>
     </div>
@@ -34,14 +38,14 @@
                 </mat-list-item>
                 <div class="bottomStick">
                     <mat-list-item *ngIf="wsService.socketStatus" class="menu-items">
-                      <mat-icon color="warn" mat-list-icon>sensors</mat-icon>
-                      <h4 mat-line>En línea</h4>
+                        <mat-icon color="warn" mat-list-icon>sensors</mat-icon>
+                        <h4 mat-line>En línea</h4>
                     </mat-list-item>
                     <mat-list-item *ngIf="!wsService.socketStatus" class="menu-items">
-                      <mat-icon style="color: rgba(233, 21, 21, 0.75) !important;" mat-list-icon>sensors_off</mat-icon>
-                      <h4 mat-line>Sin conexión</h4>
+                        <mat-icon style="color: rgba(233, 21, 21, 0.75) !important;" mat-list-icon>sensors_off</mat-icon>
+                        <h4 mat-line>Sin conexión</h4>
                     </mat-list-item>
-                  </div>
+                </div>
             </mat-nav-list>
         </mat-sidenav>
         <router-outlet *ngIf="!loading"></router-outlet>

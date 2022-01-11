@@ -1,25 +1,28 @@
 import { Component, NgZone, OnInit, OnDestroy, AfterContentInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { Store } from '@ngrx/store';
+import { HttpClient } from '@angular/common/http';
+import { MatDialog } from '@angular/material/dialog';
+
 import { combineLatest, Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
+import { Store } from '@ngrx/store';
+
 import { CellarItem } from 'src/app/core/models/Cellar';
 import { AppState } from 'src/app/core/store/app.reducer';
+import { ChildrenItems, MenuItem } from 'src/app/core/models/Menu';
+import { PermissionItem } from 'src/app/core/models/Role';
+import { InternalOrderItem } from 'src/app/core/models/InternalOrder';
+import { InternalOrderService } from 'src/app/core/services/httpServices/internal-order.service';
+import { ToastyService } from 'src/app/core/services/internal/toasty.service';
+import { NotificationItem } from 'src/app/core/models/Notification';
+import { environment } from 'src/environments/environment.prod';
+import { UpdateNotificationsComponent } from 'src/app/pages/shared-components/update-notifications/update-notifications.component';
 import * as actions from '../../../core/store/actions';
 import { CellarService } from '../../../core/services/httpServices/cellar.service';
-import { ChildrenItems, MenuItem } from 'src/app/core/models/Menu';
 import { MenuService } from '../../../core/services/httpServices/menu.service';
 import { RoleService } from '../../../core/services/httpServices/role.service';
-import { PermissionItem } from 'src/app/core/models/Role';
-import { HttpClient } from '@angular/common/http';
 import { WebsocketService } from '../../../core/services/httpServices/websocket.service';
-import { InternalOrderItem } from 'src/app/core/models/InternalOrder';
-import { ToastyService } from 'src/app/core/services/internal/toasty.service';
-import { InternalOrderService } from 'src/app/core/services/httpServices/internal-order.service';
-import { NotificationItem } from 'src/app/core/models/Notification';
-import { UpdateNotificationsComponent } from 'src/app/pages/shared-components/update-notifications/update-notifications.component';
-import { MatDialog } from '@angular/material/dialog';
-import { environment } from 'src/environments/environment.prod';
+import { UserComponent } from '../../shared-components/user/user.component';
 const SMALL_WIDTH_BREAKPOINT = 960;
 
 @Component({
@@ -270,6 +273,21 @@ export class AppLayoutComponent implements OnInit, OnDestroy, AfterContentInit {
       localStorage.removeItem('farmaciasDO-session');
       localStorage.removeItem('currentstore');
       this.store.dispatch(actions.logoutSuccess());
+    });
+  }
+
+  showProfile() {
+    const dialogRef = this.dialog.open(UserComponent, {
+      width: this.smallScreen ? '100%' : '600px',
+      height: this.smallScreen ? '100%' : '720px',
+      data: {},
+      disableClose: true,
+      panelClass: ['farmacia-dialog', 'farmacia'],
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result !== undefined) {
+      }
     });
   }
 
