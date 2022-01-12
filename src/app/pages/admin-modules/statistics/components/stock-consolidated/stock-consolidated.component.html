@@ -1,7 +1,13 @@
 <div class="my-container">
-    <div fxLayout="row wrap" class="header">
+    <div fxLayout="row wrap" fxLayoutGap="10px" class="header">
         <div fxFlex>
-            <app-brand (send)="getBrand($event)" [focus]="true"></app-brand>
+            <app-brand (send)="getBrand($event)" [focus]="true" hint="*Opcional"></app-brand>
+        </div>
+        <div fxFlex fxLayoutAlign="start center">
+            <mat-checkbox [(ngModel)]="withStock" color="accent">Solo productos con existencia</mat-checkbox>
+        </div>
+        <div fxFlex>
+            <button mat-raised-button (click)="getConsolidated()" [disabled]="loading" color="accent">Consultar</button>
         </div>
         <div fxFlex></div>
         <div fxFlex fxLayoutAlign="end center">

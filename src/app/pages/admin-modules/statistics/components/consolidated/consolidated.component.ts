@@ -72,7 +72,8 @@ export class ConsolidatedComponent implements OnInit {
     this.dataSource.paginator = this.paginator;
     this.loading = true;
     this.tempStorageService.loadStockConsolidated(
-      this.brand._id
+      this.brand._id,
+      false
     ).subscribe((resp: any) => {
       // console.log(resp);
       this.displayedColumns = []

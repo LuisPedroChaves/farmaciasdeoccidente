@@ -41,12 +41,14 @@ export class TempStorageService {
   }
 
   loadStockConsolidated(
-    _brand
+    _brand,
+    withStock
   ): Observable<TempStorageItem[]> {
     return this.http
       .get(`${this.apiConfigService.API_TEMP_STORAGE}/stockConsolidated`, {
         params: new HttpParams()
           .set('_brand', _brand.toString())
+          .set('withStock', withStock.toString())
       })
       .pipe(
         map((response: any) => {
