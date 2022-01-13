@@ -21,5 +21,8 @@
     { "name": "tempStatistics", "label": "Estadísticas Temp.", "parent": "ADMIN", "level": 1, "options": ["read", "update", "delete", "create"] },
     { "name": "adminProducts", "label": "Catálogo de productos", "parent": "ADMIN", "level": 1, "options": ["read", "update", "delete", "create"] },
     { "name": "providers", "label": "Proveedores", "parent": "ADMIN", "level": 1, "options": ["read", "update", "delete", "create"] },
-    { "name": "users", "label": "Usuarios", "parent": "ADMIN", "level": 1, "options": ["read", "update", "delete", "create"] }
+    { "name": "users", "label": "Usuarios", "parent": "ADMIN", "level": 1, "options": ["read", "update", "delete", "create"] },
+    { "name": "storageTo", "label": "Inventario", "parent": "storage", "level": 2, "options": ["read", "update", "delete", "create"] },
+    { "name": "storage/storageclosing", "label": "Cierre", "parent": "storage", "level": 2, "options": ["read", "update", "delete", "create"] },
+    { "name": "storage/storagehistory", "label": "Historial", "parent": "storage", "level": 2, "options": ["read", "update", "delete", "create"] }
 ]
