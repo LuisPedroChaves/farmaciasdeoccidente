@@ -44,7 +44,9 @@
                     "options": {
                         "allowedCommonJsDependencies": [
                             "socket.io-client",
-                            "moment/locale/es"
+                            "moment/locale/es",
+                            "core-js",
+                            "xlsx"
                         ],
                         "outputPath": "dist/farmaciasdeoccidente",
                         "index": "src/index.html",

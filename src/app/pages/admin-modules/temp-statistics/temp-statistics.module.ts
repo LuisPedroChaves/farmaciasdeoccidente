@@ -2,22 +2,21 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 
-import { CoreModule } from 'src/app/core/core.module';
 import { TimeFormatPipe } from 'src/app/core/shared/pipes/timePipes/time-format.pipe';
-import { TempStorageComponent } from './components/temp-storage/temp-storage.component';
+import { TempStatisticsRoutes } from './temp-statistics.routing';
+import { TempStatisticsComponent } from './pages/temp-statistics/temp-statistics.component';
 import { SharedComponentsModule } from '../../shared-components/shared-components.module';
-import { TempStorageRoutes } from './temp-storage.routing';
+
 
 @NgModule({
-  declarations: [TempStorageComponent],
+  declarations: [TempStatisticsComponent],
   imports: [
     CommonModule,
-    RouterModule.forChild(TempStorageRoutes),
+    RouterModule.forChild(TempStatisticsRoutes),
     SharedComponentsModule,
-    CoreModule
   ],
   providers: [
     TimeFormatPipe
   ]
 })
-export class TempStorageModule { }
+export class TempStatisticsModule { }

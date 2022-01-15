@@ -13,24 +13,31 @@ import { Store } from '@ngrx/store';
 import { FormControl } from '@angular/forms';
 
 import { fromEvent, Observable, Subscription } from 'rxjs';
-import { debounceTime, distinctUntilChanged, map, startWith, tap } from 'rxjs/operators';
+import {
+  debounceTime,
+  distinctUntilChanged,
+  map,
+  startWith,
+  tap,
+} from 'rxjs/operators';
 
 import { ToastyService } from 'src/app/core/services/internal/toasty.service';
 import { AppState } from 'src/app/core/store/app.reducer';
 import { BrandItem } from 'src/app/core/models/Brand';
 import { TempStorageService } from 'src/app/core/services/httpServices/temp-storage.service';
-import { ModalStatisticsComponent } from '../modal-statistics/modal-statistics.component';
 import { tempStorageDataSource } from '../../../../../core/services/cdks/tempStorages.datasource';
 import { CellarItem } from '../../../../../core/models/Cellar';
 import { BrandService } from 'src/app/core/services/httpServices/brand.service';
+import { XlsxService } from '../../../../../core/services/internal/XlsxService.service';
+import { TimeFormatPipe } from 'src/app/core/shared/pipes/timePipes/time-format.pipe';
 
 @Component({
   selector: 'app-temp-storage',
   templateUrl: './temp-storage.component.html',
   styleUrls: ['./temp-storage.component.scss'],
-
 })
-export class TempStorageComponent implements OnInit, AfterViewInit, AfterContentInit, OnDestroy {
+export class TempStorageComponent
+  implements OnInit, AfterViewInit, AfterContentInit, OnDestroy {
   smallScreen = window.innerWidth < 960 ? true : false;
   currentCellar: CellarItem;
 
@@ -43,8 +50,14 @@ export class TempStorageComponent implements OnInit, AfterViewInit, AfterContent
     'description',
     '_brand',
     'stock',
+    'lastUpdateStock',
     'supply',
-    'options',
+    'minExistence',
+    'maxExistence',
+    'exceeds',
+    'missing',
+    'lastUpdateStatics',
+    // 'options',
   ];
   currentPage = 0;
 
@@ -60,13 +73,21 @@ export class TempStorageComponent implements OnInit, AfterViewInit, AfterContent
     public router: Router,
     public dialog: MatDialog,
     public brandService: BrandService,
-  ) {}
+    public xlsxService: XlsxService,
+    public timeFormat: TimeFormatPipe,
+  ) { }
 
   ngOnInit(): void {
     this.currentCellar = JSON.parse(localStorage.getItem('currentstore'));
 
     this.dataSource = new tempStorageDataSource(this.tempStorageService);
-    this.dataSource.loadTempStorage(this.currentCellar._id, this.currentPage, 10, '', '');
+    this.dataSource.loadTempStorage(
+      this.currentCellar._id,
+      this.currentPage,
+      10,
+      '',
+      ''
+    );
 
     this.brandsSubscription = this.brandService.readData().subscribe((data) => {
       this.brands = data;
@@ -76,6 +97,7 @@ export class TempStorageComponent implements OnInit, AfterViewInit, AfterContent
       startWith(''),
       map((value) => this._filterBrands(value))
     );
+    console.log(this.dataSource);
   }
 
   ngAfterViewInit(): void {
@@ -134,18 +156,88 @@ export class TempStorageComponent implements OnInit, AfterViewInit, AfterContent
     this.loadTempStorages();
   }
 
-  showStatistic(): void {
-    const dialogRef = this.dialog.open(ModalStatisticsComponent, {
-      width: this.smallScreen ? '100%' : '35%',
-      minHeight: '78vh',
-      maxHeight: '78vh',
-      disableClose: true,
-      panelClass: ['farmacia-dialog', 'farmacia'],
-    });
+  downloadTempStorageXlsx(): void {
+    const body = [
+      [this.currentCellar.name, this.currentCellar.description],
+      [
+        'Codigo de Barras',
+        'Descripción',
+        'Laboratorio',
+        'Inventario',
+        'Último ingreso',
+        'Pedido sugerido',
+        'Existencia Mínima',
+        'Existencia Máxima',
+        'Devoluciones',
+        'Faltantes',
+        'Última estadística'
+      ],
+    ];
 
-    dialogRef.afterClosed().subscribe(result => {
-      if (result !== undefined) {
-      }
-    });
+    const ArrayToPrint: any[] = [];
+
+    if (this.dataSource.tempStorageSubject.value.length === 0) {
+      this.toasty.error('No hay información en la tabla para exportar');
+      return;
+    } else {
+      console.log(this.dataSource.tempStorageSubject.value);
+      this.dataSource.tempStorageSubject.value.forEach((item) => {
+        let exceeds: number | string = 0;
+        let missing: number | string = 0;
+        if (item.maxStock) {
+          if (item.stock > item.maxStock) {
+            exceeds = item.stock - item.maxStock;
+          } else if (item.stock <= item.maxStock) {
+            exceeds = 0;
+          }
+        } else {
+          exceeds = 0;
+        }
+        if (item.minStock) {
+          if (item.stock < item.minStock) {
+            missing = item.minStock - item.stock;
+          } else if (item.stock >= item.minStock) {
+            missing = 0;
+          }
+        } else {
+          missing = 0;
+        }
+
+        const LAST_UPDATE_STOCK = item.lastUpdateStock ? this.timeFormat.transform(
+          String(item.lastUpdateStock),
+          'DD/MM/YYYY hh:mm',
+          'es'
+        ) : '';
+
+        const LAST_UPDATE_STATICS = item.lastUpdateStatics ? this.timeFormat.transform(
+          String(item.lastUpdateStatics),
+          'DD/MM/YYYY hh:mm',
+          'es'
+        ) : '';
+
+        const row: any[] = [
+          item._product.barcode,
+          item._product.description,
+          item._product._brand.name,
+          item.stock,
+          LAST_UPDATE_STOCK,
+          item.supply,
+          item.minStock ? item.minStock : 0,
+          item.maxStock ? item.maxStock : 0,
+          exceeds,
+          missing,
+          LAST_UPDATE_STATICS
+        ];
+        ArrayToPrint.push(row);
+      });
+    }
+
+    ArrayToPrint.forEach((row) => body.push(row));
+
+    this.xlsxService.downloadSinglePage(
+      body,
+      'Inventario Temporal',
+      this.currentCellar.name
+    );
   }
 }

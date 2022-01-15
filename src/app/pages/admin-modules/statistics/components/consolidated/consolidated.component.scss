@@ -1,0 +1,48 @@
+.my-container {
+    height: calc(100vh - 150px) !important;
+    padding: 20px;
+}
+
+.header {
+    margin-bottom: 24px;
+}
+
+.card {
+    height: 644px;
+    border-radius: 12px;
+}
+
+button {
+    margin: 12px 12px;
+}
+
+.table {
+    height: 588px;
+    width: 100%;
+    max-width: 100%;
+    overflow: auto;
+    border-radius: 12px;
+}
+
+mat-paginator {
+    border-radius: 12px;
+}
+
+.column {
+    min-width: 70px;
+    padding-left: 16px;
+    text-align: center;
+}
+
+.mat-table-sticky {
+    background: #f6fbe6;
+    opacity: 1;
+}
+
+.example-sticky-toggle-group {
+    margin: 8px;
+}
+
+.mat-row:hover {
+    background: whitesmoke;
+}
