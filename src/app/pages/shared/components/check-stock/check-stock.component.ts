@@ -78,6 +78,11 @@ export class CheckStockComponent implements OnInit {
         this.distributor_price = distributor_price;
         this.retail_price = retail_price;
         this.cf_price = cf_price;
+    }else {
+      this.wholesale_price = 0;
+      this.distributor_price = 0;
+      this.retail_price = 0;
+      this.cf_price = 0;
     }
     this.tempStorageService.searchByProduct(product._id)
       .subscribe((storages: TempStorageItem[]) => {
