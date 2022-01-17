@@ -88,14 +88,6 @@
     "order": 8
   },
   {
-    "state": "storage",
-    "name": "Inventario",
-    "type": "sub",
-    "icon": "inventory",
-    "iconType": "icon",
-    "order": 9
-  },
-  {
     "state": "purchases",
     "name": "Compras",
     "type": "link",
@@ -184,7 +176,15 @@
     "order": 10
   },
   {
-    "state": "storageTo",
+    "state": "STORAGE",
+    "name": "Inventario",
+    "type": "sub",
+    "icon": "inventory",
+    "iconType": "icon",
+    "order": 9
+  },
+  {
+    "state": "storage",
     "name": "Inventario",
     "type": "link",
     "icon": "people",
@@ -192,7 +192,7 @@
     "order": 1
   },
   {
-    "state": "storage/storageclosing",
+    "state": "storageclosing",
     "name": "Cierre",
     "type": "link",
     "icon": "people",
@@ -200,7 +200,7 @@
     "order": 1
   }, 
   {
-    "state": "storage/storagehistory",
+    "state": "storagehistory",
     "name": "Historial",
     "type": "link",
     "icon": "people",
