@@ -12,6 +12,7 @@ import { BrandService } from 'src/app/core/services/httpServices/brand.service';
   <mat-form-field fxFill appearance="outline" color="accent">
     <mat-label>Laboratorio</mat-label>
     <input matInput #brand [formControl]="_brand" [matAutocomplete]="auto1" type="text" placeholder="Buscar laboratorio..." aria-label="text">
+    <mat-hint>{{ hint }}</mat-hint>
     <mat-autocomplete autoActiveFirstOption #auto1="matAutocomplete" (optionSelected)="selected($event.option.value)">
         <mat-option *ngFor="let option of filteredOptions | async" [value]="option.name">
             <span>{{option.name}}</span>
@@ -27,6 +28,7 @@ import { BrandService } from 'src/app/core/services/httpServices/brand.service';
 export class BrandComponent implements OnInit, AfterContentInit, OnDestroy {
 
   @Input() focus: Boolean = false;
+  @Input() hint: String = '';
   @Output() send = new EventEmitter<BrandItem>();
 
   @ViewChild('brand') brand: ElementRef<HTMLInputElement>;
