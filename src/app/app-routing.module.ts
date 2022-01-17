@@ -111,7 +111,6 @@ const routes: Routes = [
       },
       {
         path: 'storage',
-        pathMatch: 'full',
         loadChildren: () =>
           import('./pages/modules/storage/storage.module').then(
             (m) => m.StorageModule

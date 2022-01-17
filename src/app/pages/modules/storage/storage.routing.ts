@@ -8,10 +8,10 @@ export const StorageRoutes: Routes = [
     path: '',
     component: StorageComponent,
   },
-  // {
-  //   path: '',
-  //   component: InventoryClosingComponent,
-  // },
+  {
+    path: 'storageclosing',
+    component: InventoryClosingComponent,
+  },
   // {
   //   path: '',
   //   component: StorageHistoryComponent,
