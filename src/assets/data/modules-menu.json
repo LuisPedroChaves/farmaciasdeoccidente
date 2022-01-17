@@ -111,12 +111,20 @@
         "order": 1
     },
     {
+        "state": "adminCheckStock",
+        "name": "Consultar existencias",
+        "type": "link",
+        "icon": "checklist",
+        "iconType": "icon",
+        "order": 2
+    },
+    {
         "state": "adminDeliveries",
         "name": "Rutas y entregas",
         "type": "link",
         "icon": "electric_moped",
         "iconType": "icon",
-        "order": 2
+        "order": 3
     },
     {
         "state": "adminOrders",
@@ -124,7 +132,7 @@
         "type": "link",
         "icon": "receipt_long",
         "iconType": "icon",
-        "order": 3
+        "order": 4
     },
     {
         "state": "receivables",
@@ -132,7 +140,7 @@
         "type": "link",
         "icon": "request_quote",
         "iconType": "icon",
-        "order": 4
+        "order": 5
     },
     {
         "state": "uploads",
@@ -140,7 +148,7 @@
         "type": "link",
         "icon": "upload_file",
         "iconType": "icon",
-        "order": 5
+        "order": 6
     },
     {
         "state": "statistics",
@@ -148,7 +156,7 @@
         "type": "link",
         "icon": "trending_up",
         "iconType": "icon",
-        "order": 6
+        "order": 7
     },
     {
         "state": "tempStatistics",
@@ -156,7 +164,7 @@
         "type": "link",
         "icon": "trending_up",
         "iconType": "icon",
-        "order": 7
+        "order": 8
     },
     {
         "state": "adminProducts",
@@ -164,7 +172,7 @@
         "type": "link",
         "icon": "category",
         "iconType": "icon",
-        "order": 8
+        "order": 9
     },
     {
         "state": "providers",
@@ -172,7 +180,7 @@
         "type": "link",
         "icon": "business",
         "iconType": "icon",
-        "order": 9
+        "order": 10
     },
     {
         "state": "users",
@@ -180,6 +188,6 @@
         "type": "link",
         "icon": "people",
         "iconType": "icon",
-        "order": 10
+        "order": 11
     }
 ]

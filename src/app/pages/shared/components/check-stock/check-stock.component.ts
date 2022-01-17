@@ -1,13 +1,13 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { debounceTime, finalize, switchMap, tap } from 'rxjs/operators';
 import { MatTableDataSource } from '@angular/material/table';
+import { debounceTime, finalize, switchMap, tap } from 'rxjs/operators';
 
-import { ProductItem } from 'src/app/core/models/Product';
-import { ProductService } from '../../../../../core/services/httpServices/product.service';
-import { TempStorageItem } from '../../../../../core/models/TempStorage';
-import { TempStorageService } from '../../../../../core/services/httpServices/temp-storage.service';
 import { CellarItem } from 'src/app/core/models/Cellar';
+import { ProductItem } from 'src/app/core/models/Product';
+import { TempStorageItem } from 'src/app/core/models/TempStorage';
+import { ProductService } from 'src/app/core/services/httpServices/product.service';
+import { TempStorageService } from 'src/app/core/services/httpServices/temp-storage.service';
 
 @Component({
   selector: 'app-check-stock',
@@ -16,7 +16,7 @@ import { CellarItem } from 'src/app/core/models/Cellar';
 })
 export class CheckStockComponent implements OnInit {
 
-  smallScreen = window.innerWidth < 960 ? true : false;
+  @Input() showPrices: boolean = false;
   @ViewChild('search') search: ElementRef<HTMLInputElement>;
 
   myGroup = new FormGroup({
@@ -25,12 +25,16 @@ export class CheckStockComponent implements OnInit {
   filteredProducts: ProductItem[];
   isLoading = false;
 
+  wholesale_price = 0
+  distributor_price = 0
+  retail_price = 0
+  cf_price = 0
+
   storages: TempStorageItem[];
   loading = false;
 
   dataSource = new MatTableDataSource();
   columns = ['image', 'cellarName', 'availability', 'stock', 'lastUpdateStock'];
-  currentCellar: CellarItem;
 
   constructor(
     public productService: ProductService,
@@ -38,8 +42,6 @@ export class CheckStockComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.currentCellar = JSON.parse(localStorage.getItem('currentstore'));
-
     this.myGroup.get('search').valueChanges
       .pipe(
         debounceTime(500),
@@ -70,7 +72,14 @@ export class CheckStockComponent implements OnInit {
 
   searchStock(product: ProductItem) {
     this.loading = true;
-    this.tempStorageService.searchByProduct(product._id, this.currentCellar._id)
+    if (product.presentations.length > 0) {
+      const { wholesale_price, distributor_price, retail_price, cf_price } = product.presentations[0];
+        this.wholesale_price = wholesale_price;
+        this.distributor_price = distributor_price;
+        this.retail_price = retail_price;
+        this.cf_price = cf_price;
+    }
+    this.tempStorageService.searchByProduct(product._id)
       .subscribe((storages: TempStorageItem[]) => {
         this.storages = storages;
         this.dataSource = new MatTableDataSource<TempStorageItem>(this.storages);

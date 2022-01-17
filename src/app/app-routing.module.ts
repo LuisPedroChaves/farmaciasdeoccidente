@@ -136,6 +136,10 @@ const routes: Routes = [
         path: 'tempStatistics', pathMatch: 'full',  loadChildren: () => import('./pages/admin-modules/temp-statistics/temp-statistics.module').then(m => m.TempStatisticsModule),
         canActivate: [CheckTokenGuard]
       },
+      {
+        path: 'adminCheckStock', pathMatch: 'full',  loadChildren: () => import('./pages/admin-modules/check-stock/check-stock.module').then(m => m.CheckStockModule),
+        canActivate: [CheckTokenGuard]
+      },
     ]
   },
   {

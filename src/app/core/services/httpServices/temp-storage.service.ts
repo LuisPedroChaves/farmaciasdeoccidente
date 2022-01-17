@@ -57,8 +57,8 @@ export class TempStorageService {
       );
   }
 
-  searchByProduct(_product: string, _cellar: string): Observable<TempStorageItem[]> {
-    return this.http.get(`${this.apiConfigService.API_TEMP_STORAGE}/checkStock/${_cellar}`, {
+  searchByProduct(_product: string): Observable<TempStorageItem[]> {
+    return this.http.get(`${this.apiConfigService.API_TEMP_STORAGE}/checkStock`, {
       params: new HttpParams()
         .set('_product', _product.toString())
     })
