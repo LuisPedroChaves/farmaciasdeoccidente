@@ -1,5 +1,6 @@
 import { CellarItem } from './Cellar';
 import { CustomerItem } from './Customer';
+import { ProductItem } from './Product';
 import { UserItem } from './User';
 
 export interface OrderItem {
@@ -17,6 +18,7 @@ export interface OrderItem {
     address: string,
     town: string,
     department: string,
+    detail: OrderDetailItem[],
     details: string,
     payment: string,
     sellerCode?: string,
@@ -30,4 +32,15 @@ export interface OrderItem {
     textReturned?: string,
     textDeleted?: string,
     deleted?: boolean
+}
+
+export interface OrderDetailItem extends Document {
+    _product: ProductItem;
+    presentation: OrderDetailPresentationItem,
+    quantity: number,
+    price: number,
+}
+export interface OrderDetailPresentationItem extends Document {
+    name: string,
+    quantity: number
 }

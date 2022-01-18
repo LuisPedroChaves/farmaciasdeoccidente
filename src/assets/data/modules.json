@@ -1,4 +1,5 @@
 [
+    { "name": "quotes", "label": "Cotizaciones", "parent": "PHARMA", "level": 1, "options": ["read", "update", "delete", "create"] },
     { "name": "ORDER", "label": "Ordenes", "parent": "PHARMA", "level": 1, "options": ["read", "update", "delete", "create"] },
     { "name": "orders", "label": "Ordenes", "parent": "ORDER", "level": 2, "options": ["read", "update", "delete", "create"] },
     { "name": "dispatches", "label": "Despachos", "parent": "ORDER", "level": 2, "options": ["read", "create"] },

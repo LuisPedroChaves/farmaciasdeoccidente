@@ -66,10 +66,20 @@ export class OrderService implements IDataService<OrderItem[]> {
     return this.http.get(this.apiConfigService.API_ORDER + '/order/' + id);
   }
 
+  getQuotes({startDate, endDate, _cellar}): Observable<any> {
+    return this.http.get(`${this.apiConfigService.API_ORDER}/quotes/${_cellar}?startDate=${startDate}&endDate=${endDate}`);
+  }
+
   createOrder(u: OrderItem): Observable<any> {
     // const jsonParms = JSON.stringify(u);
     u._user = this.userID;
     return this.http.post(this.apiConfigService.API_ORDER, u);
+  }
+
+  createQuote(u: OrderItem): Observable<any> {
+    // const jsonParms = JSON.stringify(u);
+    u._user = this.userID;
+    return this.http.post(this.apiConfigService.API_ORDER + '/quote', u);
   }
 
   updateOrder(u: OrderItem): Observable<any> {
