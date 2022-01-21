@@ -11,16 +11,17 @@ import { Store } from '@ngrx/store';
 import { CellarItem } from 'src/app/core/models/Cellar';
 import { OrderItem } from 'src/app/core/models/Order';
 import { AppState } from 'src/app/core/store/app.reducer';
-import { ConfirmationDialogComponent } from 'src/app/pages/shared-components/confirmation-dialog/confirmation-dialog.component';
 import { OrderService } from '../../../../../core/services/httpServices/order.service';
 import { ToastyService } from '../../../../../core/services/internal/toasty.service';
+import { DetailsQuotesComponent } from '../../../../shared/components/details-quotes/details-quotes.component';
 
 @Component({
   selector: 'app-index',
   templateUrl: './index.component.html',
-  styleUrls: ['./index.component.scss']
+  styleUrls: ['./index.component.scss'],
 })
 export class IndexComponent implements OnInit, AfterContentInit, OnDestroy {
+  smallScreen = window.innerWidth < 960 ? true : false;
 
   sessionsubscription: Subscription;
   quotesSubscription: Subscription;
@@ -30,14 +31,39 @@ export class IndexComponent implements OnInit, AfterContentInit, OnDestroy {
 
   range = new FormGroup({
     start: new FormControl(new Date()),
-    end: new FormControl(new Date())
+    end: new FormControl(new Date()),
   });
   quotesp: string[] = [];
   loading = false;
 
   dataSource = new MatTableDataSource();
-  columnsToDisplay = ['noOrder', 'noBill', 'createdAt', 'nit', 'name', 'phone', 'address', 'sellerCode', 'payment', 'total', 'options'];
-  columnsToDisplay2 = ['image', 'noOrder', 'noBill', 'createdAt', 'nit', 'name', 'phone', 'address', 'sellerCode', 'payment', 'total', 'options'];
+  columnsToDisplay = [
+    'noOrder',
+    'noBill',
+    'createdAt',
+    'nit',
+    'name',
+    'phone',
+    'address',
+    'sellerCode',
+    'payment',
+    'total',
+    'options',
+  ];
+  columnsToDisplay2 = [
+    'image',
+    'noOrder',
+    'noBill',
+    'createdAt',
+    'nit',
+    'name',
+    'phone',
+    'address',
+    'sellerCode',
+    'payment',
+    'total',
+    'options',
+  ];
 
   constructor(
     private orderService: OrderService,
@@ -45,36 +71,35 @@ export class IndexComponent implements OnInit, AfterContentInit, OnDestroy {
     private router: Router,
     private dialog: MatDialog,
     private toasty: ToastyService
-  ) { }
+  ) {}
 
   ngOnInit(): void {
-    this.sessionsubscription = this.store.select('session').pipe(filter(session => session !== null)).subscribe(session => {
-      if (session.permissions !== null) {
-        const b = session.permissions.filter(pr => pr.name === 'quotes');
-        this.quotesp = b.length > 0 ? b[0].options : [];
-      }
-    });
-    this.currentCellar = JSON.parse(localStorage.getItem('currentstore'));
-    this.range.valueChanges
-      .pipe(
-        debounceTime(500),
-      )
-      .subscribe(range => {
-        if (range.start && range.end) {
-          this.loadData(range.start, range.end);
+    this.sessionsubscription = this.store
+      .select('session')
+      .pipe(filter((session) => session !== null))
+      .subscribe((session) => {
+        if (session.permissions !== null) {
+          const b = session.permissions.filter((pr) => pr.name === 'quotes');
+          this.quotesp = b.length > 0 ? b[0].options : [];
         }
       });
+    this.currentCellar = JSON.parse(localStorage.getItem('currentstore'));
+    this.range.valueChanges.pipe(debounceTime(500)).subscribe((range) => {
+      if (range.start && range.end) {
+        this.loadData(range.start, range.end);
+      }
+    });
   }
 
-  ngAfterContentInit() {
+  ngAfterContentInit(): void {
     this.loadData(this.range.get('start').value, this.range.get('end').value);
   }
 
-  ngOnDestroy() {
+  ngOnDestroy(): void {
     this.sessionsubscription?.unsubscribe();
   }
 
-  loadData(start, end) {
+  loadData(start, end): void {
     this.orders = undefined;
     const startDate = start._d ? start._d : start;
     const endDate = end._d ? end._d : end;
@@ -83,37 +108,53 @@ export class IndexComponent implements OnInit, AfterContentInit, OnDestroy {
       endDate,
       _cellar: this.currentCellar._id,
     };
-    this.orderService.getQuotes(FILTER)
-      .subscribe(resp => {
-        this.orders = resp.orders;
-        this.dataSource = new MatTableDataSource<OrderItem>(this.orders);
-      });
+    this.orderService.getQuotes(FILTER).subscribe((resp) => {
+      this.orders = resp.orders;
+      this.dataSource = new MatTableDataSource<OrderItem>(this.orders);
+    });
   }
 
-  selectOrder(order: OrderItem) {
-    this.router.navigate(['/order', order._id, 'orders']);
+  details(purchase: OrderItem): void {
+    const dialogRef = this.dialog.open(DetailsQuotesComponent, {
+      width: this.smallScreen ? '100%' : '1280px',
+      minHeight: '78vh',
+      maxHeight: '78vh',
+      data: { ...purchase },
+      disableClose: true,
+      panelClass: ['farmacia-dialog', 'farmacia'],
+    });
   }
 
-  applyFilter2(event: Event) {
+  // selectOrder(order: OrderItem): void {
+  //   this.router.navigate(['/order', order._id, 'orders']);
+  // }
+
+  applyFilter2(event: Event): void {
     const filterValue = (event.target as HTMLInputElement).value;
     this.dataSource.filter = filterValue.trim().toLowerCase();
   }
 
-  updateOrder(order: OrderItem) {
+  updateOrder(order: OrderItem): void {
     order.state = 'ORDEN';
     this.loading = true;
-    this.orderService.updateOrderState(order).subscribe(data => {
-      if (data.ok === true) {
-        this.toasty.success('Cotización procesada exitosamente');
-        this.loadData(this.range.get('start').value, this.range.get('end').value);
-      } else {
+    this.orderService.updateOrderState(order).subscribe(
+      (data) => {
+        if (data.ok === true) {
+          this.toasty.success('Cotización procesada exitosamente');
+          this.loadData(
+            this.range.get('start').value,
+            this.range.get('end').value
+          );
+        } else {
+          this.loading = false;
+          this.toasty.error('Error al editar la cotización');
+        }
+      },
+      (error) => {
         this.loading = false;
         this.toasty.error('Error al editar la cotización');
       }
-    }, error => {
-      this.loading = false;
-      this.toasty.error('Error al editar la cotización');
-    });
+    );
   }
 
   // TODO: Agregar boton para anular cotizacion
@@ -140,5 +181,4 @@ export class IndexComponent implements OnInit, AfterContentInit, OnDestroy {
   //     }
   //   });
   // }
-
 }

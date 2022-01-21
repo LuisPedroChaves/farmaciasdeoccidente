@@ -1,0 +1,96 @@
+.header {
+    padding: 10px;
+}
+
+.clientspace {
+    height: 369px;
+    width: 100%;
+    overflow: auto;
+}
+
+.h2 {
+    color: #0a1958;
+}
+
+.info-row {
+    margin-bottom: 5px;
+    margin-top: 3px;
+}
+
+.close-button {
+    margin-right: 10px;
+}
+
+.mat-column-presentation {
+    max-width: 50px;
+    font-size: 16px;
+    text-align: center;
+}
+
+.mat-column-product {
+    border-right: 1px solid currentColor;
+    padding-right: 24px;
+    text-align: center;
+}
+
+.mat-column-requested {
+    padding-left: 16px;
+    font-style: italic;
+}
+
+.mat-column-quantity {
+    font-style: italic;
+}
+
+.mat-column-price {
+    font-style: italic;
+}
+
+.mat-column-bonus {
+    font-style: italic;
+}
+
+.mat-column-discount {
+    font-style: italic;
+}
+
+.mat-column-total {
+    font-style: italic;
+}
+
+.mat-column-cost {
+    font-style: italic;
+}
+
+.mat-column-realQuantity {
+    font-style: italic;
+}
+
+.mat-column-expirationDate {
+    text-align: center;
+}
+
+tr.mat-footer-row {
+    font-weight: bold;
+}
+
+th.mat-sort-header-sorted {
+    color: black;
+}
+
+.mat-form-field {
+    font-size: 14px;
+    width: 100%;
+}
+
+.mat-header-cell {
+    background-color: white;
+}
+
+.mat-row:hover {
+    background: whitesmoke;
+}
+
+.mat-card {
+    border-radius: 10px;
+}

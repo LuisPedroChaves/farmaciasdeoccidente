@@ -90,10 +90,21 @@
                     <th mat-header-cell *matHeaderCellDef> Total </th>
                     <td mat-cell *matCellDef="let element"> Q {{element.total | number: '.2'}} </td>
                 </ng-container>
+
                 <ng-container matColumnDef="options">
                     <th mat-header-cell *matHeaderCellDef> </th>
                     <td mat-cell *matCellDef="let element">
-                        <button mat-raised-button (click)="updateOrder(element)" [disabled]="loading" color="warn">Procesar</button>
+                        <button mat-icon-button [matMenuTriggerFor]="menu">
+                            <mat-icon>info</mat-icon>
+                        </button>
+                        <mat-menu #menu="matMenu">
+                            <button mat-menu-item (click)="details(element)" color="warn">
+                                <mat-icon class="material-icons-outlined">preview</mat-icon> Consultar Orden
+                            </button>
+                            <button mat-menu-item [disabled]="loading" (click)="updateOrder(element)" color="warn">
+                                <mat-icon class="material-icons-outlined">done</mat-icon> Procesar
+                            </button>
+                        </mat-menu>
                     </td>
                 </ng-container>
 

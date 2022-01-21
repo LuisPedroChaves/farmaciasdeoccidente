@@ -4,43 +4,43 @@ import { ProductItem } from './Product';
 import { UserItem } from './User';
 
 export interface OrderItem {
-	_id?: string,
-    _cellar: CellarItem,
-    _customer?: CustomerItem,
-    _user: UserItem,
-    _delivery?: UserItem,
-    _userDeleted?: UserItem,
-    noOrder: string,
-    noBill: string,
-    nit: string,
-    name: string,
-    phone: string,
-    address: string,
-    town: string,
-    department: string,
-    detail: OrderDetailItem[],
-    details: string,
-    payment: string,
-    sellerCode?: string,
-    total: number,
-    state: string,
-    date: string,
-    timeOrder: string,
-    timeDispatch?: string,
-    timeSend?: string,
-    timeDelivery?: string,
-    textReturned?: string,
-    textDeleted?: string,
-    deleted?: boolean
+  _id?: string;
+  _cellar: CellarItem;
+  _customer?: CustomerItem;
+  _delivery?: UserItem;
+  _user: UserItem;
+  _userDeleted?: UserItem;
+  address: string;
+  date: string;
+  deleted?: boolean;
+  department: string;
+  detail: OrderDetailItem[];
+  details: string;
+  name: string;
+  nit: string;
+  noBill: string;
+  noOrder: string;
+  payment: string;
+  phone: string;
+  sellerCode?: string;
+  state: string;
+  textDeleted?: string;
+  textReturned?: string;
+  timeDelivery?: string;
+  timeDispatch?: string;
+  timeOrder: string;
+  timeSend?: string;
+  total: number;
+  town: string;
 }
 
 export interface OrderDetailItem extends Document {
-    _product: ProductItem;
-    presentation: OrderDetailPresentationItem,
-    quantity: number,
-    price: number,
+  _product: ProductItem;
+  presentation: OrderDetailPresentationItem;
+  price: number;
+  quantity: number;
 }
 export interface OrderDetailPresentationItem extends Document {
-    name: string,
-    quantity: number
+  name: string;
+  quantity: number;
 }
