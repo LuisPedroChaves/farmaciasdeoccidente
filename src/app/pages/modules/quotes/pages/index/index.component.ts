@@ -110,6 +110,7 @@ export class IndexComponent implements OnInit, AfterContentInit, OnDestroy {
     };
     this.orderService.getQuotes(FILTER).subscribe((resp) => {
       this.orders = resp.orders;
+      console.log(this.orders);
       this.dataSource = new MatTableDataSource<OrderItem>(this.orders);
     });
   }
@@ -145,6 +146,7 @@ export class IndexComponent implements OnInit, AfterContentInit, OnDestroy {
             this.range.get('start').value,
             this.range.get('end').value
           );
+          this.loading = false;
         } else {
           this.loading = false;
           this.toasty.error('Error al editar la cotización');

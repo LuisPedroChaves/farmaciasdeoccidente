@@ -8,7 +8,7 @@ import {
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
-import { OrderItem } from 'src/app/core/models/Order';
+import { OrderDetailItem, OrderItem } from 'src/app/core/models/Order';
 
 @Component({
   selector: 'app-details-quotes',
@@ -24,7 +24,7 @@ export class DetailsQuotesComponent implements OnInit, AfterViewInit {
     'product',
     'quantity',
     'price',
-    'total',
+    'subtotal',
   ];
   dataSource = new MatTableDataSource();
 
@@ -36,23 +36,23 @@ export class DetailsQuotesComponent implements OnInit, AfterViewInit {
   ngOnInit(): void {
     this.quote = this.data;
     console.log(this.quote);
-    // this.dataSource = new MatTableDataSource<OrderItem>(this.quote.detail);
-    // /* #region  función para poder filtrar subdocumentos dentro de la tabla */
-    // this.dataSource.filterPredicate = (data: OrderItem, filter) => {
-    // tslint:disable-next-line: max-line-length
-    //   const dataStr = data.detail[].presentation.name + data._product.description + data.requested + data.quantity + data.price + data.bonus + data.discount + data.cost + data.realQuantity + data.expirationDate;
-    //   return dataStr.trim().toLowerCase().indexOf(filter) != -1;
-    // }
-    // /* #endregion */
-    // /* #region función para poder ordenar subdocumentos dentro de la tabla */
-    // this.dataSource.sortingDataAccessor = (item: OrderItem, property) => {
-    //   switch (property) {
-    //     case 'presentation': return item.presentation.name;
-    //     case 'product': return item._product.description;
-    //     default: return item[property];
-    //   }
-    // };
-    // this.dataSource.sort = this.sort;
+    this.dataSource = new MatTableDataSource<OrderDetailItem>(this.quote.detail);
+    /* #region  función para poder filtrar subdocumentos dentro de la tabla */
+    this.dataSource.filterPredicate = (data: OrderDetailItem, filter) => {
+      // tslint:disable-next-line: max-line-length
+      const dataStr = data.presentation.name + data._product.description + data.quantity + data.price;
+      return dataStr.trim().toLowerCase().indexOf(filter) !== -1;
+    };
+    /* #endregion */
+    /* #region función para poder ordenar subdocumentos dentro de la tabla */
+    this.dataSource.sortingDataAccessor = (item: OrderDetailItem, property) => {
+      switch (property) {
+        case 'presentation': return item.presentation.name;
+        case 'product': return item._product.description;
+        default: return item[property];
+      }
+    };
+    this.dataSource.sort = this.sort;
     /* #endregion */
   }
 

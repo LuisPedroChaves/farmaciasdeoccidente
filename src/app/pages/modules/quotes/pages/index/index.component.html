@@ -98,8 +98,8 @@
                             <mat-icon>info</mat-icon>
                         </button>
                         <mat-menu #menu="matMenu">
-                            <button mat-menu-item (click)="details(element)" color="warn">
-                                <mat-icon class="material-icons-outlined">preview</mat-icon> Consultar Orden
+                            <button *ngIf="element.detail.length > 0" mat-menu-item (click)="details(element)" color="warn">
+                                <mat-icon class="material-icons-outlined">preview</mat-icon> Consultar Cotización
                             </button>
                             <button mat-menu-item [disabled]="loading" (click)="updateOrder(element)" color="warn">
                                 <mat-icon class="material-icons-outlined">done</mat-icon> Procesar
