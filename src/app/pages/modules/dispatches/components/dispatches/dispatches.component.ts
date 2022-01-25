@@ -11,6 +11,7 @@ import { OrderService } from '../../../../../core/services/httpServices/order.se
 import * as moment from 'moment';
 import { PrintService } from '../../../../../core/services/internal/print.service';
 import { filter } from 'rxjs/operators';
+import { DetailsQuotesComponent } from '../../../../shared/components/details-quotes/details-quotes.component';
 
 @Component({
   selector: 'app-dispatches',
@@ -61,9 +62,21 @@ export class DispatchesComponent implements OnInit, OnDestroy {
     this.loading = true;
     this.orderService.getDispatches(this.currentCellar._id).subscribe(data => {
       this.dispatches = data.dispatches;
+      console.log(this.dispatches);
       this.loading = false;
     });
   }
+  details(purchase: OrderItem): void {
+    const dialogRef = this.dialog.open(DetailsQuotesComponent, {
+      width: this.smallScreen ? '100%' : '1280px',
+      minHeight: '78vh',
+      maxHeight: '78vh',
+      data: { ...purchase },
+      disableClose: true,
+      panelClass: ['farmacia-dialog', 'farmacia'],
+    });
+  }
+
 
   selectOrder(order: OrderItem) {
     this.router.navigate(['/order', order._id, 'dispatches']);

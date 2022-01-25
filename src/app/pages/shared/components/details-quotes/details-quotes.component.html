@@ -1,0 +1,82 @@
+<div class="farmacia">
+    <header fxLayout="row wrap" fxLayoutAlign="center center" class="header">
+        <!-- <h2 style="margin: 0;" class="h2">Requisición #{{ quote.requisition }}</h2> -->
+        <span fxFlex></span>
+        <button mat-icon-button (click)="dialogRef.close()">
+            <mat-icon>close</mat-icon>
+        </button>
+    </header>
+    <div fxLayout="column">
+        <mat-card class="mat-elevation-z2">
+            <mat-card-header>
+                <mat-card-title *ngIf="quote.state === 'ORDEN'" >Orden #{{ quote.noOrder }}</mat-card-title>
+                <mat-card-title *ngIf="quote.state === 'COTIZACION'" >Cotización #{{ quote.noOrder }}</mat-card-title>
+                <mat-card-subtitle>Detalle</mat-card-subtitle>
+                <!-- <span fxFlex></span> Creación: {{ quote.created | date: 'dd/MM/yyyy HH:mm' }} - {{ quote._user.name }} -->
+            </mat-card-header>
+            <mat-card-content>
+                {{ quote.details }}
+            </mat-card-content>
+        </mat-card>
+        <br>
+        <mat-card *ngIf="quote.deleted" class="mat-elevation-z2">
+            <mat-card-header>
+                <mat-card-title>Anulación</mat-card-title>
+                <mat-card-subtitle>{{ quote._userDeleted.name }}</mat-card-subtitle>
+            </mat-card-header>
+            <mat-card-content>
+                {{ quote.textDeleted }}
+            </mat-card-content>
+        </mat-card>
+    </div>
+    <div fxLayout="row wrap">
+        <mat-form-field appearance="standard">
+            <mat-label>Filtro</mat-label>
+            <input matInput (keyup)="applyFilter($event)" placeholder="Ej. patrimadol" #input>
+        </mat-form-field>
+        <div fxLayout="row wrap" class="clientspace" data-simplebar>
+            <table mat-table [dataSource]="dataSource" matSort>
+
+                <ng-container matColumnDef="presentation">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Presentación</th>
+                    <td mat-cell *matCellDef="let element">{{ element.presentation.name }}</td>
+                </ng-container>
+
+                <ng-container matColumnDef="product">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Producto </th>
+                    <td mat-cell *matCellDef="let element">{{element._product.description}}</td>
+                </ng-container>
+
+                <ng-container matColumnDef="quantity">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Cantidad </th>
+                    <td mat-cell *matCellDef="let element"> {{element.quantity}} </td>
+                </ng-container>
+
+                <ng-container matColumnDef="price">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Precio </th>
+                    <td mat-cell *matCellDef="let element"> {{element.price}} </td>
+                </ng-container>
+
+                <ng-container matColumnDef="subtotal">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header> SubTotal </th>
+                    <td mat-cell *matCellDef="let element">
+                        {{(element.quantity * element.price) | number: '.2'}} </td>
+                </ng-container>
+
+                <tr mat-header-row *matHeaderRowDef="displayedColumns;  sticky: true"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                <!-- Fila mostrada cuando no hay datos coincidentes. -->
+                <tr class="mat-row" *matNoDataRow>
+                    <td class="mat-cell" colspan="11">No hay datos que coincidan con el filtro "{{input.value}}"</td>
+                </tr>
+            </table>
+        </div>
+    </div>
+    <div fxLayout="row">
+        <button mat-button (click)="dialogRef.close()" class="info-row close-button">
+            CANCELAR
+        </button>
+        <span fxFlex></span>
+        <h2 class="product-font ma-0">TOTAL: Q. {{ quote.total | number: '.2' }}</h2>
+    </div>
+</div>
