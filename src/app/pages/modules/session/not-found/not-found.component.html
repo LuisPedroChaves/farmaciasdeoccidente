@@ -1,1 +1,19 @@
-<p>not-found works!</p>
+<div class="app" fxLayout="column" fxLayoutAlign="center center">
+    <div fxLayout="row" fxLayoutAlign="center center">
+        <mat-card class=" mat-elevation-z24">
+            <mat-card-header>
+                <mat-icon matCardAvatar>error_outline</mat-icon>
+                <mat-card-title>Error 404</mat-card-title>
+            </mat-card-header>
+            <mat-card-content>
+                <h3>No podemos encontrar la página que está buscando.</h3>
+            </mat-card-content>
+            <mat-card-actions>
+                <button mat-flat-button color="warn" [routerLink]="'/'">
+                    <mat-icon>home</mat-icon>
+                    Regresar al inicio
+                </button>
+            </mat-card-actions>
+        </mat-card>
+    </div>
+</div>

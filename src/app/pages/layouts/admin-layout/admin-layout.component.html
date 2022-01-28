@@ -14,7 +14,7 @@
           <button  mat-icon-button class="optionbutton" (click)="showPanel('messages')">
               <mat-icon matBadge="5" matBadgeColor="warn">chat_bubble_outline</mat-icon>
           </button> -->
-        <button mat-icon-button class="optionbutton avatartopbutton" [matMenuTriggerFor]="menu">
+        <button mat-icon-button [ngClass]="{'onLine': wsService.socketStatus, 'offLine': !wsService.socketStatus}" class="optionbutton avatartopbutton" [matMenuTriggerFor]="menu">
             <img [src]="getImage()" alt="Avatar" class="avatar-top">
         </button>
         <!-- <mat-menu #menu="matMenu"> -->
@@ -31,22 +31,14 @@
     </div>
     <mat-sidenav-container class="sidenav-container app-inner">
         <mat-sidenav id="sidebar-panel" [mode]="this.mediaMatcher.matches ? 'over' : 'side'" [(opened)]="collapse" (open)="sidePanelOpened = true" (close)="sidePanelOpened = false" #sidemenu [ngStyle]="{ width: '250px' }" style="margin-top: 0; padding-top: 0 !important;">
-            <mat-nav-list style="padding-top: 0;">
-                <mat-list-item *ngFor="let m of menuItems" [routerLink]="m.state" class="menu-items">
-                    <mat-icon color="accent" mat-list-icon class="material-icons-outlined">{{ m.icon }}</mat-icon>
-                    <h4 mat-line>{{ m.name }}</h4>
-                </mat-list-item>
-                <div class="bottomStick">
-                    <mat-list-item *ngIf="wsService.socketStatus" class="menu-items">
-                        <mat-icon color="warn" mat-list-icon>sensors</mat-icon>
-                        <h4 mat-line>En línea</h4>
+            <ngx-simplebar style="height: 100%;">
+                <mat-nav-list style="padding-top: 0;">
+                    <mat-list-item *ngFor="let m of menuItems" [routerLink]="m.state" class="menu-items">
+                        <mat-icon color="accent" mat-list-icon class="material-icons-outlined">{{ m.icon }}</mat-icon>
+                        <h4 mat-line>{{ m.name }}</h4>
                     </mat-list-item>
-                    <mat-list-item *ngIf="!wsService.socketStatus" class="menu-items">
-                        <mat-icon style="color: rgba(233, 21, 21, 0.75) !important;" mat-list-icon>sensors_off</mat-icon>
-                        <h4 mat-line>Sin conexión</h4>
-                    </mat-list-item>
-                </div>
-            </mat-nav-list>
+                </mat-nav-list>
+            </ngx-simplebar>
         </mat-sidenav>
         <router-outlet *ngIf="!loading"></router-outlet>
     </mat-sidenav-container>

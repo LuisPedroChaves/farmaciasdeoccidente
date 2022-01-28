@@ -105,7 +105,6 @@
 }
 
 .avatartopbutton {
-    background-color: rgba(255, 255, 255, 0.15);
     margin-left: 5px;
 }
 
@@ -117,4 +116,16 @@
     margin-top: -3px;
 }
 
-.bottomStick{/*border-top:1px solid green;border-bottom:1px solid green;*/position:absolute; bottom:0}
+.bottomStick {
+    /*border-top:1px solid green;border-bottom:1px solid green;*/
+    position: absolute;
+    bottom: 0
+}
+
+.onLine {
+    background-color: rgb(0, 208, 51) !important;
+}
+
+.offLine {
+    background-color: red !important;
+}
