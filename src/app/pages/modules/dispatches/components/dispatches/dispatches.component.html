@@ -28,6 +28,12 @@
               <div fxFlex="0 0 auto" class="action-blurb">&nbsp;|&nbsp;</div>
             </div>
             <div *ngIf="dispatchesp && dispatchesp.includes('create')"  fxFlex="100" fxLayout="row wrap" fxLayoutAlign="center center">
+              <button mat-button *ngIf="c.detail.length > 0"  (click)="details(c)" class="info-row">
+                <mat-icon>preview</mat-icon>
+                Ver Detalle
+              </button>
+            </div>
+            <div *ngIf="dispatchesp && dispatchesp.includes('create')"  fxFlex="100" fxLayout="row wrap" fxLayoutAlign="center center">
               <mat-form-field appearance="outline" color="primary" class="width-all">
                 <mat-label>No. de factura</mat-label>
                 <input [(ngModel)]="c.noBill" type="text" matInput  autocomplete="false"   placeholder="Ingrese el número de factura">
@@ -36,6 +42,7 @@
                 <mat-icon>archive</mat-icon>
                 Despachar
               </button>
+
             </div>
           </div>
         </div>

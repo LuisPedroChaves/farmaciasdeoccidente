@@ -19,6 +19,10 @@ const routes: Routes = [
         canActivate: [CheckTokenGuard]
       },
       {
+        path: 'quotes', loadChildren: () => import('./pages/modules/quotes/quotes.module').then(m => m.QuotesModule),
+        canActivate: [CheckTokenGuard]
+      },
+      {
         path: 'orders', pathMatch: 'full',  loadChildren: () => import('./pages/modules/orders/orders.module').then(m => m.OrdersModule),
         canActivate: [CheckTokenGuard]
       },
@@ -134,6 +138,10 @@ const routes: Routes = [
       },
       {
         path: 'tempStatistics', pathMatch: 'full',  loadChildren: () => import('./pages/admin-modules/temp-statistics/temp-statistics.module').then(m => m.TempStatisticsModule),
+        canActivate: [CheckTokenGuard]
+      },
+      {
+        path: 'adminCheckStock', pathMatch: 'full',  loadChildren: () => import('./pages/admin-modules/check-stock/check-stock.module').then(m => m.CheckStockModule),
         canActivate: [CheckTokenGuard]
       },
     ]

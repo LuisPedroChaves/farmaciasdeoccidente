@@ -1,0 +1,287 @@
+<div fxFlex fxLayout="column" class="section-content">
+    <header class="module-header section" fxLayout="row wrap">
+        <button mat-icon-button class="close-button" [routerLink]="'/quotes'">
+      <mat-icon>close</mat-icon>
+    </button>
+        <h2 color="accent" class="ma-0 info-row T">Nueva cotización</h2>
+        <div fxFlex></div>
+    </header>
+    <div fxFlex="row" class="my-container">
+        <div class="card">
+            <form [formGroup]="form" autocomplete="off">
+                <div fxLayout="row" fxLayoutGap="10px">
+                    <div fxFlex="50px" fxHide.xs fxLayoutAlign="center center">
+                        <mat-icon color="accent" class="material-icons-outlined">search
+                        </mat-icon>
+                    </div>
+                    <div fxFlex>
+                        <mat-form-field appearance="outline" color="warn" class="width-all">
+                            <input #search matInput [matAutocomplete]="auto" [formControl]="searchCustomersCtrl" placeholder="Buscar cliente..." aria-label="State">
+                            <mat-autocomplete #auto="matAutocomplete" [displayWith]="getCustomer" (optionSelected)="selectCustomer($event.option.value)">
+                                <mat-option *ngIf="isLoading">
+                                    <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+                                </mat-option>
+                                <ng-container *ngIf="!isLoading">
+                                    <mat-option *ngFor="let customer of filteredCostumers" [value]="customer">
+                                        <span><b>{{customer.phone}}</b> | {{customer.nit}} | {{
+                                            customer.name }}</span>
+                                    </mat-option>
+                                </ng-container>
+                            </mat-autocomplete>
+                            <mat-hint>Ingrese el teléfono, nit o nombre del cliente completos.</mat-hint>
+                        </mat-form-field>
+                    </div>
+                </div>
+                <div *ngIf=" selectedCustomer.addresses.length > 0" fxLayout="row wrap" fxLayoutAlign="start center" fxLayoutGap="10px" style="margin-top: 5px;">
+                    <div fxFlex="50px" fxHide.xs fxLayoutAlign="center center">
+                        <mat-icon color="accent" class="material-icons-outlined grayicon">place
+                        </mat-icon>
+                    </div>
+                    <div fxFlex fxFlex.xs="100%" class="inputpadding">
+                        <mat-form-field appearance="outline" color="primary" class="width-all">
+                            <mat-label>Direcciones disponibles</mat-label>
+                            <mat-select (selectionChange)="selectAddress($event.value)">
+                                <mat-option *ngFor="let address of selectedCustomer.addresses" [value]="address">
+                                    {{address.address}} | {{address.town}}, {{address.department}}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                </div>
+                <div fxLayout="row">
+                    <div fxFlex="60%" fxLayout="column">
+                        <div fxLayout="row wrap" fxLayoutAlign="start center" fxLayoutGap="10px" style="margin-top: 8px;">
+                            <div fxFlex="50px" fxHide.xs fxLayoutAlign="center center">
+                                <mat-icon color="accent" class="material-icons-outlined grayicon">phone</mat-icon>
+                            </div>
+                            <div fxFlex fxFlex.xs="100%" class="inputpadding">
+                                <mat-form-field appearance="outline" color="primary" class="width-all">
+                                    <mat-label>Nit.</mat-label>
+                                    <input matInput formControlName="nit" type="text" placeholder="Ingrese el numero de Nit" aria-label="Number">
+                                </mat-form-field>
+                            </div>
+                            <div fxFlex fxFlex.xs="100%" class="inputpadding">
+                                <mat-form-field appearance="outline" color="primary" class="width-all">
+                                    <mat-label>Teléfono</mat-label>
+                                    <input formControlName="phone" type="text" matInput placeholder="Ingrese un número de teléfono">
+                                </mat-form-field>
+                            </div>
+                            <div fxFlex="10px"></div>
+                        </div>
+                        <div fxLayout="row wrap" fxLayoutAlign="start center" fxLayoutGap="10px" style="margin-top: 8px;">
+                            <div fxFlex="50px" fxHide.xs fxLayoutAlign="center center">
+                                <mat-icon color="accent" class="material-icons-outlined grayicon">person
+                                </mat-icon>
+                            </div>
+                            <div fxFlex fxFlex.xs="100%" class="inputpadding">
+                                <mat-form-field appearance="outline" color="primary" class="width-all">
+                                    <mat-label>Nombre</mat-label>
+                                    <input formControlName="name" type="text" matInput placeholder="Ingrese el nombre del cliente">
+                                </mat-form-field>
+                            </div>
+                            <div fxFlex="10px"></div>
+                        </div>
+                        <div fxLayout="row wrap" fxLayoutAlign="start center" fxLayoutGap="10px" style="margin-top: 8px;">
+                            <div fxFlex="50px" fxHide.xs fxLayoutAlign="center center">
+                                <mat-icon color="accent" class="material-icons-outlined grayicon">
+                                    work_outline
+                                </mat-icon>
+                            </div>
+                            <div fxFlex fxFlex.xs="100%" class="inputpadding">
+                                <mat-form-field appearance="outline" color="primary" class="width-all">
+                                    <mat-label>Método de pago</mat-label>
+                                    <mat-select formControlName="payment">
+                                        <mat-option value="EFECTIVO">
+                                            Efectivo
+                                        </mat-option>
+                                        <mat-option value="TARJETA">
+                                            Tarjeta
+                                        </mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                            </div>
+                            <div fxFlex fxFlex.xs="100%" class="inputpadding">
+                                <mat-form-field appearance="outline" color="primary" class="width-all">
+                                    <mat-label>Código del vendedor</mat-label>
+                                    <input formControlName="sellerCode" type="text" matInput placeholder="Ingrese el código del vendedor">
+                                </mat-form-field>
+                            </div>
+                            <div fxFlex="10px"></div>
+                        </div>
+                    </div>
+                    <div fxLayout="column">
+                        <div fxFlex fxFlex.xs="100%" class="inputpadding" style="margin-top: 8px;">
+                            <mat-accordion class="example-headers-align" multi>
+                                <mat-expansion-panel>
+                                    <mat-expansion-panel-header>
+                                        <mat-panel-title>
+                                            Nueva dirección
+                                        </mat-panel-title>
+                                        <mat-panel-description>
+                                            Ingrese una nueva dirección
+                                            <mat-icon>place</mat-icon>
+                                        </mat-panel-description>
+                                    </mat-expansion-panel-header>
+                                    <div fxLayout="row wrap" fxLayoutAlign="start center">
+                                        <div fxFlex fxLayout="row wrap">
+                                            <div fxFlex class="inputpadding">
+                                                <mat-form-field appearance="outline" color="primary" class="width-all">
+                                                    <mat-label>Direccion</mat-label>
+                                                    <input [(ngModel)]="newAddress.address" [ngModelOptions]="{standalone: true}" type="text" matInput placeholder="Ingrese la Zona">
+                                                </mat-form-field>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div fxLayout="row wrap" fxLayoutAlign="start center">
+                                        <div fxFlex fxLayout="row wrap">
+                                            <div fxFlex="50%" fxFlex.xs="100%" class="inputpadding">
+                                                <mat-form-field appearance="outline" color="primary" class="width-all">
+                                                    <mat-label>Municipio</mat-label>
+                                                    <input [(ngModel)]="newAddress.town" [ngModelOptions]="{standalone: true}" type="text" matInput placeholder="Ingrese el municipio">
+                                                </mat-form-field>
+                                            </div>
+                                            <div fxFlex="50%" fxFlex.xs="100%" class="inputpadding">
+                                                <mat-form-field color="primary" class="width-all" appearance="outline">
+                                                    <mat-label>Departamento</mat-label>
+                                                    <mat-select [(ngModel)]="newAddress.department" [ngModelOptions]="{standalone: true}">
+                                                        <mat-option value="Alta Verapaz">Alta Verapaz</mat-option>
+                                                        <mat-option value="Baja Verapaz">Baja Verapaz</mat-option>
+                                                        <mat-option value="Chimaltenango">Chimaltenango</mat-option>
+                                                        <mat-option value="Chiquimula">Chiquimula</mat-option>
+                                                        <mat-option value="Petén">Petén</mat-option>
+                                                        <mat-option value="El Progreso">El Progreso</mat-option>
+                                                        <mat-option value="Quiché">Quiché</mat-option>
+                                                        <mat-option value="Escuintla">Escuintla</mat-option>
+                                                        <mat-option value="Guatemala">Guatemala</mat-option>
+                                                        <mat-option value="Huehuetenango">Huehuetenango</mat-option>
+                                                        <mat-option value="Izabal">Izabal</mat-option>
+                                                        <mat-option value="Jalapa">Jalapa</mat-option>
+                                                        <mat-option value="Jutiapa">Jutiapa</mat-option>
+                                                        <mat-option value="Quetzaltenango">Quetzaltenango</mat-option>
+                                                        <mat-option value="Retalhuleu">Retalhuleu</mat-option>
+                                                        <mat-option value="Sacatepéquez">Sacatepéquez</mat-option>
+                                                        <mat-option value="San Marcos">San Marcos</mat-option>
+                                                        <mat-option value="Santa Rosa">Santa Rosa</mat-option>
+                                                        <mat-option value="Sololá">Sololá</mat-option>
+                                                        <mat-option value="Suchitepéquez">Suchitepéquez</mat-option>
+                                                        <mat-option value="Totonicapán">Totonicapán</mat-option>
+                                                        <mat-option value="Zacapa">Zacapa</mat-option>
+                                                    </mat-select>
+                                                </mat-form-field>
+                                            </div>
+                                        </div>
+                                        <button mat-button (click)="addAddress()" color="warn">
+                  <mat-icon>add</mat-icon> Ingresar
+                </button>
+                                    </div>
+                                </mat-expansion-panel>
+                            </mat-accordion>
+                        </div>
+                    </div>
+                </div>
+                <div fxLayout="row wrap" fxLayoutAlign="center center" style="margin-top: 5px;">
+                    <h2 fxFlex="80%" fxLayoutAlign="center center">Dirección seleccionada:</h2>
+                    <h4 fxFlex="80%" fxLayoutAlign="center center" *ngIf="!form.get('address').value">¡Vacio!, Seleccione o ingrese una dirección
+                    </h4>
+                    <h4 fxFlex="80%" fxLayoutAlign="center center">{{form.get('address').value}} {{form.get('town').value}} {{ form.get('department').value }}</h4>
+                </div>
+                <div class="section detail-container" data-simplebar>
+                    <table mat-table [dataSource]="dataSource" formArrayName="detail" class="mat-elevation-z4 demo-table">
+                        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                        <tr mat-row *matRowDef="let row; let i = index; columns: displayedColumns;"></tr>
+
+                        <ng-container matColumnDef="quantity">
+                            <th mat-header-cell *matHeaderCellDef> Cantidad. </th>
+                            <td mat-cell *matCellDef="let row; let index = index" [formGroupName]="index">
+                                <mat-form-field appearance="outline" color="primary" class="inputquantity">
+                                    <mat-label>Cantidad</mat-label>
+                                    <input matInput formControlName="quantity" type="number" placeholder="0" aria-label="Number">
+                                </mat-form-field>
+                            </td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="_product">
+                            <th mat-header-cell *matHeaderCellDef> Producto </th>
+                            <td mat-cell *matCellDef="let row; let index = index" [formGroupName]="index">
+                                <mat-form-field appearance="outline" color="warn" class="width-all">
+                                    <span matPrefix *ngIf="!detailForm.at(index).get('_product').invalid" class="inputPresentation">{{ detailForm.at(index).get('_product').value.presentations.name }}
+                    &nbsp;</span>
+                                    <input matInput [matAutocomplete]="auto" formControlName="_product" placeholder="Buscar producto..." aria-label="State">
+                                    <mat-error *ngIf="detailForm.at(index).get('_product').invalid">
+                                        Seleccione un producto de la lista.
+                                    </mat-error>
+                                    <mat-autocomplete #auto="matAutocomplete" [displayWith]="getShowDescription" (optionSelected)="addRow($event.option.value, index)">
+                                        <mat-option *ngIf="isLoading">
+                                            <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+                                        </mat-option>
+                                        <ng-container *ngIf="!isLoading">
+                                            <mat-option *ngFor="let product of filteredProducts[index]" [value]="product">
+                                                <div fxFlex="row wrap">
+                                                    <span><b>{{product.code}}</b> | {{product.description}} |
+                                                        <b>Q {{product.presentations.cf_price | number: '.2' }}</b></span>
+                                                    <div fxFlex></div>
+                                                    <mat-chip-list class="chip-padding">
+                                                        <mat-chip class="chip-color">{{ product.presentations.name }}</mat-chip>
+                                                        <mat-chip>{{ product.presentations.quantity }} ud.</mat-chip>
+                                                    </mat-chip-list>
+                                                </div>
+                                            </mat-option>
+                                        </ng-container>
+                                    </mat-autocomplete>
+                                </mat-form-field>
+                            </td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="price">
+                            <th mat-header-cell *matHeaderCellDef> Precio </th>
+                            <td mat-cell *matCellDef="let row; let index = index" [formGroupName]="index">
+                                Q {{ detailForm.at(index).get('price').value | number: '.2' }}
+                            </td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="remove">
+                            <th mat-header-cell *matHeaderCellDef> Quitar </th>
+                            <td mat-cell *matCellDef="let row; let index = index" [formGroupName]="index">
+                                <button mat-icon-button *ngIf="detailForm.length > 1" (click)="removeRow(index)">
+                  <mat-icon>close</mat-icon>
+                </button>
+                            </td>
+                        </ng-container>
+                    </table>
+                </div>
+                <div fxLayout="row wrap" fxLayoutAlign="start center" fxLayoutGap="10px" style="margin-top: 8px;">
+                    <div fxFlex="50px" fxHide.xs fxLayoutAlign="center center">
+                        <mat-icon color="accent" class="material-icons-outlined grayicon">rate_review
+                        </mat-icon>
+                    </div>
+                    <div fxFlex fxFlex.xs="50%" class="inputpadding">
+                        <mat-form-field appearance="outline" color="primary" class="width-all">
+                            <mat-label>Detalles del pedido</mat-label>
+                            <textarea matInput formControlName="details" rows="3" cols="75" placeholder="Describe los detalles del pedido"></textarea>
+                        </mat-form-field>
+                    </div>
+                    <div fxFlex="10px"></div>
+                </div>
+                <div class="section" fxLayout="row wrap">
+                    <div fxFlex="100" fxLayoutAlign="center center" fxLayout="row wrap">
+                        <h3 class="product-font ma-0">Cantidad: {{ detailForm.length }}</h3>
+                        <span fxFlex></span>
+                        <button mat-raised-button [routerLink]="'/quotes'" class="close-button" style="color:brown;">
+              CANCELAR
+            </button>
+                        <button mat-raised-button *ngIf="!loading" (click)="clear()" color="accent" class="close-button">
+                            LIMPIAR
+            </button>
+                        <button *ngIf="!loading" mat-raised-button [disabled]="form.invalid" (click)="saveOrder()" color="warn" class="close-button">
+              CREAR NUEVA COTIZACIÓN
+            </button>
+                        <mat-progress-spinner *ngIf="loading" mode="indeterminate" diameter="30" color="warn">
+                        </mat-progress-spinner>
+                        <span fxFlex></span>
+                        <h2 class="product-font ma-0">TOTAL: Q. {{ getTotal() | number: '.2' }}</h2>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

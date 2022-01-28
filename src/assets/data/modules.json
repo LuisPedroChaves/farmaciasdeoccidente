@@ -1,4 +1,5 @@
 [
+    { "name": "quotes", "label": "Cotizaciones", "parent": "PHARMA", "level": 1, "options": ["read", "update", "delete", "create"] },
     { "name": "ORDER", "label": "Ordenes", "parent": "PHARMA", "level": 1, "options": ["read", "update", "delete", "create"] },
     { "name": "orders", "label": "Ordenes", "parent": "ORDER", "level": 2, "options": ["read", "update", "delete", "create"] },
     { "name": "dispatches", "label": "Despachos", "parent": "ORDER", "level": 2, "options": ["read", "create"] },
@@ -13,6 +14,7 @@
     { "name": "storage", "label": "Inventario", "parent": "PHARMA", "level": 1, "options": ["read", "update", "delete", "create"] },
     { "name": "purchases", "label": "Compras", "parent": "PHARMA", "level": 1, "options": ["read", "update", "delete", "create"] },
     { "name": "/admin", "label": "Sucursales", "parent": "ADMIN", "level": 1, "options": ["read", "update", "delete", "create"] },
+    { "name": "adminCheckStock", "label": "Consultar existencias", "parent": "ADMIN", "level": 1, "options": [] },
     { "name": "adminDeliveries", "label": "Rutas y entregas", "parent": "ADMIN", "level": 1, "options": ["read", "update", "delete", "create"] },
     { "name": "adminOrders", "label": "Ordenes", "parent": "ADMIN", "level": 1, "options": ["read", "update", "delete", "create"] },
     { "name": "receivables", "label": "Cuentas por cobrar", "parent": "ADMIN", "level": 1, "options": ["read", "update", "delete", "create"] },
