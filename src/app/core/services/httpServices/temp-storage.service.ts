@@ -69,6 +69,16 @@ export class TempStorageService {
       )
   }
 
+  search(_cellar: string, search: string = ''): Observable<TempStorageItem[]> {
+    return this.http.get(`${this.apiConfigService.API_TEMP_STORAGE}/search/${_cellar}`, {
+      params: new HttpParams().set('search', search.toString()),
+    }).pipe(
+      map((resp: any) => {
+        return resp.products;
+      })
+    )
+  }
+
   uploadFile(file: File, _cellar: string) {
     return new Promise((resolve, reject) => {
       const formData = new FormData();

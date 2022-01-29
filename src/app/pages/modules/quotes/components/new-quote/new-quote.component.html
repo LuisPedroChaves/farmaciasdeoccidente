@@ -215,19 +215,24 @@
                                             <mat-progress-bar mode="indeterminate"></mat-progress-bar>
                                         </mat-option>
                                         <ng-container *ngIf="!isLoading">
-                                            <mat-option *ngFor="let product of filteredProducts[index]" [value]="product">
+                                            <mat-option *ngFor="let tempStorage of filteredProducts[index]" [value]="tempStorage._product">
                                                 <div fxFlex="row wrap">
-                                                    <span><b>{{product.code}}</b> | {{product.description}} |
-                                                        <b>Q {{product.presentations.cf_price | number: '.2' }}</b></span>
+                                                    <span><small>{{tempStorage._product.barcode}}</small> | {{tempStorage._product.description}} |
+                                                        <b>Q {{tempStorage._product.presentations.cf_price | number: '.2' }}</b>
+                                                    </span>
                                                     <div fxFlex></div>
                                                     <mat-chip-list class="chip-padding">
-                                                        <mat-chip class="chip-color">{{ product.presentations.name }}</mat-chip>
-                                                        <mat-chip>{{ product.presentations.quantity }} ud.</mat-chip>
+                                                        <mat-chip *ngIf="tempStorage.stock < 1">{{ tempStorage.stock }} ud.</mat-chip>
+                                                        <mat-chip *ngIf="tempStorage.stock > 0" class="chip-color">{{ tempStorage.stock }} ud.</mat-chip>
+                                                        <!-- <mat-chip>{{ product.presentations.quantity }} ud.</mat-chip> -->
                                                     </mat-chip-list>
                                                 </div>
                                             </mat-option>
                                         </ng-container>
                                     </mat-autocomplete>
+                                    <button *ngIf="detailForm.at(index).get('_product').value" matSuffix mat-icon-button aria-label="Clear" (click)="clearRow(index)">
+                                        <mat-icon>close</mat-icon>
+                                      </button>
                                 </mat-form-field>
                             </td>
                         </ng-container>

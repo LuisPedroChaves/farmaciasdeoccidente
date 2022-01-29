@@ -14,8 +14,9 @@ import { ProductItem } from 'src/app/core/models/Product';
 import { PurchaseDetailItem, PurchaseItem } from 'src/app/core/models/Purchase';
 import { CustomerService } from 'src/app/core/services/httpServices/customer.service';
 import { OrderService } from 'src/app/core/services/httpServices/order.service';
-import { ProductService } from 'src/app/core/services/httpServices/product.service';
 import { ToastyService } from 'src/app/core/services/internal/toasty.service';
+import { TempStorageService } from '../../../../../core/services/httpServices/temp-storage.service';
+import { TempStorageItem } from '../../../../../core/models/TempStorage';
 
 @Component({
   selector: 'app-new-quote',
@@ -84,7 +85,7 @@ export class NewQuoteComponent implements OnInit {
     max: new FormControl(0)
   });
 
-  filteredProducts: Observable<ProductItem[]>[] = [];
+  filteredProducts: Observable<TempStorageItem[]>[] = [];
   isLoading = false;
 
   displayedColumns: string[] = ['quantity', '_product', 'price', 'remove'];
@@ -93,7 +94,7 @@ export class NewQuoteComponent implements OnInit {
   constructor(
     public orderService: OrderService,
     public customerService: CustomerService,
-    public productService: ProductService,
+    private tempStorageService: TempStorageService,
     public toasty: ToastyService,
     private router: Router,
     public dialog: MatDialog,
@@ -223,15 +224,15 @@ export class NewQuoteComponent implements OnInit {
           this.isLoading = true;
         }),
         switchMap((value) =>
-          this.productService.search(value).pipe(
+          this.tempStorageService.search(this.currentCellar._id, value).pipe(
             finalize(() => {
               this.isLoading = false;
             })
           )
         )
       )
-      .subscribe((data) => {
-        this.filteredProducts[index] = data['products'];
+      .subscribe((data: any) => {
+        this.filteredProducts[index] = data;
       });
   }
 
@@ -266,6 +267,11 @@ export class NewQuoteComponent implements OnInit {
 
     this.manageProductControl(this.detailForm.length - 1);
     this.dataSource.next(this.detailForm.controls);
+  }
+
+  clearRow(index: number): void {
+    this.detailForm.at(index).get('_product').setValue('');
+    this.detailForm.at(index).get('price').setValue(0);
   }
 
   removeRow(index: number): void {
