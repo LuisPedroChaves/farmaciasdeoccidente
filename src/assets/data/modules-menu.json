@@ -95,12 +95,20 @@
         "order": 9
     },
     {
+        "state": "pharmaStatistics",
+        "name": "Estadísticas",
+        "type": "link",
+        "icon": "trending_up",
+        "iconType": "icon",
+        "order": 10
+    },
+    {
         "state": "storage",
         "name": "Inventario",
         "type": "link",
         "icon": "inventory",
         "iconType": "icon",
-        "order": 10
+        "order": 11
     },
     {
         "state": "purchases",
@@ -108,7 +116,7 @@
         "type": "link",
         "icon": "shopping_basket",
         "iconType": "icon",
-        "order": 11
+        "order": 12
     },
     {
         "state": "/admin",

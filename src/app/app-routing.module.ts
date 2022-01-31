@@ -71,6 +71,10 @@ const routes: Routes = [
         canActivate: [CheckTokenGuard]
       },
       {
+        path: 'pharmaStatistics', pathMatch: 'full',  loadChildren: () => import('./pages/modules/statistics/statistics.module').then(m => m.StatisticsModule),
+        canActivate: [CheckTokenGuard]
+      },
+      {
         path: 'purchases', loadChildren: () => import('./pages/modules/purchases/purchases.module').then(m => m.PurchasesModule),
         canActivate: [CheckTokenGuard]
       },
