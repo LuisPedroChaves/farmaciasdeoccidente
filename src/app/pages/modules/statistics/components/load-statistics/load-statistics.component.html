@@ -4,8 +4,8 @@
             <mat-card class="form mat-elevation-z8">
                 <mat-card-header>
                     <mat-icon mat-card-avatar color="accent">warning</mat-icon>
-                    <mat-card-title>INGRESO DE ESTADÍSTICAS GLOBAL</mat-card-title>
-                    <mat-card-subtitle>Se actualizarán los pedidos sugeridos, mínimos y máximos en todas las farmacias</mat-card-subtitle>
+                    <mat-card-title>INGRESO DE ESTADÍSTICAS</mat-card-title>
+                    <mat-card-subtitle>Se actualizarán los pedidos sugeridos, mínimos y máximos en su inventario</mat-card-subtitle>
                 </mat-card-header>
                 <hr>
                 <mat-card-content fxLayout="column">
@@ -60,14 +60,13 @@
                 <mat-card-footer>
                     <button fxFill mat-raised-button (click)="loadStatistics()" [disabled]="loading" color="primary">Ingresar Estadísticas</button>
                     <div *ngIf="loading" fxLayout="column" fxLayoutAlign="center center" class="mt">
-                        <h2>{{ cellarName }}</h2>
-                        <h3>{{ brandName }}</h3>
+                        <h2>{{ brandName }}</h2>
                         <mat-progress-bar [value]="progress" mode="determinate" color="warn"></mat-progress-bar>
                     </div>
                     <div *ngIf="loading" fxLayout="row" class="loadMargin">
                         <h3>Cargando... {{ progress | number: '.2' }}%</h3>
                         <span fxFlex></span>
-                        <h3>{{ currentIndex}}/{{ cellars.length }}</h3>
+                        <h3>{{ currentIndex}}/{{ brands.length }}</h3>
                     </div>
                 </mat-card-footer>
             </mat-card>
