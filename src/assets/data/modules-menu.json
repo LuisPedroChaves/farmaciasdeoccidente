@@ -205,5 +205,13 @@
         "icon": "people",
         "iconType": "icon",
         "order": 11
+    },
+    {
+        "state": "adminSellersReport",
+        "name": "Reporte de Ventas",
+        "type": "link",
+        "icon": "sell",
+        "iconType": "icon",
+        "order": 12
     }
 ]

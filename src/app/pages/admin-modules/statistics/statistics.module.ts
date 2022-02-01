@@ -17,7 +17,7 @@ import { LoadStatisticsGlobalComponent } from './components/load-statistics-glob
     CommonModule,
     RouterModule.forChild(StatisticsRoutes),
     SharedComponentsModule,
-    InputsModule
+    InputsModule,
   ]
 })
 export class StatisticsModule { }
