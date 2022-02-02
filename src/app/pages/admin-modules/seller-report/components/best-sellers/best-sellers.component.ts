@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatTableDataSource } from '@angular/material/table';
 import { Subscription } from 'rxjs';
+import { debounceTime } from 'rxjs/operators';
 import { CellarItem } from 'src/app/core/models/Cellar';
 import { BestWorstSellers } from 'src/app/core/models/ReportSeller';
 import { SellerReportService } from '../../../../../core/services/httpServices/seller-report.service';
@@ -15,13 +16,10 @@ export class BestSellersComponent implements OnInit {
   loading = false;
   cellar: CellarItem;
 
-
   bestSellerSubscription: Subscription;
   bestSellers: BestWorstSellers[];
 
   currentCellar = '';
-
-
 
   form = new FormGroup({
     startDate: new FormControl(new Date(), Validators.required),
@@ -34,7 +32,19 @@ export class BestSellersComponent implements OnInit {
 
   constructor(private sellerReportService: SellerReportService) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.form.valueChanges
+    .pipe(
+      debounceTime(500),
+    )
+    .subscribe(range => {
+      console.log(range);
+      if (range.startDate && range.endDate) {
+        console.log('Hola');
+        this.loadData(range.startDate, range.endDate);
+      }
+    });
+  }
 
   getCellar(cellar: CellarItem): void {
     this.cellar = cellar;

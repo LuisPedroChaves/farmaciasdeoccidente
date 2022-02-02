@@ -23,6 +23,7 @@ export class SellerReportService implements IDataService<BestWorstSellers[]> {
   ) {}
 
   loadData({startDate, endDate, _cellar}): void {
+    console.log(startDate, endDate, _cellar);
     this.http
       .get(`${this.apiConfigService.API_BEST_SELLERS}/${_cellar}?startDate=${startDate}&endDate=${endDate}`  )
       .pipe(
