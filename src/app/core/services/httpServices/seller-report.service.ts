@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { IDataService } from '../config/i-data-service';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Subject } from 'rxjs';
 import { ApiConfigService } from '../config/api-config.service';
 import { map } from 'rxjs/operators';
@@ -14,7 +14,7 @@ export class SellerReportService implements IDataService<BestWorstSellers[]> {
   public BestSellerList: BestWorstSellers[];
   public WorstSellerList: BestWorstSellers[];
 
-  BestSellertSubject = new Subject<BestWorstSellers[]>();
+  BestSellerSubject = new Subject<BestWorstSellers[]>();
   WorstSellerSubject = new Subject<BestWorstSellers[]>();
 
   constructor(
@@ -25,24 +25,33 @@ export class SellerReportService implements IDataService<BestWorstSellers[]> {
   loadData({startDate, endDate, _cellar}): void {
     console.log(startDate, endDate, _cellar);
     this.http
-      .get(`${this.apiConfigService.API_BEST_SELLERS}/${_cellar}?startDate=${startDate}&endDate=${endDate}`  )
+      .get(`${this.apiConfigService.API_BEST_SELLERS}`, {
+        params: new HttpParams()
+      .set('_cellar', _cellar.toString())
+      .set('startDate', startDate.toString())
+      .set('endDate', endDate.toString())
+    }  )
       .pipe(
         map((response: any) => {
-          console.log(response);
-          this.BestSellerList = response.BestSellerList;
-          this.BestSellertSubject.next(this.BestSellerList);
+          this.BestSellerList = response.tempSales;
+          this.BestSellerSubject.next(this.BestSellerList);
         })
       )
       .subscribe();
   }
 
-  loadWorstData(): void {
+  loadWorstData({startDate, endDate, _cellar}): void {
+    console.log(startDate, endDate, _cellar);
     this.http
-      .get(this.apiConfigService.API_WORST_SELLERS)
+      .get(`${this.apiConfigService.API_WORST_SELLERS}`, {
+        params: new HttpParams()
+      .set('_cellar', _cellar.toString())
+      .set('startDate', startDate.toString())
+      .set('endDate', endDate.toString())
+    }  )
       .pipe(
         map((response: any) => {
-          console.log(response);
-          this.WorstSellerList = response.WorstSellerList;
+          this.WorstSellerList = response.tempSales;
           this.WorstSellerSubject.next(this.WorstSellerList);
         })
       )
@@ -56,20 +65,21 @@ export class SellerReportService implements IDataService<BestWorstSellers[]> {
     if (this.BestSellerList === undefined) {
       this.loadData({startDate, endDate, _cellar});
     } else {
-      this.BestSellertSubject.next(this.BestSellerList);
+      this.BestSellerSubject.next(this.BestSellerList);
     }
   }
 
-  getWorstData(): void {
+  getWorstData(filter: any): void {
+    const {startDate, endDate, _cellar} = filter;
     if (this.WorstSellerList === undefined) {
-      this.loadWorstData();
+      this.loadWorstData({startDate, endDate, _cellar});
     } else {
       this.WorstSellerSubject.next(this.WorstSellerList);
     }
   }
 
   readData(): Observable<BestWorstSellers[]> {
-    return this.BestSellertSubject.asObservable();
+    return this.BestSellerSubject.asObservable();
   }
 
   readWorstData(): Observable<BestWorstSellers[]> {
