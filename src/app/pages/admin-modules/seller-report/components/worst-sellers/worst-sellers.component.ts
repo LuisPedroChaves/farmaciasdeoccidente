@@ -19,7 +19,6 @@ export class WorstSellersComponent implements OnInit, AfterContentInit, OnDestro
   worstSellerSubscription: Subscription;
   worstSellers: BestWorstSellers[];
 
-  currentCellar = '';
 
   form = new FormGroup({
     startDate: new FormControl(new Date(), Validators.required),
@@ -27,46 +26,30 @@ export class WorstSellersComponent implements OnInit, AfterContentInit, OnDestro
   });
 
   dataSource = new MatTableDataSource();
-  columnsToDisplay = [
-    'code',
-    'barcode',
-    'description',
-    'brand',
-    'total',
-  ];
+  columnsToDisplay = ['code', 'barcode', 'description', 'brand', 'total'];
   expandedElement: BestWorstSellers | null;
 
   constructor(private sellerReportService: SellerReportService) {
-    this.worstSellerSubscription = this.sellerReportService.readWorstData().subscribe((data) => {
-      this.worstSellers = data;
-      this.dataSource = new MatTableDataSource<BestWorstSellers>(this.worstSellers);
-      this.loading = false;
-      console.log(this.worstSellers)
-      console.log(this.loading)
-    });
+    this.worstSellerSubscription = this.sellerReportService
+      .readWorstData()
+      .subscribe((data) => {
+        this.worstSellers = data;
+        this.dataSource = new MatTableDataSource<BestWorstSellers>(
+          this.worstSellers
+        );
+        this.loading = false;
+        console.log(this.worstSellers);
+        console.log(this.loading);
+      });
   }
 
-  ngOnInit(): void {
-    this.form.valueChanges
-    .pipe(
-      debounceTime(500),
-    )
-    .subscribe(range => {
-      console.log(range);
-      if (range.startDate && range.endDate) {
-        this.loadData(range.startDate, range.endDate);
-      }
-    });
-  }
+  ngOnInit(): void {}
 
-  ngAfterContentInit() {
-    this.loadData(this.form.get('startDate').value, this.form.get('endDate').value);
-  }
+  ngAfterContentInit() {}
 
   ngOnDestroy(): void {
     this.worstSellerSubscription.unsubscribe();
   }
-
 
   getCellar(cellar: CellarItem): void {
     this.cellar = cellar;
@@ -81,33 +64,36 @@ export class WorstSellersComponent implements OnInit, AfterContentInit, OnDestro
   }
 
   buttomLoadData(): void {
-    this.form.valueChanges
-    .pipe(
-      debounceTime(500),
-    )
-    .subscribe(range => {
-      console.log(range);
-      if (range.startDate && range.endDate) {
-        this.loadData(range.startDate, range.endDate);
-      }
-    });
-    
+    console.log('Funciona malditasea!! --');
+    this.loadData(this.form.value.startDate, this.form.value.endDate);
   }
 
   loadData(start, end): void {
     this.loading = true;
     console.log('loading');
-
     this.worstSellers = undefined;
     const startDate = start._d ? start._d : start;
     const endDate = end._d ? end._d : end;
-    const FILTER = {
-      startDate,
-      endDate,
-      _cellar: this.currentCellar,
-    };
-    this.sellerReportService.loadWorstData(FILTER);
-    console.log(this.loading);
+    if (this.cellar) {
+    console.log(this.cellar);
+      const startDate = start._d ? start._d : start;
+      const endDate = end._d ? end._d : end;
+      const FILTER = {
+        startDate,
+        endDate,
+        _cellar: this.cellar._id,
+      };
+      this.sellerReportService.loadWorstData(FILTER);
+      console.log(this.loading);
+    }
+    else {
+      const FILTER = {
+        startDate,
+        endDate,
+        _cellar: "",
+      };
+      this.sellerReportService.loadWorstData(FILTER);
+      console.log(this.loading);
+    }
   }
-
 }

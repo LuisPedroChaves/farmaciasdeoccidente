@@ -12,14 +12,15 @@ import { SellerReportService } from '../../../../../core/services/httpServices/s
   templateUrl: './best-sellers.component.html',
   styleUrls: ['./best-sellers.component.scss'],
 })
-export class BestSellersComponent implements OnInit, AfterContentInit, OnDestroy {
+export class BestSellersComponent
+  implements OnInit, AfterContentInit, OnDestroy
+{
   loading = false;
   cellar: CellarItem;
 
   bestSellerSubscription: Subscription;
   bestSellers: BestWorstSellers[];
 
-  currentCellar = '';
 
   form = new FormGroup({
     startDate: new FormControl(new Date(), Validators.required),
@@ -27,46 +28,30 @@ export class BestSellersComponent implements OnInit, AfterContentInit, OnDestroy
   });
 
   dataSource = new MatTableDataSource();
-  columnsToDisplay = [
-    'code',
-    'barcode',
-    'description',
-    'brand',
-    'total',
-  ];
+  columnsToDisplay = ['code', 'barcode', 'description', 'brand', 'total'];
   expandedElement: BestWorstSellers | null;
 
   constructor(private sellerReportService: SellerReportService) {
-    this.bestSellerSubscription = this.sellerReportService.readData().subscribe((data) => {
-      this.bestSellers = data;
-      this.dataSource = new MatTableDataSource<BestWorstSellers>(this.bestSellers);
-      this.loading = false;
-      console.log(this.bestSellers)
-      console.log(this.loading)
-    });
+    this.bestSellerSubscription = this.sellerReportService
+      .readData()
+      .subscribe((data) => {
+        this.bestSellers = data;
+        this.dataSource = new MatTableDataSource<BestWorstSellers>(
+          this.bestSellers
+        );
+        this.loading = false;
+        console.log(this.bestSellers);
+        console.log(this.loading);
+      });
   }
 
-  ngOnInit(): void {
-    this.form.valueChanges
-    .pipe(
-      debounceTime(500),
-    )
-    .subscribe(range => {
-      console.log(range);
-      if (range.startDate && range.endDate) {
-        this.loadData(range.startDate, range.endDate);
-      }
-    });
-  }
+  ngOnInit(): void {}
 
-  ngAfterContentInit() {
-    this.loadData(this.form.get('startDate').value, this.form.get('endDate').value);
-  }
+  ngAfterContentInit() {}
 
   ngOnDestroy(): void {
     this.bestSellerSubscription.unsubscribe();
   }
-
 
   getCellar(cellar: CellarItem): void {
     this.cellar = cellar;
@@ -82,32 +67,35 @@ export class BestSellersComponent implements OnInit, AfterContentInit, OnDestroy
 
   buttomLoadData(): void {
     console.log('Funciona malditasea!! --');
-    this.form.valueChanges
-    .pipe(
-      debounceTime(500),
-    )
-    .subscribe(range => {
-      console.log(range);
-      if (range.startDate && range.endDate) {
-        this.loadData(range.startDate, range.endDate);
-      }
-    });
-    
+    this.loadData(this.form.value.startDate, this.form.value.endDate);
   }
 
   loadData(start, end): void {
     this.loading = true;
     console.log('loading');
-
     this.bestSellers = undefined;
     const startDate = start._d ? start._d : start;
     const endDate = end._d ? end._d : end;
-    const FILTER = {
-      startDate,
-      endDate,
-      _cellar: this.currentCellar,
-    };
-    this.sellerReportService.loadData(FILTER);
-    console.log(this.loading);
+    if (this.cellar) {
+    console.log(this.cellar);
+      const startDate = start._d ? start._d : start;
+      const endDate = end._d ? end._d : end;
+      const FILTER = {
+        startDate,
+        endDate,
+        _cellar: this.cellar._id,
+      };
+      this.sellerReportService.loadData(FILTER);
+      console.log(this.loading);
+    }
+    else {
+      const FILTER = {
+        startDate,
+        endDate,
+        _cellar: "",
+      };
+      this.sellerReportService.loadData(FILTER);
+      console.log(this.loading);
+    }
   }
 }
