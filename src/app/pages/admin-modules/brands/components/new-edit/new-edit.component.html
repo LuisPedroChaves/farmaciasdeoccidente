@@ -1,0 +1,15 @@
+<form [formGroup]="brandForm" autocomplete="off">
+    <div fxLayout="column" fxLayoutAlign="center center" class="my-container">
+        <h2 fxFlexAlign="start">Nuevo Laboratorio</h2>
+        <mat-form-field fxFill appearance="outline" color="primary">
+            <mat-label>Nombre</mat-label>
+            <input type="text" matInput formControlName="name" placeholder="Ingrese un laboratorio">
+        </mat-form-field>
+        <div fxFill fxLayout="row">
+            <button mat-button (click)="close.emit()">Cancelar</button>
+            <span fxFlex></span>
+            <button mat-button color="warn" (click)="newBrand()" [disabled]="brandForm.invalid || loading">Guardar</button>
+        </div>
+        <mat-progress-bar *ngIf="loading" mode="indeterminate" color="warn"></mat-progress-bar>
+    </div>
+</form>

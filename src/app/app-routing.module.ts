@@ -129,6 +129,10 @@ const routes: Routes = [
         canActivate: [CheckTokenGuard]
       },
       {
+        path: 'brands', pathMatch: 'full',  loadChildren: () => import('./pages/admin-modules/brands/brands.module').then(m => m.BrandsModule),
+        canActivate: [CheckTokenGuard]
+      },
+      {
         path: 'providers', pathMatch: 'full',  loadChildren: () => import('./pages/admin-modules/providers/providers.module').then(m => m.ProvidersModule),
         canActivate: [CheckTokenGuard]
       },

@@ -1,11 +1,11 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 
 @Component({
     selector: 'app-filter',
     template: `
-    <mat-form-field appearance="standard" class="mr10">
+    <mat-form-field appearance="standard" color="primary">
         <mat-label>Filtro</mat-label>
-        <input matInput (keyup)="sendFilter($event)" placeholder="Ej. patrimadol" #input>
+        <input matInput (keyup)="sendFilter($event)" [placeholder]="placeholder" #input>
         <button *ngIf="input.value" matSuffix mat-icon-button aria-label="Clear" (click)="clearFilter(input)">
             <mat-icon>close</mat-icon>
           </button>
@@ -15,6 +15,7 @@ import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 })
 export class FilterComponent implements OnInit {
 
+    @Input() placeholder: string = 'Ej. patrimadol';
     @Output() send = new EventEmitter<string>();
 
     constructor(

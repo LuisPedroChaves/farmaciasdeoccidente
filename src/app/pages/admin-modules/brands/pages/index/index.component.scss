@@ -1,0 +1,59 @@
+.main-container {
+    height: calc(100vh - 60px) !important;
+}
+
+.my-container {
+    height: calc(100vh - 130px) !important;
+}
+
+header {
+    margin-top: 30px;
+    margin-left: 15px;
+    margin-right: 15px;
+    padding: 15px;
+    background-color: white;
+    height: 70px;
+    border-radius: 10px;
+}
+
+.list-container {
+    height: 100%;
+}
+
+.my-card {
+    height: calc(100% - 32px);
+    border-radius: 10px;
+    background-color: #fafafa;
+}
+
+.list {
+    height: calc(100% - 42px);
+    padding-right: 15px;
+    padding-top: 2px;
+    padding-left: 2px;
+}
+
+.brand-card {
+    border-radius: 10px;
+}
+
+.brand-card:hover {
+    background-color: whitesmoke;
+}
+
+.my-button {
+    border-radius: 10px;
+}
+
+mat-card-footer {
+    background-color: white;
+}
+
+mat-paginator {
+    border-radius: 10px;
+}
+
+.sidenav {
+    padding: 20px;
+    background-color: #fafafa;
+}

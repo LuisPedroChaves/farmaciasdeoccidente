@@ -191,12 +191,20 @@
         "order": 9
     },
     {
+        "state": "brands",
+        "name": "Laboratorios",
+        "type": "link",
+        "icon": "science",
+        "iconType": "icon",
+        "order": 10
+    },
+    {
         "state": "providers",
         "name": "Proveedores",
         "type": "link",
         "icon": "business",
         "iconType": "icon",
-        "order": 10
+        "order": 11
     },
     {
         "state": "users",
@@ -204,6 +212,6 @@
         "type": "link",
         "icon": "people",
         "iconType": "icon",
-        "order": 11
+        "order": 12
     }
 ]
