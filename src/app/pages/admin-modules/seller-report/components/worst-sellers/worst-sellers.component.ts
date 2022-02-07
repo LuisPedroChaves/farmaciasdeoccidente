@@ -1,19 +1,22 @@
-import { AfterContentInit, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
+
 import { Subscription } from 'rxjs';
-import { debounceTime } from 'rxjs/operators';
+
 import { CellarItem } from 'src/app/core/models/Cellar';
 import { BestWorstSellers } from 'src/app/core/models/ReportSeller';
 import { SellerReportService } from 'src/app/core/services/httpServices/seller-report.service';
+import { ToastyService } from '../../../../../core/services/internal/toasty.service';
+import { XlsxService } from '../../../../../core/services/internal/XlsxService.service';
 
 @Component({
   selector: 'app-worst-sellers',
   templateUrl: './worst-sellers.component.html',
   styleUrls: ['./worst-sellers.component.scss']
 })
-export class WorstSellersComponent implements OnInit, AfterContentInit, OnDestroy {
+export class WorstSellersComponent implements OnInit, OnDestroy {
   loading = false;
   cellar: CellarItem;
 
@@ -27,12 +30,16 @@ export class WorstSellersComponent implements OnInit, AfterContentInit, OnDestro
   });
 
   dataSource = new MatTableDataSource();
-  columnsToDisplay = ['code', 'barcode', 'description', 'brand', 'total'];
+  columnsToDisplay = ['barcode', 'description', 'brand', 'total'];
   expandedElement: BestWorstSellers | null;
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
 
-  constructor(private sellerReportService: SellerReportService) {
+  constructor(
+    private sellerReportService: SellerReportService,
+    private toastyService: ToastyService,
+    private xlsxService: XlsxService
+    ) {
     this.worstSellerSubscription = this.sellerReportService
       .readWorstData()
       .subscribe((data) => {
@@ -42,14 +49,10 @@ export class WorstSellersComponent implements OnInit, AfterContentInit, OnDestro
         );
         this.dataSource.paginator = this.paginator;
         this.loading = false;
-        console.log(this.worstSellers);
-        console.log(this.loading);
       });
   }
 
   ngOnInit(): void {}
-
-  ngAfterContentInit() {}
 
   ngOnDestroy(): void {
     this.worstSellerSubscription.unsubscribe();
@@ -68,18 +71,15 @@ export class WorstSellersComponent implements OnInit, AfterContentInit, OnDestro
   }
 
   buttomLoadData(): void {
-    console.log('Funciona malditasea!! --');
     this.loadData(this.form.value.startDate, this.form.value.endDate);
   }
 
   loadData(start, end): void {
     this.loading = true;
-    console.log('loading');
     this.worstSellers = undefined;
     const startDate = start._d ? start._d : start;
     const endDate = end._d ? end._d : end;
     if (this.cellar) {
-    console.log(this.cellar);
       const startDate = start._d ? start._d : start;
       const endDate = end._d ? end._d : end;
       const FILTER = {
@@ -88,7 +88,6 @@ export class WorstSellersComponent implements OnInit, AfterContentInit, OnDestro
         _cellar: this.cellar._id,
       };
       this.sellerReportService.loadWorstData(FILTER);
-      console.log(this.loading);
     }
     else {
       const FILTER = {
@@ -97,7 +96,37 @@ export class WorstSellersComponent implements OnInit, AfterContentInit, OnDestro
         _cellar: "",
       };
       this.sellerReportService.loadWorstData(FILTER);
-      console.log(this.loading);
     }
+  }
+
+  downloadXlsx(): void {
+    if (!this.worstSellers || this.worstSellers.length === 0) {
+      this.toastyService.error('No hay datos para descargar, por favor realice una consulta');
+      return;
+    }
+    const body = [
+      [this.cellar ? this.cellar.name : 'Todos'],
+      ['Código', 'Producto', 'Laboratorio', 'Total']
+    ];
+
+    const ArrayToPrint: any[] = [];
+
+    this.worstSellers.forEach(item => {
+      const row: any[] = [];
+
+      this.columnsToDisplay.forEach(column => {
+        row.push(item[column]);
+      });
+
+      ArrayToPrint.push(row);
+    });
+
+    ArrayToPrint.forEach((row) => body.push(row));
+
+    this.xlsxService.downloadSinglePage(
+      body,
+      'Productos menos vendidos',
+      this.cellar ? this.cellar.name : 'Todos'
+    );
   }
 }

@@ -183,12 +183,20 @@
         "order": 8
     },
     {
+        "state": "adminSellersReport",
+        "name": "Reporte de Ventas",
+        "type": "link",
+        "icon": "sell",
+        "iconType": "icon",
+        "order": 9
+    },
+    {
         "state": "adminProducts",
         "name": "Catálogo de productos",
         "type": "link",
         "icon": "category",
         "iconType": "icon",
-        "order": 9
+        "order": 10
     },
     {
         "state": "providers",
@@ -196,21 +204,13 @@
         "type": "link",
         "icon": "business",
         "iconType": "icon",
-        "order": 10
+        "order": 11
     },
     {
         "state": "users",
         "name": "Usuarios",
         "type": "link",
         "icon": "people",
-        "iconType": "icon",
-        "order": 11
-    },
-    {
-        "state": "adminSellersReport",
-        "name": "Reporte de Ventas",
-        "type": "link",
-        "icon": "sell",
         "iconType": "icon",
         "order": 12
     }
