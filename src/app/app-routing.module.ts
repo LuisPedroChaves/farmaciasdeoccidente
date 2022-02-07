@@ -152,6 +152,10 @@ const routes: Routes = [
         path: 'adminCheckStock', pathMatch: 'full',  loadChildren: () => import('./pages/admin-modules/check-stock/check-stock.module').then(m => m.CheckStockModule),
         canActivate: [CheckTokenGuard]
       },
+      {
+        path: 'adminSellersReport', pathMatch: 'full',  loadChildren: () => import('./pages/admin-modules/seller-report/seller-report.module').then(m => m.SellerReportModule),
+        canActivate: [CheckTokenGuard]
+      },
     ]
   },
   {

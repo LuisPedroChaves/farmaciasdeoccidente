@@ -11,6 +11,7 @@ import { CellarService } from '../../../../core/services/httpServices/cellar.ser
         <mat-form-field fxFill appearance="outline" color="accent">
             <mat-label>Sucursal</mat-label>
             <mat-select [formControl]="cellar">
+                <mat-option *ngIf="returnAll" [value]="null">Todas</mat-option>
                 <mat-option *ngFor="let c of cellars" [value]="c._id">
                     {{ c.name }}
                 </mat-option>
@@ -22,6 +23,7 @@ import { CellarService } from '../../../../core/services/httpServices/cellar.ser
 export class CellarComponent implements OnInit, AfterContentInit, OnDestroy {
 
     @Input() onlyBodegas: boolean = false;
+    @Input() returnAll: boolean = false;
     @Output() send = new EventEmitter<CellarItem>();
 
     cellarsSubscription: Subscription;

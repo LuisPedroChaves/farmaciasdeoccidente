@@ -65,11 +65,15 @@ export class ApiConfigService {
   // Purchase
   public API_PURCHASE = this.API_URL + '/purchase';
 
-    // tempStorage
-    public API_TEMP_STORAGE = this.API_URL + '/tempStorage';
+  // tempStorage
+  public API_TEMP_STORAGE = this.API_URL + '/tempStorage';
 
-    // tempSale
-    public API_TEMP_SALE = this.API_URL + '/tempSale';
+  // tempSale
+  public API_TEMP_SALE = this.API_URL + '/tempSale';
+
+  // Report Best and Worst Sellers
+  public API_BEST_SELLERS = this.API_URL + '/tempSale/bestSellers';
+  public API_WORST_SELLERS = this.API_URL + '/tempSale/worstSellers';
 
   /* #endregion */
 }
