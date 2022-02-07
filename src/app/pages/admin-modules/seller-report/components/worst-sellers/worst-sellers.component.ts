@@ -1,5 +1,6 @@
-import { AfterContentInit, Component, OnDestroy, OnInit } from '@angular/core';
+import { AfterContentInit, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { Subscription } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
@@ -28,6 +29,8 @@ export class WorstSellersComponent implements OnInit, AfterContentInit, OnDestro
   dataSource = new MatTableDataSource();
   columnsToDisplay = ['code', 'barcode', 'description', 'brand', 'total'];
   expandedElement: BestWorstSellers | null;
+  @ViewChild(MatPaginator) paginator: MatPaginator;
+
 
   constructor(private sellerReportService: SellerReportService) {
     this.worstSellerSubscription = this.sellerReportService
@@ -37,6 +40,7 @@ export class WorstSellersComponent implements OnInit, AfterContentInit, OnDestro
         this.dataSource = new MatTableDataSource<BestWorstSellers>(
           this.worstSellers
         );
+        this.dataSource.paginator = this.paginator;
         this.loading = false;
         console.log(this.worstSellers);
         console.log(this.loading);

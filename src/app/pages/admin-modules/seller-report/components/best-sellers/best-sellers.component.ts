@@ -1,5 +1,6 @@
-import { AfterContentInit, Component, OnDestroy, OnInit } from '@angular/core';
+import { AfterContentInit, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { Subscription } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
@@ -30,6 +31,8 @@ export class BestSellersComponent
   dataSource = new MatTableDataSource();
   columnsToDisplay = ['code', 'barcode', 'description', 'brand', 'total'];
   expandedElement: BestWorstSellers | null;
+  @ViewChild(MatPaginator) paginator: MatPaginator;
+
 
   constructor(private sellerReportService: SellerReportService) {
     this.bestSellerSubscription = this.sellerReportService
@@ -39,6 +42,7 @@ export class BestSellersComponent
         this.dataSource = new MatTableDataSource<BestWorstSellers>(
           this.bestSellers
         );
+        this.dataSource.paginator = this.paginator;
         this.loading = false;
         console.log(this.bestSellers);
         console.log(this.loading);
@@ -57,13 +61,13 @@ export class BestSellersComponent
     this.cellar = cellar;
   }
 
-  applyFilter(filter: string): void {
-    this.dataSource.filter = filter;
+  // applyFilter(filter: string): void {
+  //   this.dataSource.filter = filter;
 
-    if (this.dataSource.paginator) {
-      this.dataSource.paginator.firstPage();
-    }
-  }
+  //   if (this.dataSource.paginator) {
+  //     this.dataSource.paginator.firstPage();
+  //   }
+  // }
 
   buttomLoadData(): void {
     console.log('Funciona malditasea!! --');
