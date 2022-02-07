@@ -1,6 +1,5 @@
 import { Component, OnInit, ViewChild, AfterContentInit, OnDestroy } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatDrawer } from '@angular/material/sidenav';
 
@@ -10,7 +9,7 @@ import { BrandItem } from 'src/app/core/models/Brand';
 import { BrandService } from 'src/app/core/services/httpServices/brand.service';
 import { ToastyService } from 'src/app/core/services/internal/toasty.service';
 import { FilterPipe } from 'src/app/core/shared/pipes/filterPipes/filter.pipe';
-import { ConfirmationDialogComponent } from 'src/app/pages/shared-components/confirmation-dialog/confirmation-dialog.component';
+import { XlsxService } from '../../../../../core/services/internal/XlsxService.service';
 
 @Component({
   selector: 'app-index',
@@ -40,8 +39,8 @@ export class IndexComponent implements OnInit, AfterContentInit, OnDestroy {
   constructor(
     private brandService: BrandService,
     private filter: FilterPipe,
-    private dialog: MatDialog,
-    public toastyService: ToastyService
+    public toastyService: ToastyService,
+    private xlsxService: XlsxService
   ) { }
 
   ngOnInit(): void {
@@ -109,41 +108,39 @@ export class IndexComponent implements OnInit, AfterContentInit, OnDestroy {
     }
   }
 
-  remove(brand: BrandItem) {
-    const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
-      width: '350px',
-      data: {
-        title: 'Eliminar Laboratorio',
-        message:
-          '¿Confirma que desea eliminar el laboratorio:  ' +
-          brand.name +
-          '?',
-        description: false,
-      },
-      disableClose: true,
-      panelClass: ['farmacia-dialog', 'farmacia'],
-    });
-
-    dialogRef.afterClosed().subscribe((result) => {
-      if (result !== undefined) {
-        // this.loading = true;
-        this.brandService.delete(brand).subscribe(
-          (res) => {
-            this.toastyService.success('Laboratorio eliminado exitosamente');
-            this.brands = this.brands.filter(b => {
-              return b._id !== brand._id
-            })
-            this.brandsPage = this.brandsPage.filter(b => {
-              return b._id !== brand._id
-            })
-          },
-          (error) => {
-            // this.loading = false;
-            this.toastyService.error('Error al eliminar el Laboratorio');
-          }
-        );
-      }
-    });
+  removeBrand(_id: string) {
+    this.brands = this.brands.filter(b => {
+      return b._id !== _id
+    })
+    this.brandsPage = this.brandsPage.filter(b => {
+      return b._id !== _id
+    })
   }
 
+  downloadXlsx(): void {
+
+    const body = [
+      ['Catálogo de Laboratorios'],
+      ['Código','Nombre']
+    ];
+
+    const ArrayToPrint: any[] = [];
+
+    this.brands.forEach(item => {
+      const row: any[] = [];
+
+      row.push(item['code']);
+      row.push(item['name']);
+
+      ArrayToPrint.push(row);
+    });
+
+    ArrayToPrint.forEach((row) => body.push(row));
+
+    this.xlsxService.downloadSinglePage(
+      body,
+      'Catálogo de Laboratorios',
+      'Catálogo de Laboratorios'
+    );
+  }
 }

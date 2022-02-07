@@ -4,36 +4,32 @@
             <h2 class="module-title product-font ma-0">Laboratorios</h2>
             <span fxFlex></span>
             <app-filter placeholder="Ej. caplinpoint" (send)="applyFilter($event)"></app-filter>
-            <button mat-mini-fab (click)="newBrand()" color="warn">
+            <button mat-mini-fab color="primary" (click)="downloadXlsx()" matTooltip="Descargar en Excel">
+        <mat-icon>get_app</mat-icon>
+      </button>
+            <button mat-fab (click)="newBrand()" color="warn" matTooltip="Nuevo Laboratorio">
         <mat-icon>add</mat-icon>
       </button>
         </header>
         <mat-drawer-container class="my-container">
             <mat-drawer #drawer class="sidenav" mode="side" position="end">
-                <button mat-icon-button (click)="drawer.toggle()">
-                    <mat-icon>close</mat-icon>
-                </button>
-                <app-new-edit [brandForm]="brandForm" (close)="drawer.toggle()" (save)="pushBrand($event)"></app-new-edit>
+                <app-new-edit [brandForm]="brandForm" (close)="drawer.toggle()" (save)="pushBrand($event)" (delete)="removeBrand($event)"></app-new-edit>
             </mat-drawer>
             <div fxLayout="column" class="list-container">
                 <mat-card class="my-card mat-elevation-z0">
                     <ngx-simplebar class="list">
                         <div fxLayout="row wrap" fxLayoutGap="15px grid">
                             <div fxFlex.gt-lg="20" fxFlex.lg="25" fxFlex.md="50" fxFlex.sm="50" fxFlex.lt-sm="100" *ngFor="let brand of brandsPage">
-                                <mat-card matRipple class="brand-card mat-elevation-z2">
-                                    <mat-card-header (click)="editBrand(brand)" class="cursor-pointer">
-                                        <mat-icon mat-card-avatar color="primary">science</mat-icon>
+                                <mat-card matRipple (click)="editBrand(brand)" class="brand-card cursor-pointer mat-elevation-z2" matTooltip="Editar Laboratorio">
+                                    <mat-card-header>
+                                        <mat-icon mat-card-avatar color="accent">science</mat-icon>
                                         <mat-card-title>
                                             {{ brand.code}}
                                         </mat-card-title>
                                     </mat-card-header>
-                                    <mat-card-content (click)="editBrand(brand)" class="cursor-pointer">
+                                    <mat-card-content>
                                         {{brand.name}}
                                     </mat-card-content>
-                                    <mat-card-actions>
-                                        <!-- <button mat-stroked-button color="accent" class="my-button">Editar</button> -->
-                                        <button mat-stroked-button (click)="remove(brand)" class="my-button">Eliminar</button>
-                                    </mat-card-actions>
                                 </mat-card>
                             </div>
                         </div>
