@@ -34,7 +34,6 @@ export class UploadsComponent implements OnInit, AfterContentInit, OnDestroy {
   currentFile: any;
 
   currentCellar2: string;
-  currentDate: Date;
   currentFile2: any;
 
   currentFile3: any;
@@ -185,16 +184,15 @@ export class UploadsComponent implements OnInit, AfterContentInit, OnDestroy {
 
     dialogRef.afterClosed().subscribe((result) => {
       if (result !== undefined) {
-        if (!this.currentCellar2 || !this.currentDate) {
-          this.toastyService.error('Debe seleccionar una sucursal y una fecha');
+        if (!this.currentCellar2) {
+          this.toastyService.error('Debe seleccionar una sucursal');
           return;
         }
         this.loading = true;
         if (this.currentFile2) {
           this.tempSaleService.uploadFile(this.currentFile2.files[0],
             {
-              _cellar: this.currentCellar2,
-              date: this.currentDate,
+              _cellar: this.currentCellar2
             })
           .then((resp: any) => {
             this.loading = false;
@@ -230,8 +228,8 @@ export class UploadsComponent implements OnInit, AfterContentInit, OnDestroy {
 
     dialogRef.afterClosed().subscribe((result) => {
       if (result !== undefined) {
-        if (!this.currentCellar2 || !this.currentDate) {
-          this.toastyService.error('Debe seleccionar una sucursal y una fecha');
+        if (!this.currentCellar2) {
+          this.toastyService.error('Debe seleccionar una sucursal');
           return;
         }
         this.loading = true;
@@ -239,7 +237,6 @@ export class UploadsComponent implements OnInit, AfterContentInit, OnDestroy {
           this.tempSaleService.uploadFileDelete(this.currentFile2.files[0],
             {
               _cellar: this.currentCellar2,
-              date: this.currentDate,
             })
           .then((resp: any) => {
             this.loading = false;

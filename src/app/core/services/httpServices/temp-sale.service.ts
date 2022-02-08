@@ -62,7 +62,6 @@ export class TempSaleService {
       };
 
       formData.append('_cellar', tempSale._cellar);
-      formData.append('date', tempSale.date);
 
       const url = this.apiConfigService.API_TEMP_SALE + '/xlsx';
 
@@ -93,7 +92,6 @@ export class TempSaleService {
       };
 
       formData.append('_cellar', tempSale._cellar);
-      formData.append('date', tempSale.date);
 
       const url = this.apiConfigService.API_TEMP_SALE + '/xlsx/delete';
 
