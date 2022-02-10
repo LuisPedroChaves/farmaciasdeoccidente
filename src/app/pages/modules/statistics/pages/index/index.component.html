@@ -1,1 +1,130 @@
-<app-load-statistics></app-load-statistics>
+<ngx-simplebar class="my-layout">
+    <header fxLayout="row">
+        <h2 class="module-title product-font ma-0">Estadísticas</h2>
+        <span fxFlex></span>
+        <button mat-stroked-button (click)="loadStatistics()" color="primary">Ingreso de estadísticas</button>
+    </header>
+    <form [formGroup]="form">
+        <div fxLayout="row wrap" fxLayoutAlign="start center" fxLayoutGap="10px" class="header">
+            <div fxFlex>
+                <app-brand (send)="getBrand($event)" [focus]="true" [hint]="form.invalid ? '*Debe seleccionar un laboratorio' : ''"></app-brand>
+            </div>
+            <mat-form-field appearance="outline">
+                <mat-label>Tipo</mat-label>
+                <mat-select formControlName="type">
+                    <mat-option>-Todos-</mat-option>
+                    <mat-option value="requests">
+                        Pedidos sugeridos
+                    </mat-option>
+                    <mat-option value="returns">
+                        Devoluciones
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+            <div fxFlex></div>
+            <app-filter (send)="applyFilter($event)"></app-filter>
+            <button mat-fab color="warn" (click)="downloadXlsx()">
+        <mat-icon>get_app</mat-icon>
+      </button>
+        </div>
+    </form>
+    <!-- <div class="table">
+    </div> -->
+    <ngx-simplebar class="table">
+        <mat-progress-bar *ngIf="loading" mode="indeterminate" color="warn"></mat-progress-bar>
+        <table mat-table [dataSource]="dataSource">
+            <ng-container matColumnDef="barcode">
+                <th mat-header-cell *matHeaderCellDef> Código de barras </th>
+                <td mat-cell *matCellDef="let element"> {{element._product.barcode}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="description">
+                <th mat-header-cell *matHeaderCellDef> Descripción </th>
+                <td mat-cell *matCellDef="let element"> {{element._product.description}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="stock">
+                <th mat-header-cell *matHeaderCellDef> Inventario </th>
+                <td mat-cell *matCellDef="let element">
+                    {{element.stock }}
+                </td>
+            </ng-container>
+
+            <ng-container matColumnDef="lastUpdateStock">
+                <th mat-header-cell *matHeaderCellDef></th>
+                <td mat-cell *matCellDef="let element">
+                    <span class="text-muted"> {{ element.lastUpdateStock | date: 'dd/MM/yyyy HH:mm' }}</span>
+                </td>
+            </ng-container>
+
+            <ng-container matColumnDef="supply">
+                <th mat-header-cell *matHeaderCellDef> Pedido sugerido </th>
+                <td mat-cell *matCellDef="let element"> {{ element.supply }} </td>
+            </ng-container>
+            <ng-container matColumnDef="minExistence">
+                <th mat-header-cell *matHeaderCellDef> Existencia minima </th>
+
+                <td mat-cell *matCellDef="let element">
+                    <div *ngIf="element.minStock">
+                        {{ element.minStock }}
+                    </div>
+                    <div *ngIf="!element.minStock">
+                        Sin Registros
+                    </div>
+                </td>
+            </ng-container>
+            <ng-container matColumnDef="maxExistence">
+                <th mat-header-cell *matHeaderCellDef> Existencia máxima </th>
+                <td mat-cell *matCellDef="let element">
+                    <div *ngIf="element.maxStock">
+                        {{ element.maxStock }}
+                    </div>
+                    <div *ngIf="!element.maxStock">
+                        Sin Registros
+                    </div>
+                </td>
+            </ng-container>
+            <ng-container matColumnDef="exceeds">
+                <th mat-header-cell *matHeaderCellDef> Devoluciones </th>
+                <td mat-cell *matCellDef="let element">
+                    <div *ngIf="element.minStock">
+                        <label style="color:orange" *ngIf="element.stock > element.maxStock"> {{element.stock -
+                            element.maxStock}} </label>
+                        <label *ngIf="element.stock <= element.maxStock"> 0 </label>
+                    </div>
+                    <div *ngIf="!element.minStock">
+                        Sin Registros
+                    </div>
+                </td>
+            </ng-container>
+            <ng-container matColumnDef="missing">
+                <th mat-header-cell *matHeaderCellDef> Faltantes </th>
+                <td mat-cell *matCellDef="let element">
+                    <div *ngIf="element.minStock">
+                        <label style="color:red" *ngIf="element.stock < element.minStock"> {{element.minStock -
+                            element.stock}} </label>
+                        <label *ngIf="element.stock >= element.maxStock"> 0 </label>
+                    </div>
+                    <div *ngIf="!element.minStock">
+                        Sin Registros
+                    </div>
+                </td>
+            </ng-container>
+            <ng-container matColumnDef="lastUpdateStatics">
+                <th mat-header-cell *matHeaderCellDef> Última estadística </th>
+                <td mat-cell *matCellDef="let element">
+                    <span class="text-muted"> {{ element.lastUpdateStatics | date: 'dd/MM/yyyy HH:mm' }}</span>
+                </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="columns;  sticky: true"></tr>
+            <tr mat-row *matRowDef="let row; columns: columns;"></tr>
+            <!-- Fila mostrada cuando no hay datos coincidentes. -->
+            <tr class="mat-row" *matNoDataRow>
+                <td class="mat-cell" colspan="13">No hay datos que coincidan con algún filtro o busqueda</td>
+            </tr>
+        </table>
+    </ngx-simplebar>
+    <mat-paginator [pageSizeOptions]="[10, 50, 100]" showFirstLastButtons>
+    </mat-paginator>
+</ngx-simplebar>

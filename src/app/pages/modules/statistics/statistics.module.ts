@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 
 import { CoreModule } from 'src/app/core/core.module';
+import { TimeFormatPipe } from 'src/app/core/shared/pipes/timePipes/time-format.pipe';
 import { IndexComponent } from './pages/index/index.component';
 import { LoadStatisticsComponent } from './components/load-statistics/load-statistics.component';
 import { StatisticsRoutes } from './statistics.routing';
@@ -21,6 +22,9 @@ import { InputsModule } from '../../shared/inputs/inputs.module';
     SharedComponentsModule,
     CoreModule,
     InputsModule
+  ],
+  providers: [
+    TimeFormatPipe
   ]
 })
 export class StatisticsModule { }
