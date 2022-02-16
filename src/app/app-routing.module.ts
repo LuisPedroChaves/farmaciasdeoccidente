@@ -59,6 +59,10 @@ const routes: Routes = [
         canActivate: [CheckTokenGuard]
       },
       {
+        path: 'checkStock', pathMatch: 'full',  loadChildren: () => import('./pages/modules/check-stock/check-stock.module').then(m => m.CheckStockModule),
+        canActivate: [CheckTokenGuard]
+      },
+      {
         path: 'storage', pathMatch: 'full',  loadChildren: () => import('./pages/modules/storage/storage.module').then(m => m.StorageModule),
         canActivate: [CheckTokenGuard]
       },
@@ -126,6 +130,14 @@ const routes: Routes = [
       },
       {
         path: 'uploads', pathMatch: 'full',  loadChildren: () => import('./pages/admin-modules/uploads/uploads.module').then(m => m.UploadsModule),
+        canActivate: [CheckTokenGuard]
+      },
+      {
+        path: 'statistics', pathMatch: 'full',  loadChildren: () => import('./pages/admin-modules/statistics/statistics.module').then(m => m.StatisticsModule),
+        canActivate: [CheckTokenGuard]
+      },
+      {
+        path: 'tempStatistics', pathMatch: 'full',  loadChildren: () => import('./pages/admin-modules/temp-statistics/temp-statistics.module').then(m => m.TempStatisticsModule),
         canActivate: [CheckTokenGuard]
       },
     ]

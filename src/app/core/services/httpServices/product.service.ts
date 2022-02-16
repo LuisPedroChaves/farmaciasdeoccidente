@@ -38,6 +38,33 @@ export class ProductService {
       );
   }
 
+  uploadFile(file: File) {
+    return new Promise((resolve, reject) => {
+      const formData = new FormData();
+      const xhr = new XMLHttpRequest();
+
+      formData.append('archivo', file, file.name);
+
+      xhr.onreadystatechange = () => {
+        if (xhr.readyState === 4) {
+
+          if (xhr.status === 200) {
+            console.log('Archivo Subido');
+            resolve(JSON.parse(xhr.response));
+          } else {
+            console.log('Fallo la subida');
+            reject(xhr.response);
+          }
+        }
+      };
+
+      const url = this.apiConfigService.API_PRODUCT + '/xlsx';
+
+      xhr.open('POST', url, true);
+      xhr.send(formData);
+    });
+  }
+
   createProduct(product: ProductItem): Observable<any> {
     return this.http.post(this.apiConfigService.API_PRODUCT, product);
   }
@@ -66,6 +93,13 @@ export class ProductService {
 
   search(search: string = ''): Observable<any> {
     return this.http.get(`${this.apiConfigService.API_PRODUCT}/search`, {
+      params: new HttpParams().set('search', search.toString()),
+    });
+  }
+
+
+  searchByIndex(search: string = ''): Observable<any> {
+    return this.http.get(`${this.apiConfigService.API_PRODUCT}/searchByIndex`, {
       params: new HttpParams().set('search', search.toString()),
     });
   }

@@ -47,6 +47,7 @@ import { FlexLayoutModule, CoreModule } from '@angular/flex-layout';
 /* STYLE ----------------------*/
 import { ToastaModule } from 'ngx-toasta';
 import { MatTableResponsiveModule } from '../modules/mat-table-responsive/mat-table-responsive.module';
+import { SimplebarAngularModule } from 'simplebar-angular';
 
 /* FILE ----------------------*/
 import { MaterialFileInputModule } from 'ngx-material-file-input';
@@ -97,6 +98,7 @@ export const MY_DATE_FORMATS = {
     FlexLayoutModule,
     CoreModule,
     ToastaModule.forRoot(),
+    SimplebarAngularModule,
 
     // files
     MaterialFileInputModule,
@@ -141,6 +143,7 @@ export const MY_DATE_FORMATS = {
     FlexLayoutModule,
     CoreModule,
     ToastaModule,
+    SimplebarAngularModule,
 
     // files
     MaterialFileInputModule,

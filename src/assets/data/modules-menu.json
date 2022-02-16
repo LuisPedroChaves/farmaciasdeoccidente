@@ -79,12 +79,20 @@
         "order": 6
     },
     {
+        "state": "checkStock",
+        "name": "Consultar existencias",
+        "type": "link",
+        "icon": "checklist",
+        "iconType": "icon",
+        "order": 7
+    },
+    {
         "state": "tempStorage",
         "name": "Inventario Temp.",
         "type": "link",
         "icon": "inventory",
         "iconType": "icon",
-        "order": 7
+        "order": 8
     },
     {
         "state": "storage",
@@ -92,7 +100,7 @@
         "type": "link",
         "icon": "inventory",
         "iconType": "icon",
-        "order": 8
+        "order": 9
     },
     {
         "state": "purchases",
@@ -100,7 +108,7 @@
         "type": "link",
         "icon": "shopping_basket",
         "iconType": "icon",
-        "order": 9
+        "order": 10
     },
     {
         "state": "/admin",
@@ -143,12 +151,28 @@
         "order": 5
     },
     {
+        "state": "statistics",
+        "name": "Estadísticas",
+        "type": "link",
+        "icon": "trending_up",
+        "iconType": "icon",
+        "order": 6
+    },
+    {
+        "state": "tempStatistics",
+        "name": "Estadísticas Temp.",
+        "type": "link",
+        "icon": "trending_up",
+        "iconType": "icon",
+        "order": 7
+    },
+    {
         "state": "adminProducts",
         "name": "Catálogo de productos",
         "type": "link",
         "icon": "category",
         "iconType": "icon",
-        "order": 6
+        "order": 8
     },
     {
         "state": "providers",
@@ -156,7 +180,7 @@
         "type": "link",
         "icon": "business",
         "iconType": "icon",
-        "order": 7
+        "order": 9
     },
     {
         "state": "users",
@@ -164,6 +188,6 @@
         "type": "link",
         "icon": "people",
         "iconType": "icon",
-        "order": 8
+        "order": 10
     }
 ]

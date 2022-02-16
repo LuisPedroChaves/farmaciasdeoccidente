@@ -40,23 +40,51 @@ export class TempStorageService {
       );
   }
 
+  loadStockConsolidated(
+    _brand,
+    withStock
+  ): Observable<TempStorageItem[]> {
+    return this.http
+      .get(`${this.apiConfigService.API_TEMP_STORAGE}/stockConsolidated`, {
+        params: new HttpParams()
+          .set('_brand', _brand.toString())
+          .set('withStock', withStock.toString())
+      })
+      .pipe(
+        map((response: any) => {
+          return response.tempStorages;
+        })
+      );
+  }
+
+  searchByProduct(_product: string, _cellar: string): Observable<TempStorageItem[]> {
+    return this.http.get(`${this.apiConfigService.API_TEMP_STORAGE}/checkStock/${_cellar}`, {
+      params: new HttpParams()
+        .set('_product', _product.toString())
+    })
+      .pipe(
+        map((resp: any) => {
+          return resp.storages;
+        })
+      )
+  }
+
   uploadFile(file: File, _cellar: string) {
     return new Promise((resolve, reject) => {
       const formData = new FormData();
       const xhr = new XMLHttpRequest();
 
-      formData.append( 'archivo', file, file.name );
+      formData.append('archivo', file, file.name);
 
       xhr.onreadystatechange = () => {
         if (xhr.readyState === 4) {
 
           if (xhr.status === 200) {
-            console.log( 'Archivo Subido' );
-            resolve( JSON.parse(xhr.response));
+            console.log('Archivo Subido');
+            resolve(JSON.parse(xhr.response));
           } else {
-            console.log( 'Fallo la subida' );
-            console.log("🚀 ~ file: upload-file.service.ts ~ line 31 ~ UploadFileService ~ returnnewPromise ~ xhr.response", xhr)
-            reject( xhr.response );
+            console.log('Fallo la subida');
+            reject(xhr.response);
           }
         }
       };
@@ -64,7 +92,19 @@ export class TempStorageService {
       const url = this.apiConfigService.API_TEMP_STORAGE + '/xlsx/' + _cellar;
 
       xhr.open('POST', url, true);
-      xhr.send( formData );
+      xhr.send(formData);
     });
+  }
+
+  update(body: any[]): Observable<any> {
+    return this.http.put(this.apiConfigService.API_TEMP_STORAGE + '/', body);
+  }
+
+  updateGlobal(body: any): Observable<any> {
+    return this.http.put(`${this.apiConfigService.API_TEMP_STORAGE}/global`, body);
+  }
+
+  stockReset(_cellar: string): Observable<any> {
+    return this.http.put(`${this.apiConfigService.API_TEMP_STORAGE}/stockReset/${_cellar}`, null);
   }
 }

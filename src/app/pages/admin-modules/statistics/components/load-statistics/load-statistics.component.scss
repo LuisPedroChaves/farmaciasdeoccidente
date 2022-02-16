@@ -1,0 +1,43 @@
+.my-container {
+    height: calc(100vh - 150px) !important;
+    padding: 20px;
+}
+
+.card {
+    height: 650px;
+    border-radius: 12px;
+    border-radius: 12px;
+    margin-top: 15px;
+}
+
+mat-vertical-stepper {
+    background-color: #fafafa !important;
+    border-radius: 12px;
+}
+
+.form {
+    margin-top: 10px;
+    border-top-left-radius: 12px;
+    border-top-right-radius: 12px;
+}
+
+.table {
+    height: 594px;
+    width: 100%;
+    max-width: 100%;
+    overflow: auto;
+    border-radius: 12px;
+}
+
+.mat-row:hover {
+    background: whitesmoke;
+}
+
+.mat-table-sticky {
+    background: #f6fbe6;
+    opacity: 1;
+}
+
+mat-paginator {
+    border-radius: 12px;
+}
