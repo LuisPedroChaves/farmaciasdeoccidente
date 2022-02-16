@@ -96,10 +96,11 @@ export class NewRequestComponent implements OnInit, AfterContentInit, OnDestroy 
   getType() {
     switch(this.form.controls.type.value) {
       case 'PEDIDO': return 'Sin tipo';
+      case 'URGENTE': return 'Urgente';
       case 'REPOSICION': return 'Reposición';
       case 'INGRESOS': return 'Nuevo Ingreso';
       case 'FALTANTES': return 'Faltantes';
-
+      default: return 'Sin tipo';
     }
   }
 
@@ -177,7 +178,7 @@ export class NewRequestComponent implements OnInit, AfterContentInit, OnDestroy 
     if (this.form.invalid) { return; }
     if (this.addedProducts.length === 0) { this.toasty.warning('Debe agregar productos a la lista'); }
     this.loading = true;
-    let internalOrder: InternalOrderItemFull = { ...this.form.value, detail: this.addedProducts };
+    let internalOrder: InternalOrderItemFull = { ...this.form.value, detail: this.addedProducts,  };
     this.internalOrderService.createInternalOrder(internalOrder).subscribe(data => {
       if (data.ok === true) {
         this.toasty.success('Pedido creado exitosamente');

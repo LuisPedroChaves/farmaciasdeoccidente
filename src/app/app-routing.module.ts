@@ -47,7 +47,7 @@ const routes: Routes = [
         canActivate: [CheckTokenGuard]
       },
       {
-        path: 'transfers',  loadChildren: () => import('./pages/modules/transfers/transfers.module').then(m => m.TransfersModule),
+        path: 'transfers',  loadChildren: () => import('./pages/modules/transfer/transfer.module').then(m => m.TransferModule),
         canActivate: [CheckTokenGuard]
       },// Aquí comienza Cuentas por cobrar
       {

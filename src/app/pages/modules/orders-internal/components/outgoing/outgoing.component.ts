@@ -89,7 +89,8 @@ export class OutgoingComponent implements OnInit {
 
   loadInternalsOrders() {
     this.loading = true;
-    this.internalOrderService.getOutgoing(this.currentCellar._id, 'PEDIDO').subscribe(data => {
+    this.internalOrderService.getOutgoing(this.currentCellar._id, '').subscribe(data => {
+      console.log(data);
       this.enviados = data.internalOrders.filter(order => order.state !== 'DESPACHO');
       this.recibidos = data.internalOrders.filter(order => order.state === 'DESPACHO');
       this.loading = false;
@@ -181,6 +182,7 @@ export class OutgoingComponent implements OnInit {
     this.addedProducts = [];
     switch(type) {
       case 'PEDIDO' :  this.collapse = true; break;
+      case 'URGENTE' :  this.collapse = true; break;
       case 'INGRESOS': this.newTypeOrder(); break;
       case 'REPOSICION': this.pendingOrder(); break;
       case 'FALTANTES': this.missingOrder(); break;

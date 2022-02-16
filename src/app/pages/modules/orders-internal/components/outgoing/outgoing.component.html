@@ -3,6 +3,7 @@
 </button>
 <mat-menu #menu="matMenu">
     <button mat-menu-item (click)="newOrder('PEDIDO')"><mat-icon>local_shipping</mat-icon> Pedido Normal</button>
+    <button mat-menu-item (click)="newOrder('URGENTE')"><mat-icon>priority_high</mat-icon> Pedido Urgente</button>
     <button mat-menu-item (click)="newOrder('INGRESOS')"><mat-icon>fiber_new</mat-icon> Pedido de Nuevo Ingreso</button>
     <button mat-menu-item (click)="newOrder('REPOSICION')"><mat-icon>call_missed_outgoing</mat-icon> Pedido de Pendientes</button>
     <button mat-menu-item (click)="newOrder('FALTANTES')"><mat-icon>inventory_2</mat-icon> Pedido de Reposición</button>
