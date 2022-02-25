@@ -75,5 +75,8 @@ export class ApiConfigService {
   public API_BEST_SELLERS = this.API_URL + '/tempSale/bestSellers';
   public API_WORST_SELLERS = this.API_URL + '/tempSale/worstSellers';
 
+  // AutoStatistic
+  public API_AUTO_STATISTIC = this.API_URL + '/autoStatistic';
+
   /* #endregion */
 }
