@@ -21,6 +21,7 @@ export class IndexComponent implements OnInit, AfterContentInit, OnDestroy {
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatDrawer) drawer: MatDrawer;
 
+  smallScreen = window.innerWidth < 960 ? true : false;
   searchText: string;
 
   brandsSubscription: Subscription;
@@ -40,7 +41,7 @@ export class IndexComponent implements OnInit, AfterContentInit, OnDestroy {
     private brandService: BrandService,
     private filter: FilterPipe,
     public toastyService: ToastyService,
-    private xlsxService: XlsxService
+    private xlsxService: XlsxService,
   ) { }
 
   ngOnInit(): void {
@@ -79,12 +80,12 @@ export class IndexComponent implements OnInit, AfterContentInit, OnDestroy {
   }
 
   newBrand() {
-    this.drawer.toggle()
+    this.drawer.opened = true;
     this.brandForm.reset();
   }
 
   editBrand(brand: BrandItem) {
-    this.drawer.toggle()
+    this.drawer.opened = true;
     this.brandForm.controls._id.setValue(brand._id);
     this.brandForm.controls.name.setValue(brand.name);
   }

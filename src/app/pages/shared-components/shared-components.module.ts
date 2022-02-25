@@ -40,6 +40,7 @@ import {
 import { MatSortModule } from '@angular/material/sort';
 import { MatStepperModule } from '@angular/material/stepper';
 import { MatDividerModule } from '@angular/material/divider';
+import {MatSlideToggleModule} from '@angular/material/slide-toggle';
 
 /* FLEX ----------------------*/
 import { FlexLayoutModule, CoreModule } from '@angular/flex-layout';
@@ -134,6 +135,7 @@ export const MY_DATE_FORMATS = {
     MatSortModule,
     MatStepperModule,
     MatMomentDateModule,
+    MatSlideToggleModule
   ],
   exports: [
     FormsModule,
@@ -180,6 +182,7 @@ export const MY_DATE_FORMATS = {
     MatStepperModule,
     MatMomentDateModule,
     MatDividerModule,
+    MatSlideToggleModule,
     // components
     NewCellarComponent,
     ConfirmationDialogComponent,

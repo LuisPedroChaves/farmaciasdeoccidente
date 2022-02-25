@@ -6,10 +6,10 @@ import { Subscription } from 'rxjs';
 import { ToastyService } from 'src/app/core/services/internal/toasty.service';
 import { ConfirmationDialogComponent } from 'src/app/pages/shared-components/confirmation-dialog/confirmation-dialog.component';
 import { CellarItem } from 'src/app/core/models/Cellar';
-import { TempStorageService } from '../../../../../core/services/httpServices/temp-storage.service';
-import { CellarService } from '../../../../../core/services/httpServices/cellar.service';
-import { BrandItem } from '../../../../../core/models/Brand';
-import { BrandService } from '../../../../../core/services/httpServices/brand.service';
+import { BrandItem } from 'src/app/core/models/Brand';
+import { TempStorageService } from 'src/app/core/services/httpServices/temp-storage.service';
+import { CellarService } from 'src/app/core/services/httpServices/cellar.service';
+import { BrandService } from 'src/app/core/services/httpServices/brand.service';
 
 @Component({
   selector: 'app-load-statistics-global',

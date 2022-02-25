@@ -12,15 +12,15 @@
       </button>
         </header>
         <mat-drawer-container class="my-container">
-            <mat-drawer #drawer class="sidenav" mode="side" position="end">
-                <app-new-edit [brandForm]="brandForm" (close)="drawer.toggle()" (save)="pushBrand($event)" (delete)="removeBrand($event)"></app-new-edit>
+            <mat-drawer #drawer class="sidenav mat-elevation-z4" mode="side" position="end" [ngClass]="{sidenav100: smallScreen}">
+                <app-new-edit [brandForm]="brandForm" (close)="drawer.opened = false" (save)="pushBrand($event)" (delete)="removeBrand($event)"></app-new-edit>
             </mat-drawer>
             <div fxLayout="column" class="list-container">
                 <mat-card class="my-card mat-elevation-z0">
                     <ngx-simplebar class="list">
                         <div fxLayout="row wrap" fxLayoutGap="15px grid">
                             <div fxFlex.gt-lg="20" fxFlex.lg="25" fxFlex.md="50" fxFlex.sm="50" fxFlex.lt-sm="100" *ngFor="let brand of brandsPage">
-                                <mat-card matRipple (click)="editBrand(brand)" class="brand-card cursor-pointer mat-elevation-z2" matTooltip="Editar Laboratorio">
+                                <mat-card matRipple (click)="editBrand(brand)" class="brand-card cursor-pointer mat-elevation-z2">
                                     <mat-card-header>
                                         <mat-icon mat-card-avatar color="accent">science</mat-icon>
                                         <mat-card-title>
