@@ -26,6 +26,7 @@ export class EditProviderComponent implements OnInit {
     address: new FormControl(null),
     email: new FormControl(null),
     creditDays: new FormControl(null),
+    credit: new FormControl(null),
   });
 
   constructor(
@@ -44,6 +45,9 @@ export class EditProviderComponent implements OnInit {
       address: new FormControl(this.data.provider.address),
       email: new FormControl(this.data.provider.email),
       creditDays: new FormControl(this.data.provider.creditDays, [
+        Validators.required,
+      ]),
+      credit: new FormControl(this.data.provider.credit, [
         Validators.required,
       ]),
     });

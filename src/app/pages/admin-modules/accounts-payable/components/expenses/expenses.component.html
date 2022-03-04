@@ -1,0 +1,23 @@
+<div class="my-layout">
+    <div fxLayout="row" fxLayoutGap="10px" fxLayoutAlign="start center">
+        <mat-form-field fxFlex appearance="outline" color="accent">
+            <mat-label>Nombre</mat-label>
+            <input [formControl]="name" type="text" matInput placeholder="Ingrese un nombre">
+        </mat-form-field>
+        <div fxFlex>
+            <button mat-raised-button (click)="save()" color="warn" [disabled]="name.invalid">Guardar</button>
+        </div>
+    </div>
+    <mat-list>
+        <mat-list-item *ngFor="let expense of expenses">
+            <div mat-line fxLayoutAlign="start center">
+                {{ expense.name }}
+                <span fxFlex></span>
+                <button mat-icon-button (click)="remove(expense)">
+                <mat-icon>close</mat-icon>
+              </button>
+            </div>
+            <mat-divider></mat-divider>
+        </mat-list-item>
+    </mat-list>
+</div>

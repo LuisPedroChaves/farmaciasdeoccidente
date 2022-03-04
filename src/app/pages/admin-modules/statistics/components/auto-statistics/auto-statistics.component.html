@@ -1,10 +1,11 @@
 <mat-drawer-container class="my-container" autosize>
     <mat-drawer #drawer class="sidenav" position="end" mode="over">
         <header fxLayout="row wrap" fxLayoutAlign="start center">
-            <button mat-icon-button (click)="drawer.opened = false">
-          <mat-icon>close</mat-icon>
-        </button>
             <h2 class="ma-0">{{title}}</h2>
+            <span fxFlex></span>
+            <button mat-icon-button (click)="drawer.opened = false">
+              <mat-icon>close</mat-icon>
+            </button>
         </header>
         <app-new *ngIf="title === 'Nueva Configuración Automática'" (close)="drawer.opened = false; title = '';"></app-new>
         <app-edit *ngIf="title === 'Editar Configuración Automática'" [autoStatistic]="autoStatistic" (close)="drawer.opened = false; title = '';"></app-edit>

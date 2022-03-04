@@ -19,6 +19,7 @@ export class NewProviderComponent implements OnInit {
     phone: new FormControl(null),
     email: new FormControl(null),
     creditDays: new FormControl('0', [Validators.required]),
+    credit: new FormControl('0', [Validators.required]),
   });
 
   loading = false;

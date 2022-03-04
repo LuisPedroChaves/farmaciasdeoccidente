@@ -1,0 +1,27 @@
+<ngx-simplebar class="my-layout">
+    <header fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="10px">
+        <h2 class="module-title product-font ma-0">Cuentas por pagar</h2>
+        <span fxFlex></span>
+        <mat-chip-list aria-label="Dog selection">
+            <mat-chip [routerLink]="['/admin/accountsPayable']" [selected]="router.url === '/admin/accountsPayable'" color="primary" matTooltip="Pagos a proveedores">
+                <mat-chip-avatar>
+                    <mat-icon>business</mat-icon>
+                </mat-chip-avatar>
+                Proveedores
+            </mat-chip>
+            <mat-chip [routerLink]="['/admin/accountsPayable/expenses']" [selected]="router.url === '/admin/accountsPayable/expenses'" color="primary" matTooltip="Gastos internos">
+                <mat-chip-avatar>
+                    <mat-icon>payments</mat-icon>
+                </mat-chip-avatar>
+                Gastos
+            </mat-chip>
+            <mat-chip [routerLink]="['/admin/accountsPayable/cheques']" [selected]="router.url === '/admin/accountsPayable/cheques'" color="primary">
+                <mat-chip-avatar>
+                    <mat-icon>account_balance</mat-icon>
+                </mat-chip-avatar>
+                Cheques
+            </mat-chip>
+        </mat-chip-list>
+    </header>
+    <router-outlet></router-outlet>
+</ngx-simplebar>

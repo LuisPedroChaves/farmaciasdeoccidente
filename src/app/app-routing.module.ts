@@ -6,6 +6,7 @@ import { AdminLayoutComponent } from './pages/layouts/admin-layout/admin-layout.
 import { AuthLayoutComponent } from './pages/layouts/auth-layout/auth-layout.component';
 import { AppLayoutComponent } from './pages/layouts/app-layout/app-layout.component';
 import { AuthAdminGuard } from './core/auth/auth-admin.guard';
+import { AccountsPayableRoutes } from './pages/admin-modules/accounts-payable/accounts-payable.routing';
 
 const routes: Routes = [
   {
@@ -122,6 +123,10 @@ const routes: Routes = [
       // },
       {
         path: 'receivables', pathMatch: 'full',  loadChildren: () => import('./pages/admin-modules/receivables/receivables.module').then(m => m.ReceivablesModule),
+        canActivate: [CheckTokenGuard]
+      },
+      {
+        path: 'accountsPayable', loadChildren: () => import('./pages/admin-modules/accounts-payable/accounts-payable.module').then(m => m.AccountsPayableModule),
         canActivate: [CheckTokenGuard]
       },
       {

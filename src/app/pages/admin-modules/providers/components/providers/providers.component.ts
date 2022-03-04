@@ -39,7 +39,7 @@ export class ProvidersComponent implements OnInit, AfterContentInit, OnDestroy {
   // providersp: string[];
 
   dataSource = new MatTableDataSource();
-  columnsToDisplay = ['name', 'nit', 'phone', 'address', 'email', 'creditDays'];
+  columnsToDisplay = ['name', 'nit', 'phone', 'address', 'email', 'creditDays', 'credit'];
   columnsToDisplay2 = [
     'name',
     'nit',
@@ -47,6 +47,7 @@ export class ProvidersComponent implements OnInit, AfterContentInit, OnDestroy {
     'address',
     'email',
     'creditDays',
+    'credit'
   ];
   expandedElement: ProviderItem | null;
 
