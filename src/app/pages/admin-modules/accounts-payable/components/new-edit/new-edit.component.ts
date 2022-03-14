@@ -4,6 +4,7 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Observable, Subscription } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
 
+import { AccountsPayableService } from 'src/app/core/services/httpServices/accounts-payable.service';
 import { AccountsPayableItem } from '../../../../../core/models/AccountsPayable';
 import { ProviderItem } from '../../../../../core/models/Provider';
 import { ProviderService } from '../../../../../core/services/httpServices/provider.service';
@@ -71,7 +72,8 @@ export class NewEditComponent implements OnInit, AfterContentInit, OnDestroy {
   constructor(
     private providerService: ProviderService,
     private toastyService: ToastyService,
-    private expenseService: ExpenseService
+    private expenseService: ExpenseService,
+    private accountsPayableService: AccountsPayableService,
   ) { }
 
   ngOnInit(): void {
@@ -89,10 +91,9 @@ export class NewEditComponent implements OnInit, AfterContentInit, OnDestroy {
     this.filteredExpenses = this.form.controls._expense.valueChanges.pipe(
       startWith(''),
       map((value: any) => {
-        console.log("🚀 ~ file: new-edit.component.ts ~ line 92 ~ NewEditComponent ~ map ~ value", value)
         if (typeof value === 'string' || !value) {
           return this._filterExpenses(value)
-        }else {
+        } else {
           return this._filterExpenses(value.name)
         }
       })
@@ -239,7 +240,27 @@ export class NewEditComponent implements OnInit, AfterContentInit, OnDestroy {
   }
 
   save() {
+    this.loading = true;
+    // Asignamos el tipo de factura si es PRODUCTOS | GASTOS
+    this.form.controls.type.setValue(this.accountsPayable.type);
+    if (!this.form.controls.toCredit.value) {
+      // Validamos si la factura es al contado para marcarla como pagada
+      this.form.controls.paid.setValue(true);
+    }
+    if (this.accountsPayable._id) {
+      // Editando...
 
+    } else {
+      // Creando nueva...
+      this.accountsPayableService.create({ ...this.form.value })
+        .subscribe(resp => {
+          console.log("🚀 ~ file: new-edit.component.ts ~ line 258 ~ NewEditComponent ~ save ~ resp", resp)
+          this.toastyService.success('Documento ingresado correctamente')
+          this.resetForm();
+          this.loading = false;
+          this.close.emit();
+        })
+    }
   }
 
 }

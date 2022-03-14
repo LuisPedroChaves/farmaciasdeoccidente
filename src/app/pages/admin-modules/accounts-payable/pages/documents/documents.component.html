@@ -1,0 +1,316 @@
+<mat-drawer-container class="my-layout">
+    <mat-drawer #drawer class="sidenav" position="end" mode="over">
+        <header fxLayout="row wrap" fxLayoutAlign="start center">
+            <h2 class="ma-0">{{title}}</h2>
+            <span fxFlex></span>
+            <button mat-icon-button (click)="drawer.opened = false">
+        <mat-icon>close</mat-icon>
+      </button>
+        </header>
+        <app-new-edit *ngIf="drawerComponent === 'DOCUMENTO'" [accountsPayable]="accountsPayable" (close)="drawer.opened = false"></app-new-edit>
+        <app-provider-account *ngIf="drawerComponent === 'PROVEEDOR'" [provider]="provider" (close)="drawer.opened = false">
+        </app-provider-account>
+    </mat-drawer>
+    <header>
+        <app-filter></app-filter>
+        <span fxFlex></span>
+        <button mat-fab color="warn" [matMenuTriggerFor]="payablesMenu" matTooltip="Nuevo documento">
+      <mat-icon>add</mat-icon>
+    </button>
+        <mat-menu #payablesMenu="matMenu" xPosition="before">
+            <button mat-menu-item (click)="newDocument('PRODUCTOS')">
+        <mat-icon>medication</mat-icon>
+        <span>Productos</span>
+      </button>
+            <button mat-menu-item (click)="newDocument('GASTOS')">
+        <mat-icon>payments</mat-icon>
+        <span>Gastos</span>
+      </button>
+        </mat-menu>
+    </header>
+    <mat-tab-group mat-align-tabs="center">
+        <mat-tab>
+            <ng-template mat-tab-label>
+                <span [matBadge]="5" matBadgeOverlap="false" matBadgeColor="primary">
+          Retenciones pendientes
+        </span>
+            </ng-template>
+            <ng-template matTabContent>
+                <ngx-simplebar class="content">
+                    <mat-progress-bar *ngIf="loading" mode="indeterminate" color="warn"></mat-progress-bar>
+                    <table mat-table [dataSource]="dataSource">
+
+                        <ng-container matColumnDef="date">
+                            <th mat-header-cell *matHeaderCellDef> Fecha </th>
+                            <td mat-cell *matCellDef="let element"> {{element.date | date: 'dd/MM/yyyy'}} </td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="noBill">
+                            <th mat-header-cell *matHeaderCellDef> Documento </th>
+                            <td mat-cell *matCellDef="let element"> {{element.serie}} {{ element.noBill }} </td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="docType">
+                            <th mat-header-cell *matHeaderCellDef> Tipo de doc. </th>
+                            <td mat-cell *matCellDef="let element">
+                                {{element.docType }}
+                            </td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="unaffectedAmount">
+                            <th mat-header-cell *matHeaderCellDef> Compras No Afectas (Q) </th>
+                            <td mat-cell *matCellDef="let element">
+                                {{element.unaffectedAmount | number: '.2' }}
+                            </td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="exemptAmount">
+                            <th mat-header-cell *matHeaderCellDef> Compras y servicios exentos </th>
+                            <td mat-cell *matCellDef="let element">
+                                {{element.exemptAmount | number: '.2' }}
+                            </td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="netPurchaseAmount">
+                            <th mat-header-cell *matHeaderCellDef> Compras Neto (Q) </th>
+                            <td mat-cell *matCellDef="let element">
+                                {{element.netPurchaseAmount | number: '.2' }}
+                            </td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="netServiceAmount">
+                            <th mat-header-cell *matHeaderCellDef> Servicios Neto (Q) </th>
+                            <td mat-cell *matCellDef="let element">
+                                {{element.netServiceAmount | number: '.2' }}
+                            </td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="otherTaxes">
+                            <th mat-header-cell *matHeaderCellDef> Otros Impuestos </th>
+                            <td mat-cell *matCellDef="let element">
+                                {{element.otherTaxes | number: '.2' }}
+                            </td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="iva">
+                            <th mat-header-cell *matHeaderCellDef> I.V.A. Crédito Fiscal (Q) </th>
+                            <td mat-cell *matCellDef="let element">
+                                {{element.iva | number: '.2' }}
+                            </td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="total">
+                            <th mat-header-cell *matHeaderCellDef> Total (Q) </th>
+                            <td mat-cell *matCellDef="let element">
+                                {{element.total | number: '.2' }}
+                            </td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="expirationCredit">
+                            <th mat-header-cell *matHeaderCellDef> Fecha de vencimiento </th>
+                            <td mat-cell *matCellDef="let element">
+                                <span class="text-muted"> {{ element.expirationCredit | date: 'dd/MM/yyyy' }}</span>
+                            </td>
+                        </ng-container>
+
+                        <tr mat-header-row *matHeaderRowDef="columns;  sticky: true"></tr>
+                        <tr mat-row *matRowDef="let row; columns: columns;"></tr>
+                        <!-- Fila mostrada cuando no hay datos coincidentes. -->
+                        <tr class="mat-row" *matNoDataRow>
+                            <td class="mat-cell" colspan="13">No hay datos que coincidan con algún filtro o busqueda</td>
+                        </tr>
+                    </table>
+                </ngx-simplebar>
+            </ng-template>
+        </mat-tab>
+        <mat-tab>
+            <ng-template mat-tab-label>
+                <span [matBadge]="33" matBadgeOverlap="false" matBadgeColor="warn">
+                    Pagos a proveedores
+        </span>
+            </ng-template>
+            <ng-template matTabContent>
+                <ngx-simplebar class="content">
+                    <mat-progress-bar *ngIf="loading" mode="indeterminate" color="warn"></mat-progress-bar>
+                    <table mat-table [dataSource]="dataSource">
+
+                        <ng-container matColumnDef="date">
+                            <th mat-header-cell *matHeaderCellDef> Fecha </th>
+                            <td mat-cell *matCellDef="let element"> {{element.date | date: 'dd/MM/yyyy'}} </td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="noBill">
+                            <th mat-header-cell *matHeaderCellDef> Documento </th>
+                            <td mat-cell *matCellDef="let element"> {{element.serie}} {{ element.noBill }} </td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="docType">
+                            <th mat-header-cell *matHeaderCellDef> Tipo de doc. </th>
+                            <td mat-cell *matCellDef="let element">
+                                {{element.docType }}
+                            </td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="unaffectedAmount">
+                            <th mat-header-cell *matHeaderCellDef> Compras No Afectas (Q) </th>
+                            <td mat-cell *matCellDef="let element">
+                                {{element.unaffectedAmount | number: '.2' }}
+                            </td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="exemptAmount">
+                            <th mat-header-cell *matHeaderCellDef> Compras y servicios exentos </th>
+                            <td mat-cell *matCellDef="let element">
+                                {{element.exemptAmount | number: '.2' }}
+                            </td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="netPurchaseAmount">
+                            <th mat-header-cell *matHeaderCellDef> Compras Neto (Q) </th>
+                            <td mat-cell *matCellDef="let element">
+                                {{element.netPurchaseAmount | number: '.2' }}
+                            </td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="netServiceAmount">
+                            <th mat-header-cell *matHeaderCellDef> Servicios Neto (Q) </th>
+                            <td mat-cell *matCellDef="let element">
+                                {{element.netServiceAmount | number: '.2' }}
+                            </td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="otherTaxes">
+                            <th mat-header-cell *matHeaderCellDef> Otros Impuestos </th>
+                            <td mat-cell *matCellDef="let element">
+                                {{element.otherTaxes | number: '.2' }}
+                            </td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="iva">
+                            <th mat-header-cell *matHeaderCellDef> I.V.A. Crédito Fiscal (Q) </th>
+                            <td mat-cell *matCellDef="let element">
+                                {{element.iva | number: '.2' }}
+                            </td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="total">
+                            <th mat-header-cell *matHeaderCellDef> Total (Q) </th>
+                            <td mat-cell *matCellDef="let element">
+                                {{element.total | number: '.2' }}
+                            </td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="expirationCredit">
+                            <th mat-header-cell *matHeaderCellDef> Fecha de vencimiento </th>
+                            <td mat-cell *matCellDef="let element">
+                                <span class="text-muted"> {{ element.expirationCredit | date: 'dd/MM/yyyy' }}</span>
+                            </td>
+                        </ng-container>
+
+                        <tr mat-header-row *matHeaderRowDef="columns;  sticky: true"></tr>
+                        <tr mat-row *matRowDef="let row; columns: columns;"></tr>
+                        <!-- Fila mostrada cuando no hay datos coincidentes. -->
+                        <tr class="mat-row" *matNoDataRow>
+                            <td class="mat-cell" colspan="13">No hay datos que coincidan con algún filtro o busqueda</td>
+                        </tr>
+                    </table>
+                </ngx-simplebar>
+            </ng-template>
+        </mat-tab>
+        <mat-tab>
+            <ng-template mat-tab-label>
+                <span [matBadge]="15" matBadgeOverlap="false" matBadgeColor="warn">
+                    Gastos internos
+        </span>
+            </ng-template>
+            <ng-template matTabContent>
+                <ngx-simplebar class="content">
+                    <mat-progress-bar *ngIf="loading" mode="indeterminate" color="warn"></mat-progress-bar>
+                    <table mat-table [dataSource]="dataSource">
+
+                        <ng-container matColumnDef="date">
+                            <th mat-header-cell *matHeaderCellDef> Fecha </th>
+                            <td mat-cell *matCellDef="let element"> {{element.date | date: 'dd/MM/yyyy'}} </td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="noBill">
+                            <th mat-header-cell *matHeaderCellDef> Documento </th>
+                            <td mat-cell *matCellDef="let element"> {{element.serie}} {{ element.noBill }} </td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="docType">
+                            <th mat-header-cell *matHeaderCellDef> Tipo de doc. </th>
+                            <td mat-cell *matCellDef="let element">
+                                {{element.docType }}
+                            </td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="unaffectedAmount">
+                            <th mat-header-cell *matHeaderCellDef> Compras No Afectas (Q) </th>
+                            <td mat-cell *matCellDef="let element">
+                                {{element.unaffectedAmount | number: '.2' }}
+                            </td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="exemptAmount">
+                            <th mat-header-cell *matHeaderCellDef> Compras y servicios exentos </th>
+                            <td mat-cell *matCellDef="let element">
+                                {{element.exemptAmount | number: '.2' }}
+                            </td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="netPurchaseAmount">
+                            <th mat-header-cell *matHeaderCellDef> Compras Neto (Q) </th>
+                            <td mat-cell *matCellDef="let element">
+                                {{element.netPurchaseAmount | number: '.2' }}
+                            </td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="netServiceAmount">
+                            <th mat-header-cell *matHeaderCellDef> Servicios Neto (Q) </th>
+                            <td mat-cell *matCellDef="let element">
+                                {{element.netServiceAmount | number: '.2' }}
+                            </td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="otherTaxes">
+                            <th mat-header-cell *matHeaderCellDef> Otros Impuestos </th>
+                            <td mat-cell *matCellDef="let element">
+                                {{element.otherTaxes | number: '.2' }}
+                            </td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="iva">
+                            <th mat-header-cell *matHeaderCellDef> I.V.A. Crédito Fiscal (Q) </th>
+                            <td mat-cell *matCellDef="let element">
+                                {{element.iva | number: '.2' }}
+                            </td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="total">
+                            <th mat-header-cell *matHeaderCellDef> Total (Q) </th>
+                            <td mat-cell *matCellDef="let element">
+                                {{element.total | number: '.2' }}
+                            </td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="expirationCredit">
+                            <th mat-header-cell *matHeaderCellDef> Fecha de vencimiento </th>
+                            <td mat-cell *matCellDef="let element">
+                                <span class="text-muted"> {{ element.expirationCredit | date: 'dd/MM/yyyy' }}</span>
+                            </td>
+                        </ng-container>
+
+                        <tr mat-header-row *matHeaderRowDef="columns;  sticky: true"></tr>
+                        <tr mat-row *matRowDef="let row; columns: columns;"></tr>
+                        <!-- Fila mostrada cuando no hay datos coincidentes. -->
+                        <tr class="mat-row" *matNoDataRow>
+                            <td class="mat-cell" colspan="13">No hay datos que coincidan con algún filtro o busqueda</td>
+                        </tr>
+                    </table>
+                </ngx-simplebar>
+            </ng-template>
+        </mat-tab>
+        <mat-tab label="Historial">En proceso... </mat-tab>
+    </mat-tab-group>
+</mat-drawer-container>

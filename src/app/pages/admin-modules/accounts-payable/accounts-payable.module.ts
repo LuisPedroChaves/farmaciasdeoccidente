@@ -10,6 +10,9 @@ import { ProvidersComponent } from './pages/providers/providers.component';
 import { ChequesComponent } from './pages/cheques/cheques.component';
 import { NewEditComponent } from './components/new-edit/new-edit.component';
 import { ExpensesComponent } from './components/expenses/expenses.component';
+import { DocumentsComponent } from './pages/documents/documents.component';
+import { ProviderAccountComponent } from './components/provider-account/provider-account.component';
+import { NewProviderCheckComponent } from './components/new-provider-check/new-provider-check.component';
 
 @NgModule({
   declarations: [
@@ -17,7 +20,10 @@ import { ExpensesComponent } from './components/expenses/expenses.component';
     ProvidersComponent,
     ExpensesComponent,
     ChequesComponent,
-    NewEditComponent
+    NewEditComponent,
+    DocumentsComponent,
+    ProviderAccountComponent,
+    NewProviderCheckComponent
   ],
   imports: [
     CommonModule,

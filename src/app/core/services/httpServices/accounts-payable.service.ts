@@ -28,7 +28,7 @@ export class AccountsPayableService implements IDataService<AccountsPayableItem[
       .pipe(
         map((response: any) => {
 
-          this.accountsPayableList = response.accountsPayable;
+          this.accountsPayableList = response.accountsPayables;
           this.accountsPayableSubject.next(this.accountsPayableList);
         })
       )

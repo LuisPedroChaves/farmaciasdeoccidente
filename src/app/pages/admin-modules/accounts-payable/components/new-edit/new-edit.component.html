@@ -204,7 +204,7 @@
                                         <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
                                     </table>
                                     <div fxLayout="row wrap">
-                                        <div fxFlex.lt-md="100" fxLayout="column" fxLayoutGap="5px">
+                                        <div *ngIf="form.get('docType').value !== 'ABONO' && form.get('docType').value !== 'CREDITO'" fxFlex.lt-md="100" fxLayout="column" fxLayoutGap="5px">
                                             <div fxFlex>
                                                 <mat-slide-toggle formControlName="toCredit">Al Crédito</mat-slide-toggle>
                                             </div>
@@ -229,6 +229,13 @@
                                             </div>
                                         </div>
                                     </div>
+                                    <mat-card *ngIf="form.get('_provider').value && (form.get('_provider').value.iva || form.get('_provider').value.isr)" class="warning-card mat-elevation-z0">
+                                        <mat-card-header>
+                                            <mat-icon matCardAvatar>warning</mat-icon>
+                                            <mat-card-title>Retención de {{ form.get('_provider').value.iva ? 'IVA' : '' }} {{ form.get('_provider').value.isr ? 'ISR' : '' }}</mat-card-title>
+                                            <mat-card-subtitle>¡IMPORTANTE!, el proveedor cuenta con estas retenciones.</mat-card-subtitle>
+                                        </mat-card-header>
+                                    </mat-card>
                                     <mat-progress-bar *ngIf="loading" mode="indeterminate" color="warn"></mat-progress-bar>
                                 </mat-card-content>
                                 <mat-card-actions>

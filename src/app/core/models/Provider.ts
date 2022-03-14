@@ -6,5 +6,8 @@ export interface ProviderItem {
   phone: string,
   email: string,
   creditDays: number,
-  credit: number
+  credit: number,
+  balance: number,
+	iva: boolean,
+	isr: boolean,
 }

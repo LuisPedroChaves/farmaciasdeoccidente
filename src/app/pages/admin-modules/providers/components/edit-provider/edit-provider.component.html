@@ -42,6 +42,12 @@
                 <div fxFlex="100" class=" text-muted input-padding">
                     Q {{ data.provider.credit | number: '.2' }}
                 </div>
+                <div fxFlex="100" class=" text-muted input-padding">
+                    Retención de IVA: {{ data.provider.iva ? 'SI': 'NO' }}
+                </div>
+                <div fxFlex="100" class=" text-muted input-padding">
+                    Retención de ISR: {{ data.provider.isr ? 'SI': 'NO' }}
+                </div>
             </div>
         </div>
     </div>
@@ -128,6 +134,22 @@
                             <mat-label>Crédito</mat-label>
                             <input formControlName="credit" type="number" matInput placeholder="Ingrese la cantidad de crédito brindado por el proveedor">
                         </mat-form-field>
+                    </div>
+                </div>
+                <div fxFlex="50px"></div>
+            </div>
+            <div fxLayout="row wrap" fxLayoutAlign="start center" style="margin-top: 8px;">
+                <div fxFlex="50px"></div>
+                <div fxFlex="50px" fxHide.xs>
+                    <mat-icon color="accent" class="mSaterial-icons-outlined grayicon">account_balance
+                    </mat-icon>
+                </div>
+                <div fxFlex fxLayout="row wrap">
+                    <div fxFlex="50%" fxFlex.xs="100%" class="inputpadding">
+                        <mat-slide-toggle formControlName="iva">Retención de IVA</mat-slide-toggle>
+                    </div>
+                    <div fxFlex="50%" fxFlex.xs="100%" class="inputpadding">
+                        <mat-slide-toggle formControlName="isr">Retención de ISR</mat-slide-toggle>
                     </div>
                 </div>
                 <div fxFlex="50px"></div>

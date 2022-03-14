@@ -2,6 +2,7 @@ import { UserItem } from './User';
 import { ProviderItem } from './Provider';
 import { PurchaseItem } from './Purchase';
 import { ExpenseItem } from './Expense';
+import { CheckItem } from './Check';
 
 export interface AccountsPayableItem  {
   _id: string,
@@ -23,12 +24,15 @@ export interface AccountsPayableItem  {
   total: number,
   type: string,
   file: string,
+  withholdingIVA: string,
+  withholdingISR: string,
   toCredit: boolean,
   expirationCredit: Date,
   paid: boolean,
 }
 
 export interface AccountsPayableBalanceItem {
+  _check: CheckItem,
   date: Date,
   document: string,
   credit: string,
