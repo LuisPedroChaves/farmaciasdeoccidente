@@ -1,8 +1,17 @@
-import { Component, OnInit, AfterContentInit, OnDestroy, ViewChild, ElementRef } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  AfterContentInit,
+  OnDestroy,
+  ViewChild,
+  ElementRef,
+} from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { Observable, Subscription } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
+// instalation necesary: npm install --save xlsx
+import * as XLSX from 'xlsx';
 
 import { CellarItem } from 'src/app/core/models/Cellar';
 import { CellarService } from 'src/app/core/services/httpServices/cellar.service';
@@ -18,10 +27,9 @@ import { ProductService } from '../../../../../core/services/httpServices/produc
 @Component({
   selector: 'app-uploads',
   templateUrl: './uploads.component.html',
-  styleUrls: ['./uploads.component.scss']
+  styleUrls: ['./uploads.component.scss'],
 })
 export class UploadsComponent implements OnInit, AfterContentInit, OnDestroy {
-
   smallScreen = window.innerWidth < 960 ? true : false;
   loading = false;
 
@@ -38,6 +46,8 @@ export class UploadsComponent implements OnInit, AfterContentInit, OnDestroy {
 
   currentFile3: any;
 
+  itemsInventory = [];
+
   constructor(
     public cellarService: CellarService,
     private toastyService: ToastyService,
@@ -49,17 +59,15 @@ export class UploadsComponent implements OnInit, AfterContentInit, OnDestroy {
     public productService: ProductService
   ) {
     this.cellarsSubscription = this.cellarService
-    .readData()
-    .subscribe((data) => {
-      this.cellars = data;
-    });
+      .readData()
+      .subscribe((data) => {
+        this.cellars = data;
+      });
   }
 
-  ngOnInit(): void {
+  ngOnInit(): void {}
 
-  }
-
-  ngAfterContentInit() {
+  ngAfterContentInit(): void {
     this.cellarService.loadData();
   }
 
@@ -72,8 +80,7 @@ export class UploadsComponent implements OnInit, AfterContentInit, OnDestroy {
       width: '350px',
       data: {
         title: 'Cargar PRODUCTOS',
-        message:
-          '¿Confirma que desea ingresar el archivo de productos?'
+        message: '¿Confirma que desea ingresar el archivo de productos?',
       },
       disableClose: true,
       panelClass: ['farmacia-dialog', 'farmacia'],
@@ -83,16 +90,19 @@ export class UploadsComponent implements OnInit, AfterContentInit, OnDestroy {
       if (result !== undefined) {
         this.loading = true;
         if (this.currentFile3) {
-          this.productService.uploadFile(this.currentFile3.files[0])
-          .then((resp: any) => {
-            this.loading = false;
-            this.toastyService.success('Productos actualizados correctamente');
-          })
-          .catch(err => {
-            this.loading = false;
-            this.toastyService.error('Error al cargar el archivo');
-          });
-        }else {
+          this.productService
+            .uploadFile(this.currentFile3.files[0])
+            .then((resp: any) => {
+              this.loading = false;
+              this.toastyService.success(
+                'Productos actualizados correctamente'
+              );
+            })
+            .catch((err) => {
+              this.loading = false;
+              this.toastyService.error('Error al cargar el archivo');
+            });
+        } else {
           this.loading = false;
           this.toastyService.error('Debe seleccionar un archivo');
           return;
@@ -106,8 +116,7 @@ export class UploadsComponent implements OnInit, AfterContentInit, OnDestroy {
       width: '350px',
       data: {
         title: 'Cargar INVENTARIO',
-        message:
-          '¿Confirma que desea ingresar el archivo de existencias?'
+        message: '¿Confirma que desea ingresar el archivo de existencias?',
       },
       disableClose: true,
       panelClass: ['farmacia-dialog', 'farmacia'],
@@ -121,19 +130,36 @@ export class UploadsComponent implements OnInit, AfterContentInit, OnDestroy {
         }
         this.loading = true;
         if (this.currentFile) {
-          this.tempStorageService.uploadFile(this.currentFile.files[0], this.currentCellar)
-          .then((resp: any) => {
-            this.loading = false;
-            this.toastyService.success('Inventario actualizado correctamente');
-            this.errores = resp.errors;
-            this.currentCellar = undefined;
-            this.currentFile = undefined;
-          })
-          .catch(err => {
-            this.loading = false;
-            this.toastyService.error('Error al cargar el archivo');
-          });
-        }else {
+          const selectedFile = this.currentFile.files[0];
+          const fileReader = new FileReader();
+
+          fileReader.readAsBinaryString(selectedFile);
+          fileReader.onload = async (event: any) => {
+            if (event.target) {
+              const binaryData = event.target.result;
+              const workbook = XLSX.read(binaryData, { type: 'binary' });
+
+              await workbook.SheetNames.forEach((sheet) => {
+                const data = XLSX.utils.sheet_to_json(workbook.Sheets[sheet]);
+                this.itemsInventory = data;
+                console.log(this.itemsInventory);
+                this.updateInventory(this.currentCellar);
+              });
+            }
+          };
+          // this.tempStorageService.uploadFile(this.currentFile.files[0], this.currentCellar)
+          // .then((resp: any) => {
+          //   this.loading = false;
+          //   this.toastyService.success('Inventario actualizado correctamente');
+          //   this.errores = resp.errors;
+          //   this.currentCellar = undefined;
+          //   this.currentFile = undefined;
+          // })
+          // .catch(err => {
+          //   this.loading = false;
+          //   this.toastyService.error('Error al cargar el archivo');
+          // });
+        } else {
           this.loading = false;
           this.toastyService.error('Debe seleccionar un archivo');
           return;
@@ -142,13 +168,28 @@ export class UploadsComponent implements OnInit, AfterContentInit, OnDestroy {
     });
   }
 
+  // tslint:disable-next-line: variable-name
+  async updateInventory(_cellar: string): Promise<any> {
+    if (this.itemsInventory.length > 0) {
+      const send = await Promise.all(
+        this.itemsInventory.map(async (item: any) => {
+          await this.tempStorageService
+            .updateByBarcode(_cellar, item.codigo, item.Inventario)
+            .subscribe((res: any) => {
+              console.log('hola', res);
+            });
+        })
+      );
+    }
+  }
+
   stockReset(): void {
     const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
       width: '350px',
       data: {
         title: 'Restablecer inventario',
         message:
-          '¿Confirma que desea restablecer el inventario a CERO existencias?'
+          '¿Confirma que desea restablecer el inventario a CERO existencias?',
       },
       disableClose: true,
       panelClass: ['farmacia-dialog', 'farmacia'],
@@ -161,11 +202,12 @@ export class UploadsComponent implements OnInit, AfterContentInit, OnDestroy {
           return;
         }
         this.loading = true;
-        this.tempStorageService.stockReset(this.currentCellar)
-        .subscribe((resp: any) => {
-          this.loading = false;
-          this.toastyService.success('Inventario restablecido correctamente');
-        });
+        this.tempStorageService
+          .stockReset(this.currentCellar)
+          .subscribe((resp: any) => {
+            this.loading = false;
+            this.toastyService.success('Inventario restablecido correctamente');
+          });
       }
     });
   }
@@ -175,8 +217,7 @@ export class UploadsComponent implements OnInit, AfterContentInit, OnDestroy {
       width: '350px',
       data: {
         title: 'Cargar VENTAS',
-        message:
-          '¿Confirma que desea ingresar el archivo de VENTAS?',
+        message: '¿Confirma que desea ingresar el archivo de VENTAS?',
       },
       disableClose: true,
       panelClass: ['farmacia-dialog', 'farmacia'],
@@ -190,22 +231,22 @@ export class UploadsComponent implements OnInit, AfterContentInit, OnDestroy {
         }
         this.loading = true;
         if (this.currentFile2) {
-          this.tempSaleService.uploadFile(this.currentFile2.files[0],
-            {
-              _cellar: this.currentCellar2
+          this.tempSaleService
+            .uploadFile(this.currentFile2.files[0], {
+              _cellar: this.currentCellar2,
             })
-          .then((resp: any) => {
-            this.loading = false;
-            this.toastyService.success('Ventas ingresadas correctamente');
-            this.errores2 = resp.errors;
-            this.currentCellar2 = undefined;
-            this.currentFile2 = undefined;
-          })
-          .catch(err => {
-            this.loading = false;
-            this.toastyService.error('Error al cargar el archivo');
-          });
-        }else {
+            .then((resp: any) => {
+              this.loading = false;
+              this.toastyService.success('Ventas ingresadas correctamente');
+              this.errores2 = resp.errors;
+              this.currentCellar2 = undefined;
+              this.currentFile2 = undefined;
+            })
+            .catch((err) => {
+              this.loading = false;
+              this.toastyService.error('Error al cargar el archivo');
+            });
+        } else {
           this.loading = false;
           this.toastyService.error('Debe seleccionar un archivo');
           return;
@@ -234,22 +275,22 @@ export class UploadsComponent implements OnInit, AfterContentInit, OnDestroy {
         }
         this.loading = true;
         if (this.currentFile2) {
-          this.tempSaleService.uploadFileDelete(this.currentFile2.files[0],
-            {
+          this.tempSaleService
+            .uploadFileDelete(this.currentFile2.files[0], {
               _cellar: this.currentCellar2,
             })
-          .then((resp: any) => {
-            this.loading = false;
-            this.toastyService.success('Ventas eliminadas correctamente');
-            this.errores2 = resp.errors;
-            this.currentCellar2 = undefined;
-            this.currentFile2 = undefined;
-          })
-          .catch(err => {
-            this.loading = false;
-            this.toastyService.error('Error al cargar el archivo');
-          });
-        }else {
+            .then((resp: any) => {
+              this.loading = false;
+              this.toastyService.success('Ventas eliminadas correctamente');
+              this.errores2 = resp.errors;
+              this.currentCellar2 = undefined;
+              this.currentFile2 = undefined;
+            })
+            .catch((err) => {
+              this.loading = false;
+              this.toastyService.error('Error al cargar el archivo');
+            });
+        } else {
           this.loading = false;
           this.toastyService.error('Debe seleccionar un archivo');
           return;
