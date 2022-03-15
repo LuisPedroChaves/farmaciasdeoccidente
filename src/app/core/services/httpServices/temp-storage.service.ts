@@ -120,7 +120,7 @@ export class TempStorageService {
 
   // tslint:disable-next-line: variable-name
   updateByBarcode(_cellar: string, barcode: string, stock: number): Observable<any> {
-    return this.http.put(`${this.apiConfigService.API_TEMP_STORAGE}/xlsx/${_cellar}`, {
+    return this.http.put(`${this.apiConfigService.API_TEMP_STORAGE}/xlsx/${_cellar}`, null, {
       params: new HttpParams()
       .set('barcode', barcode.toString())
       .set('stock', stock.toString())
