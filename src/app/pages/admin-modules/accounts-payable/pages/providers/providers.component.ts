@@ -6,6 +6,7 @@ import { Subscription } from 'rxjs';
 import { ProviderItem } from 'src/app/core/models/Provider';
 import { ProviderService } from 'src/app/core/services/httpServices/provider.service';
 import { AccountsPayableItem } from '../../../../../core/models/AccountsPayable';
+import { FilterPipe } from '../../../../../core/shared/pipes/filterPipes/filter.pipe';
 
 @Component({
   selector: 'app-providers',
@@ -40,7 +41,9 @@ export class ProvidersComponent implements OnInit, AfterContentInit, OnDestroy {
     type: 'PRODUCTOS',
     file: '',
     withholdingIVA: '',
+    amountIVA: 0,
     withholdingISR: '',
+    amountISR: 0,
     toCredit: false,
     expirationCredit: null,
     paid: false,
@@ -50,17 +53,20 @@ export class ProvidersComponent implements OnInit, AfterContentInit, OnDestroy {
   loading = false;
   providersSubscription: Subscription;
   providers: ProviderItem[];
+  providersPage: ProviderItem[];
   provider: ProviderItem;
   indexHovered = -1;
 
   constructor(
     private providerService: ProviderService,
+    private filter: FilterPipe
   ) { }
 
   ngOnInit(): void {
     this.loading = true;
     this.providersSubscription = this.providerService.readData().subscribe((data) => {
-      this.providers = data;
+      this.providers = data.filter(p => p.balance > 0);
+      this.providersPage = this.providers;
       this.loading = false
     });
   }
@@ -71,6 +77,10 @@ export class ProvidersComponent implements OnInit, AfterContentInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.providersSubscription?.unsubscribe();
+  }
+
+  applyFilter(text: string) {
+    this.providersPage = this.filter.transform(this.providers, text, ['nit', 'name']);
   }
 
   newDocument(type: string) {
@@ -90,5 +100,10 @@ export class ProvidersComponent implements OnInit, AfterContentInit, OnDestroy {
     this.title = `${provider.nit} - ${provider.name}`
     this.provider = provider;
     this.drawer.opened = true;
+  }
+
+  reload() {
+    this.drawer.opened = false;
+    this.providerService.loadData();
   }
 }

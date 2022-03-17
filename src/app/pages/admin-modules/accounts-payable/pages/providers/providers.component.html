@@ -7,11 +7,11 @@
         <mat-icon>close</mat-icon>
       </button>
         </header>
-        <app-new-edit *ngIf="drawerComponent === 'DOCUMENTO'" [accountsPayable]="accountsPayable" (close)="drawer.opened = false"></app-new-edit>
+        <app-new-edit *ngIf="drawerComponent === 'DOCUMENTO'" [accountsPayable]="accountsPayable" (close)="reload()"></app-new-edit>
         <app-provider-account *ngIf="drawerComponent === 'PROVEEDOR'" [provider]="provider" (close)="drawer.opened = false"></app-provider-account>
     </mat-drawer>
     <header>
-        <app-filter></app-filter>
+        <app-filter (send)="applyFilter($event)"></app-filter>
         <span fxFlex></span>
         <button mat-fab color="warn" [matMenuTriggerFor]="payablesMenu" matTooltip="Nuevo documento">
       <mat-icon>add</mat-icon>
@@ -29,13 +29,18 @@
     </header>
     <ngx-simplebar class="content">
         <mat-progress-bar *ngIf="loading" mode="indeterminate" color="warn"></mat-progress-bar>
+        <app-no-found *ngIf="!providersPage || providersPage.length === 0" text="No hay proveedores encontrados" subtitle="Actualmente con tiene cuentas por pagar"></app-no-found>
         <div fxLayout="row wrap" fxLayoutGap="15px grid" class="grid">
-            <div fxFlex.gt-lg="20" fxFlex.gt-md="33" fxFlex.gt-sm="50" fxFlex.lt-md="100" *ngFor="let provider of providers; let i = index">
+            <div fxFlex.gt-lg="20" fxFlex.gt-md="33" fxFlex.gt-sm="50" fxFlex.lt-md="100" *ngFor="let provider of providersPage; let i = index">
                 <mat-card matRipple (click)="selectProvider(provider)" class="cursor-pointer mat-elevation-z0" [ngClass]="{'mat-elevation-z4': i === indexHovered}" (mouseenter)="indexHovered = i" (mouseleave)="indexHovered = -1">
                     <mat-card-header>
                         <mat-icon matCardAvatar>business</mat-icon>
-                        <mat-card-title>{{ provider.nit }}</mat-card-title>
-                        <mat-card-subtitle>{{ provider.name }}</mat-card-subtitle>
+                        <mat-card-group>
+                            <mat-card-title>{{ provider.nit }}</mat-card-title>
+                            <mat-card-subtitle>{{ provider.name }}</mat-card-subtitle>
+                        </mat-card-group>
+                        <span fxFlex></span>
+                        <mat-icon *ngIf="((provider.balance * 100)/ provider.credit) > 99" color="warn" matTooltip="Límite de crédito superado">warning</mat-icon>
                     </mat-card-header>
                     <mat-card-content>
                         <p>Tel: <b>{{ provider.phone }}</b></p>
@@ -49,9 +54,9 @@
                             <span>Saldo</span>
                             <span>Crédito</span>
                         </div>
-                        <mat-progress-bar mode="determinate" value="40" color="warn"></mat-progress-bar>
+                        <app-progress-balance [value]="(provider.balance * 100)/ provider.credit"></app-progress-balance>
                         <div fxLayout="row" fxLayoutAlign="space-between center">
-                            <b>Q40.00</b> Q100.00
+                            <b>Q{{ provider.balance | number: '.2' }}</b> Q{{ provider.credit | number: '.2' }}
                         </div>
                     </mat-card-content>
                 </mat-card>

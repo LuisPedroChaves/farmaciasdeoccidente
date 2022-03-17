@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, AfterContentInit, OnDestroy } from '@angular/core';
+import { Component, Input, OnInit, AfterContentInit, OnDestroy, OnChanges, SimpleChanges } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { SelectionModel } from '@angular/cdk/collections';
 
@@ -13,7 +13,7 @@ import { AccountsPayableItem } from '../../../../../core/models/AccountsPayable'
   templateUrl: './provider-account.component.html',
   styleUrls: ['./provider-account.component.scss']
 })
-export class ProviderAccountComponent implements OnInit, AfterContentInit, OnDestroy {
+export class ProviderAccountComponent implements OnInit, AfterContentInit, OnDestroy, OnChanges {
 
   @Input() provider: ProviderItem;
 
@@ -37,18 +37,14 @@ export class ProviderAccountComponent implements OnInit, AfterContentInit, OnDes
   loading = false;
   accountsPayableSubscription: Subscription;
   accountsPayable: AccountsPayableItem[];
+  accountsPayableTemp: AccountsPayableItem[];
 
   constructor(
     private accountsPayableService: AccountsPayableService,
   ) { }
 
   ngOnInit(): void {
-    this.loading = true;
-    this.accountsPayableSubscription = this.accountsPayableService.readData().subscribe((data) => {
-      this.accountsPayable = data;
-      this.dataSource = new MatTableDataSource<AccountsPayableItem>(this.accountsPayable);
-      this.loading = false
-    });
+
   }
 
   ngAfterContentInit(): void {
@@ -57,6 +53,30 @@ export class ProviderAccountComponent implements OnInit, AfterContentInit, OnDes
 
   ngOnDestroy(): void {
     this.accountsPayableSubscription?.unsubscribe();
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes.provider) {
+      const PROVIDER: AccountsPayableItem = changes.provider.currentValue;
+
+      if (this.accountsPayable) {
+        this.accountsPayableTemp = this.accountsPayable.filter(ap => ap._provider._id === PROVIDER._id)
+        this.dataSource = new MatTableDataSource<AccountsPayableItem>(this.accountsPayableTemp);
+      } else {
+        this.loading = true;
+        this.accountsPayableSubscription = this.accountsPayableService.readData().subscribe((data) => {
+          console.log('SUBSCRIPTION');
+          this.accountsPayable = data;
+          this.accountsPayableTemp = this.accountsPayable.filter(ap => ap._provider._id === PROVIDER._id)
+          this.dataSource = new MatTableDataSource<AccountsPayableItem>(this.accountsPayableTemp);
+          this.loading = false
+        });
+      }
+    }
+  }
+
+  getTotalBills(): number {
+    return this.accountsPayableTemp.reduce((sum, item) => sum + item.total, 1);
   }
 
   /** Whether the number of selected elements matches the total number of rows. */

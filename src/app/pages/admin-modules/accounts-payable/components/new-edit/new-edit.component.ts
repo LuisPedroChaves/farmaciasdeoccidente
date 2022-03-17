@@ -240,21 +240,30 @@ export class NewEditComponent implements OnInit, AfterContentInit, OnDestroy {
   }
 
   save() {
+    const TOTAL = this.getTotal('GENERAL');
+    if (TOTAL <= 0) {
+      this.toastyService.error('El total general debe ser mayor a cero.')
+      return;
+    }
     this.loading = true;
     // Asignamos el tipo de factura si es PRODUCTOS | GASTOS
+    // Asignamos el total general
     this.form.controls.type.setValue(this.accountsPayable.type);
-    if (!this.form.controls.toCredit.value) {
+    this.form.controls.total.setValue(TOTAL);
+
+    const TO_CREDIT = this.form.controls.toCredit.value
+    const DOC_TYPE = this.form.controls.docType.value
+    if (!TO_CREDIT && DOC_TYPE !== 'ABONO' && DOC_TYPE !== 'CREDITO') {
       // Validamos si la factura es al contado para marcarla como pagada
       this.form.controls.paid.setValue(true);
     }
     if (this.accountsPayable._id) {
-      // Editando...
+      // Editar
 
     } else {
-      // Creando nueva...
+      // Nueva
       this.accountsPayableService.create({ ...this.form.value })
         .subscribe(resp => {
-          console.log("🚀 ~ file: new-edit.component.ts ~ line 258 ~ NewEditComponent ~ save ~ resp", resp)
           this.toastyService.success('Documento ingresado correctamente')
           this.resetForm();
           this.loading = false;

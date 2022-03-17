@@ -13,6 +13,9 @@ import { ExpensesComponent } from './components/expenses/expenses.component';
 import { DocumentsComponent } from './pages/documents/documents.component';
 import { ProviderAccountComponent } from './components/provider-account/provider-account.component';
 import { NewProviderCheckComponent } from './components/new-provider-check/new-provider-check.component';
+import { ComponentsModule } from '../../shared/components/components.module';
+import { FilterPipe } from 'src/app/core/shared/pipes/filterPipes/filter.pipe';
+import { ProgressBalanceComponent } from './components/progress-balance.component';
 
 @NgModule({
   declarations: [
@@ -23,13 +26,18 @@ import { NewProviderCheckComponent } from './components/new-provider-check/new-p
     NewEditComponent,
     DocumentsComponent,
     ProviderAccountComponent,
-    NewProviderCheckComponent
+    NewProviderCheckComponent,
+    ProgressBalanceComponent
   ],
   imports: [
     CommonModule,
     RouterModule.forChild(AccountsPayableRoutes),
     SharedComponentsModule,
-    InputsModule
+    InputsModule,
+    ComponentsModule
+  ],
+  providers: [
+    FilterPipe
   ]
 })
 export class AccountsPayableModule { }

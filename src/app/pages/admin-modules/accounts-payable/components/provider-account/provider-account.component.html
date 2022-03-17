@@ -30,7 +30,7 @@
                                         Facturas emitidas
                                     </mat-card-subtitle>
                                     <mat-card-title>
-                                        Q550.00
+                                        Q{{ getTotalBills() | number: '.2' }}
                                     </mat-card-title>
                                 </mat-card-header>
                             </mat-card>
@@ -67,10 +67,10 @@
                             <span>Saldo</span>
                             <span>Crédito</span>
                         </div>
-                        <mat-progress-bar mode="determinate" value="40" color="warn"></mat-progress-bar>
+                        <app-progress-balance [value]="(provider.balance * 100)/ provider.credit"></app-progress-balance>
                         <div fxLayout="row" fxLayoutAlign="space-between center">
-                            <h2>Q400.00</h2>
-                            <h2>Q1000.00</h2>
+                            <h2>Q{{ provider.balance | number: '.2' }}</h2>
+                            <h2>Q{{ provider.credit | number: '.2' }}</h2>
                         </div>
                     </div>
                 </div>
@@ -78,11 +78,11 @@
             <mat-tab-group mat-align-tabs="center">
                 <mat-tab label="Documentos pendientes">
                     <ngx-simplebar class="table">
-                        <mat-progress-bar *ngIf="loading" mode="indeterminate" color="warn"></mat-progress-bar>
                         <div fxLayout="row" fxLayoutAlign="space-between center" class="header2">
                             <app-filter></app-filter>
                             <button mat-raised-button (click)="drawer.toggle()" color="accent">Ingresar Cheque</button>
                         </div>
+                        <mat-progress-bar *ngIf="loading" mode="indeterminate" color="warn"></mat-progress-bar>
                         <table mat-table [dataSource]="dataSource">
 
                             <ng-container matColumnDef="select">
@@ -116,7 +116,11 @@
                             <ng-container matColumnDef="docType">
                                 <th mat-header-cell *matHeaderCellDef> Tipo de doc. </th>
                                 <td mat-cell *matCellDef="let element">
-                                    {{element.docType }}
+                                    <span *ngIf="element.docType === 'FACTURA'">Electrónica</span>
+                                    <span *ngIf="element.docType === 'CAMBIARIA'">Cambiaria electrónica</span>
+                                    <span *ngIf="element.docType === 'PEQUEÑO'">Pequeño contribuyente</span>
+                                    <span *ngIf="element.docType === 'ABONO'">Nota de abono</span>
+                                    <span *ngIf="element.docType === 'CREDITO'">Nota de crédito</span>
                                 </td>
                             </ng-container>
 

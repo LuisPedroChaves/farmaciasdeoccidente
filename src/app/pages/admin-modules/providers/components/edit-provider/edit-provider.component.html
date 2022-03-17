@@ -25,6 +25,9 @@
             </div>
             <div fxFlex fxLayout="row wrap">
                 <div fxFlex="100" class=" text-muted input-padding">
+                    Cheques a nombre de: {{ data.provider.checkName }}
+                </div>
+                <div fxFlex="100" class=" text-muted input-padding">
                     {{ data.provider.nit }}
                 </div>
                 <div fxFlex="100" class=" text-muted input-padding">
@@ -72,6 +75,23 @@
                         <mat-form-field appearance="outline" color="primary" class="width-all">
                             <mat-label>Teléfono</mat-label>
                             <input formControlName="phone" type="text" matInput placeholder="Ingrese el Teléfono del proveedor">
+                        </mat-form-field>
+                    </div>
+                </div>
+                <div fxFlex="50px"></div>
+            </div>
+
+            <div fxLayout="row wrap" fxLayoutAlign="start center" style="margin-top: 8px;">
+                <div fxFlex="50px"></div>
+                <div fxFlex="50px" fxHide.xs>
+                    <mat-icon color="accent" class="mSaterial-icons-outlined grayicon">credit_score
+                    </mat-icon>
+                </div>
+                <div fxFlex fxLayout="row wrap">
+                    <div fxFlex="100%" fxFlex.xs="100%" class="inputpadding">
+                        <mat-form-field appearance="outline" color="primary" class="width-all">
+                            <mat-label>Cheques a nombre de: </mat-label>
+                            <input formControlName="checkName" type="text" matInput placeholder="Ingrese un nombre para emitir cheques futuros">
                         </mat-form-field>
                     </div>
                 </div>

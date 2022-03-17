@@ -21,6 +21,7 @@ export class EditProviderComponent implements OnInit {
 
   form = new FormGroup({
     name: new FormControl(null, [Validators.required]),
+    checkName: new FormControl(null, [Validators.required]),
     nit: new FormControl(null, [Validators.required]),
     phone: new FormControl(null),
     address: new FormControl(null),
@@ -42,6 +43,7 @@ export class EditProviderComponent implements OnInit {
   ngOnInit(): void {
     this.form = new FormGroup({
       name: new FormControl(this.data.provider.name, [Validators.required]),
+      checkName: new FormControl(this.data.provider.checkName, [Validators.required]),
       nit: new FormControl(this.data.provider.nit, [Validators.required]),
       phone: new FormControl(this.data.provider.phone),
       address: new FormControl(this.data.provider.address),
