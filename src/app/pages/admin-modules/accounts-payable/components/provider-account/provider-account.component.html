@@ -4,10 +4,27 @@
             <h2 class="ma-0">Nuevo Cheque a proveedor</h2>
             <span fxFlex></span>
             <button mat-icon-button (click)="drawer.opened = false">
-          <mat-icon>close</mat-icon>
-        </button>
+        <mat-icon>close</mat-icon>
+      </button>
         </header>
-        <app-new-provider-check></app-new-provider-check>
+        <ngx-simplebar class="check-layout">
+            <div fxLayout="row" fxLayoutAlign="space-between center">
+                <span>Facturas emitidas ({{getTotalsSelection().facturas.total}})</span>
+                <b>+ Q{{getTotalsSelection().facturas.amount | number: '.2'}}</b>
+            </div>
+            <div fxLayout="row" fxLayoutAlign="space-between center">
+                <span>Notas de abono ({{getTotalsSelection().abonos.total}})</span>
+                <b>- Q{{getTotalsSelection().abonos.amount | number: '.2'}}</b>
+            </div>
+            <div fxLayout="row" fxLayoutAlign="space-between center">
+                <span>Nota de crédito ({{getTotalsSelection().creditos.total}})</span>
+                <b>- Q{{getTotalsSelection().creditos.amount | number: '.2'}}</b>
+            </div>
+            <br>
+            <mat-divider></mat-divider>
+            <br>
+            <app-new-check [name]="this.provider.checkName" [amount]="this.getTotalsSelection().total.toFixed(2)" (close)="drawer.opened = false"></app-new-check>
+        </ngx-simplebar>
     </mat-drawer>
     <mat-drawer-content>
         <ngx-simplebar class="layout">
@@ -43,7 +60,7 @@
                                         Notas de abono
                                     </mat-card-subtitle>
                                     <mat-card-title>
-                                        Q50.00
+                                        Q{{ getTotalAbono() | number: '.2' }}
                                     </mat-card-title>
                                 </mat-card-header>
                             </mat-card>
@@ -56,7 +73,7 @@
                                         Notas de crédito
                                     </mat-card-subtitle>
                                     <mat-card-title>
-                                        Q100.00
+                                        Q{{ getTotalCredito() | number: '.2' }}
                                     </mat-card-title>
                                 </mat-card-header>
                             </mat-card>
@@ -76,11 +93,11 @@
                 </div>
             </header>
             <mat-tab-group mat-align-tabs="center">
-                <mat-tab label="Documentos pendientes">
+                <mat-tab [label]="getTotalPending()">
                     <ngx-simplebar class="table">
                         <div fxLayout="row" fxLayoutAlign="space-between center" class="header2">
-                            <app-filter></app-filter>
-                            <button mat-raised-button (click)="drawer.toggle()" color="accent">Ingresar Cheque</button>
+                            <app-filter (send)="applyFilter($event)"></app-filter>
+                            <button mat-raised-button (click)="newCheck()" color="accent">Ingresar Cheque</button>
                         </div>
                         <mat-progress-bar *ngIf="loading" mode="indeterminate" color="warn"></mat-progress-bar>
                         <table mat-table [dataSource]="dataSource">
@@ -99,7 +116,7 @@
                             <ng-container matColumnDef="state">
                                 <th mat-header-cell *matHeaderCellDef></th>
                                 <td mat-cell *matCellDef="let element">
-                                    <mat-icon *ngIf="(provider.iva && !element.withholdingIVA) || (provider.isr && !element.withholdingISR)" color="warn">warning</mat-icon>
+                                    <mat-icon *ngIf="(provider.iva && !element.withholdingIVA) || (provider.isr && !element.withholdingISR)" matTooltip="Con RETENCIONES pendientes de ingreso" class="cursor-pointer warning">warning</mat-icon>
                                 </td>
                             </ng-container>
 
@@ -114,7 +131,7 @@
                             </ng-container>
 
                             <ng-container matColumnDef="docType">
-                                <th mat-header-cell *matHeaderCellDef> Tipo de doc. </th>
+                                <th mat-header-cell *matHeaderCellDef> Tipo </th>
                                 <td mat-cell *matCellDef="let element">
                                     <span *ngIf="element.docType === 'FACTURA'">Electrónica</span>
                                     <span *ngIf="element.docType === 'CAMBIARIA'">Cambiaria electrónica</span>
@@ -125,7 +142,7 @@
                             </ng-container>
 
                             <ng-container matColumnDef="unaffectedAmount">
-                                <th mat-header-cell *matHeaderCellDef> No Afecto (Q) </th>
+                                <th mat-header-cell *matHeaderCellDef> No Afecto</th>
                                 <td mat-cell *matCellDef="let element">
                                     {{element.unaffectedAmount | number: '.2' }}
                                 </td>
@@ -139,14 +156,14 @@
                             </ng-container>
 
                             <ng-container matColumnDef="netPurchaseAmount">
-                                <th mat-header-cell *matHeaderCellDef> Compras Neto (Q) </th>
+                                <th mat-header-cell *matHeaderCellDef> Compras Neto </th>
                                 <td mat-cell *matCellDef="let element">
                                     {{element.netPurchaseAmount | number: '.2' }}
                                 </td>
                             </ng-container>
 
                             <ng-container matColumnDef="netServiceAmount">
-                                <th mat-header-cell *matHeaderCellDef> Servicios Neto (Q) </th>
+                                <th mat-header-cell *matHeaderCellDef> Servicios Neto </th>
                                 <td mat-cell *matCellDef="let element">
                                     {{element.netServiceAmount | number: '.2' }}
                                 </td>
@@ -160,7 +177,7 @@
                             </ng-container>
 
                             <ng-container matColumnDef="iva">
-                                <th mat-header-cell *matHeaderCellDef> I.V.A. Crédito Fiscal (Q) </th>
+                                <th mat-header-cell *matHeaderCellDef> I.V.A. Crédito Fiscal </th>
                                 <td mat-cell *matCellDef="let element">
                                     {{element.iva | number: '.2' }}
                                 </td>

@@ -56,10 +56,6 @@ export class AccountsPayableService implements IDataService<AccountsPayableItem[
     }
   }
 
-  getUnpaidsProvider( _provider ): Observable<any> {
-    return this.http.get(this.apiConfigService.API_ACCOUNTS_PAYABLE + '/unpaids/' + _provider);
-  }
-
   create(accountPayable: AccountsPayableItem): Observable<any> {
     accountPayable._user = this.userID;
     return this.http.post(this.apiConfigService.API_ACCOUNTS_PAYABLE, accountPayable);

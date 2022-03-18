@@ -84,5 +84,8 @@ export class ApiConfigService {
   // expense
   public API_EXPENSE = this.API_URL + '/expense';
 
+  // check
+  public API_CHECK = this.API_URL + '/check';
+
   /* #endregion */
 }

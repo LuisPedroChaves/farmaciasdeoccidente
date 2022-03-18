@@ -10,6 +10,7 @@ export interface AccountsPayableItem  {
   _provider: ProviderItem,
   _purchase: PurchaseItem,
   _expense: ExpenseItem,
+  _check: CheckItem,
   date: Date,
   serie: string,
   noBill: string,

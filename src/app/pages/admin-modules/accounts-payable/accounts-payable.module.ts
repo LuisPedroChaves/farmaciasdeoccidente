@@ -12,10 +12,10 @@ import { NewEditComponent } from './components/new-edit/new-edit.component';
 import { ExpensesComponent } from './components/expenses/expenses.component';
 import { DocumentsComponent } from './pages/documents/documents.component';
 import { ProviderAccountComponent } from './components/provider-account/provider-account.component';
-import { NewProviderCheckComponent } from './components/new-provider-check/new-provider-check.component';
 import { ComponentsModule } from '../../shared/components/components.module';
 import { FilterPipe } from 'src/app/core/shared/pipes/filterPipes/filter.pipe';
 import { ProgressBalanceComponent } from './components/progress-balance.component';
+import { NewCheckComponent } from './components/new-check/new-check.component';
 
 @NgModule({
   declarations: [
@@ -26,8 +26,8 @@ import { ProgressBalanceComponent } from './components/progress-balance.componen
     NewEditComponent,
     DocumentsComponent,
     ProviderAccountComponent,
-    NewProviderCheckComponent,
-    ProgressBalanceComponent
+    ProgressBalanceComponent,
+    NewCheckComponent
   ],
   imports: [
     CommonModule,

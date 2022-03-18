@@ -26,6 +26,7 @@ export class ProvidersComponent implements OnInit, AfterContentInit, OnDestroy {
     _provider: null,
     _purchase: null,
     _expense: null,
+    _check: null,
     date: null,
     serie: '',
     noBill: '',

@@ -21,6 +21,7 @@ export class ChequesComponent implements OnInit {
         _provider: null,
         _purchase: null,
         _expense: null,
+        _check: null,
         date: null,
         serie: '',
         noBill: '',
