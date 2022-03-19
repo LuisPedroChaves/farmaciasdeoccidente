@@ -61,6 +61,7 @@ export class EditProviderComponent implements OnInit {
 
   saveClient(): void {
     if (this.form.invalid) {
+      this.toasty.error('Algunos campos son requeridos')
       return;
     }
     this.loading = true;

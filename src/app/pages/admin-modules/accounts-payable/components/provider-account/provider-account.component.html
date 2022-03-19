@@ -23,7 +23,7 @@
             <br>
             <mat-divider></mat-divider>
             <br>
-            <app-new-check [name]="this.provider.checkName" [amount]="this.getTotalsSelection().total.toFixed(2)" (close)="drawer.opened = false"></app-new-check>
+            <app-new-check [name]="this.provider.checkName" [amount]="this.getTotalsSelection().total.toFixed(2)" [accountsPayables]="selection.selected" (close)="drawer.opened = false"></app-new-check>
         </ngx-simplebar>
     </mat-drawer>
     <mat-drawer-content>
@@ -96,7 +96,7 @@
                 <mat-tab [label]="getTotalPending()">
                     <ngx-simplebar class="table">
                         <div fxLayout="row" fxLayoutAlign="space-between center" class="header2">
-                            <app-filter (send)="applyFilter($event)"></app-filter>
+                            <app-filter (send)="applyFilterPend($event)"></app-filter>
                             <button mat-raised-button (click)="newCheck()" color="accent">Ingresar Cheque</button>
                         </div>
                         <mat-progress-bar *ngIf="loading" mode="indeterminate" color="warn"></mat-progress-bar>
@@ -199,6 +199,112 @@
 
                             <tr mat-header-row *matHeaderRowDef="columns;  sticky: true"></tr>
                             <tr mat-row *matRowDef="let row; columns: columns;"></tr>
+                            <!-- Fila mostrada cuando no hay datos coincidentes. -->
+                            <tr class="mat-row" *matNoDataRow>
+                                <td class="mat-cell" colspan="13">No hay datos que coincidan con algún filtro o busqueda</td>
+                            </tr>
+                        </table>
+                    </ngx-simplebar>
+                </mat-tab>
+                <mat-tab [label]="getTotalProcess()">
+                    <ngx-simplebar class="table">
+                        <div fxLayout="row" fxLayoutAlign="space-between center" class="header2">
+                            <app-filter (send)="applyFilterProcess($event)"></app-filter>
+                        </div>
+                        <mat-progress-bar *ngIf="loading" mode="indeterminate" color="warn"></mat-progress-bar>
+                        <table mat-table [dataSource]="dataSource2">
+
+                            <ng-container matColumnDef="check">
+                                <th mat-header-cell *matHeaderCellDef> Cheque </th>
+                                <td mat-cell *matCellDef="let element"> {{element._check.no}} </td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="state">
+                                <th mat-header-cell *matHeaderCellDef></th>
+                                <td mat-cell *matCellDef="let element">
+                                    <mat-icon *ngIf="(provider.iva && !element.withholdingIVA) || (provider.isr && !element.withholdingISR)" matTooltip="Con RETENCIONES pendientes de ingreso" class="cursor-pointer warning">warning</mat-icon>
+                                </td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="date">
+                                <th mat-header-cell *matHeaderCellDef> Fecha </th>
+                                <td mat-cell *matCellDef="let element"> {{element.date | date: 'dd/MM/yyyy'}} </td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="noBill">
+                                <th mat-header-cell *matHeaderCellDef> Documento </th>
+                                <td mat-cell *matCellDef="let element"> {{element.serie}} {{ element.noBill }} </td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="docType">
+                                <th mat-header-cell *matHeaderCellDef> Tipo </th>
+                                <td mat-cell *matCellDef="let element">
+                                    <span *ngIf="element.docType === 'FACTURA'">Electrónica</span>
+                                    <span *ngIf="element.docType === 'CAMBIARIA'">Cambiaria electrónica</span>
+                                    <span *ngIf="element.docType === 'PEQUEÑO'">Pequeño contribuyente</span>
+                                    <span *ngIf="element.docType === 'ABONO'">Nota de abono</span>
+                                    <span *ngIf="element.docType === 'CREDITO'">Nota de crédito</span>
+                                </td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="unaffectedAmount">
+                                <th mat-header-cell *matHeaderCellDef> No Afecto</th>
+                                <td mat-cell *matCellDef="let element">
+                                    {{element.unaffectedAmount | number: '.2' }}
+                                </td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="exemptAmount">
+                                <th mat-header-cell *matHeaderCellDef> Exentos </th>
+                                <td mat-cell *matCellDef="let element">
+                                    {{element.exemptAmount | number: '.2' }}
+                                </td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="netPurchaseAmount">
+                                <th mat-header-cell *matHeaderCellDef> Compras Neto </th>
+                                <td mat-cell *matCellDef="let element">
+                                    {{element.netPurchaseAmount | number: '.2' }}
+                                </td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="netServiceAmount">
+                                <th mat-header-cell *matHeaderCellDef> Servicios Neto </th>
+                                <td mat-cell *matCellDef="let element">
+                                    {{element.netServiceAmount | number: '.2' }}
+                                </td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="otherTaxes">
+                                <th mat-header-cell *matHeaderCellDef> Otros Impuestos </th>
+                                <td mat-cell *matCellDef="let element">
+                                    {{element.otherTaxes | number: '.2' }}
+                                </td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="iva">
+                                <th mat-header-cell *matHeaderCellDef> I.V.A. Crédito Fiscal </th>
+                                <td mat-cell *matCellDef="let element">
+                                    {{element.iva | number: '.2' }}
+                                </td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="total">
+                                <th mat-header-cell *matHeaderCellDef> Total (Q) </th>
+                                <td mat-cell *matCellDef="let element">
+                                    {{element.total | number: '.2' }}
+                                </td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="expirationCredit">
+                                <th mat-header-cell *matHeaderCellDef> Fecha de vencimiento </th>
+                                <td mat-cell *matCellDef="let element">
+                                    <span class="text-muted"> {{ element.expirationCredit | date: 'dd/MM/yyyy' }}</span>
+                                </td>
+                            </ng-container>
+
+                            <tr mat-header-row *matHeaderRowDef="columns2;  sticky: true"></tr>
+                            <tr mat-row *matRowDef="let row; columns: columns2;"></tr>
                             <!-- Fila mostrada cuando no hay datos coincidentes. -->
                             <tr class="mat-row" *matNoDataRow>
                                 <td class="mat-cell" colspan="13">No hay datos que coincidan con algún filtro o busqueda</td>

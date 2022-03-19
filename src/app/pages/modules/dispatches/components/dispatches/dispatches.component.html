@@ -1,57 +1,56 @@
 <div *ngIf="!loading" [ngClass]="{'saving': saving}">
-  <h1 class="product-font ma-0 module-title title">Despachos Pendientes</h1>
-  <header class="header" fxLayout="row wrap" fxLayoutAlign="start center">
-    <mat-form-field appearance="outline" floatLabel="always" class="findinput">
-      <mat-label>Buscar Orden</mat-label>
-      <mat-icon class="text-muted" matPrefix>search</mat-icon>
-      <input matInput type="text" [(ngModel)]="searchText">
-    </mat-form-field> &nbsp; &nbsp; &nbsp;
-  </header>
-  <div class="padding-list">
-    <div class="courselist" fxLayout="row wrap" data-simplebar>
-      <div *ngIf="dispatches.length > 0 && (dispatchesp && dispatchesp.includes('read'))"  fxFlex="100" fxLayout="row wrap">
-        <div *ngFor="let c of  (dispatches | filter: searchText : ['nit', 'name', 'phone'])" fxFlex.gt-lg="25" fxFlex.gt-md="33" fxFlex.gt-sm="50" fxFlex.gt-xs="50"
-          fxFlex="100" class="jobcard user">
-          <div class="job-card mat-elevation-z2" fxLayout="row wrap" fxLayoutAlign="start center">
-            <div matRipple  (click)="selectOrder(c)"  fxFlex="100" fxLayout="row wrap" class="cover cursor-pointer"
-              style="background-image: url('assets/images/covers/Psychology.jpg');">
-              <h2 class="more">#{{ c.noOrder }}</h2><br>
-              <span fxFlex></span>
-            </div>
-            <!-- <div fxFlex="100" (click)="selectCourse(c)" fxLayout="column wrap" class="ellipsis-text course-info"> -->
-            <div matRipple  (click)="selectOrder(c)"  fxFlex="100" fxLayout="column wrap" class="ellipsis-text course-info cursor-pointer">
-              <h2 class="ma-0 product-font">{{c.nit}} - {{ c.name }}</h2>
-              <span class="text-muted">Tel: {{ c.phone }}</span>
-            </div>
-            <div matRipple  (click)="selectOrder(c)" class="cursor-pointer"  fxFlex="100" fxLayout="row" fxLayoutAlign="space-between center">
-              <div class="overflow-visible">{{c.details}}</div>
-              <div fxFlex="0 0 auto" class="action-blurb">&nbsp;|&nbsp;</div>
-            </div>
-            <div *ngIf="dispatchesp && dispatchesp.includes('create')"  fxFlex="100" fxLayout="row wrap" fxLayoutAlign="center center">
-              <button mat-button *ngIf="c.detail.length > 0"  (click)="details(c)" class="info-row">
+    <h1 class="product-font ma-0 module-title title">Despachos Pendientes</h1>
+    <header class="header" fxLayout="row wrap" fxLayoutAlign="start center">
+        <mat-form-field appearance="outline" floatLabel="always" class="findinput">
+            <mat-label>Buscar Orden</mat-label>
+            <mat-icon class="text-muted" matPrefix>search</mat-icon>
+            <input matInput type="text" [(ngModel)]="searchText">
+        </mat-form-field> &nbsp; &nbsp; &nbsp;
+    </header>
+    <div class="padding-list">
+        <div class="courselist" fxLayout="row wrap" data-simplebar>
+            <app-no-found *ngIf="dispatches.length === 0" text="No se encontraron despachos" subtitle="Por favor espere a que se le asigne uno"></app-no-found>
+            <div *ngIf="dispatches.length > 0 && (dispatchesp && dispatchesp.includes('read'))" fxFlex="100" fxLayout="row wrap">
+                <div *ngFor="let c of  (dispatches | filter: searchText : ['nit', 'name', 'phone'])" fxFlex.gt-lg="25" fxFlex.gt-md="33" fxFlex.gt-sm="50" fxFlex.gt-xs="50" fxFlex="100" class="jobcard user">
+                    <div class="job-card mat-elevation-z2" fxLayout="row wrap" fxLayoutAlign="start center">
+                        <div matRipple (click)="selectOrder(c)" fxFlex="100" fxLayout="row wrap" class="cover cursor-pointer" style="background-image: url('assets/images/covers/Psychology.jpg');">
+                            <h2 class="more">#{{ c.noOrder }}</h2><br>
+                            <span fxFlex></span>
+                        </div>
+                        <!-- <div fxFlex="100" (click)="selectCourse(c)" fxLayout="column wrap" class="ellipsis-text course-info"> -->
+                        <div matRipple (click)="selectOrder(c)" fxFlex="100" fxLayout="column wrap" class="ellipsis-text course-info cursor-pointer">
+                            <h2 class="ma-0 product-font">{{c.nit}} - {{ c.name }}</h2>
+                            <span class="text-muted">Tel: {{ c.phone }}</span>
+                        </div>
+                        <div matRipple (click)="selectOrder(c)" class="cursor-pointer" fxFlex="100" fxLayout="row" fxLayoutAlign="space-between center">
+                            <div class="overflow-visible">{{c.details}}</div>
+                            <div fxFlex="0 0 auto" class="action-blurb">&nbsp;|&nbsp;</div>
+                        </div>
+                        <div *ngIf="dispatchesp && dispatchesp.includes('create')" fxFlex="100" fxLayout="row wrap" fxLayoutAlign="center center">
+                            <button mat-button *ngIf="c.detail.length > 0" (click)="details(c)" class="info-row">
                 <mat-icon>preview</mat-icon>
                 Ver Detalle
               </button>
-            </div>
-            <div *ngIf="dispatchesp && dispatchesp.includes('create')"  fxFlex="100" fxLayout="row wrap" fxLayoutAlign="center center">
-              <mat-form-field appearance="outline" color="primary" class="width-all">
-                <mat-label>No. de factura</mat-label>
-                <input [(ngModel)]="c.noBill" type="text" matInput  autocomplete="false"   placeholder="Ingrese el número de factura">
-              </mat-form-field>
-              <button mat-button  (click)="updateOrder(c)" class="info-row" color="warn">
+                        </div>
+                        <div *ngIf="dispatchesp && dispatchesp.includes('create')" fxFlex="100" fxLayout="row wrap" fxLayoutAlign="center center">
+                            <mat-form-field appearance="outline" color="primary" class="width-all">
+                                <mat-label>No. de factura</mat-label>
+                                <input [(ngModel)]="c.noBill" type="text" matInput autocomplete="false" placeholder="Ingrese el número de factura">
+                            </mat-form-field>
+                            <button mat-button (click)="updateOrder(c)" class="info-row" color="warn">
                 <mat-icon>archive</mat-icon>
                 Despachar
               </button>
 
+                        </div>
+                    </div>
+                </div>
             </div>
-          </div>
         </div>
-      </div>
     </div>
-  </div>
 </div>
 <div *ngIf="loading" fxLayoutAlign="center center" class="loadingspin" fxLayout="column wrap">
-  <mat-progress-spinner mode="indeterminate" diameter="60" color="warn"></mat-progress-spinner>
+    <mat-progress-spinner mode="indeterminate" diameter="60" color="warn"></mat-progress-spinner>
 </div>
 <button (click)="loadDispatchs()" mat-fab color="warn" class="fab mat-elevation-z10">
   <mat-icon>update</mat-icon><span class="extended-fab-button__text">Actualizar</span>

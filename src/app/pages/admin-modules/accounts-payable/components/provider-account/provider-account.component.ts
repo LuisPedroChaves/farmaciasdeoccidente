@@ -36,6 +36,11 @@ export class ProviderAccountComponent implements OnInit, AfterContentInit, OnDes
   @Input() provider: ProviderItem;
   @ViewChild('drawer') drawer: MatDrawer;
 
+  loading = false;
+  accountsPayableSubscription: Subscription;
+  accountsPayables: AccountsPayableItem[];
+
+  /* #region  Pendientes */
   dataSource = new MatTableDataSource([]);
   selection = new SelectionModel<AccountsPayableItem>(true, []);
   columns = [
@@ -53,10 +58,28 @@ export class ProviderAccountComponent implements OnInit, AfterContentInit, OnDes
     'total',
     'expirationCredit',
   ];
-  loading = false;
-  accountsPayableSubscription: Subscription;
-  accountsPayable: AccountsPayableItem[];
   accountsPayablePend: AccountsPayableItem[];
+  /* #endregion */
+
+  /* #region  En Proceso */
+  dataSource2 = new MatTableDataSource([]);
+  columns2 = [
+    'check',
+    'state',
+    'date',
+    'noBill',
+    'docType',
+    'unaffectedAmount',
+    'exemptAmount',
+    'netPurchaseAmount',
+    'netServiceAmount',
+    'otherTaxes',
+    'iva',
+    'total',
+    'expirationCredit',
+  ];
+  accountsPayableProcess: AccountsPayableItem[];
+  /* #endregion */
 
   constructor(
     private accountsPayableService: AccountsPayableService,
@@ -77,31 +100,43 @@ export class ProviderAccountComponent implements OnInit, AfterContentInit, OnDes
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.provider) {
-      const PROVIDER: AccountsPayableItem = changes.provider.currentValue;
+      const PROVIDER: ProviderItem = changes.provider.currentValue;
 
-      if (this.accountsPayable) {
-        this.accountsPayablePend = this.accountsPayable.filter(ap => ap._provider._id === PROVIDER._id)
-        this.dataSource = new MatTableDataSource<AccountsPayableItem>(this.accountsPayablePend);
-        this.selection = new SelectionModel<AccountsPayableItem>(true, []);
+      if (this.accountsPayables) {
+        this.fillDataSources(PROVIDER);
       } else {
         this.loading = true;
         this.accountsPayableSubscription = this.accountsPayableService.readData().subscribe((data) => {
           console.log('SUBSCRIPTION');
-          this.accountsPayable = data;
-          this.accountsPayablePend = this.accountsPayable.filter(ap => ap._provider._id === PROVIDER._id)
-          this.dataSource = new MatTableDataSource<AccountsPayableItem>(this.accountsPayablePend);
-          this.selection = new SelectionModel<AccountsPayableItem>(true, []);
+          this.accountsPayables = data;
+          this.fillDataSources(PROVIDER);
           this.loading = false
         });
       }
     }
   }
 
-  applyFilter(filter: string) {
+  fillDataSources(provider: ProviderItem): void {
+    this.accountsPayablePend = this.accountsPayables.filter(ap => ap._provider._id === provider._id && !ap._check)
+    this.accountsPayableProcess = this.accountsPayables.filter(ap => ap._provider._id === provider._id && ap._check)
+    this.dataSource = new MatTableDataSource<AccountsPayableItem>(this.accountsPayablePend);
+    this.dataSource2 = new MatTableDataSource<AccountsPayableItem>(this.accountsPayableProcess);
+    this.selection = new SelectionModel<AccountsPayableItem>(true, []);
+  }
+
+  applyFilterPend(filter: string) {
     this.dataSource.filter = filter
 
     if (this.dataSource.paginator) {
       this.dataSource.paginator.firstPage();
+    }
+  }
+
+  applyFilterProcess(filter: string) {
+    this.dataSource2.filter = filter
+
+    if (this.dataSource2.paginator) {
+      this.dataSource2.paginator.firstPage();
     }
   }
 
@@ -148,9 +183,17 @@ export class ProviderAccountComponent implements OnInit, AfterContentInit, OnDes
   /* #region  Tabs */
   getTotalPending(): string {
     if (this.accountsPayablePend) {
-      return `Documentos pendientes (${this.accountsPayablePend.length})`
+      return `Pendientes (${this.accountsPayablePend.length})`
     } else {
-      return 'Documentos pendientes (0)'
+      return 'Pendientes (0)'
+    }
+  }
+
+  getTotalProcess(): string {
+    if (this.accountsPayableProcess) {
+      return `En proceso (${this.accountsPayableProcess.length})`
+    } else {
+      return 'En proceso (0)'
     }
   }
   /* #endregion */
