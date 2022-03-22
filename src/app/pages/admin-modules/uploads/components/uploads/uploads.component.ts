@@ -47,6 +47,9 @@ export class UploadsComponent implements OnInit, AfterContentInit, OnDestroy {
   currentFile3: any;
 
   itemsInventory = [];
+  progress = 0;
+  currentIndex = 1;
+
 
   constructor(
     public cellarService: CellarService,
@@ -138,12 +141,13 @@ export class UploadsComponent implements OnInit, AfterContentInit, OnDestroy {
             if (event.target) {
               const binaryData = event.target.result;
               const workbook = XLSX.read(binaryData, { type: 'binary' });
-
-              await workbook.SheetNames.forEach((sheet) => {
+              await workbook.SheetNames.forEach(async (sheet) => {
                 const data = XLSX.utils.sheet_to_json(workbook.Sheets[sheet]);
                 this.itemsInventory = data;
-                console.log(this.itemsInventory);
-                this.updateInventory(this.currentCellar);
+                await this.updateInventory(0);
+                this.toastyService.success('Productos Actualizados correctamente');
+                this.loading = false;
+                this.progress = 0;
               });
             }
           };
@@ -168,20 +172,40 @@ export class UploadsComponent implements OnInit, AfterContentInit, OnDestroy {
     });
   }
 
-  // tslint:disable-next-line: variable-name
-  async updateInventory(_cellar: string): Promise<any> {
-    if (this.itemsInventory.length > 0) {
-      const send = await Promise.all(
-        this.itemsInventory.map(async (item: any) => {
-          await this.tempStorageService
-            .updateByBarcode(_cellar, item.codigo, item.Inventario)
-            .subscribe((res: any) => {
-              console.log('hola', res);
-            });
-        })
-      );
-    }
+  updateInventory(index: number): any {
+    return new Promise(async (resolve, reject) => {
+      const inventoryItem = this.itemsInventory.find((c, i) => i === index);
+      if (inventoryItem) {
+        this.progress = (index * 100) / this.itemsInventory.length;
+        this.currentIndex = index;
+        this.tempStorageService
+          .updateByBarcode(this.currentCellar, inventoryItem.codigo, inventoryItem.Inventario )
+          .subscribe(async (resp) => {
+            console.log(resp);
+            index++;
+            await this.updateInventory(index);
+            resolve(true);
+          });
+      } else {
+        resolve(true);
+      }
+    });
   }
+
+  // tslint:disable-next-line: variable-name
+  // async updateInventory(_cellar: string): Promise<any> {
+  //   let count = 0;
+  //   if (this.itemsInventory.length > 0) {
+  //     this.itemsInventory.map(async (item: any) => {
+  //       this.tempStorageService
+  //         .updateByBarcode(_cellar, item.codigo, item.Inventario)
+  //         .subscribe(async (res: any) => {
+  //           count++;
+  //           console.log(count, res);
+  //         });
+  //     });
+  //   }
+  // }
 
   stockReset(): void {
     const dialogRef = this.dialog.open(ConfirmationDialogComponent, {

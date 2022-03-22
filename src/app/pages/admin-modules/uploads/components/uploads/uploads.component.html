@@ -79,14 +79,27 @@
                                     </div>
                                     <div fxFlex="20px"></div>
                                 </div>
-                                <div fxLayout="row">
+                                <mat-card-footer>
+                                
+                                    <!-- <div fxLayout="row"> -->
                                     <span fxFlex></span>
-                                    <button *ngIf="!loading" mat-raised-button (click)="stockReset()" color="accent">Restablecer inventario</button> &nbsp;
+                                    <button *ngIf="!loading" mat-raised-button (click)="stockReset()" color="accent">Restablecer inventario</button>
+                                    &nbsp;
                                     <button *ngIf="!loading" mat-raised-button (click)="loadStorage()" color="warn">Cargar archivo</button>
-                                    <mat-progress-spinner *ngIf="loading" mode="indeterminate" diameter="30" color="warn">
-                                    </mat-progress-spinner>
+                                
+                                    <mat-progress-bar *ngIf="loading" [value]="progress" mode="determinate" color="warn"></mat-progress-bar>
+                                    <div *ngIf="loading" fxLayout="row" class="loadMargin">
+                                        <h3>Cargando... {{ progress | number: '.2' }}%</h3>
+                                        <span fxFlex></span>
+                                        <br>
+                                        &nbsp;
+                                        <h3>{{ currentIndex}}/{{ itemsInventory.length }}</h3>
+                                    </div>
+                                
                                     <span fxFlex></span>
-                                </div>
+                                </mat-card-footer>
+
+                                <!-- </div> -->
                                 <br>
                                 <hr>
                                 <div fxLayout="row">
