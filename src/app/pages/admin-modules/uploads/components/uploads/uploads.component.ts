@@ -35,7 +35,7 @@ export class UploadsComponent implements OnInit, AfterContentInit, OnDestroy {
 
   cellarsSubscription: Subscription;
   cellars: CellarItem[];
-  errores: any[];
+  errores: any[] = [];
   errores2: any[];
 
   currentCellar: string;
@@ -148,6 +148,7 @@ export class UploadsComponent implements OnInit, AfterContentInit, OnDestroy {
                 this.toastyService.success('Productos Actualizados correctamente');
                 this.loading = false;
                 this.progress = 0;
+
               });
             }
           };
@@ -181,7 +182,9 @@ export class UploadsComponent implements OnInit, AfterContentInit, OnDestroy {
         this.tempStorageService
           .updateByBarcode(this.currentCellar, inventoryItem.codigo, inventoryItem.Inventario )
           .subscribe(async (resp) => {
-            console.log(resp);
+            if (!resp.ok) {
+              this.errores.push(resp.mensaje);
+            }
             index++;
             await this.updateInventory(index);
             resolve(true);
@@ -191,21 +194,6 @@ export class UploadsComponent implements OnInit, AfterContentInit, OnDestroy {
       }
     });
   }
-
-  // tslint:disable-next-line: variable-name
-  // async updateInventory(_cellar: string): Promise<any> {
-  //   let count = 0;
-  //   if (this.itemsInventory.length > 0) {
-  //     this.itemsInventory.map(async (item: any) => {
-  //       this.tempStorageService
-  //         .updateByBarcode(_cellar, item.codigo, item.Inventario)
-  //         .subscribe(async (res: any) => {
-  //           count++;
-  //           console.log(count, res);
-  //         });
-  //     });
-  //   }
-  // }
 
   stockReset(): void {
     const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
