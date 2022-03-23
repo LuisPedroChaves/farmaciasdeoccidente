@@ -1,0 +1,35 @@
+<div fxFlex="column" class="my-container">
+    <div fxFlex="row" class="card mat-elevation-z2">
+        <div fxLayout="row">
+            <h2>Ingreso de productos</h2>
+        </div>
+        <div fxLayout="row">
+            <div fxFlex="20px"></div>
+            <div fxFlex="50px" fxHide.xs fxLayoutAlign="center center">
+                <mat-icon color="accent" class="material-icons-outlined">upload_file
+                </mat-icon>
+            </div>
+            <div fxFlex class="inputpadding">
+                <mat-form-field appearance="outline" class="width-all">
+                    <mat-label>
+                        .xlsx
+                    </mat-label>
+                    <ngx-mat-file-input #removableInput [(ngModel)]="currentFile3" placeholder="Ingrese un archivo">
+                    </ngx-mat-file-input>
+                    <button mat-icon-button matSuffix *ngIf="!removableInput.empty" (click)="removableInput.clear($event)">
+            <mat-icon>clear</mat-icon>
+          </button>
+                </mat-form-field>
+            </div>
+            <div fxFlex="20px"></div>
+        </div>
+        <div fxLayout="row">
+            <span fxFlex></span>
+            <button *ngIf="!loading" mat-raised-button (click)="loadProducts()" color="warn">Cargar
+        archivo</button>
+            <mat-progress-spinner *ngIf="loading" mode="indeterminate" diameter="30" color="warn">
+            </mat-progress-spinner>
+            <span fxFlex></span>
+        </div>
+    </div>
+</div>

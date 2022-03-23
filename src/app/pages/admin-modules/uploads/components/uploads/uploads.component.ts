@@ -44,8 +44,6 @@ export class UploadsComponent implements OnInit, AfterContentInit, OnDestroy {
   currentCellar2: string;
   currentFile2: any;
 
-  currentFile3: any;
-
   itemsInventory = [];
   progress = 0;
   currentIndex = 1;
@@ -76,42 +74,6 @@ export class UploadsComponent implements OnInit, AfterContentInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.cellarsSubscription.unsubscribe();
-  }
-
-  loadProducts(): void {
-    const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
-      width: '350px',
-      data: {
-        title: 'Cargar PRODUCTOS',
-        message: '¿Confirma que desea ingresar el archivo de productos?',
-      },
-      disableClose: true,
-      panelClass: ['farmacia-dialog', 'farmacia'],
-    });
-
-    dialogRef.afterClosed().subscribe((result) => {
-      if (result !== undefined) {
-        this.loading = true;
-        if (this.currentFile3) {
-          this.productService
-            .uploadFile(this.currentFile3.files[0])
-            .then((resp: any) => {
-              this.loading = false;
-              this.toastyService.success(
-                'Productos actualizados correctamente'
-              );
-            })
-            .catch((err) => {
-              this.loading = false;
-              this.toastyService.error('Error al cargar el archivo');
-            });
-        } else {
-          this.loading = false;
-          this.toastyService.error('Debe seleccionar un archivo');
-          return;
-        }
-      }
-    });
   }
 
   loadStorage(): void {
@@ -145,25 +107,13 @@ export class UploadsComponent implements OnInit, AfterContentInit, OnDestroy {
                 const data = XLSX.utils.sheet_to_json(workbook.Sheets[sheet]);
                 this.itemsInventory = data;
                 await this.updateInventory(0);
-                this.toastyService.success('Productos Actualizados correctamente');
+                  this.toastyService.success('Inventario actualizado correctamente');
                 this.loading = false;
                 this.progress = 0;
 
               });
             }
           };
-          // this.tempStorageService.uploadFile(this.currentFile.files[0], this.currentCellar)
-          // .then((resp: any) => {
-          //   this.loading = false;
-          //   this.toastyService.success('Inventario actualizado correctamente');
-          //   this.errores = resp.errors;
-          //   this.currentCellar = undefined;
-          //   this.currentFile = undefined;
-          // })
-          // .catch(err => {
-          //   this.loading = false;
-          //   this.toastyService.error('Error al cargar el archivo');
-          // });
         } else {
           this.loading = false;
           this.toastyService.error('Debe seleccionar un archivo');
