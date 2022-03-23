@@ -30,6 +30,16 @@ import { AuthAdminGuard } from './core/auth/auth-admin.guard';
 import { SocketIoModule, SocketIoConfig } from 'ngx-socket-io';
 const config: SocketIoConfig = { url: environment.root, options: {} };
 
+// for HttpClient import:
+import { LoadingBarHttpClientModule } from '@ngx-loading-bar/http-client';
+
+// for Router import:
+import { LoadingBarRouterModule } from '@ngx-loading-bar/router';
+
+// for Core import:
+import { LoadingBarModule } from '@ngx-loading-bar/core';
+import { LOADING_BAR_CONFIG } from '@ngx-loading-bar/core';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -53,11 +63,16 @@ const config: SocketIoConfig = { url: environment.root, options: {} };
 
     // app modules
     CoreModule,
-    SharedComponentsModule
+    SharedComponentsModule,
+
+    LoadingBarHttpClientModule,
+    LoadingBarRouterModule,
+    LoadingBarModule
   ],
   providers: [
     { provide: APP_BASE_HREF, useValue: environment.baseurl },
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
+    { provide: LOADING_BAR_CONFIG, useValue: { latencyThreshold: 100 } },
     AuthGuard,
     AuthAdminGuard,
     CheckTokenGuard,
