@@ -70,6 +70,13 @@ export class ProductService {
     return this.http.post(this.apiConfigService.API_PRODUCT, product);
   }
 
+  update(product: any): Observable<any> {
+    return this.http.put(
+      `${this.apiConfigService.API_PRODUCT}/`,
+      product
+    );
+  }
+
   updateProduct(product: ProductItem): Observable<any> {
     console.log(product);
 

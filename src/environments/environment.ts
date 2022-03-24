@@ -9,8 +9,8 @@ export const environment = {
   mobile: false,
 
   /* API Services Config */
-  root: 'http://localhost:3000',
-  // root: 'https://backendfarmacias-test.azurewebsites.net/',
+  // root: 'http://localhost:3000',
+  root: 'https://backendfarmacias-test.azurewebsites.net/',
   // root: 'https://backendfarmacias-test-cargas.azurewebsites.net/',
 
   /* Version Config */

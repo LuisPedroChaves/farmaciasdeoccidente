@@ -4,7 +4,6 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 
 import { ApiConfigService } from 'src/app/core/services/config/api-config.service';
-import { TempSaleItem } from '../../models/TempSale';
 
 @Injectable({
   providedIn: 'root'
@@ -38,6 +37,10 @@ export class TempSaleService {
         .set('startDate', startDate.toString())
         .set('endDate', endDate.toString())
     });
+  }
+
+  update(body: any): Observable<any> {
+    return this.http.put(this.apiConfigService.API_TEMP_SALE + '/', body);
   }
 
   uploadFile(file: File, tempSale: any) {
