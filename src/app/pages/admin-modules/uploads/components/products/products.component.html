@@ -14,12 +14,15 @@
                     <mat-label>
                         .xlsx
                     </mat-label>
-                    <ngx-mat-file-input #removableInput [(ngModel)]="currentFile3" placeholder="Ingrese un archivo">
+                    <ngx-mat-file-input #removableInput [(ngModel)]="currentFile" placeholder="Ingrese un archivo">
                     </ngx-mat-file-input>
                     <button mat-icon-button matSuffix *ngIf="!removableInput.empty" (click)="removableInput.clear($event)">
             <mat-icon>clear</mat-icon>
           </button>
                 </mat-form-field>
+            </div>
+            <div fxFlex class="inputpadding" fxLayoutAlign="start center">
+                <mat-slide-toggle [(ngModel)]="withBrand">Actualizar laboratorios</mat-slide-toggle>
             </div>
             <div fxFlex="20px"></div>
         </div>
@@ -27,9 +30,17 @@
             <span fxFlex></span>
             <button *ngIf="!loading" mat-raised-button (click)="loadProducts()" color="warn">Cargar
         archivo</button>
-            <mat-progress-spinner *ngIf="loading" mode="indeterminate" diameter="30" color="warn">
-            </mat-progress-spinner>
             <span fxFlex></span>
+        </div>
+        <div fxLayout="row">
+            <mat-progress-bar *ngIf="loading" [value]="progress" mode="determinate" color="warn">
+            </mat-progress-bar>
+        </div>
+
+        <div *ngIf="loading" fxLayout="row" class="loadMargin">
+            <h3>Cargando... {{ progress | number: '.2' }}%</h3>
+            <span fxFlex></span>
+            <h3>{{ currentIndex }}/{{ products.length }}</h3>
         </div>
     </div>
 </div>

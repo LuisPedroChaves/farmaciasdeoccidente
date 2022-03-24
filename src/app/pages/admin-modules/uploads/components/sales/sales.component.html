@@ -1,1 +1,59 @@
-<p>sales works!</p>
+<div fxFlex="column" class="my-container">
+    <div fxFlex="row" class="card mat-elevation-z2">
+        <div fxLayout="row">
+            <h2>Ingreso de ventas</h2>
+        </div>
+        <div fxLayout="row">
+            <div fxFlex="20px"></div>
+            <div fxFlex="50px" fxHide.xs fxLayoutAlign="center center">
+                <mat-icon color="accent" class="material-icons-outlined">upload_file
+                </mat-icon>
+            </div>
+            <div fxFlex class="inputpadding">
+                <app-cellar (send)="getCellar($event)"></app-cellar>
+            </div>
+            <div fxFlex class="inputpadding">
+                <mat-form-field appearance="outline" class="width-all">
+                    <mat-label>
+                        .xlsx
+                    </mat-label>
+                    <ngx-mat-file-input #removableInput [(ngModel)]="currentFile2" placeholder="Ingrese un archivo">
+                    </ngx-mat-file-input>
+                    <button mat-icon-button matSuffix *ngIf="!removableInput.empty" (click)="removableInput.clear($event)">
+            <mat-icon>clear</mat-icon>
+          </button>
+                </mat-form-field>
+            </div>
+            <div fxFlex="20px"></div>
+        </div>
+        <div fxLayout="row">
+            <span fxFlex></span>
+            <button *ngIf="!loading" mat-raised-button (click)="loadSaleDelete()" style="color: brown;">Anular
+        archivo</button>&nbsp;
+            <button *ngIf="!loading" mat-raised-button (click)="loadSale()" color="warn">Cargar
+        archivo</button>
+            <span fxFlex></span>
+        </div>
+        <div fxLayout="row">
+            <mat-progress-bar *ngIf="loading" [value]="progress" mode="determinate" color="warn">
+            </mat-progress-bar>
+        </div>
+
+        <div *ngIf="loading" fxLayout="row" class="loadMargin">
+            <h3>Cargando... {{ progress | number: '.2' }}%</h3>
+            <span fxFlex></span>
+            <h3>{{ currentIndex}}/{{ sales.length }}</h3>
+        </div>
+        <br>
+        <hr>
+        <div fxLayout="row">
+            <h3>Listado de códigos no encontrados:</h3>
+        </div>
+        <div fxLayout="row">
+            <mat-list role="list">
+                <mat-list-item role="listitem" *ngFor="let error of errores2">{{error.barcode}}
+                </mat-list-item>
+            </mat-list>
+        </div>
+    </div>
+</div>

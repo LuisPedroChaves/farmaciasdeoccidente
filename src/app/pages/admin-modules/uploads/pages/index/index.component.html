@@ -1,1 +1,23 @@
-<p>index works!</p>
+<div [ngClass]="{ 'app': !smallScreen, 'app-sm': smallScreen } ">
+    <div class="section-content">
+        <div>
+            <header class="module-header" [ngClass]="{'padding-25': !smallScreen, 'padding-15': smallScreen }" fxLayoutAlign="start center" fxLayout="row wrap">
+                <h1 class="product-font ma-0 module-title">Carga de archivos</h1>
+            </header>
+            <mat-divider></mat-divider>
+            <div fxLayout="row wrap" class="module-container" data-simplebar>
+                <mat-tab-group mat-align-tabs="center">
+                    <mat-tab label="Productos">
+                        <app-products></app-products>
+                    </mat-tab>
+                    <mat-tab label="Inventario">
+                        <app-stock></app-stock>
+                    </mat-tab>
+                    <mat-tab label="Ventas">
+                        <app-sales></app-sales>
+                    </mat-tab>
+                </mat-tab-group>
+            </div>
+        </div>
+    </div>
+</div>
