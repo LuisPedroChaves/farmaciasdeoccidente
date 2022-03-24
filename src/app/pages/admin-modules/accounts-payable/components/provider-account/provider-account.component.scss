@@ -1,0 +1,45 @@
+.layout {
+    height: calc(100vh - 192px);
+}
+
+header {
+    padding: 15px;
+}
+
+mat-card {
+    padding: 10px !important;
+    border-radius: 10px;
+}
+
+mat-tab-group {
+    background-color: white;
+}
+
+.header2 {
+    padding: 10px;
+}
+
+.table {
+    height: calc(100vh - 240px);
+    background-color: white;
+}
+
+.mat-table-sticky {
+    background: #f6fbe6;
+    opacity: 1;
+}
+
+.mat-row:hover {
+    background: whitesmoke;
+}
+
+.warning {
+    color: brown;
+}
+
+.check-layout {
+    height: calc(100vh - 292px);
+    width: 375px;
+    padding: 15px;
+    background-color: white;
+}

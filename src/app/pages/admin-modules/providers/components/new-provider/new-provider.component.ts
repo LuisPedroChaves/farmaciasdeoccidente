@@ -2,6 +2,7 @@ import { Component, Inject, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Router } from '@angular/router';
+
 import { ProviderItem } from 'src/app/core/models/Provider';
 import { ProviderService } from 'src/app/core/services/httpServices/provider.service';
 import { ToastyService } from 'src/app/core/services/internal/toasty.service';
@@ -14,11 +15,15 @@ import { ToastyService } from 'src/app/core/services/internal/toasty.service';
 export class NewProviderComponent implements OnInit {
   form = new FormGroup({
     name: new FormControl(null, [Validators.required]),
+    checkName: new FormControl(null, [Validators.required]),
     address: new FormControl(null, [Validators.required]),
-    nit: new FormControl(null),
+    nit: new FormControl(null, [Validators.required]),
     phone: new FormControl(null),
     email: new FormControl(null),
     creditDays: new FormControl('0', [Validators.required]),
+    credit: new FormControl('0', [Validators.required]),
+    iva: new FormControl(false),
+    isr: new FormControl(true)
   });
 
   loading = false;

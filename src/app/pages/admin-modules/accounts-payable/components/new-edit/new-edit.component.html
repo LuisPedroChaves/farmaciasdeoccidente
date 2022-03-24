@@ -1,0 +1,254 @@
+<mat-drawer-container>
+    <mat-drawer #drawer mode="over">
+        <header fxLayout="row wrap" fxLayoutAlign="start center">
+            <h2 class="ma-0">Gastos</h2>
+            <span fxFlex></span>
+            <button mat-icon-button (click)="drawer.opened = false">
+          <mat-icon>close</mat-icon>
+        </button>
+        </header>
+        <app-expenses></app-expenses>
+    </mat-drawer>
+    <mat-drawer-content>
+        <ngx-simplebar class="my-layout">
+            <div fxLayout="column" fxLayoutGap="20px">
+                <div *ngIf="accountsPayable.type === 'PRODUCTOS'" fxLayout="row" fxLayoutAlign="center center">
+                    <div fxFlex.gt-lg="60" fxFlex.gt-md="70" fxFlex.gt-sm="80" fxFlex.gt-xs="80" fxFlex.xs="100">
+                        <header>
+                            <h3>Próximamente: Buscador de facturas ingresadas a inventario...</h3>
+                        </header>
+                    </div>
+                </div>
+                <div fxLayout="row" fxLayoutAlign="center center">
+                    <div fxFlex.gt-lg="60" fxFlex.gt-md="70" fxFlex.gt-sm="80" fxFlex.gt-xs="80" fxFlex.xs="100">
+                        <form [formGroup]="form" autocomplete="off">
+                            <mat-card fxLayout="column" class="mat-elevation-z4">
+                                <mat-card-header *ngIf="form.get('_provider').value">
+                                    <mat-icon matCardAvatar>business</mat-icon>
+                                    <mat-card-group>
+                                        <mat-card-title>{{ form.get('_provider').value.nit }} - {{ form.get('_provider').value.name }}
+                                        </mat-card-title>
+                                        <mat-card-subtitle>{{ form.get('_provider').value.address }}</mat-card-subtitle>
+                                    </mat-card-group>
+                                    <span fxFlex></span>
+                                    <mat-chip-list>
+                                        <mat-chip color="accent" selected>Crédito: Q{{ form.get('_provider').value.credit | number: '.2' }}
+                                        </mat-chip>
+                                        <mat-chip color="accent" selected>{{ form.get('_provider').value.creditDays }} días</mat-chip>
+                                    </mat-chip-list>
+                                </mat-card-header>
+                                <mat-card-content>
+                                    <div fxLayout="row wrap" fxLayoutGap="10px">
+                                        <div fxFlex.gt-lg="20" fxFlex.gt-md="20" fxFlex.gt-sm="27" fxFlex.gt-xs="45" fxFlex.xs="100">
+                                            <mat-form-field fxFill appearance="outline" color="accent">
+                                                <mat-label>Fecha</mat-label>
+                                                <input matInput [matDatepicker]="picker" formControlName="date" title="Fecha de la factura" placeholder="Ingrese una fecha">
+                                                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                                                <mat-datepicker #picker></mat-datepicker>
+                                            </mat-form-field>
+                                        </div>
+                                        <div fxFlex.gt-lg="25" fxFlex.gt-md="25" fxFlex.gt-sm="33" fxFlex.gt-xs="50" fxFlex.xs="100">
+                                            <mat-form-field fxFill appearance="outline" color="accent">
+                                                <mat-label>Serie</mat-label>
+                                                <input formControlName="serie" type="text" matInput placeholder="Ingrese la serie de la factura">
+                                            </mat-form-field>
+                                        </div>
+                                        <div fxFlex.gt-lg="25" fxFlex.gt-md="25" fxFlex.gt-sm="33" fxFlex.gt-xs="45" fxFlex.xs="100">
+                                            <mat-form-field fxFill appearance="outline" color="accent">
+                                                <mat-label>Factura</mat-label>
+                                                <input #noBill formControlName="noBill" type="text" matInput placeholder="Ingrese el No. de factura">
+                                            </mat-form-field>
+                                        </div>
+                                        <div fxFlex.gt-lg="25" fxFlex.gt-md="25" fxFlex.gt-sm="33" fxFlex.gt-xs="45" fxFlex.xs="100">
+                                            <mat-form-field fxFill appearance="outline" color="accent">
+                                                <mat-label>Tipo de documento</mat-label>
+                                                <mat-select formControlName="docType" name="docType">
+                                                    <mat-option value="FACTURA">
+                                                        Factura electrónica
+                                                    </mat-option>
+                                                    <mat-option value="CAMBIARIA">
+                                                        Factura cambiaria electrónica
+                                                    </mat-option>
+                                                    <mat-option value="PEQUEÑO">
+                                                        Factura pequeño contribuyente
+                                                    </mat-option>
+                                                    <mat-option value="ABONO">
+                                                        Nota de abono
+                                                    </mat-option>
+                                                    <mat-option value="CREDITO">
+                                                        Nota de crédito
+                                                    </mat-option>
+                                                </mat-select>
+                                            </mat-form-field>
+                                        </div>
+                                        <div fxFlex.gt-lg="50" fxFlex.gt-md="50" fxFlex.gt-sm="61" fxFlex.gt-xs="50" fxFlex.xs="100">
+                                            <mat-form-field fxFill appearance="outline" color="accent">
+                                                <mat-label>Nit</mat-label>
+                                                <input matInput [formControl]="provider" [matAutocomplete]="auto1" type="text" placeholder="Buscar proveedor..." aria-label="text">
+                                                <mat-hint>Ingrese el numero de NIT del proveedor.</mat-hint>
+                                                <mat-autocomplete autoActiveFirstOption #auto1="matAutocomplete" (optionSelected)="selectProvider($event.option.value)">
+                                                    <mat-option *ngFor="let option of filteredOptions | async" [value]="option.nit">
+                                                        <span>{{ option.nit }} - {{option.name}}</span>
+                                                    </mat-option>
+                                                </mat-autocomplete>
+                                                <button *ngIf="provider.value" matSuffix mat-icon-button aria-label="Clear" (click)="provider.setValue(''); form.get('_provider').setValue(null);">
+                          <mat-icon>close</mat-icon>
+                        </button>
+                                            </mat-form-field>
+                                        </div>
+                                        <div fxFlex.gt-lg="20" fxFlex.gt-md="20" fxFlex.gt-sm="33" fxFlex.gt-xs="50" fxFlex.xs="100">
+                                            <mat-form-field fxFill appearance="outline" color="accent">
+                                                <mat-label>
+                                                    Archivo
+                                                </mat-label>
+                                                <ngx-mat-file-input #removableInput formControlName="file" placeholder="Ingrese un archivo">
+                                                </ngx-mat-file-input>
+                                                <mat-hint>Adjunte una copia del documento</mat-hint>
+                                                <button mat-icon-button matSuffix *ngIf="!removableInput.empty" (click)="removableInput.clear($event)">
+                          <mat-icon>clear</mat-icon>
+                        </button>
+                                            </mat-form-field>
+                                        </div>
+                                        <div *ngIf="accountsPayable.type === 'GASTOS'" fxFlex.gt-lg="25" fxFlex.gt-md="25" fxFlex.gt-sm="33" fxFlex.gt-xs="50" fxFlex.xs="100">
+                                            <mat-form-field fxFill appearance="outline" color="accent">
+                                                <mat-label>Gasto</mat-label>
+                                                <input matInput formControlName="_expense" [matAutocomplete]="auto2" type="text" placeholder="Buscar tipo de gasto..." aria-label="text">
+                                                <mat-hint>Ingrese el nombre del tipo de gasto.</mat-hint>
+                                                <mat-autocomplete autoActiveFirstOption #auto2="matAutocomplete" [displayWith]="getName">
+                                                    <mat-option [value]="null" (click)="drawer.toggle()">
+                                                        <mat-icon>add</mat-icon>
+                                                        Nuevo gasto
+                                                    </mat-option>
+                                                    <mat-option *ngFor="let option of filteredExpenses | async" [value]="option">
+                                                        <span>{{option.name}}</span>
+                                                    </mat-option>
+                                                </mat-autocomplete>
+                                                <button *ngIf="form.get('_expense').value" matSuffix mat-icon-button aria-label="Clear" (click)="form.get('_expense').setValue(null);">
+                          <mat-icon>close</mat-icon>
+                        </button>
+                                            </mat-form-field>
+                                        </div>
+                                    </div>
+                                    <br>
+                                    <mat-divider></mat-divider>
+                                    <br>
+                                    <h3>Montos, impuestos y totales</h3>
+                                    <div fxLayout="row wrap" fxLayoutGap="10px" fxLayoutAlign="start center">
+                                        <mat-icon mat-list-icon fxHide.lt-md>paid</mat-icon>
+                                        <mat-form-field fxFlex="20" fxFlex.lt-md="100" appearance="outline" color="accent">
+                                            <mat-label>Monto</mat-label>
+                                            <span matPrefix>Q &nbsp;</span>
+                                            <input #Iamount matInput [formControl]="amount" type="number" placeholder="0">
+                                        </mat-form-field>
+                                        <mat-form-field fxFlex="40" fxFlex.lt-md="100" appearance="outline" color="accent">
+                                            <mat-select [formControl]="amountType">
+                                                <mat-option value="NO-AFECTAS">
+                                                    Compras no afectas
+                                                </mat-option>
+                                                <mat-option value="EXENTOS">
+                                                    Compras y servicios exentos
+                                                </mat-option>
+                                                <mat-optgroup label="Total afecto">
+                                                    <mat-option value="COMPRAS">
+                                                        Compras neto
+                                                    </mat-option>
+                                                    <mat-option value="SERVICIOS">
+                                                        Servicios neto
+                                                    </mat-option>
+                                                </mat-optgroup>
+                                                <mat-option value="TAXES">
+                                                    Otros impuestos
+                                                </mat-option>
+                                            </mat-select>
+                                        </mat-form-field>
+                                        <div>
+                                            <button mat-stroked-button (click)="applyAmount()" color="accent" [disabled]="amount.invalid || amountType.invalid">Aplicar</button>
+                                        </div>
+                                        <span fxFlex></span>
+                                        <div>
+                                            <button mat-button (click)="resetTable()" color="warn">Restablecer</button>
+                                        </div>
+                                    </div>
+                                    <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+
+                                        <ng-container matColumnDef="1">
+                                            <th mat-header-cell *matHeaderCellDef> Compras no afectas </th>
+                                            <td mat-cell *matCellDef="let element"> Q {{ form.get('unaffectedAmount').value | number: '.2' }}
+                                            </td>
+                                        </ng-container>
+                                        <ng-container matColumnDef="2">
+                                            <th mat-header-cell *matHeaderCellDef> Compras y servicios exentos </th>
+                                            <td mat-cell *matCellDef="let element"> Q {{ form.get('exemptAmount').value | number: '.2' }}
+                                            </td>
+                                        </ng-container>
+                                        <ng-container matColumnDef="3">
+                                            <th mat-header-cell *matHeaderCellDef> Compras Neto </th>
+                                            <td mat-cell *matCellDef="let element"> Q {{ form.get('netPurchaseAmount').value | number: '.2' }}
+                                            </td>
+                                        </ng-container>
+                                        <ng-container matColumnDef="4">
+                                            <th mat-header-cell *matHeaderCellDef> Servicios Neto </th>
+                                            <td mat-cell *matCellDef="let element"> Q {{ form.get('netServiceAmount').value | number: '.2' }}
+                                            </td>
+                                        </ng-container>
+                                        <ng-container matColumnDef="5">
+                                            <th mat-header-cell *matHeaderCellDef> Otros Impuestos </th>
+                                            <td mat-cell *matCellDef="let element"> Q {{ form.get('otherTaxes').value | number: '.2' }} </td>
+                                        </ng-container>
+                                        <ng-container matColumnDef="6">
+                                            <th mat-header-cell *matHeaderCellDef> I.V.A. Crédito Fiscal </th>
+                                            <td mat-cell *matCellDef="let element"> Q {{ form.get('iva').value | number: '.2' }} </td>
+                                        </ng-container>
+
+                                        <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+                                        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                                    </table>
+                                    <div fxLayout="row wrap">
+                                        <div *ngIf="form.get('docType').value !== 'ABONO' && form.get('docType').value !== 'CREDITO'" fxFlex.lt-md="100" fxLayout="column" fxLayoutGap="5px">
+                                            <div fxFlex>
+                                                <mat-slide-toggle formControlName="toCredit">Al Crédito</mat-slide-toggle>
+                                            </div>
+                                            <div *ngIf="form.get('toCredit').value" fxFlex>
+                                                <mat-form-field fxFill appearance="outline" color="accent">
+                                                    <mat-label>Fecha de vencimiento</mat-label>
+                                                    <input matInput [matDatepicker]="picker2" formControlName="expirationCredit" title="Fecha de vencimiento" placeholder="Ingrese una fecha">
+                                                    <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+                                                    <mat-datepicker #picker2></mat-datepicker>
+                                                </mat-form-field>
+                                            </div>
+                                        </div>
+                                        <span fxFlex.gt-sm></span>
+                                        <div fxFlex.lt-md="100" fxLayout="column">
+                                            <div fxFlex fxLayout="row" fxLayoutGap="10px" fxLayoutAlign="end center">
+                                                <span>TOTAL AFECTO</span>
+                                                <h2>Q {{ getTotal('AFECTO') | number: '.2' }}</h2>
+                                            </div>
+                                            <div fxFlex fxLayout="row" fxLayoutGap="10px" fxLayoutAlign="end center">
+                                                <span>TOTAL GENERAL</span>
+                                                <h2>Q {{ getTotal('GENERAL') | number: '.2' }}</h2>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <mat-card *ngIf="form.get('_provider').value && (form.get('_provider').value.iva || form.get('_provider').value.isr)" class="warning-card mat-elevation-z0">
+                                        <mat-card-header>
+                                            <mat-icon matCardAvatar>warning</mat-icon>
+                                            <mat-card-title>Retención de {{ form.get('_provider').value.iva ? 'IVA' : '' }} {{ form.get('_provider').value.isr ? 'ISR' : '' }}</mat-card-title>
+                                            <mat-card-subtitle>¡IMPORTANTE!, el proveedor cuenta con estas retenciones.</mat-card-subtitle>
+                                        </mat-card-header>
+                                    </mat-card>
+                                    <mat-progress-bar *ngIf="loading" mode="indeterminate" color="warn"></mat-progress-bar>
+                                </mat-card-content>
+                                <mat-card-actions>
+                                    <button mat-button (click)="close.emit()">Cancelar</button>
+                                    <button mat-button (click)="resetForm(); resetTable()" color="accent">Limpiar</button>
+                                    <span fxFlex></span>
+                                    <button mat-raised-button (click)="save()" color="warn" [disabled]="loading || form.invalid">Guardar</button>
+                                </mat-card-actions>
+                            </mat-card>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </ngx-simplebar>
+    </mat-drawer-content>
+</mat-drawer-container>

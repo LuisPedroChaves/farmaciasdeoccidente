@@ -7,8 +7,9 @@ import { OrderByPipe } from './orderPipes/order-by.pipe';
 import { TimeFormatPipe } from './timePipes/time-format.pipe';
 import { TimestampDatePipe } from './timePipes/timestamp-date.pipe';
 import { FilePipe } from './filePipes/file.pipe';
+import { NumberToWordsPipe } from './formatPipes/number-to-words.pipe';
 @NgModule({
-  declarations: [FilterPipe, MoneyPipe, RoundDigitPipe, OrderByPipe, TimeFormatPipe, TimestampDatePipe, FilePipe],
+  declarations: [FilterPipe, MoneyPipe, RoundDigitPipe, OrderByPipe, TimeFormatPipe, TimestampDatePipe, FilePipe, NumberToWordsPipe],
   imports: [
     CommonModule
   ],

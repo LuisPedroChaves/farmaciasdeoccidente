@@ -78,5 +78,14 @@ export class ApiConfigService {
   // AutoStatistic
   public API_AUTO_STATISTIC = this.API_URL + '/autoStatistic';
 
+  // accountsPayable
+  public API_ACCOUNTS_PAYABLE = this.API_URL + '/accountsPayable';
+
+  // expense
+  public API_EXPENSE = this.API_URL + '/expense';
+
+  // check
+  public API_CHECK = this.API_URL + '/check';
+
   /* #endregion */
 }

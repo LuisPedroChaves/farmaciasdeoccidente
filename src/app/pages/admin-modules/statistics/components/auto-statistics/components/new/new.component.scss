@@ -1,7 +1,7 @@
 mat-horizontal-stepper {
     height: calc(100% - 55px);
     border-radius: 10px;
-    background-color: #fafafa !important;
+    background-color: #f2f2f2 !important;
 }
 
 .my-step {
@@ -21,7 +21,7 @@ mat-horizontal-stepper {
 
 .my-card-3 {
     height: calc(100vh - 28%);
-    background-color: #fafafa;
+    background-color: #f2f2f2;
 }
 
 .my-content {
@@ -62,11 +62,11 @@ mat-horizontal-stepper {
 }
 
 mat-card-footer {
-    background-color: #fafafa;
+    background-color: #f2f2f2;
     border-radius: 10px;
 }
 
 mat-paginator {
-    background-color: #fafafa;
+    background-color: #f2f2f2;
     border-radius: 10px;
 }

@@ -7,7 +7,7 @@
     <form [formGroup]="form">
         <div fxLayout="row wrap" fxLayoutAlign="start center" fxLayoutGap="10px" class="header">
             <div fxFlex>
-                <app-brand (send)="getBrand($event)" [focus]="true" [hint]="form.invalid ? '*Debe seleccionar un laboratorio' : ''"></app-brand>
+                <app-brand (send)="getBrand($event)" [focus]="true" hint="*Opcional"></app-brand>
             </div>
             <mat-form-field appearance="outline">
                 <mat-label>Tipo</mat-label>
@@ -21,6 +21,9 @@
                     </mat-option>
                 </mat-select>
             </mat-form-field>
+            <div fxFlex>
+                <button mat-raised-button (click)="getProducts()" [disabled]="loading" color="accent">Consultar</button>
+            </div>
             <div fxFlex></div>
             <app-filter (send)="applyFilter($event)"></app-filter>
             <button mat-fab color="warn" (click)="downloadXlsx()">
@@ -31,6 +34,16 @@
     <!-- <div class="table">
     </div> -->
     <ngx-simplebar class="table">
+        <div *ngIf="loading && !form.get('_brand').value" fxFill fxLayout="column" fxLayoutAlign="center center">
+            <h3>{{ brandName }}</h3>
+            <mat-progress-bar [value]="progress" mode="determinate" color="warn"></mat-progress-bar>
+        </div>
+        <br>
+        <div *ngIf="loading && !form.get('_brand').value" fxFill fxLayout="row">
+            <h3>Cargando... {{ progress | number: '.2' }}%</h3>
+            <span fxFlex></span>
+            <h3>{{ currentIndex}}/{{ brands.length }}</h3>
+        </div>
         <mat-progress-bar *ngIf="loading" mode="indeterminate" color="warn"></mat-progress-bar>
         <table mat-table [dataSource]="dataSource">
             <ng-container matColumnDef="barcode">

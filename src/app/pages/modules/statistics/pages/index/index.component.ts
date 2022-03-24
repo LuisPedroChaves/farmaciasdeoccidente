@@ -1,8 +1,10 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, AfterContentInit, OnDestroy } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
+
+import { Subscription } from 'rxjs';
 
 import { CellarItem } from 'src/app/core/models/Cellar';
 import { TempStorageItem } from 'src/app/core/models/TempStorage';
@@ -12,19 +14,23 @@ import { BrandItem } from '../../../../../core/models/Brand';
 import { ToastyService } from '../../../../../core/services/internal/toasty.service';
 import { TempStorageService } from '../../../../../core/services/httpServices/temp-storage.service';
 import { XlsxService } from '../../../../../core/services/internal/XlsxService.service';
+import { BrandService } from 'src/app/core/services/httpServices/brand.service';
 
 @Component({
   selector: 'app-index',
   templateUrl: './index.component.html',
   styleUrls: ['./index.component.scss']
 })
-export class IndexComponent implements OnInit {
+export class IndexComponent implements OnInit, AfterContentInit, OnDestroy {
 
   loading = false;
   currentCellar: CellarItem;
+  progress: number = 0;
+  currentIndex = 1;
+  brandName = '';
 
   form = new FormGroup({
-    _brand: new FormControl(null, Validators.required),
+    _brand: new FormControl(null),
     type: new FormControl(null)
   });
 
@@ -44,20 +50,34 @@ export class IndexComponent implements OnInit {
   ];
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
+  brandsSubscription: Subscription;
+  brands: BrandItem[];
+
   constructor(
     private dialog: MatDialog,
     private toastyService: ToastyService,
     private tempStorageService: TempStorageService,
     private xlsxService: XlsxService,
     public timeFormat: TimeFormatPipe,
-  ) { }
+    private brandService: BrandService,
+  ) {
+    this.brandsSubscription = this.brandService
+      .readData()
+      .subscribe((data: BrandItem[]) => {
+        this.brands = data;
+      });
+  }
 
   ngOnInit(): void {
     this.currentCellar = JSON.parse(localStorage.getItem('currentstore'));
+  }
 
-    this.form.valueChanges.subscribe(next => {
-      this.getProducts();
-    })
+  ngAfterContentInit(): void {
+    this.brandService.loadData();
+  }
+
+  ngOnDestroy(): void {
+    this.brandsSubscription?.unsubscribe();
   }
 
   loadStatistics(): void {
@@ -86,33 +106,76 @@ export class IndexComponent implements OnInit {
     }
   }
 
-  getProducts(): void {
+  async getProducts(): Promise<void> {
     if (this.form.invalid) {
       return;
     }
     this.loading = true;
-    this.tempStorageService.loadData(this.currentCellar._id, 1, 20, '', this.form.controls._brand.value)
-      .subscribe((resp: any) => {
-        this.tempData = resp;
-        const TYPE: string = this.form.controls.type.value;
-        if (TYPE) {
-          if (TYPE === 'requests') {
-            this.tempData = this.tempData.filter(t =>( t.supply &&  t.supply > 0))
+    if (this.form.controls._brand.value) {
+      this.tempStorageService.loadData(this.currentCellar._id, 1, 20, '', this.form.controls._brand.value)
+        .subscribe((resp: any) => {
+          this.tempData = resp;
+          const TYPE: string = this.form.controls.type.value;
+          if (TYPE) {
+            if (TYPE === 'requests') {
+              this.tempData = this.tempData.filter(t => (t.supply && t.supply > 0))
+            }
+            if (TYPE === 'returns') {
+              this.tempData = this.tempData.filter(t => (t.stock && t.maxStock && t.stock > t.maxStock))
+            }
           }
-          if (TYPE === 'returns') {
-            this.tempData = this.tempData.filter(t => (t.stock && t.maxStock && t.stock > t.maxStock))
+          this.dataSource = new MatTableDataSource<TempStorageItem>(this.tempData);
+          this.dataSource.paginator = this.paginator;
+          /* #region  función para poder filtrar subdocumentos dentro de la tabla */
+          this.dataSource.filterPredicate = (data: any, filter) => {
+            const dataStr = data._product.barcode + data._product.description;
+            return dataStr.trim().toLowerCase().indexOf(filter) != -1;
           }
+          /* #endregion */
+          this.loading = false;
+        })
+    } else {
+      await this.loadServiceBrand(0);
+      const TYPE: string = this.form.controls.type.value;
+      if (TYPE) {
+        if (TYPE === 'requests') {
+          this.tempData = this.tempData.filter(t => (t.supply && t.supply > 0))
         }
-        this.dataSource = new MatTableDataSource<TempStorageItem>(this.tempData);
-        this.dataSource.paginator = this.paginator;
-        /* #region  función para poder filtrar subdocumentos dentro de la tabla */
-        this.dataSource.filterPredicate = (data: any, filter) => {
-          const dataStr = data._product.barcode + data._product.description;
-          return dataStr.trim().toLowerCase().indexOf(filter) != -1;
+        if (TYPE === 'returns') {
+          this.tempData = this.tempData.filter(t => (t.stock && t.maxStock && t.stock > t.maxStock))
         }
-        /* #endregion */
-        this.loading = false;
-      })
+      }
+      this.dataSource = new MatTableDataSource<TempStorageItem>(this.tempData);
+      this.dataSource.paginator = this.paginator;
+      /* #region  función para poder filtrar subdocumentos dentro de la tabla */
+      this.dataSource.filterPredicate = (data: any, filter) => {
+        const dataStr = data._product.barcode + data._product.description;
+        return dataStr.trim().toLowerCase().indexOf(filter) != -1;
+      }
+      /* #endregion */
+      this.loading = false;
+    }
+  }
+
+  loadServiceBrand(index: number) {
+    return new Promise(async (resolve, reject) => {
+      const BRAND = this.brands.find((c, i) => i === index)
+      if (BRAND) {
+        this.progress = ((index * 100) / this.brands.length)
+        this.brandName = BRAND.name;
+        this.currentIndex = index;
+        this.tempStorageService.loadData(this.currentCellar._id, 1, 20, '', BRAND._id)
+          .subscribe(async (resp: any) => {
+            this.tempData = this.tempData.concat(resp);
+
+            index++;
+            await this.loadServiceBrand(index)
+            resolve(true);
+          });
+      } else {
+        resolve(true);
+      }
+    })
   }
 
   downloadXlsx(): void {

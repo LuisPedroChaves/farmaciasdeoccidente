@@ -19,6 +19,7 @@
     { "name": "adminDeliveries", "label": "Rutas y entregas", "parent": "ADMIN", "level": 1, "options": ["read", "update", "delete", "create"] },
     { "name": "adminOrders", "label": "Ordenes", "parent": "ADMIN", "level": 1, "options": ["read", "update", "delete", "create"] },
     { "name": "receivables", "label": "Cuentas por cobrar", "parent": "ADMIN", "level": 1, "options": ["read", "update", "delete", "create"] },
+    { "name": "accountsPayable", "label": "Cuentas por pagar", "parent": "ADMIN", "level": 1, "options": ["read", "update", "delete", "create"] },
     { "name": "uploads", "label": "Carga de archivos", "parent": "ADMIN", "level": 1, "options": ["read", "update", "delete", "create"] },
     { "name": "statistics", "label": "Estadísticas", "parent": "ADMIN", "level": 1, "options": ["read", "update", "delete", "create"] },
     { "name": "tempStatistics", "label": "Estadísticas Temp.", "parent": "ADMIN", "level": 1, "options": ["read", "update", "delete", "create"] },
