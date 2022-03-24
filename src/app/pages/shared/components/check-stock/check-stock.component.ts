@@ -17,14 +17,16 @@ import { TempStorageService } from 'src/app/core/services/httpServices/temp-stor
 export class CheckStockComponent implements OnInit {
 
   @Input() showPrices: boolean = false;
-  @ViewChild('search') search: ElementRef<HTMLInputElement>;
+  @ViewChild('searchCode') searchCode: ElementRef<HTMLInputElement>;
 
   myGroup = new FormGroup({
-    search: new FormControl(null, Validators.required)
+    searchCode: new FormControl(null, Validators.required),
+    searchDescription: new FormControl(null, Validators.required),
   });
   filteredProducts: ProductItem[];
   isLoading = false;
 
+  selectedProduct = '';
   wholesale_price = 0
   distributor_price = 0
   retail_price = 0
@@ -42,7 +44,7 @@ export class CheckStockComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.myGroup.get('search').valueChanges
+    this.myGroup.get('searchDescription').valueChanges
       .pipe(
         debounceTime(500),
         tap(() => {
@@ -50,7 +52,26 @@ export class CheckStockComponent implements OnInit {
           this.isLoading = true;
         }),
         switchMap((value) =>
-          this.productService.searchByIndex(value).pipe(
+          this.productService.search(value).pipe(
+            finalize(() => {
+              this.isLoading = false;
+            })
+          )
+        )
+      )
+      .subscribe((data) => {
+        this.filteredProducts = data['products'];
+      });
+
+      this.myGroup.get('searchCode').valueChanges
+      .pipe(
+        debounceTime(500),
+        tap(() => {
+          this.filteredProducts = [];
+          this.isLoading = true;
+        }),
+        switchMap((value) =>
+          this.productService.searchBarcode(value).pipe(
             finalize(() => {
               this.isLoading = false;
             })
@@ -62,7 +83,7 @@ export class CheckStockComponent implements OnInit {
       });
 
     setTimeout(() => {
-      this.search.nativeElement.focus();
+      this.searchCode.nativeElement.focus();
     }, 500);
   }
 
@@ -72,6 +93,7 @@ export class CheckStockComponent implements OnInit {
 
   searchStock(product: ProductItem) {
     this.loading = true;
+    this.selectedProduct = product.description;
     if (product.presentations.length > 0) {
       const { wholesale_price, distributor_price, retail_price, cf_price } = product.presentations[0];
         this.wholesale_price = wholesale_price;

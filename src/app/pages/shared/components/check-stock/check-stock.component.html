@@ -1,14 +1,39 @@
 <div fxFlex="row wrap" class="my-container">
     <div class="card">
-        <header [formGroup]="myGroup" class="module-header padding-15" fxLayoutAlign="start center" fxLayout="row wrap">
-            <mat-form-field appearance="outline" color="warn" class="widthSearch">
-                <span matPrefix *ngIf="!myGroup.get('search').invalid" class="inputPresentation">{{
-            myGroup.get('search').value.barcode }} &nbsp;</span>
-                <input #search matInput [matAutocomplete]="auto" formControlName="search" placeholder="Buscar producto..." aria-label="State">
-                <mat-error *ngIf="this.myGroup.get('search').invalid">
+        <header [formGroup]="myGroup" class="module-header padding-15" fxLayoutAlign="start center" fxLayout="row wrap" fxLayoutGap.gt-sm="10px">
+            <mat-form-field fxFlex.gt-sm="47" fxFlex.lt-md="100" appearance="outline" color="warn">
+                <span matPrefix *ngIf="!myGroup.get('searchCode').invalid" class="inputPresentation">{{
+                myGroup.get('searchCode').value.barcode }} &nbsp;</span>
+                <input #searchCode matInput [matAutocomplete]="auto" formControlName="searchCode" placeholder="Buscar código..." aria-label="State">
+                <mat-error *ngIf="this.myGroup.get('searchCode').invalid">
                     Seleccione un producto de la lista.
                 </mat-error>
                 <mat-autocomplete #auto="matAutocomplete" [displayWith]="getShowDescription" (optionSelected)="searchStock($event.option.value)">
+                    <mat-option *ngIf="isLoading">
+                        <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+                    </mat-option>
+                    <ng-container *ngIf="!isLoading">
+                        <mat-option *ngFor="let product of filteredProducts" [value]="product">
+                            <div fxFlex="row wrap">
+                                <span><b>{{product.barcode}}</b> | {{product.description}} | {{
+                                product._brand.name }}</span>
+                                <div fxFlex></div>
+                            </div>
+                        </mat-option>
+                    </ng-container>
+                </mat-autocomplete>
+                <button *ngIf="myGroup.get('searchCode').value" matSuffix mat-icon-button aria-label="Clear" (click)="myGroup.get('searchCode').setValue('')">
+          <mat-icon>close</mat-icon>
+        </button>
+            </mat-form-field>
+            <mat-form-field fxFlex.gt-sm="50" fxFlex.lt-md="100" appearance="outline" color="warn">
+                <span matPrefix *ngIf="!myGroup.get('searchDescription').invalid" class="inputPresentation">{{
+            myGroup.get('searchDescription').value.barcode }} &nbsp;</span>
+                <input matInput [matAutocomplete]="auto" formControlName="searchDescription" placeholder="Buscar producto..." aria-label="State">
+                <mat-error *ngIf="this.myGroup.get('searchDescription').invalid">
+                    Seleccione un producto de la lista.
+                </mat-error>
+                <mat-autocomplete #auto="matAutocomplete" [displayWith]="getShowDescription" (optionSelected)="searchStock($event.option.value);">
                     <mat-option *ngIf="isLoading">
                         <mat-progress-bar mode="indeterminate"></mat-progress-bar>
                     </mat-option>
@@ -22,11 +47,14 @@
                         </mat-option>
                     </ng-container>
                 </mat-autocomplete>
-                <button *ngIf="myGroup.get('search').value" matSuffix mat-icon-button aria-label="Clear" (click)="myGroup.get('search').setValue('')">
+                <button *ngIf="myGroup.get('searchDescription').value" matSuffix mat-icon-button aria-label="Clear" (click)="myGroup.get('searchDescription').setValue('')">
           <mat-icon>close</mat-icon>
         </button>
             </mat-form-field>
         </header>
+        <div fxLayoutAlign="center center">
+            <h2>{{ selectedProduct }}</h2>
+        </div>
         <div fxLayout.gt-sm="row wrap" fxLayoutAlign.gt-sm="space-evenly center" fxLayout.lt-md="column" fxLayoutGap.lt-md="15px">
             <mat-card class="example-card mat-elevation-z4">
                 <mat-card-header>
