@@ -17,6 +17,7 @@ import { FilterPipe } from 'src/app/core/shared/pipes/filterPipes/filter.pipe';
 import { ProgressBalanceComponent } from './components/progress-balance.component';
 import { NewCheckComponent } from './components/new-check/new-check.component';
 import { NumberToWordsPipe } from '../../../core/shared/pipes/formatPipes/number-to-words.pipe';
+import { NewProviderComponent } from './components/new-provider/new-provider.component';
 
 @NgModule({
   declarations: [
@@ -28,7 +29,8 @@ import { NumberToWordsPipe } from '../../../core/shared/pipes/formatPipes/number
     DocumentsComponent,
     ProviderAccountComponent,
     ProgressBalanceComponent,
-    NewCheckComponent
+    NewCheckComponent,
+    NewProviderComponent
   ],
   imports: [
     CommonModule,

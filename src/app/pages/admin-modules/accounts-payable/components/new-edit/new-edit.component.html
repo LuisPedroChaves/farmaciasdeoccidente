@@ -1,13 +1,14 @@
 <mat-drawer-container>
     <mat-drawer #drawer mode="over">
         <header fxLayout="row wrap" fxLayoutAlign="start center">
-            <h2 class="ma-0">Gastos</h2>
+            <h2 class="ma-0">{{drawerComponent}}</h2>
             <span fxFlex></span>
             <button mat-icon-button (click)="drawer.opened = false">
-          <mat-icon>close</mat-icon>
-        </button>
+        <mat-icon>close</mat-icon>
+      </button>
         </header>
-        <app-expenses></app-expenses>
+        <app-expenses *ngIf="drawerComponent === 'Gastos'" [text]="tempExpense" (send)="getExpense($event)"></app-expenses>
+        <app-new-provider *ngIf="drawerComponent === 'Proveedores'" [isExpenses]="true"></app-new-provider>
     </mat-drawer>
     <mat-drawer-content>
         <ngx-simplebar class="my-layout">
@@ -82,19 +83,9 @@
                                             </mat-form-field>
                                         </div>
                                         <div fxFlex.gt-lg="50" fxFlex.gt-md="50" fxFlex.gt-sm="61" fxFlex.gt-xs="50" fxFlex.xs="100">
-                                            <mat-form-field fxFill appearance="outline" color="accent">
-                                                <mat-label>Nit</mat-label>
-                                                <input matInput [formControl]="provider" [matAutocomplete]="auto1" type="text" placeholder="Buscar proveedor..." aria-label="text">
-                                                <mat-hint>Ingrese el numero de NIT del proveedor.</mat-hint>
-                                                <mat-autocomplete autoActiveFirstOption #auto1="matAutocomplete" (optionSelected)="selectProvider($event.option.value)">
-                                                    <mat-option *ngFor="let option of filteredOptions | async" [value]="option.nit">
-                                                        <span>{{ option.nit }} - {{option.name}}</span>
-                                                    </mat-option>
-                                                </mat-autocomplete>
-                                                <button *ngIf="provider.value" matSuffix mat-icon-button aria-label="Clear" (click)="provider.setValue(''); form.get('_provider').setValue(null);">
-                          <mat-icon>close</mat-icon>
-                        </button>
-                                            </mat-form-field>
+                                            <app-provider *ngIf="accountsPayable.type === 'PRODUCTOS'" (send)="getProvider($event)">
+                                            </app-provider>
+                                            <app-provider *ngIf="accountsPayable.type === 'GASTOS'" [isExpenses]="true" [new]="true" (send)="getProvider($event)" (emitNew)="newProvider()"></app-provider>
                                         </div>
                                         <div fxFlex.gt-lg="20" fxFlex.gt-md="20" fxFlex.gt-sm="33" fxFlex.gt-xs="50" fxFlex.xs="100">
                                             <mat-form-field fxFill appearance="outline" color="accent">
@@ -115,7 +106,7 @@
                                                 <input matInput formControlName="_expense" [matAutocomplete]="auto2" type="text" placeholder="Buscar tipo de gasto..." aria-label="text">
                                                 <mat-hint>Ingrese el nombre del tipo de gasto.</mat-hint>
                                                 <mat-autocomplete autoActiveFirstOption #auto2="matAutocomplete" [displayWith]="getName">
-                                                    <mat-option [value]="null" (click)="drawer.toggle()">
+                                                    <mat-option [value]="form.get('_expense').value" (click)="newExpense()">
                                                         <mat-icon>add</mat-icon>
                                                         Nuevo gasto
                                                     </mat-option>

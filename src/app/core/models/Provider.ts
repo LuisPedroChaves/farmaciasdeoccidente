@@ -11,4 +11,5 @@ export interface ProviderItem {
   balance: number,
 	iva: boolean,
 	isr: boolean,
+  isExpenses: boolean,
 }
