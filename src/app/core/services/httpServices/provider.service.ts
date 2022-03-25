@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable, Subject } from 'rxjs';
 import { map } from 'rxjs/operators';
 
@@ -31,7 +31,7 @@ export class ProviderService implements IDataService<ProviderItem[]> {
       .subscribe();
   }
 
-  getData(): void {
+  getData(isExpenses: boolean): void {
     if (this.providerList === undefined) {
       this.loadData();
     } else {
@@ -51,6 +51,14 @@ export class ProviderService implements IDataService<ProviderItem[]> {
       delete this.providerList;
     }
   }
+
+  getExpenses(): Observable<any> {
+    return this.http.get(this.apiConfigService.API_PROVIDER + '/isExpenses')
+      .pipe(
+        map((resp: any) => resp.providers)
+      );
+  }
+
   createProvider(u: ProviderItem): Observable<any> {
     return this.http.post(this.apiConfigService.API_PROVIDER, u);
   }

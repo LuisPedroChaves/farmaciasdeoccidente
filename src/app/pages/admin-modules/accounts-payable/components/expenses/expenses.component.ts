@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit, OnChanges, AfterContentInit, OnDestroy, SimpleChanges, Output, EventEmitter } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
 
 import { Subscription } from 'rxjs';
@@ -12,7 +12,10 @@ import { ToastyService } from '../../../../../core/services/internal/toasty.serv
   templateUrl: './expenses.component.html',
   styleUrls: ['./expenses.component.scss']
 })
-export class ExpensesComponent implements OnInit {
+export class ExpensesComponent implements OnInit, AfterContentInit, OnDestroy, OnChanges {
+
+  @Input() text = '';
+  @Output() send = new EventEmitter();
 
   name = new FormControl('', Validators.required)
 
@@ -38,6 +41,12 @@ export class ExpensesComponent implements OnInit {
     this.expensesSubscription?.unsubscribe();
   }
 
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes.text) {
+          this.name.setValue(changes.text.currentValue)
+      }
+  }
+
   save() {
     const NEW_EXPENSE: ExpenseItem = {
       name: this.name.value
@@ -47,6 +56,7 @@ export class ExpensesComponent implements OnInit {
         this.toastyService.success('Gasto creado satisfactoriamente')
         this.expenseService.loadData();
         this.name.reset();
+        this.send.emit(resp.expense);
       })
   }
 

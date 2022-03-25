@@ -1,4 +1,4 @@
-<div fxFlex="column" class="my-container">
+<ngx-simplebar fxFlex="column" class="my-container">
     <div fxFlex="row" class="card mat-elevation-z2">
         <div fxLayout="row">
             <h2>Ingreso de ventas</h2>
@@ -28,22 +28,27 @@
         </div>
         <div fxLayout="row">
             <span fxFlex></span>
-            <button *ngIf="!loading" mat-raised-button (click)="loadSaleDelete()" style="color: brown;">Anular
+            <button mat-raised-button (click)="loadSaleDelete()" style="color: brown;">Anular
         archivo</button>&nbsp;
-            <button *ngIf="!loading" mat-raised-button (click)="loadSale()" color="warn">Cargar
+            <button mat-raised-button (click)="loadSale()" color="warn">Cargar
         archivo</button>
             <span fxFlex></span>
         </div>
-        <div fxLayout="row">
-            <mat-progress-bar *ngIf="loading" [value]="progress" mode="determinate" color="warn">
-            </mat-progress-bar>
-        </div>
-
-        <div *ngIf="loading" fxLayout="row" class="loadMargin">
-            <h3>Cargando... {{ progress | number: '.2' }}%</h3>
-            <span fxFlex></span>
-            <h3>{{ currentIndex}}/{{ sales.length }}</h3>
-        </div>
+        <br>
+        <ng-container *ngFor="let file of files">
+            <div fxLayout="row" fxLayoutAlign="start center">
+                <h2>{{file.name}}</h2>
+            </div>
+            <div fxLayout="row">
+                <mat-progress-bar [value]="file.progress" mode="determinate" color="warn">
+                </mat-progress-bar>
+            </div>
+            <div fxLayout="row" class="loadMargin">
+                <h3>Cargando... {{ file.progress | number: '.2' }}%</h3>
+                <span fxFlex></span>
+                <h3>{{ file.currentIndex}}/{{ file.items.length }}</h3>
+            </div>
+        </ng-container>
         <br>
         <hr>
         <div fxLayout="row">
@@ -56,4 +61,4 @@
             </mat-list>
         </div>
     </div>
-</div>
+</ngx-simplebar>

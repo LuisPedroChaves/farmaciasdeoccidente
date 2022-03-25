@@ -1,4 +1,4 @@
-<div fxFlex="column" class="my-container">
+<ngx-simplebar fxFlex="column" class="my-container">
     <div fxFlex="row" class="card mat-elevation-z2">
         <div fxLayout="row">
             <h2>Ingreso de inventarios</h2>
@@ -20,33 +20,37 @@
                     <ngx-mat-file-input #removableInput [(ngModel)]="currentFile" placeholder="Ingrese un archivo">
                     </ngx-mat-file-input>
                     <button mat-icon-button matSuffix *ngIf="!removableInput.empty" (click)="removableInput.clear($event)">
-<mat-icon>clear</mat-icon>
-</button>
+            <mat-icon>clear</mat-icon>
+          </button>
                 </mat-form-field>
             </div>
             <div fxFlex="20px"></div>
         </div>
         <mat-card-footer>
 
-            <div *ngIf="!loading" fxLayout="row">
+            <div fxLayout="row">
                 <span fxFlex></span>
                 <button mat-raised-button (click)="stockReset()" color="accent">Restablecer
-inventario</button> &nbsp;
+          inventario</button> &nbsp;
                 <button mat-raised-button (click)="loadStorage()" color="warn">Cargar
-archivo</button>
+          archivo</button>
                 <span fxFlex></span>
             </div>
-
-            <div fxLayout="row">
-                <mat-progress-bar *ngIf="loading" [value]="progress" mode="determinate" color="warn">
-                </mat-progress-bar>
-            </div>
-
-            <div *ngIf="loading" fxLayout="row" class="loadMargin">
-                <h3>Cargando... {{ progress | number: '.2' }}%</h3>
-                <span fxFlex></span>
-                <h3>{{ currentIndex}}/{{ itemsInventory.length }}</h3>
-            </div>
+            <br>
+            <ng-container *ngFor="let file of files">
+                <div fxLayout="row" fxLayoutAlign="start center">
+                    <h2>{{file.name}}</h2>
+                </div>
+                <div fxLayout="row">
+                    <mat-progress-bar [value]="file.progress" mode="determinate" color="warn">
+                    </mat-progress-bar>
+                </div>
+                <div fxLayout="row" class="loadMargin">
+                    <h3>Cargando... {{ file.progress | number: '.2' }}%</h3>
+                    <span fxFlex></span>
+                    <h3>{{ file.currentIndex}}/{{ file.items.length }}</h3>
+                </div>
+            </ng-container>
         </mat-card-footer>
         <br>
         <hr>
@@ -60,4 +64,4 @@ archivo</button>
             </mat-list>
         </div>
     </div>
-</div>
+</ngx-simplebar>

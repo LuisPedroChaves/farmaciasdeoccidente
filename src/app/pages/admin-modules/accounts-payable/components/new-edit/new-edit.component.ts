@@ -1,16 +1,16 @@
 import { Component, OnInit, Input, AfterContentInit, OnDestroy, ViewChild, ElementRef, Output, EventEmitter } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { MatDrawer } from '@angular/material/sidenav';
 
 import { Observable, Subscription } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
 
 import { AccountsPayableService } from 'src/app/core/services/httpServices/accounts-payable.service';
 import { AccountsPayableItem } from '../../../../../core/models/AccountsPayable';
-import { ProviderItem } from '../../../../../core/models/Provider';
-import { ProviderService } from '../../../../../core/services/httpServices/provider.service';
 import { ToastyService } from '../../../../../core/services/internal/toasty.service';
 import { ExpenseItem } from '../../../../../core/models/Expense';
 import { ExpenseService } from '../../../../../core/services/httpServices/expense.service';
+import { ProviderItem } from '../../../../../core/models/Provider';
 
 @Component({
   selector: 'app-new-edit',
@@ -22,8 +22,11 @@ export class NewEditComponent implements OnInit, AfterContentInit, OnDestroy {
   @Input() accountsPayable: AccountsPayableItem;
   @Output() close = new EventEmitter();
   @ViewChild('Iamount') Iamount: ElementRef<HTMLInputElement>;
+  @ViewChild('drawer') drawer: MatDrawer;
 
   loading = false;
+  drawerComponent = 'Gastos';
+
   form = new FormGroup({
     _provider: new FormControl(null, Validators.required),
     _purchase: new FormControl(null),
@@ -46,14 +49,10 @@ export class NewEditComponent implements OnInit, AfterContentInit, OnDestroy {
     paid: new FormControl(false, Validators.required)
   })
 
-  providersSubscription: Subscription;
-  providers: ProviderItem[];
-  filteredOptions: Observable<ProviderItem[]>;
-  provider = new FormControl(null, Validators.required);
-
   expensesSubscription: Subscription;
   expenses: ExpenseItem[];
   filteredExpenses: Observable<ExpenseItem[]>;
+  tempExpense = '';
 
   amount = new FormControl('', Validators.required);
   amountType = new FormControl('NO-AFECTAS', Validators.required);
@@ -70,24 +69,15 @@ export class NewEditComponent implements OnInit, AfterContentInit, OnDestroy {
   ];
 
   constructor(
-    private providerService: ProviderService,
     private toastyService: ToastyService,
     private expenseService: ExpenseService,
     private accountsPayableService: AccountsPayableService,
   ) { }
 
   ngOnInit(): void {
-    this.providersSubscription = this.providerService.readData().subscribe((data) => {
-      this.providers = data;
-    });
     this.expensesSubscription = this.expenseService.readData().subscribe((data) => {
       this.expenses = data;
     });
-
-    this.filteredOptions = this.provider.valueChanges.pipe(
-      startWith(''),
-      map((value) => this._filterProviders(value))
-    );
     this.filteredExpenses = this.form.controls._expense.valueChanges.pipe(
       startWith(''),
       map((value: any) => {
@@ -101,24 +91,11 @@ export class NewEditComponent implements OnInit, AfterContentInit, OnDestroy {
   }
 
   ngAfterContentInit(): void {
-    this.providerService.loadData();
     this.expenseService.loadData();
   }
 
   ngOnDestroy(): void {
-    this.providersSubscription?.unsubscribe();
     this.expensesSubscription?.unsubscribe();
-  }
-
-  private _filterProviders(value: string): ProviderItem[] {
-    if (value) {
-      const filterValue = value.toLowerCase();
-      return this.providers.filter((option) =>
-        option.nit.toLowerCase().includes(filterValue)
-      );
-    } else {
-      return [];
-    }
   }
 
   private _filterExpenses(value: string): ExpenseItem[] {
@@ -136,13 +113,31 @@ export class NewEditComponent implements OnInit, AfterContentInit, OnDestroy {
     return expense ? expense.name : '';
   }
 
-  selectProvider(nit: string) {
-    const PROVIDER = this.providers.find(p => p.nit === nit);
+  /* #region  Providers */
+  newProvider(): void {
+    this.drawerComponent = 'Proveedores';
+    this.drawer.toggle()
+  }
 
-    if (PROVIDER) {
-      this.form.controls._provider.setValue(PROVIDER);
+  getProvider(provider: ProviderItem) {
+    this.form.controls._provider.setValue(provider);
+    if (this.drawer.opened) {
+      this.drawer.opened = false;
     }
   }
+  /* #endregion */
+
+  /* #region  Expenses */
+  newExpense(): void {
+    this.tempExpense = this.form.controls._expense.value;
+    this.drawerComponent = 'Gastos';
+    this.drawer.toggle()
+  }
+
+  getExpense(expense: ExpenseItem): void {
+    this.form.controls._expense.setValue(expense);
+  }
+  /* #endregion */
 
   getTotal(type: string): number {
     if (type === 'AFECTO') {
