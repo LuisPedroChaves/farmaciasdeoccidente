@@ -52,7 +52,7 @@ export class CheckStockComponent implements OnInit {
           this.isLoading = true;
         }),
         switchMap((value) =>
-          this.productService.search(value).pipe(
+          this.productService.searchCheckStock(value, 'description').pipe(
             finalize(() => {
               this.isLoading = false;
             })
@@ -63,7 +63,7 @@ export class CheckStockComponent implements OnInit {
         this.filteredProducts = data['products'];
       });
 
-      this.myGroup.get('searchCode').valueChanges
+    this.myGroup.get('searchCode').valueChanges
       .pipe(
         debounceTime(500),
         tap(() => {
@@ -71,7 +71,7 @@ export class CheckStockComponent implements OnInit {
           this.isLoading = true;
         }),
         switchMap((value) =>
-          this.productService.searchBarcode(value).pipe(
+          this.productService.searchCheckStock(value, 'barcode').pipe(
             finalize(() => {
               this.isLoading = false;
             })
@@ -96,11 +96,11 @@ export class CheckStockComponent implements OnInit {
     this.selectedProduct = product.description;
     if (product.presentations.length > 0) {
       const { wholesale_price, distributor_price, retail_price, cf_price } = product.presentations[0];
-        this.wholesale_price = wholesale_price;
-        this.distributor_price = distributor_price;
-        this.retail_price = retail_price;
-        this.cf_price = cf_price;
-    }else {
+      this.wholesale_price = wholesale_price;
+      this.distributor_price = distributor_price;
+      this.retail_price = retail_price;
+      this.cf_price = cf_price;
+    } else {
       this.wholesale_price = 0;
       this.distributor_price = 0;
       this.retail_price = 0;

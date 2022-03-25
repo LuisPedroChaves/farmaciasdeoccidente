@@ -106,9 +106,11 @@ export class ProductService {
     });
   }
 
-  searchBarcode(search: string = ''): Observable<any> {
-    return this.http.get(`${this.apiConfigService.API_PRODUCT}/searchBarcode`, {
-      params: new HttpParams().set('search', search.toString()),
+  searchCheckStock(search: string = '', field = 'barcode'): Observable<any> {
+    return this.http.get(`${this.apiConfigService.API_PRODUCT}/searchCheckStock`, {
+      params: new HttpParams()
+      .set('search', search.toString())
+      .set('field', field.toString())
     });
   }
 
