@@ -121,6 +121,9 @@ export class NewEditComponent implements OnInit, AfterContentInit, OnDestroy {
 
   getProvider(provider: ProviderItem) {
     this.form.controls._provider.setValue(provider);
+    if (this.drawer.opened) {
+      this.drawer.opened = false;
+    }
   }
   /* #endregion */
 

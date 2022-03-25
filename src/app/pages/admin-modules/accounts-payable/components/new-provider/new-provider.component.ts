@@ -53,7 +53,6 @@ export class NewProviderComponent implements OnInit {
     if (this.isExpenses) {
       newProvider = { ...this.formIsExpenses.value  }
     }
-    console.log(newProvider);
 
     this.providerService.createProvider(newProvider)
       .subscribe(resp => {
@@ -72,6 +71,7 @@ export class NewProviderComponent implements OnInit {
           isExpenses: false
         })
         this.send.emit(resp.provider);
+        this.loading = false;
       })
   }
 

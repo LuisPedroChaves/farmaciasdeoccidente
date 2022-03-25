@@ -96,8 +96,8 @@ export class StockComponent implements OnInit {
               const workbook = XLSX.read(binaryData, { type: 'binary' });
               await workbook.SheetNames.forEach(async (sheet) => {
                 const data = XLSX.utils.sheet_to_json(workbook.Sheets[sheet]);
-                this.itemsInventory = data;
-                await this.updateInventory(0);
+                this.itemsInventory.push(data);
+                await this.updateInventory(0, (this.itemsInventory.length - 1));
                   this.toastyService.success('Inventario actualizado correctamente');
                 this.loading = false;
                 this.progress = 0;
@@ -114,11 +114,11 @@ export class StockComponent implements OnInit {
     });
   }
 
-  updateInventory(index: number): any {
+  updateInventory(index: number, indexArray: number): any {
     return new Promise(async (resolve, reject) => {
-      const inventoryItem = this.itemsInventory.find((c, i) => i === index);
+      const inventoryItem = this.itemsInventory[indexArray].find((c, i) => i === index);
       if (inventoryItem) {
-        this.progress = (index * 100) / this.itemsInventory.length;
+        this.progress = (index * 100) / this.itemsInventory[indexArray].length;
         this.currentIndex = index;
         this.tempStorageService
           .updateByBarcode(this.currentCellar, inventoryItem.codigo, inventoryItem.Inventario )
@@ -127,7 +127,7 @@ export class StockComponent implements OnInit {
               this.errores.push(resp.mensaje);
             }
             index++;
-            await this.updateInventory(index);
+            await this.updateInventory(index, indexArray);
             resolve(true);
           });
       } else {

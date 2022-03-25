@@ -8,7 +8,7 @@
       </button>
         </header>
         <app-expenses *ngIf="drawerComponent === 'Gastos'" [text]="tempExpense" (send)="getExpense($event)"></app-expenses>
-        <app-new-provider *ngIf="drawerComponent === 'Proveedores'" [isExpenses]="true"></app-new-provider>
+        <app-new-provider *ngIf="drawerComponent === 'Proveedores'" [isExpenses]="true" (send)="getProvider($event)"></app-new-provider>
     </mat-drawer>
     <mat-drawer-content>
         <ngx-simplebar class="my-layout">

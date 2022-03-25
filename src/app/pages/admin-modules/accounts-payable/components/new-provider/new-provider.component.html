@@ -1,103 +1,80 @@
 <ngx-simplebar class="my-layout">
-  <div fxLayout="column">
-    <form *ngIf="!isExpenses" [formGroup]="form" autocomplete="off">
-      <mat-form-field appearance="outline" color="accent">
-        <mat-label>NIT</mat-label>
-        <input formControlName="nit" type="text" matInput placeholder="Ingrese el NIT del proveedor">
-      </mat-form-field>
-      <mat-form-field appearance="outline" color="accent">
-        <mat-label>Nombre</mat-label>
-        <input formControlName="name" type="text" matInput placeholder="Ingrese el nombre del proveedor">
-      </mat-form-field>
-      <mat-form-field appearance="outline" color="accent">
-        <mat-label>Cheques a nombre de: </mat-label>
-        <input formControlName="checkName" type="text" matInput
-          placeholder="Ingrese un nombre para emitir cheques futuros">
-      </mat-form-field>
-      <mat-form-field appearance="outline" color="accent">
-        <mat-label>Direccion</mat-label>
-        <input formControlName="address" type="text" matInput placeholder="Ingrese la dirección del proveedor">
-      </mat-form-field>
-      <mat-form-field appearance="outline" color="accent">
-        <mat-label>Teléfono</mat-label>
-        <input formControlName="phone" type="text" matInput placeholder="Ingrese el Teléfono del proveedor">
-      </mat-form-field>
-      <mat-form-field appearance="outline" color="accent">
-        <mat-label>Correo</mat-label>
-        <input formControlName="email" type="email" matInput placeholder="Ingrese el correo del proveedor">
-      </mat-form-field>
-      <div fxFlex fxLayout="row">
-        <mat-form-field fxFlex="50%" appearance="outline" color="accent">
-          <mat-label>Días de Crédito</mat-label>
-          <input formControlName="creditDays" type="number" matInput
-            placeholder="Ingrese la cantidad de días al crédito brindados por el proveedor">
-        </mat-form-field>
-        <mat-form-field fxFlex="50%" appearance="outline" color="accent">
-          <mat-label>Crédito</mat-label>
-          <input formControlName="credit" type="number" matInput
-            placeholder="Ingrese la cantidad de crédito brindado por el proveedor">
-        </mat-form-field>
-      </div>
-      <div fxFlex fxLayout="row">
-        <div fxFlex="50%" fxFlex.xs="100%">
-          <mat-slide-toggle formControlName="iva">Retención de IVA</mat-slide-toggle>
+    <form *ngIf="isExpenses" [formGroup]="formIsExpenses" autocomplete="off">
+        <div fxLayout="column">
+            <mat-form-field appearance="outline" color="accent">
+                <mat-label>NIT</mat-label>
+                <input formControlName="nit" type="text" matInput placeholder="Ingrese el NIT del proveedor">
+            </mat-form-field>
+            <mat-form-field appearance="outline" color="accent">
+                <mat-label>Nombre</mat-label>
+                <input formControlName="name" type="text" matInput placeholder="Ingrese el nombre del proveedor">
+            </mat-form-field>
+            <mat-form-field appearance="outline" color="accent">
+                <mat-label>Direccion</mat-label>
+                <input formControlName="address" type="text" matInput placeholder="Ingrese la dirección del proveedor">
+            </mat-form-field>
+            <mat-form-field appearance="outline" color="accent">
+                <mat-label>Teléfono</mat-label>
+                <input formControlName="phone" type="text" matInput placeholder="Ingrese el Teléfono del proveedor">
+            </mat-form-field>
+            <div fxLayout="row">
+                <span fxFlex></span>
+                <button mat-raised-button (click)="save()" color="warn" [disabled]="loading || formIsExpenses.invalid">Guardar</button>
+            </div>
+            <br>
+            <mat-progress-bar *ngIf="loading" mode="indeterminate" color="warn"></mat-progress-bar>
         </div>
-        <div fxFlex="50%" fxFlex.xs="100%">
-          <mat-slide-toggle formControlName="isr">Retención de ISR</mat-slide-toggle>
-        </div>
-      </div>
     </form>
-    <form *ngIf="isExpenses" [formGroup]="form" autocomplete="off">
-        <mat-form-field appearance="outline" color="accent">
-          <mat-label>NIT</mat-label>
-          <input formControlName="nit" type="text" matInput placeholder="Ingrese el NIT del proveedor">
-        </mat-form-field>
-        <mat-form-field appearance="outline" color="accent">
-          <mat-label>Nombre</mat-label>
-          <input formControlName="name" type="text" matInput placeholder="Ingrese el nombre del proveedor">
-        </mat-form-field>
-        <mat-form-field appearance="outline" color="accent">
-          <mat-label>Cheques a nombre de: </mat-label>
-          <input formControlName="checkName" type="text" matInput
-            placeholder="Ingrese un nombre para emitir cheques futuros">
-        </mat-form-field>
-        <mat-form-field appearance="outline" color="accent">
-          <mat-label>Direccion</mat-label>
-          <input formControlName="address" type="text" matInput placeholder="Ingrese la dirección del proveedor">
-        </mat-form-field>
-        <mat-form-field appearance="outline" color="accent">
-          <mat-label>Teléfono</mat-label>
-          <input formControlName="phone" type="text" matInput placeholder="Ingrese el Teléfono del proveedor">
-        </mat-form-field>
-        <mat-form-field appearance="outline" color="accent">
-          <mat-label>Correo</mat-label>
-          <input formControlName="email" type="email" matInput placeholder="Ingrese el correo del proveedor">
-        </mat-form-field>
-        <div fxFlex fxLayout="row">
-          <mat-form-field fxFlex="50%" appearance="outline" color="accent">
-            <mat-label>Días de Crédito</mat-label>
-            <input formControlName="creditDays" type="number" matInput
-              placeholder="Ingrese la cantidad de días al crédito brindados por el proveedor">
-          </mat-form-field>
-          <mat-form-field fxFlex="50%" appearance="outline" color="accent">
-            <mat-label>Crédito</mat-label>
-            <input formControlName="credit" type="number" matInput
-              placeholder="Ingrese la cantidad de crédito brindado por el proveedor">
-          </mat-form-field>
+    <form *ngIf="!isExpenses" [formGroup]="form" autocomplete="off">
+        <div fxLayout="column">
+            <mat-form-field appearance="outline" color="accent">
+                <mat-label>NIT</mat-label>
+                <input formControlName="nit" type="text" matInput placeholder="Ingrese el NIT del proveedor">
+            </mat-form-field>
+            <mat-form-field appearance="outline" color="accent">
+                <mat-label>Nombre</mat-label>
+                <input formControlName="name" type="text" matInput placeholder="Ingrese el nombre del proveedor">
+            </mat-form-field>
+            <mat-form-field appearance="outline" color="accent">
+                <mat-label>Cheques a nombre de: </mat-label>
+                <input formControlName="checkName" type="text" matInput placeholder="Ingrese un nombre para emitir cheques futuros">
+            </mat-form-field>
+            <mat-form-field appearance="outline" color="accent">
+                <mat-label>Direccion</mat-label>
+                <input formControlName="address" type="text" matInput placeholder="Ingrese la dirección del proveedor">
+            </mat-form-field>
+            <mat-form-field appearance="outline" color="accent">
+                <mat-label>Teléfono</mat-label>
+                <input formControlName="phone" type="text" matInput placeholder="Ingrese el Teléfono del proveedor">
+            </mat-form-field>
+            <mat-form-field appearance="outline" color="accent">
+                <mat-label>Correo</mat-label>
+                <input formControlName="email" type="email" matInput placeholder="Ingrese el correo del proveedor">
+            </mat-form-field>
+            <div fxFlex fxLayout="row">
+                <mat-form-field fxFlex="50%" appearance="outline" color="accent">
+                    <mat-label>Días de Crédito</mat-label>
+                    <input formControlName="creditDays" type="number" matInput placeholder="Ingrese la cantidad de días al crédito brindados por el proveedor">
+                </mat-form-field>
+                <mat-form-field fxFlex="50%" appearance="outline" color="accent">
+                    <mat-label>Crédito</mat-label>
+                    <input formControlName="credit" type="number" matInput placeholder="Ingrese la cantidad de crédito brindado por el proveedor">
+                </mat-form-field>
+            </div>
+            <div fxFlex fxLayout="row">
+                <div fxFlex="50%" fxFlex.xs="100%">
+                    <mat-slide-toggle formControlName="iva">Retención de IVA</mat-slide-toggle>
+                </div>
+                <div fxFlex="50%" fxFlex.xs="100%">
+                    <mat-slide-toggle formControlName="isr">Retención de ISR</mat-slide-toggle>
+                </div>
+            </div>
+            <div fxLayout="row">
+                <span fxFlex></span>
+                <button mat-raised-button (click)="save()" color="warn" [disabled]="form.invalid">Guardar</button>
+            </div>
+            <br>
+            <mat-progress-bar *ngIf="loading" mode="indeterminate" color="warn"></mat-progress-bar>
         </div>
-        <div fxFlex fxLayout="row">
-          <div fxFlex="50%" fxFlex.xs="100%">
-            <mat-slide-toggle formControlName="iva">Retención de IVA</mat-slide-toggle>
-          </div>
-          <div fxFlex="50%" fxFlex.xs="100%">
-            <mat-slide-toggle formControlName="isr">Retención de ISR</mat-slide-toggle>
-          </div>
-        </div>
-      </form>
-      <div fxLayout="row">
-        <span fxFlex></span>
-        <button mat-raised-button (click)="save()" color="warn" [disabled]="form.invalid">Guardar</button>
-        <mat-progress-bar *ngIf="loading" mode="indeterminate" color="warn"></mat-progress-bar>
-      </div>
-  </div>
+    </form>
 </ngx-simplebar>
