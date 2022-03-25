@@ -21,9 +21,7 @@ export class StockComponent implements OnInit {
   currentFile: any;
   errores: any[] = [];
 
-  itemsInventory = [];
-  progress = 0;
-  currentIndex = 1;
+  files = [];
 
   constructor(
     private dialog: MatDialog,
@@ -96,12 +94,16 @@ export class StockComponent implements OnInit {
               const workbook = XLSX.read(binaryData, { type: 'binary' });
               await workbook.SheetNames.forEach(async (sheet) => {
                 const data = XLSX.utils.sheet_to_json(workbook.Sheets[sheet]);
-                this.itemsInventory.push(data);
-                await this.updateInventory(0, (this.itemsInventory.length - 1));
-                  this.toastyService.success('Inventario actualizado correctamente');
-                this.loading = false;
-                this.progress = 0;
-
+                const FILE = {
+                  name: selectedFile.name,
+                  progress: 0,
+                  currentIndex: 1,
+                  items: data
+                }
+                this.files.push(FILE);
+                const INDEX = await this.updateInventory(0, (this.files.length - 1));
+                this.toastyService.success('Inventario actualizado correctamente');
+                this.files[INDEX].progress = 100;
               });
             }
           };
@@ -116,22 +118,22 @@ export class StockComponent implements OnInit {
 
   updateInventory(index: number, indexArray: number): any {
     return new Promise(async (resolve, reject) => {
-      const inventoryItem = this.itemsInventory[indexArray].find((c, i) => i === index);
+      const inventoryItem = this.files[indexArray].items.find((c, i) => i === index);
       if (inventoryItem) {
-        this.progress = (index * 100) / this.itemsInventory[indexArray].length;
-        this.currentIndex = index;
+        this.files[indexArray].progress = (index * 100) / this.files[indexArray].items.length;
+        this.files[indexArray].currentIndex = index + 1;
         this.tempStorageService
-          .updateByBarcode(this.currentCellar, inventoryItem.codigo, inventoryItem.Inventario )
+          .updateByBarcode(this.currentCellar, inventoryItem.codigo, inventoryItem.Inventario)
           .subscribe(async (resp) => {
             if (!resp.ok) {
               this.errores.push(resp.mensaje);
             }
             index++;
             await this.updateInventory(index, indexArray);
-            resolve(true);
+            resolve(indexArray);
           });
       } else {
-        resolve(true);
+        resolve(indexArray);
       }
     });
   }

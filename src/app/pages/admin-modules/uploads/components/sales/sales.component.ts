@@ -20,9 +20,7 @@ export class SalesComponent implements OnInit {
   currentFile2: any;
   errores2: any[];
 
-  sales = [];
-  progress = 0;
-  currentIndex = 1;
+  files = [];
 
   constructor(
     private dialog: MatDialog,
@@ -66,11 +64,16 @@ export class SalesComponent implements OnInit {
               const workbook = XLSX.read(binaryData, { type: 'binary' });
               await workbook.SheetNames.forEach(async (sheet) => {
                 const data = XLSX.utils.sheet_to_json(workbook.Sheets[sheet]);
-                this.sales = data;
-                await this.updateSale(0);
+                const FILE = {
+                  name: selectedFile.name,
+                  progress: 0,
+                  currentIndex: 1,
+                  items: data
+                }
+                this.files.push(FILE);
+                const INDEX = await this.updateSale(0, (this.files.length - 1));
                 this.toastyService.success('Ventas ingresadas correctamente');
-                this.loading = false;
-                this.progress = 0;
+                this.files[INDEX].progress = 100;
               });
             }
           };
@@ -83,12 +86,12 @@ export class SalesComponent implements OnInit {
     });
   }
 
-  updateSale(index: number): any {
+  updateSale(index: number,  indexArray: number): any {
     return new Promise(async (resolve, reject) => {
-      const saleItem = this.sales.find((c, i) => i === index);
+      const saleItem = this.files[indexArray].items.find((c, i) => i === index);
       if (saleItem) {
-        this.progress = (index * 100) / this.sales.length;
-        this.currentIndex = index;
+        this.files[indexArray].progress = (index * 100) / this.files[indexArray].items.length;
+        this.files[indexArray].currentIndex = index + 1;
         const BODY = {
           _cellar: this.currentCellar2,
           date: saleItem.Fecha,
@@ -103,11 +106,11 @@ export class SalesComponent implements OnInit {
             //   this.errores.push(resp.mensaje);
             // }
             index++;
-            await this.updateSale(index);
-            resolve(true);
+            await this.updateSale(index, indexArray);
+            resolve(indexArray);
           });
       } else {
-        resolve(true);
+        resolve(indexArray);
       }
     });
   }
@@ -142,11 +145,16 @@ export class SalesComponent implements OnInit {
               const workbook = XLSX.read(binaryData, { type: 'binary' });
               await workbook.SheetNames.forEach(async (sheet) => {
                 const data = XLSX.utils.sheet_to_json(workbook.Sheets[sheet]);
-                this.sales = data;
-                await this.updateSaleDelete(0);
+                const FILE = {
+                  name: `ANULAR: ${selectedFile.name}`,
+                  progress: 0,
+                  currentIndex: 1,
+                  items: data
+                }
+                this.files.push(FILE);
+                const INDEX = await this.updateSaleDelete(0, (this.files.length - 1));
                 this.toastyService.success('Ventas anuladas correctamente');
-                this.loading = false;
-                this.progress = 0;
+                this.files[INDEX].progress = 100;
               });
             }
           };
@@ -159,12 +167,12 @@ export class SalesComponent implements OnInit {
     });
   }
 
-  updateSaleDelete(index: number): any {
+  updateSaleDelete(index: number, indexArray: number): any {
     return new Promise(async (resolve, reject) => {
-      const saleItem = this.sales.find((c, i) => i === index);
+      const saleItem = this.files[indexArray].items.find((c, i) => i === index);
       if (saleItem) {
-        this.progress = (index * 100) / this.sales.length;
-        this.currentIndex = index;
+        this.files[indexArray].progress = (index * 100) / this.files[indexArray].items.length;
+        this.files[indexArray].currentIndex = index + 1;
         const BODY = {
           _cellar: this.currentCellar2,
           date: saleItem.Fecha,
@@ -179,11 +187,11 @@ export class SalesComponent implements OnInit {
             //   this.errores.push(resp.mensaje);
             // }
             index++;
-            await this.updateSaleDelete(index);
-            resolve(true);
+            await this.updateSaleDelete(index, indexArray);
+            resolve(indexArray);
           });
       } else {
-        resolve(true);
+        resolve(indexArray);
       }
     });
   }
