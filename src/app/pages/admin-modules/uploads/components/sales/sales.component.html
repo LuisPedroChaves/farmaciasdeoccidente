@@ -35,20 +35,10 @@
             <span fxFlex></span>
         </div>
         <br>
-        <ng-container *ngFor="let file of files">
-            <div fxLayout="row" fxLayoutAlign="start center">
-                <h2>{{file.name}}</h2>
-            </div>
-            <div fxLayout="row">
-                <mat-progress-bar [value]="file.progress" mode="determinate" color="warn">
-                </mat-progress-bar>
-            </div>
-            <div fxLayout="row" class="loadMargin">
-                <h3>Cargando... {{ file.progress | number: '.2' }}%</h3>
-                <span fxFlex></span>
-                <h3>{{ file.currentIndex}}/{{ file.items.length }}</h3>
-            </div>
-        </ng-container>
+        <div fxLayout="row">
+            <mat-progress-bar *ngIf="loading" mode="indeterminate" color="warn">
+            </mat-progress-bar>
+        </div>
         <br>
         <hr>
         <div fxLayout="row">

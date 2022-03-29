@@ -1,9 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 
-// instalation necesary: npm install --save xlsx
-import * as XLSX from 'xlsx';
-
 import { ConfirmationDialogComponent } from 'src/app/pages/shared-components/confirmation-dialog/confirmation-dialog.component';
 import { CellarItem } from '../../../../../core/models/Cellar';
 import { ToastyService } from '../../../../../core/services/internal/toasty.service';
@@ -70,7 +67,8 @@ export class StockComponent implements OnInit {
       width: '350px',
       data: {
         title: 'Cargar INVENTARIO',
-        message: '¿Confirma que desea ingresar el archivo de existencias?',
+        message:
+          '¿Confirma que desea ingresar el archivo de existencias?'
       },
       disableClose: true,
       panelClass: ['farmacia-dialog', 'farmacia'],
@@ -84,29 +82,16 @@ export class StockComponent implements OnInit {
         }
         this.loading = true;
         if (this.currentFile) {
-          const selectedFile = this.currentFile.files[0];
-          const fileReader = new FileReader();
-
-          fileReader.readAsBinaryString(selectedFile);
-          fileReader.onload = async (event: any) => {
-            if (event.target) {
-              const binaryData = event.target.result;
-              const workbook = XLSX.read(binaryData, { type: 'binary' });
-              await workbook.SheetNames.forEach(async (sheet) => {
-                const data = XLSX.utils.sheet_to_json(workbook.Sheets[sheet]);
-                const FILE = {
-                  name: selectedFile.name,
-                  progress: 0,
-                  currentIndex: 1,
-                  items: data
-                }
-                this.files.push(FILE);
-                const INDEX = await this.updateInventory(0, (this.files.length - 1));
-                this.toastyService.success('Inventario actualizado correctamente');
-                this.files[INDEX].progress = 100;
-              });
-            }
-          };
+          this.tempStorageService.uploadFile(this.currentFile.files[0], this.currentCellar)
+            .then((resp: any) => {
+              this.loading = false;
+              this.toastyService.success('Archivo subido, el inventario se actualizará en segundo plano');
+              this.errores = resp.errors;
+            })
+            .catch(err => {
+              this.loading = false;
+              this.toastyService.error('Error al cargar el archivo');
+            });
         } else {
           this.loading = false;
           this.toastyService.error('Debe seleccionar un archivo');
@@ -115,27 +100,4 @@ export class StockComponent implements OnInit {
       }
     });
   }
-
-  updateInventory(index: number, indexArray: number): any {
-    return new Promise(async (resolve, reject) => {
-      const inventoryItem = this.files[indexArray].items.find((c, i) => i === index);
-      if (inventoryItem) {
-        this.files[indexArray].progress = (index * 100) / this.files[indexArray].items.length;
-        this.files[indexArray].currentIndex = index + 1;
-        this.tempStorageService
-          .updateByBarcode(this.currentCellar, inventoryItem.codigo, inventoryItem.Inventario)
-          .subscribe(async (resp) => {
-            if (!resp.ok) {
-              this.errores.push(resp.mensaje);
-            }
-            index++;
-            await this.updateInventory(index, indexArray);
-            resolve(indexArray);
-          });
-      } else {
-        resolve(indexArray);
-      }
-    });
-  }
-
 }
