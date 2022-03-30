@@ -7,7 +7,7 @@ import { Subscription } from 'rxjs';
 
 import { ProviderItem } from '../../../../../core/models/Provider';
 import { AccountsPayableService } from '../../../../../core/services/httpServices/accounts-payable.service';
-import { AccountsPayableItem } from '../../../../../core/models/AccountsPayable';
+import { AccountsPayableBalanceItem, AccountsPayableItem } from '../../../../../core/models/AccountsPayable';
 import { ToastyService } from '../../../../../core/services/internal/toasty.service';
 
 interface totalSelection {
@@ -64,7 +64,6 @@ export class ProviderAccountComponent implements OnInit, AfterContentInit, OnDes
   /* #region  En Proceso */
   dataSource2 = new MatTableDataSource([]);
   columns2 = [
-    'check',
     'state',
     'date',
     'noBill',
@@ -117,8 +116,8 @@ export class ProviderAccountComponent implements OnInit, AfterContentInit, OnDes
   }
 
   fillDataSources(provider: ProviderItem): void {
-    this.accountsPayablePend = this.accountsPayables.filter(ap => ap._provider._id === provider._id && !ap._check)
-    this.accountsPayableProcess = this.accountsPayables.filter(ap => ap._provider._id === provider._id && ap._check)
+    this.accountsPayablePend = this.accountsPayables.filter(ap => (ap._provider._id === provider._id) && (!ap.balance.find(b => b.credit === 'CHEQUE')))
+    this.accountsPayableProcess = this.accountsPayables.filter(ap => (ap._provider._id === provider._id) && (ap.balance.find(b => b.credit === 'CHEQUE')))
     this.dataSource = new MatTableDataSource<AccountsPayableItem>(this.accountsPayablePend);
     this.dataSource2 = new MatTableDataSource<AccountsPayableItem>(this.accountsPayableProcess);
     this.selection = new SelectionModel<AccountsPayableItem>(true, []);
@@ -140,13 +139,21 @@ export class ProviderAccountComponent implements OnInit, AfterContentInit, OnDes
     }
   }
 
-  newCheck() {
+  /* #region  Pays */
+  newPay() {
     if (this.selection.selected.length === 0) {
       this.toastyService.toasty('warning', 'Ningún documento seleccionado', 'Por favor seleccione los documentos a pagar')
       return;
     }
     this.drawer.toggle();
   }
+
+  closePay(amount: number) {
+    console.log("🚀 ~ file: provider-account.component.ts ~ line 152 ~ ProviderAccountComponent ~ closePay ~ amount", amount)
+    this.provider.balance -= amount;
+    this.drawer.opened = false
+  }
+  /* #endregion */
 
   /* #region  Cards */
   getTotalBills(): number {

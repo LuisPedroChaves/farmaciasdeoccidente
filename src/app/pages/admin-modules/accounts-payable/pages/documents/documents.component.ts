@@ -25,7 +25,6 @@ export class DocumentsComponent implements OnInit, AfterContentInit, OnDestroy {
     _provider: null,
     _purchase: null,
     _expense: null,
-    _check: null,
     date: null,
     serie: '',
     noBill: '',
@@ -40,10 +39,6 @@ export class DocumentsComponent implements OnInit, AfterContentInit, OnDestroy {
     total: 0,
     type: 'PRODUCTOS',
     file: '',
-    withholdingIVA: '',
-    amountIVA: 0,
-    withholdingISR: '',
-    amountISR: 0,
     toCredit: false,
     expirationCredit: null,
     paid: false,
@@ -121,7 +116,7 @@ export class DocumentsComponent implements OnInit, AfterContentInit, OnDestroy {
     this.accountsPayableSubscription = this.accountsPayableService.readData().subscribe((data) => {
       console.log('SUBSCRIPTION');
       this.accountsPayables = data;
-      this.accountsPayablesReten = this.accountsPayables.filter(ap => (ap._provider.iva && !ap.withholdingIVA) || (ap._provider.isr && !ap.withholdingISR))
+      this.accountsPayablesReten = this.accountsPayables.filter(ap => (ap._provider.iva && !ap.balance.find(b => b.credit === 'RETENCION_IVA')) || (ap._provider.isr && !ap.balance.find(b => b.credit === 'RETENCION_ISR')))
       this.accountsPayablesProd = this.accountsPayables.filter(ap => ap.type === 'PRODUCTOS');
       this.accountsPayablesGast = this.accountsPayables.filter(ap => ap.type === 'GASTOS');
       this.dataSource = new MatTableDataSource<AccountsPayableItem>(this.accountsPayablesReten);

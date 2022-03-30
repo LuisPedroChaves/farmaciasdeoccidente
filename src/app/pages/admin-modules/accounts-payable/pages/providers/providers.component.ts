@@ -26,7 +26,6 @@ export class ProvidersComponent implements OnInit, AfterContentInit, OnDestroy {
     _provider: null,
     _purchase: null,
     _expense: null,
-    _check: null,
     date: null,
     serie: '',
     noBill: '',
@@ -41,10 +40,6 @@ export class ProvidersComponent implements OnInit, AfterContentInit, OnDestroy {
     total: 0,
     type: 'PRODUCTOS',
     file: '',
-    withholdingIVA: '',
-    amountIVA: 0,
-    withholdingISR: '',
-    amountISR: 0,
     toCredit: false,
     expirationCredit: null,
     paid: false,
@@ -98,7 +93,7 @@ export class ProvidersComponent implements OnInit, AfterContentInit, OnDestroy {
 
   selectProvider(provider: ProviderItem) {
     this.drawerComponent = 'PROVEEDOR'
-    this.title = `${provider.nit} - ${provider.name}`
+    this.title = `${provider.nit} | ${provider.name}`
     this.provider = provider;
     this.drawer.opened = true;
   }

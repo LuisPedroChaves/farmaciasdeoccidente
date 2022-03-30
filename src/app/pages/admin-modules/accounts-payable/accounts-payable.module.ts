@@ -18,6 +18,7 @@ import { ProgressBalanceComponent } from './components/progress-balance.componen
 import { NewCheckComponent } from './components/new-check/new-check.component';
 import { NumberToWordsPipe } from '../../../core/shared/pipes/formatPipes/number-to-words.pipe';
 import { NewProviderComponent } from './components/new-provider/new-provider.component';
+import { NewBalanceComponent } from './components/new-balance/new-balance.component';
 
 @NgModule({
   declarations: [
@@ -30,7 +31,8 @@ import { NewProviderComponent } from './components/new-provider/new-provider.com
     ProviderAccountComponent,
     ProgressBalanceComponent,
     NewCheckComponent,
-    NewProviderComponent
+    NewProviderComponent,
+    NewBalanceComponent
   ],
   imports: [
     CommonModule,

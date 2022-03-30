@@ -1,7 +1,7 @@
 <mat-drawer-container>
     <mat-drawer #drawer mode="over">
         <header fxLayout="row wrap" fxLayoutAlign="start center">
-            <h2 class="ma-0">Nuevo Cheque a proveedor</h2>
+            <h2 class="ma-0">Nuevo Pago a proveedor</h2>
             <span fxFlex></span>
             <button mat-icon-button (click)="drawer.opened = false">
         <mat-icon>close</mat-icon>
@@ -21,9 +21,16 @@
                 <b>- Q{{getTotalsSelection().creditos.amount | number: '.2'}}</b>
             </div>
             <br>
-            <mat-divider></mat-divider>
-            <br>
-            <app-new-check [name]="this.provider.checkName" [amount]="this.getTotalsSelection().total.toFixed(2)" [accountsPayables]="selection.selected" (close)="drawer.opened = false"></app-new-check>
+            <mat-tab-group animationDuration="0ms">
+                <mat-tab label="Cheque">
+                    <br>
+                    <app-new-check [name]="this.provider.checkName" [amount]="this.getTotalsSelection().total.toFixed(2)" [accountsPayables]="selection.selected" (close)="drawer.opened = false"></app-new-check>
+                </mat-tab>
+                <mat-tab label="Transferencia - Deposito">
+                    <br>
+                    <app-new-balance [amount]="this.getTotalsSelection().total.toFixed(2)" [accountsPayables]="selection.selected" (close)="closePay($event)"></app-new-balance>
+                </mat-tab>
+            </mat-tab-group>
         </ngx-simplebar>
     </mat-drawer>
     <mat-drawer-content>
@@ -97,7 +104,7 @@
                     <ngx-simplebar class="table">
                         <div fxLayout="row" fxLayoutAlign="space-between center" class="header2">
                             <app-filter (send)="applyFilterPend($event)"></app-filter>
-                            <button mat-raised-button (click)="newCheck()" color="accent">Ingresar Cheque</button>
+                            <button mat-raised-button (click)="newPay()" color="accent">Ingresar Pago</button>
                         </div>
                         <mat-progress-bar *ngIf="loading" mode="indeterminate" color="warn"></mat-progress-bar>
                         <table mat-table [dataSource]="dataSource">
@@ -213,11 +220,6 @@
                         </div>
                         <mat-progress-bar *ngIf="loading" mode="indeterminate" color="warn"></mat-progress-bar>
                         <table mat-table [dataSource]="dataSource2">
-
-                            <ng-container matColumnDef="check">
-                                <th mat-header-cell *matHeaderCellDef> Cheque </th>
-                                <td mat-cell *matCellDef="let element"> {{element._check.no}} </td>
-                            </ng-container>
 
                             <ng-container matColumnDef="state">
                                 <th mat-header-cell *matHeaderCellDef></th>

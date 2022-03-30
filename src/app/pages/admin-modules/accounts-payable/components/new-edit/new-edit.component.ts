@@ -4,8 +4,10 @@ import { MatDrawer } from '@angular/material/sidenav';
 
 import { Observable, Subscription } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
+import { FileInput } from 'ngx-material-file-input';
 
 import { AccountsPayableService } from 'src/app/core/services/httpServices/accounts-payable.service';
+import { UploadFileService } from 'src/app/core/services/httpServices/upload-file.service';
 import { AccountsPayableItem } from '../../../../../core/models/AccountsPayable';
 import { ToastyService } from '../../../../../core/services/internal/toasty.service';
 import { ExpenseItem } from '../../../../../core/models/Expense';
@@ -72,6 +74,7 @@ export class NewEditComponent implements OnInit, AfterContentInit, OnDestroy {
     private toastyService: ToastyService,
     private expenseService: ExpenseService,
     private accountsPayableService: AccountsPayableService,
+    private uploadFileService: UploadFileService,
   ) { }
 
   ngOnInit(): void {
@@ -252,19 +255,45 @@ export class NewEditComponent implements OnInit, AfterContentInit, OnDestroy {
       // Validamos si la factura es al contado para marcarla como pagada
       this.form.controls.paid.setValue(true);
     }
+
+
+    // Manejo de archivo
+    const FILE: FileInput = this.form.controls.file.value;
+    if (FILE) {
+      this.form.controls.file.setValue('archivo.temp');
+    } else {
+      this.form.controls.file.setValue(null);
+    }
+
     if (this.accountsPayable._id) {
-      // Editar
+      // TODO: Editar
 
     } else {
       // Nueva
       this.accountsPayableService.create({ ...this.form.value })
         .subscribe(resp => {
-          this.toastyService.success('Documento ingresado correctamente')
-          this.resetForm();
-          this.loading = false;
-          this.close.emit();
+          // Manejo de archivo
+          if (FILE) {
+            this.uploadFileService.uploadFile(FILE.files[0], 'accountsPayable', resp.accountsPayable._id)
+              .then((resp: any) => {
+                this.saveSuccess();
+              })
+              .catch(err => {
+                this.loading = false;
+                this.toastyService.error('Error al cargar el archivo');
+              });
+          } else {
+            this.saveSuccess();
+          }
         })
     }
+  }
+
+  saveSuccess(): void {
+    this.toastyService.success('Documento ingresado correctamente')
+    this.resetForm();
+    this.loading = false;
+    this.close.emit();
   }
 
 }
