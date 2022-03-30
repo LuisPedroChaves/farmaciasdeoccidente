@@ -52,9 +52,6 @@
         </button>
             </mat-form-field>
         </header>
-        <div fxLayoutAlign="center center">
-            <h2>{{ selectedProduct }}</h2>
-        </div>
         <div fxLayout.gt-sm="row wrap" fxLayoutAlign.gt-sm="space-evenly center" fxLayout.lt-md="column" fxLayoutGap.lt-md="15px">
             <mat-card class="example-card mat-elevation-z4">
                 <mat-card-header>
@@ -96,6 +93,12 @@
                     <mat-icon color="primary">person_pin</mat-icon>
                 </mat-card-content>
             </mat-card>
+        </div>
+        <div fxLayoutAlign="center center">
+            <h2>{{ selectedProduct._brand.name }}</h2>
+        </div>
+        <div fxLayoutAlign="center center">
+            <h3>{{ selectedProduct.description }}</h3>
         </div>
         <ngx-simplebar class="mgtop" *ngIf="!loading">
             <mat-divider></mat-divider>

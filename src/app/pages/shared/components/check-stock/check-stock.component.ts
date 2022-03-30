@@ -26,7 +26,12 @@ export class CheckStockComponent implements OnInit {
   filteredProducts: ProductItem[];
   isLoading = false;
 
-  selectedProduct = '';
+  selectedProduct: any = {
+    description: '',
+    _brand: {
+      name: ''
+    }
+  };
   wholesale_price = 0
   distributor_price = 0
   retail_price = 0
@@ -92,8 +97,9 @@ export class CheckStockComponent implements OnInit {
   }
 
   searchStock(product: ProductItem) {
+    console.log("🚀 ~ file: check-stock.component.ts ~ line 95 ~ CheckStockComponent ~ searchStock ~ product", product)
     this.loading = true;
-    this.selectedProduct = product.description;
+    this.selectedProduct = product;
     if (product.presentations.length > 0) {
       const { wholesale_price, distributor_price, retail_price, cf_price } = product.presentations[0];
       this.wholesale_price = wholesale_price;
