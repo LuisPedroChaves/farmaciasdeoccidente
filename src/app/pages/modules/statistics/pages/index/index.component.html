@@ -82,7 +82,7 @@
                         {{ element.minStock }}
                     </div>
                     <div *ngIf="!element.minStock">
-                        Sin Registros
+                        0
                     </div>
                 </td>
             </ng-container>
@@ -93,7 +93,7 @@
                         {{ element.maxStock }}
                     </div>
                     <div *ngIf="!element.maxStock">
-                        Sin Registros
+                        0
                     </div>
                 </td>
             </ng-container>
@@ -106,7 +106,7 @@
                         <label *ngIf="element.stock <= element.maxStock"> 0 </label>
                     </div>
                     <div *ngIf="!element.minStock">
-                        Sin Registros
+                        0
                     </div>
                 </td>
             </ng-container>
@@ -119,7 +119,7 @@
                         <label *ngIf="element.stock >= element.maxStock"> 0 </label>
                     </div>
                     <div *ngIf="!element.minStock">
-                        Sin Registros
+                        0
                     </div>
                 </td>
             </ng-container>
