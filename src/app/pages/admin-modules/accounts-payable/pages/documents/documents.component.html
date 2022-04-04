@@ -3,16 +3,17 @@
         <header fxLayout="row wrap" fxLayoutAlign="start center">
             <h2 class="ma-0">{{title}}</h2>
             <span fxFlex></span>
-            <button mat-icon-button (click)="drawer.opened = false">
+            <button mat-icon-button (click)="reset()">
         <mat-icon>close</mat-icon>
       </button>
         </header>
-        <app-new-edit *ngIf="drawerComponent === 'DOCUMENTO'" [accountsPayable]="accountsPayable" (close)="drawer.opened = false"></app-new-edit>
+        <app-new-edit *ngIf="drawerComponent === 'DOCUMENTO'" [accountsPayable]="accountsPayable" (close)="reload()"></app-new-edit>
         <app-provider-account *ngIf="drawerComponent === 'PROVEEDOR'" [provider]="provider" (close)="drawer.opened = false">
         </app-provider-account>
+        <app-accounts-payable *ngIf="drawerComponent === 'CUENTA'" (return)="reset()" [accountsPayable]="accountsPayable"></app-accounts-payable>
     </mat-drawer>
     <header>
-        <app-filter></app-filter>
+        <app-filter (send)="applyFilter($event)"></app-filter>
         <span fxFlex></span>
         <button mat-fab color="warn" [matMenuTriggerFor]="payablesMenu" matTooltip="Nuevo documento">
       <mat-icon>add</mat-icon>
@@ -32,305 +33,19 @@
         <mat-tab [label]=" 'Retenciones pendientes (' + accountsPayablesReten.length  + ')'   ">
             <ngx-simplebar class="content">
                 <mat-progress-bar *ngIf="loading" mode="indeterminate" color="warn"></mat-progress-bar>
-                <table mat-table [dataSource]="dataSource">
-
-                    <ng-container matColumnDef="state">
-                        <th mat-header-cell *matHeaderCellDef></th>
-                        <td mat-cell *matCellDef="let element">
-                            <mat-icon *ngIf="(element._provider.iva && !element.withholdingIVA) || (element._provider.isr && !element.withholdingISR)" matTooltip="Con RETENCIONES pendientes de ingreso" class="cursor-pointer warning">warning</mat-icon>
-                        </td>
-                    </ng-container>
-
-                    <ng-container matColumnDef="date">
-                        <th mat-header-cell *matHeaderCellDef> Fecha </th>
-                        <td mat-cell *matCellDef="let element"> {{element.date | date: 'dd/MM/yyyy'}} </td>
-                    </ng-container>
-
-                    <ng-container matColumnDef="noBill">
-                        <th mat-header-cell *matHeaderCellDef> Documento </th>
-                        <td mat-cell *matCellDef="let element"> {{element.serie}} {{ element.noBill }} </td>
-                    </ng-container>
-
-                    <ng-container matColumnDef="docType">
-                        <th mat-header-cell *matHeaderCellDef> Tipo </th>
-                        <td mat-cell *matCellDef="let element">
-                            <span *ngIf="element.docType === 'FACTURA'">Electrónica</span>
-                            <span *ngIf="element.docType === 'CAMBIARIA'">Cambiaria electrónica</span>
-                            <span *ngIf="element.docType === 'PEQUEÑO'">Pequeño contribuyente</span>
-                            <span *ngIf="element.docType === 'ABONO'">Nota de abono</span>
-                            <span *ngIf="element.docType === 'CREDITO'">Nota de crédito</span>
-                        </td>
-                    </ng-container>
-
-                    <ng-container matColumnDef="unaffectedAmount">
-                        <th mat-header-cell *matHeaderCellDef> No Afecto</th>
-                        <td mat-cell *matCellDef="let element">
-                            {{element.unaffectedAmount | number: '.2' }}
-                        </td>
-                    </ng-container>
-
-                    <ng-container matColumnDef="exemptAmount">
-                        <th mat-header-cell *matHeaderCellDef> Exentos </th>
-                        <td mat-cell *matCellDef="let element">
-                            {{element.exemptAmount | number: '.2' }}
-                        </td>
-                    </ng-container>
-
-                    <ng-container matColumnDef="netPurchaseAmount">
-                        <th mat-header-cell *matHeaderCellDef> Compras Neto </th>
-                        <td mat-cell *matCellDef="let element">
-                            {{element.netPurchaseAmount | number: '.2' }}
-                        </td>
-                    </ng-container>
-
-                    <ng-container matColumnDef="netServiceAmount">
-                        <th mat-header-cell *matHeaderCellDef> Servicios Neto </th>
-                        <td mat-cell *matCellDef="let element">
-                            {{element.netServiceAmount | number: '.2' }}
-                        </td>
-                    </ng-container>
-
-                    <ng-container matColumnDef="otherTaxes">
-                        <th mat-header-cell *matHeaderCellDef> Otros Impuestos </th>
-                        <td mat-cell *matCellDef="let element">
-                            {{element.otherTaxes | number: '.2' }}
-                        </td>
-                    </ng-container>
-
-                    <ng-container matColumnDef="iva">
-                        <th mat-header-cell *matHeaderCellDef> I.V.A. Crédito Fiscal </th>
-                        <td mat-cell *matCellDef="let element">
-                            {{element.iva | number: '.2' }}
-                        </td>
-                    </ng-container>
-
-                    <ng-container matColumnDef="total">
-                        <th mat-header-cell *matHeaderCellDef> Total (Q) </th>
-                        <td mat-cell *matCellDef="let element">
-                            {{element.total | number: '.2' }}
-                        </td>
-                    </ng-container>
-
-                    <ng-container matColumnDef="expirationCredit">
-                        <th mat-header-cell *matHeaderCellDef> Fecha de vencimiento </th>
-                        <td mat-cell *matCellDef="let element">
-                            <span class="text-muted"> {{ element.expirationCredit | date: 'dd/MM/yyyy' }}</span>
-                        </td>
-                    </ng-container>
-
-                    <tr mat-header-row *matHeaderRowDef="columns;  sticky: true"></tr>
-                    <tr mat-row *matRowDef="let row; columns: columns;"></tr>
-                    <!-- Fila mostrada cuando no hay datos coincidentes. -->
-                    <tr class="mat-row" *matNoDataRow>
-                        <td class="mat-cell" colspan="13">No hay datos que coincidan con algún filtro o busqueda</td>
-                    </tr>
-                </table>
+                <app-table-accounts-payable (sendAccountsPayable)="getAccountPayable($event)" [accountsPayable]="accountsPayablesReten" [filter]="filterReten" [addSelection]="false"></app-table-accounts-payable>
             </ngx-simplebar>
         </mat-tab>
         <mat-tab [label]=" 'Pagos a proveedores (' + accountsPayablesProd.length  + ')'   ">
             <ngx-simplebar class="content">
                 <mat-progress-bar *ngIf="loading" mode="indeterminate" color="warn"></mat-progress-bar>
-                <table mat-table [dataSource]="dataSource2">
-
-                    <ng-container matColumnDef="check">
-                        <th mat-header-cell *matHeaderCellDef> Cheque </th>
-                        <td mat-cell *matCellDef="let element"> {{element._check.no}} </td>
-                    </ng-container>
-
-                    <ng-container matColumnDef="state">
-                        <th mat-header-cell *matHeaderCellDef></th>
-                        <td mat-cell *matCellDef="let element">
-                            <mat-icon *ngIf="(element._provider.iva && !element.withholdingIVA) || (element._provider.isr && !element.withholdingISR)" matTooltip="Con RETENCIONES pendientes de ingreso" class="cursor-pointer warning">warning</mat-icon>
-                        </td>
-                    </ng-container>
-
-                    <ng-container matColumnDef="date">
-                        <th mat-header-cell *matHeaderCellDef> Fecha </th>
-                        <td mat-cell *matCellDef="let element"> {{element.date | date: 'dd/MM/yyyy'}} </td>
-                    </ng-container>
-
-                    <ng-container matColumnDef="noBill">
-                        <th mat-header-cell *matHeaderCellDef> Documento </th>
-                        <td mat-cell *matCellDef="let element"> {{element.serie}} {{ element.noBill }} </td>
-                    </ng-container>
-
-                    <ng-container matColumnDef="docType">
-                        <th mat-header-cell *matHeaderCellDef> Tipo </th>
-                        <td mat-cell *matCellDef="let element">
-                            <span *ngIf="element.docType === 'FACTURA'">Electrónica</span>
-                            <span *ngIf="element.docType === 'CAMBIARIA'">Cambiaria electrónica</span>
-                            <span *ngIf="element.docType === 'PEQUEÑO'">Pequeño contribuyente</span>
-                            <span *ngIf="element.docType === 'ABONO'">Nota de abono</span>
-                            <span *ngIf="element.docType === 'CREDITO'">Nota de crédito</span>
-                        </td>
-                    </ng-container>
-
-                    <ng-container matColumnDef="unaffectedAmount">
-                        <th mat-header-cell *matHeaderCellDef> No Afecto</th>
-                        <td mat-cell *matCellDef="let element">
-                            {{element.unaffectedAmount | number: '.2' }}
-                        </td>
-                    </ng-container>
-
-                    <ng-container matColumnDef="exemptAmount">
-                        <th mat-header-cell *matHeaderCellDef> Exentos </th>
-                        <td mat-cell *matCellDef="let element">
-                            {{element.exemptAmount | number: '.2' }}
-                        </td>
-                    </ng-container>
-
-                    <ng-container matColumnDef="netPurchaseAmount">
-                        <th mat-header-cell *matHeaderCellDef> Compras Neto </th>
-                        <td mat-cell *matCellDef="let element">
-                            {{element.netPurchaseAmount | number: '.2' }}
-                        </td>
-                    </ng-container>
-
-                    <ng-container matColumnDef="netServiceAmount">
-                        <th mat-header-cell *matHeaderCellDef> Servicios Neto </th>
-                        <td mat-cell *matCellDef="let element">
-                            {{element.netServiceAmount | number: '.2' }}
-                        </td>
-                    </ng-container>
-
-                    <ng-container matColumnDef="otherTaxes">
-                        <th mat-header-cell *matHeaderCellDef> Otros Impuestos </th>
-                        <td mat-cell *matCellDef="let element">
-                            {{element.otherTaxes | number: '.2' }}
-                        </td>
-                    </ng-container>
-
-                    <ng-container matColumnDef="iva">
-                        <th mat-header-cell *matHeaderCellDef> I.V.A. Crédito Fiscal </th>
-                        <td mat-cell *matCellDef="let element">
-                            {{element.iva | number: '.2' }}
-                        </td>
-                    </ng-container>
-
-                    <ng-container matColumnDef="total">
-                        <th mat-header-cell *matHeaderCellDef> Total (Q) </th>
-                        <td mat-cell *matCellDef="let element">
-                            {{element.total | number: '.2' }}
-                        </td>
-                    </ng-container>
-
-                    <ng-container matColumnDef="expirationCredit">
-                        <th mat-header-cell *matHeaderCellDef> Fecha de vencimiento </th>
-                        <td mat-cell *matCellDef="let element">
-                            <span class="text-muted"> {{ element.expirationCredit | date: 'dd/MM/yyyy' }}</span>
-                        </td>
-                    </ng-container>
-
-                    <tr mat-header-row *matHeaderRowDef="columns;  sticky: true"></tr>
-                    <tr mat-row *matRowDef="let row; columns: columns;"></tr>
-                    <!-- Fila mostrada cuando no hay datos coincidentes. -->
-                    <tr class="mat-row" *matNoDataRow>
-                        <td class="mat-cell" colspan="13">No hay datos que coincidan con algún filtro o busqueda</td>
-                    </tr>
-                </table>
+                <app-table-accounts-payable (sendAccountsPayable)="getAccountPayable($event)" [accountsPayable]="accountsPayablesProd" [filter]="filterProd" [addSelection]="false"></app-table-accounts-payable>
             </ngx-simplebar>
         </mat-tab>
         <mat-tab [label]=" 'Gastos internos (' + accountsPayablesGast.length  + ')'   ">
             <ngx-simplebar class="content">
                 <mat-progress-bar *ngIf="loading" mode="indeterminate" color="warn"></mat-progress-bar>
-                <table mat-table [dataSource]="dataSource3">
-
-                    <ng-container matColumnDef="check">
-                        <th mat-header-cell *matHeaderCellDef> Cheque </th>
-                        <td mat-cell *matCellDef="let element"> {{element._check.no}} </td>
-                    </ng-container>
-
-                    <ng-container matColumnDef="state">
-                        <th mat-header-cell *matHeaderCellDef></th>
-                        <td mat-cell *matCellDef="let element">
-                            <mat-icon *ngIf="(element._provider.iva && !element.withholdingIVA) || (element._provider.isr && !element.withholdingISR)" matTooltip="Con RETENCIONES pendientes de ingreso" class="cursor-pointer warning">warning</mat-icon>
-                        </td>
-                    </ng-container>
-
-                    <ng-container matColumnDef="date">
-                        <th mat-header-cell *matHeaderCellDef> Fecha </th>
-                        <td mat-cell *matCellDef="let element"> {{element.date | date: 'dd/MM/yyyy'}} </td>
-                    </ng-container>
-
-                    <ng-container matColumnDef="noBill">
-                        <th mat-header-cell *matHeaderCellDef> Documento </th>
-                        <td mat-cell *matCellDef="let element"> {{element.serie}} {{ element.noBill }} </td>
-                    </ng-container>
-
-                    <ng-container matColumnDef="docType">
-                        <th mat-header-cell *matHeaderCellDef> Tipo </th>
-                        <td mat-cell *matCellDef="let element">
-                            <span *ngIf="element.docType === 'FACTURA'">Electrónica</span>
-                            <span *ngIf="element.docType === 'CAMBIARIA'">Cambiaria electrónica</span>
-                            <span *ngIf="element.docType === 'PEQUEÑO'">Pequeño contribuyente</span>
-                            <span *ngIf="element.docType === 'ABONO'">Nota de abono</span>
-                            <span *ngIf="element.docType === 'CREDITO'">Nota de crédito</span>
-                        </td>
-                    </ng-container>
-
-                    <ng-container matColumnDef="unaffectedAmount">
-                        <th mat-header-cell *matHeaderCellDef> No Afecto</th>
-                        <td mat-cell *matCellDef="let element">
-                            {{element.unaffectedAmount | number: '.2' }}
-                        </td>
-                    </ng-container>
-
-                    <ng-container matColumnDef="exemptAmount">
-                        <th mat-header-cell *matHeaderCellDef> Exentos </th>
-                        <td mat-cell *matCellDef="let element">
-                            {{element.exemptAmount | number: '.2' }}
-                        </td>
-                    </ng-container>
-
-                    <ng-container matColumnDef="netPurchaseAmount">
-                        <th mat-header-cell *matHeaderCellDef> Compras Neto </th>
-                        <td mat-cell *matCellDef="let element">
-                            {{element.netPurchaseAmount | number: '.2' }}
-                        </td>
-                    </ng-container>
-
-                    <ng-container matColumnDef="netServiceAmount">
-                        <th mat-header-cell *matHeaderCellDef> Servicios Neto </th>
-                        <td mat-cell *matCellDef="let element">
-                            {{element.netServiceAmount | number: '.2' }}
-                        </td>
-                    </ng-container>
-
-                    <ng-container matColumnDef="otherTaxes">
-                        <th mat-header-cell *matHeaderCellDef> Otros Impuestos </th>
-                        <td mat-cell *matCellDef="let element">
-                            {{element.otherTaxes | number: '.2' }}
-                        </td>
-                    </ng-container>
-
-                    <ng-container matColumnDef="iva">
-                        <th mat-header-cell *matHeaderCellDef> I.V.A. Crédito Fiscal </th>
-                        <td mat-cell *matCellDef="let element">
-                            {{element.iva | number: '.2' }}
-                        </td>
-                    </ng-container>
-
-                    <ng-container matColumnDef="total">
-                        <th mat-header-cell *matHeaderCellDef> Total (Q) </th>
-                        <td mat-cell *matCellDef="let element">
-                            {{element.total | number: '.2' }}
-                        </td>
-                    </ng-container>
-
-                    <ng-container matColumnDef="expirationCredit">
-                        <th mat-header-cell *matHeaderCellDef> Fecha de vencimiento </th>
-                        <td mat-cell *matCellDef="let element">
-                            <span class="text-muted"> {{ element.expirationCredit | date: 'dd/MM/yyyy' }}</span>
-                        </td>
-                    </ng-container>
-
-                    <tr mat-header-row *matHeaderRowDef="columns;  sticky: true"></tr>
-                    <tr mat-row *matRowDef="let row; columns: columns;"></tr>
-                    <!-- Fila mostrada cuando no hay datos coincidentes. -->
-                    <tr class="mat-row" *matNoDataRow>
-                        <td class="mat-cell" colspan="13">No hay datos que coincidan con algún filtro o busqueda</td>
-                    </tr>
-                </table>
+                <app-table-accounts-payable (sendAccountsPayable)="getAccountPayable($event)" [accountsPayable]="accountsPayablesGast" [filter]="filterGast" [addSelection]="false"></app-table-accounts-payable>
             </ngx-simplebar>
         </mat-tab>
         <mat-tab label="Historial">En proceso... </mat-tab>

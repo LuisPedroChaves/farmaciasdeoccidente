@@ -1,13 +1,12 @@
-import { Component, Input, OnInit, AfterContentInit, OnDestroy, OnChanges, SimpleChanges, ViewChild } from '@angular/core';
-import { MatTableDataSource } from '@angular/material/table';
-import { SelectionModel } from '@angular/cdk/collections';
+import { Component, Input, OnInit, AfterContentInit, OnDestroy, OnChanges, SimpleChanges, ViewChild, Output, EventEmitter } from '@angular/core';
 import { MatDrawer } from '@angular/material/sidenav';
+import { MatChip } from '@angular/material/chips';
 
 import { Subscription } from 'rxjs';
 
 import { ProviderItem } from '../../../../../core/models/Provider';
 import { AccountsPayableService } from '../../../../../core/services/httpServices/accounts-payable.service';
-import { AccountsPayableBalanceItem, AccountsPayableItem } from '../../../../../core/models/AccountsPayable';
+import { AccountsPayableItem } from '../../../../../core/models/AccountsPayable';
 import { ToastyService } from '../../../../../core/services/internal/toasty.service';
 
 interface totalSelection {
@@ -33,51 +32,29 @@ interface totalSelection {
 })
 export class ProviderAccountComponent implements OnInit, AfterContentInit, OnDestroy, OnChanges {
 
-  @Input() provider: ProviderItem;
-  @ViewChild('drawer') drawer: MatDrawer;
+  @Input()
+  provider: ProviderItem;
+  @Output()
+  sendAccountsPayable = new EventEmitter();
+  @ViewChild('drawer')
+  drawer: MatDrawer;
+  @ViewChild('all')
+  all: MatChip;
 
   loading = false;
   accountsPayableSubscription: Subscription;
   accountsPayables: AccountsPayableItem[];
 
   /* #region  Pendientes */
-  dataSource = new MatTableDataSource([]);
-  selection = new SelectionModel<AccountsPayableItem>(true, []);
-  columns = [
-    'select',
-    'state',
-    'date',
-    'noBill',
-    'docType',
-    'unaffectedAmount',
-    'exemptAmount',
-    'netPurchaseAmount',
-    'netServiceAmount',
-    'otherTaxes',
-    'iva',
-    'total',
-    'expirationCredit',
-  ];
   accountsPayablePend: AccountsPayableItem[];
+  accountsPayablePendTEMP: AccountsPayableItem[]; // Sirve para filtros
+  selectedPend: AccountsPayableItem[] = [];
+  filterPend = '';
   /* #endregion */
 
   /* #region  En Proceso */
-  dataSource2 = new MatTableDataSource([]);
-  columns2 = [
-    'state',
-    'date',
-    'noBill',
-    'docType',
-    'unaffectedAmount',
-    'exemptAmount',
-    'netPurchaseAmount',
-    'netServiceAmount',
-    'otherTaxes',
-    'iva',
-    'total',
-    'expirationCredit',
-  ];
   accountsPayableProcess: AccountsPayableItem[];
+  filterProcess = '';
   /* #endregion */
 
   constructor(
@@ -116,50 +93,148 @@ export class ProviderAccountComponent implements OnInit, AfterContentInit, OnDes
   }
 
   fillDataSources(provider: ProviderItem): void {
-    this.accountsPayablePend = this.accountsPayables.filter(ap => (ap._provider._id === provider._id) && (!ap.balance.find(b => b.credit === 'CHEQUE')))
+    this.accountsPayablePendTEMP = this.accountsPayables.filter(ap => (ap._provider._id === provider._id) && (!ap.balance.find(b => b.credit === 'CHEQUE')))
+    this.accountsPayablePend = this.accountsPayablePendTEMP;
+    this.selectedPend = [];
     this.accountsPayableProcess = this.accountsPayables.filter(ap => (ap._provider._id === provider._id) && (ap.balance.find(b => b.credit === 'CHEQUE')))
-    this.dataSource = new MatTableDataSource<AccountsPayableItem>(this.accountsPayablePend);
-    this.dataSource2 = new MatTableDataSource<AccountsPayableItem>(this.accountsPayableProcess);
-    this.selection = new SelectionModel<AccountsPayableItem>(true, []);
+    this.all.selected = true; // Marcamos el filtro TODOS como mat-chip selected
   }
 
   applyFilterPend(filter: string) {
-    this.dataSource.filter = filter
-
-    if (this.dataSource.paginator) {
-      this.dataSource.paginator.firstPage();
-    }
+    this.filterPend = filter
   }
 
   applyFilterProcess(filter: string) {
-    this.dataSource2.filter = filter
-
-    if (this.dataSource2.paginator) {
-      this.dataSource2.paginator.firstPage();
-    }
+    this.filterProcess = filter;
   }
+
+  /* #region  Selected */
+  getSelected(accountsPayables: AccountsPayableItem[]) {
+    this.selectedPend = accountsPayables;
+  }
+
+  // Calcular totales seleccionados
+  getTotalsSelection(): totalSelection {
+    let totals: totalSelection = {
+      facturas: {
+        total: this.selectedPend.filter(s => s.docType !== 'ABONO' && s.docType !== 'CREDITO').length,
+        amount: this.selectedPend.reduce((sum, item) => {
+          if (item.docType !== 'ABONO' && item.docType !== 'CREDITO') {
+            return sum + (item.total - item.balance.reduce((sum, item) => sum += item.amount, 0))
+          } else {
+            return sum + 0;
+          }
+        }, 0)
+      },
+      abonos: {
+        total: this.selectedPend.filter(s => s.docType === 'ABONO').length,
+        amount: this.selectedPend.reduce((sum, item) => {
+          if (item.docType === 'ABONO') {
+            return sum + item.total
+          } else {
+            return sum + 0;
+          }
+        }, 0)
+      },
+      creditos: {
+        total: this.selectedPend.filter(s => s.docType === 'CREDITO').length,
+        amount: this.selectedPend.reduce((sum, item) => {
+          if (item.docType === 'CREDITO') {
+            return sum + item.total
+          } else {
+            return sum + 0;
+          }
+        }, 0)
+      },
+      total: this.selectedPend.reduce((sum, item) => {
+        if (item.docType !== 'ABONO' && item.docType !== 'CREDITO') {
+          return sum + (item.total - item.balance.reduce((sum, item) => sum += item.amount, 0))
+        } else {
+          return sum - item.total;
+        }
+      }, 0)
+    }
+    return totals;
+  }
+  /* #endregion */
 
   /* #region  Pays */
   newPay() {
-    if (this.selection.selected.length === 0) {
+    if (this.selectedPend.length === 0) {
       this.toastyService.toasty('warning', 'Ningún documento seleccionado', 'Por favor seleccione los documentos a pagar')
       return;
     }
+
+    if (this.selectedPend.filter(a => (a._provider.iva && a.emptyWithholdingIVA) || (a._provider.isr && a.emptyWithholdingISR)).length > 0) {
+      this.toastyService.error('Documentos con retenciones pendientes', 'Primero ingrese las retenciones');
+      return;
+    }
+
+    if (this.getTotalsSelection().total <= 0) {
+      this.toastyService.error('Monto incorrecto', 'El total a pagar debe ser mayor a cero')
+      return
+    }
+
     this.drawer.toggle();
   }
 
   closePay(amount: number) {
-    console.log("🚀 ~ file: provider-account.component.ts ~ line 152 ~ ProviderAccountComponent ~ closePay ~ amount", amount)
     this.provider.balance -= amount;
     this.drawer.opened = false
   }
   /* #endregion */
 
+  /* #region  Chips */
+  getTotalWithholdings(): number {
+    return this.accountsPayablePendTEMP ? this.accountsPayablePendTEMP.reduce((sum, a) => {
+      if ((a._provider.iva && a.emptyWithholdingIVA) || (a._provider.isr && a.emptyWithholdingISR)) {
+        sum++
+      } else {
+        sum += 0;
+      }
+      return sum;
+    }, 0) : 0;
+  }
+
+  getTotalExpired(): number {
+    return this.accountsPayablePendTEMP ? this.accountsPayablePendTEMP.reduce((sum, a) => {
+      if (a.expirationCredit && new Date(a.expirationCredit) < new Date()) {
+        sum++;
+      } else {
+        sum += 0;
+      }
+      return sum;
+    }, 0) : 0;
+  }
+
+  getAll(chip: MatChip) {
+    chip.selected = true;
+    this.accountsPayablePend = this.accountsPayablePendTEMP;
+  }
+
+  getWithholdings(chip: MatChip): void {
+    chip.selected = true;
+    this.accountsPayablePend = this.accountsPayablePendTEMP.filter(a => (a._provider.iva && a.emptyWithholdingIVA) || (a._provider.isr && a.emptyWithholdingISR));
+  }
+
+  getExpired(chip: MatChip): void {
+    chip.selected = true;
+    this.accountsPayablePend = this.accountsPayablePendTEMP.filter(a => (a.expirationCredit && new Date(a.expirationCredit) < new Date()));
+  }
+
+  /* #endregion */
+
   /* #region  Cards */
   getTotalBills(): number {
-    return this.accountsPayablePend ? this.accountsPayablePend.reduce((sum, item) => {
+    return this.accountsPayables ? this.accountsPayables.filter(ap => (ap._provider._id === this.provider._id)).reduce((sum, item) => {
       if (item.docType !== 'ABONO' && item.docType !== 'CREDITO') {
-        return sum + item.total;
+        return sum + (item.total - item.balance.reduce((sum, item) => {
+          if (item.credit !== 'CHEQUE') {
+            return sum + item.amount
+          } else {
+            return sum + 0;
+          }
+        }, 0));
       } else {
         return sum + 0;
       }
@@ -167,7 +242,7 @@ export class ProviderAccountComponent implements OnInit, AfterContentInit, OnDes
   }
 
   getTotalAbono(): number {
-    return this.accountsPayablePend ? this.accountsPayablePend.reduce((sum, item) => {
+    return this.accountsPayables ? this.accountsPayables.filter(ap => (ap._provider._id === this.provider._id)).reduce((sum, item) => {
       if (item.docType === 'ABONO') {
         return sum + item.total;
       } else {
@@ -177,7 +252,7 @@ export class ProviderAccountComponent implements OnInit, AfterContentInit, OnDes
   }
 
   getTotalCredito(): number {
-    return this.accountsPayablePend ? this.accountsPayablePend.reduce((sum, item) => {
+    return this.accountsPayables ? this.accountsPayables.filter(ap => (ap._provider._id === this.provider._id)).reduce((sum, item) => {
       if (item.docType === 'CREDITO') {
         return sum + item.total;
       } else {
@@ -189,8 +264,8 @@ export class ProviderAccountComponent implements OnInit, AfterContentInit, OnDes
 
   /* #region  Tabs */
   getTotalPending(): string {
-    if (this.accountsPayablePend) {
-      return `Pendientes (${this.accountsPayablePend.length})`
+    if (this.accountsPayablePendTEMP) {
+      return `Pendientes (${this.accountsPayablePendTEMP.length})`
     } else {
       return 'Pendientes (0)'
     }
@@ -202,86 +277,6 @@ export class ProviderAccountComponent implements OnInit, AfterContentInit, OnDes
     } else {
       return 'En proceso (0)'
     }
-  }
-  /* #endregion */
-
-  /* #region  Chips */
-  getTotalWithholdings(): number {
-    return 0
-  }
-  /* #endregion */
-
-  /* #region  SELECTION TABLE */
-  // Calcular totales seleccionados
-  getTotalsSelection(): totalSelection {
-    let totals: totalSelection = {
-      facturas: {
-        total: this.selection.selected.filter(s => s.docType !== 'ABONO' && s.docType !== 'CREDITO').length,
-        amount: this.selection.selected.reduce((sum, item) => {
-          if (item.docType !== 'ABONO' && item.docType !== 'CREDITO') {
-            return sum + item.total
-          } else {
-            return sum + 0;
-          }
-        }, 0)
-      },
-      abonos: {
-        total: this.selection.selected.filter(s => s.docType === 'ABONO').length,
-        amount: this.selection.selected.reduce((sum, item) => {
-          if (item.docType === 'ABONO') {
-            return sum + item.total
-          } else {
-            return sum + 0;
-          }
-        }, 0)
-      },
-      creditos: {
-        total: this.selection.selected.filter(s => s.docType === 'CREDITO').length,
-        amount: this.selection.selected.reduce((sum, item) => {
-          if (item.docType === 'CREDITO') {
-            return sum + item.total
-          } else {
-            return sum + 0;
-          }
-        }, 0)
-      },
-      total: this.selection.selected.reduce((sum, item) => {
-        if (item.docType !== 'ABONO' && item.docType !== 'CREDITO') {
-          return sum + item.total
-        } else {
-          return sum - item.total;
-        }
-      }, 0)
-    }
-    if (this.selection.selected) {
-
-    }
-    return totals;
-  }
-
-  /** Whether the number of selected elements matches the total number of rows. */
-  isAllSelected() {
-    const numSelected = this.selection.selected.length;
-    const numRows = this.dataSource.data.length;
-    return numSelected === numRows;
-  }
-
-  /** Selects all rows if they are not all selected; otherwise clear selection. */
-  masterToggle() {
-    if (this.isAllSelected()) {
-      this.selection.clear();
-      return;
-    }
-
-    this.selection.select(...this.dataSource.data);
-  }
-
-  /** The label for the checkbox on the passed row */
-  checkboxLabel(row?: AccountsPayableItem): string {
-    if (!row) {
-      return `${this.isAllSelected() ? 'deselect' : 'select'} all`;
-    }
-    return `${this.selection.isSelected(row) ? 'deselect' : 'select'} row ${row.total + 1}`;
   }
   /* #endregion */
 

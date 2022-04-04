@@ -40,6 +40,8 @@ export class ProvidersComponent implements OnInit, AfterContentInit, OnDestroy {
     total: 0,
     type: 'PRODUCTOS',
     file: '',
+    emptyWithholdingIVA: false,
+    emptyWithholdingISR: false,
     toCredit: false,
     expirationCredit: null,
     paid: false,
@@ -96,6 +98,42 @@ export class ProvidersComponent implements OnInit, AfterContentInit, OnDestroy {
     this.title = `${provider.nit} | ${provider.name}`
     this.provider = provider;
     this.drawer.opened = true;
+  }
+
+  getAccountsPayable(accountsPayable: AccountsPayableItem): void {
+    this.drawerComponent = 'CUENTA'
+    this.accountsPayable = accountsPayable;
+  }
+
+  reset() {
+    this.drawerComponent = 'DOCUMENTO';
+    this.drawer.opened = false;
+    this.accountsPayable = {
+      _id: null,
+      _user: null,
+      _provider: null,
+      _purchase: null,
+      _expense: null,
+      date: null,
+      serie: '',
+      noBill: '',
+      docType: '',
+      balance: [],
+      unaffectedAmount: 0,
+      exemptAmount: 0,
+      netPurchaseAmount: 0,
+      netServiceAmount: 0,
+      otherTaxes: 0,
+      iva: 0,
+      total: 0,
+      type: 'PRODUCTOS',
+      file: '',
+      emptyWithholdingIVA: false,
+      emptyWithholdingISR: false,
+      toCredit: false,
+      expirationCredit: null,
+      paid: false,
+    };
   }
 
   reload() {

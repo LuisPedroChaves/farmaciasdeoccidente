@@ -8,11 +8,13 @@ import { FileInput } from 'ngx-material-file-input';
 
 import { AccountsPayableService } from 'src/app/core/services/httpServices/accounts-payable.service';
 import { UploadFileService } from 'src/app/core/services/httpServices/upload-file.service';
-import { AccountsPayableItem } from '../../../../../core/models/AccountsPayable';
+import { AccountsPayableBalanceItem, AccountsPayableItem } from '../../../../../core/models/AccountsPayable';
 import { ToastyService } from '../../../../../core/services/internal/toasty.service';
 import { ExpenseItem } from '../../../../../core/models/Expense';
 import { ExpenseService } from '../../../../../core/services/httpServices/expense.service';
 import { ProviderItem } from '../../../../../core/models/Provider';
+import { CheckService } from 'src/app/core/services/httpServices/check.service';
+import { CheckItem } from 'src/app/core/models/Check';
 
 @Component({
   selector: 'app-new-edit',
@@ -46,11 +48,33 @@ export class NewEditComponent implements OnInit, AfterContentInit, OnDestroy {
     total: new FormControl(0, Validators.required),
     type: new FormControl('PRODUCTOS', Validators.required),
     file: new FormControl(''),
-    toCredit: new FormControl(false, Validators.required),
+    emptyWithholdingIVA: new FormControl(false, Validators.required),
+    emptyWithholdingISR: new FormControl(false, Validators.required),
+    toCredit: new FormControl(true, Validators.required),
     expirationCredit: new FormControl(null),
     paid: new FormControl(false, Validators.required)
   })
 
+  /* #region  Pago al contado */
+  paymentMethod = 'CHEQUE';
+  formPay = new FormGroup({
+    date: new FormControl('', Validators.required),
+    document: new FormControl(''),
+    credit: new FormControl('CHEQUE', Validators.required),
+    amount: new FormControl(0, Validators.required)
+  })
+  formCheck = new FormGroup({
+    no: new FormControl('', Validators.required),
+    city: new FormControl('', Validators.required),
+    date: new FormControl('', Validators.required),
+    name: new FormControl('', Validators.required),
+    amount: new FormControl('', Validators.required),
+    note: new FormControl(''),
+    bank: new FormControl('BANRURAL', Validators.required),
+    state: new FormControl('INTERBANCO', Validators.required),
+  })
+
+  /* #endregion */
   expensesSubscription: Subscription;
   expenses: ExpenseItem[];
   filteredExpenses: Observable<ExpenseItem[]>;
@@ -75,6 +99,7 @@ export class NewEditComponent implements OnInit, AfterContentInit, OnDestroy {
     private expenseService: ExpenseService,
     private accountsPayableService: AccountsPayableService,
     private uploadFileService: UploadFileService,
+    private checkService: CheckService
   ) { }
 
   ngOnInit(): void {
@@ -124,6 +149,9 @@ export class NewEditComponent implements OnInit, AfterContentInit, OnDestroy {
 
   getProvider(provider: ProviderItem) {
     this.form.controls._provider.setValue(provider);
+    if (provider) {
+      this.formCheck.controls.name.setValue(provider.checkName)
+    }
     if (this.drawer.opened) {
       this.drawer.opened = false;
     }
@@ -213,7 +241,7 @@ export class NewEditComponent implements OnInit, AfterContentInit, OnDestroy {
     this.form.controls.otherTaxes.setValue(0);
   }
 
-  resetForm() {
+  resetForms() {
     this.form.reset({
       _provider: null,
       _purchase: null,
@@ -231,9 +259,16 @@ export class NewEditComponent implements OnInit, AfterContentInit, OnDestroy {
       total: 0,
       type: 'PRODUCTOS',
       file: '',
-      toCredit: false,
+      emptyWithholdingIVA: false,
+      emptyWithholdingISR: false,
+      toCredit: true,
       expirationCredit: null,
       paid: false
+    });
+    this.formPay.reset();
+    this.formCheck.reset({
+      bank: 'BANRURAL',
+      state: 'INTERBANCO'
     });
   }
 
@@ -249,13 +284,43 @@ export class NewEditComponent implements OnInit, AfterContentInit, OnDestroy {
     this.form.controls.type.setValue(this.accountsPayable.type);
     this.form.controls.total.setValue(TOTAL);
 
+    /* #region  Validaciones */
     const TO_CREDIT = this.form.controls.toCredit.value
     const DOC_TYPE = this.form.controls.docType.value
-    if (!TO_CREDIT && DOC_TYPE !== 'ABONO' && DOC_TYPE !== 'CREDITO') {
-      // Validamos si la factura es al contado para marcarla como pagada
-      this.form.controls.paid.setValue(true);
-    }
+    const PROVIDER: ProviderItem = this.form.controls._provider.value
+    const NEW_BALANCES: AccountsPayableBalanceItem[] = [];
 
+    if (DOC_TYPE !== 'ABONO' && DOC_TYPE !== 'CREDITO') {
+      if (PROVIDER.iva && TOTAL >= 2500) {
+        // Si el proveedor tiene retencion de iva entonces será obligatoria
+        this.form.controls.emptyWithholdingIVA.setValue(true);
+      }
+      if (PROVIDER.isr && TOTAL >= 2500) {
+        // Si el proveedor tiene retencion de isr entonces será obligatoria
+        this.form.controls.emptyWithholdingISR.setValue(true);
+      }
+      if (!TO_CREDIT) {
+        // Validamos si la factura es al contado y que no sea pago con cheque para marcarla como pagada
+        if (this.paymentMethod !== 'CHEQUE') {
+          this.form.controls.paid.setValue(true);
+          this.formPay.controls.credit.setValue(this.paymentMethod);
+          this.formPay.controls.amount.setValue(TOTAL);
+          NEW_BALANCES.push({ ...this.formPay.value });
+        }else {
+          // Si es al contado y se paga con cheque
+          if (this.accountsPayable.type === 'PRODUCTOS') {
+            // Si es un documento de productos entonces los estados del cheque cambian
+            this.formCheck.controls.bank.setValue('INTERBANCO');
+            this.formCheck.controls.state.setValue('CREADO');
+          }else if (this.accountsPayable.type === 'GASTOS') {
+            // Si es un documento de gastos entonces los estados del cheque cambian
+            this.formCheck.controls.bank.setValue('BANRURAL');
+            this.formCheck.controls.state.setValue('INTERBANCO'); // Interbanco es un estado
+          }
+        }
+      }
+    }
+    /* #endregion */
 
     // Manejo de archivo
     const FILE: FileInput = this.form.controls.file.value;
@@ -270,28 +335,58 @@ export class NewEditComponent implements OnInit, AfterContentInit, OnDestroy {
 
     } else {
       // Nueva
-      this.accountsPayableService.create({ ...this.form.value })
+      this.accountsPayableService.create({
+        ...this.form.value,
+        balance: NEW_BALANCES
+      })
         .subscribe(resp => {
           // Manejo de archivo
           if (FILE) {
             this.uploadFileService.uploadFile(FILE.files[0], 'accountsPayable', resp.accountsPayable._id)
               .then((resp: any) => {
-                this.saveSuccess();
+                if (!TO_CREDIT && this.paymentMethod === 'CHEQUE') {
+                  this.saveCheck(TOTAL, resp.accountsPayable)
+                }else {
+                  this.saveSuccess();
+                }
               })
               .catch(err => {
                 this.loading = false;
                 this.toastyService.error('Error al cargar el archivo');
               });
           } else {
-            this.saveSuccess();
+            if (!TO_CREDIT && this.paymentMethod === 'CHEQUE') {
+              this.saveCheck(TOTAL, resp.accountsPayable)
+            }else {
+              this.saveSuccess();
+            }
           }
         })
     }
   }
 
+  saveCheck(total: number, accountPayable: AccountsPayableItem):void {
+    const CHECK: CheckItem = {
+      no: this.formCheck.controls.no.value,
+      city: this.formCheck.controls.city.value,
+      date: this.formCheck.controls.date.value,
+      name: this.formCheck.controls.name.value,
+      amount: total,
+      accountsPayables: [{...accountPayable}],
+      note: this.formCheck.controls.note.value,
+      bank: this.formCheck.controls.bank.value,
+      state: this.formCheck.controls.state.value,
+    }
+    this.checkService.create(CHECK)
+      .subscribe(resp => {
+        this.checkService.print(resp.check)
+        this.saveSuccess();
+      });
+  }
+
   saveSuccess(): void {
     this.toastyService.success('Documento ingresado correctamente')
-    this.resetForm();
+    this.resetForms();
     this.loading = false;
     this.close.emit();
   }

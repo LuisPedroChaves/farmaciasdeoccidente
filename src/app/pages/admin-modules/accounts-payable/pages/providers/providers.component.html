@@ -3,12 +3,13 @@
         <header fxLayout="row wrap" fxLayoutAlign="start center">
             <h2 class="ma-0">{{title}}</h2>
             <span fxFlex></span>
-            <button mat-icon-button (click)="drawer.opened = false">
+            <button mat-icon-button (click)="reset()">
         <mat-icon>close</mat-icon>
       </button>
         </header>
         <app-new-edit *ngIf="drawerComponent === 'DOCUMENTO'" [accountsPayable]="accountsPayable" (close)="reload()"></app-new-edit>
-        <app-provider-account *ngIf="drawerComponent === 'PROVEEDOR'" [provider]="provider" (close)="drawer.opened = false"></app-provider-account>
+        <app-provider-account *ngIf="drawerComponent === 'PROVEEDOR'" (sendAccountsPayable)="getAccountsPayable($event)" [provider]="provider"></app-provider-account>
+        <app-accounts-payable *ngIf="drawerComponent === 'CUENTA'" (return)="drawerComponent = 'PROVEEDOR'" [accountsPayable]="accountsPayable"></app-accounts-payable>
     </mat-drawer>
     <header>
         <app-filter (send)="applyFilter($event)"></app-filter>

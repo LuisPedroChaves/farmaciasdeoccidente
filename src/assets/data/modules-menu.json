@@ -162,7 +162,7 @@
         "state": "accountsPayable",
         "name": "Cuentas por pagar",
         "type": "link",
-        "icon": "price_check",
+        "icon": "credit_score",
         "iconType": "icon",
         "order": 6
     },

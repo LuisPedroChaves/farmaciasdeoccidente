@@ -1,14 +1,10 @@
 import { Component, OnInit, Input, OnChanges, SimpleChanges, Output, EventEmitter } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 
-import * as moment from 'moment';
-
 import { CheckService } from '../../../../../core/services/httpServices/check.service';
 import { AccountsPayableItem } from '../../../../../core/models/AccountsPayable';
 import { ToastyService } from '../../../../../core/services/internal/toasty.service';
 import { CheckItem } from '../../../../../core/models/Check';
-import { PrintService } from '../../../../../core/services/internal/print.service';
-import { NumberToWordsPipe } from '../../../../../core/shared/pipes/formatPipes/number-to-words.pipe';
 import { AccountsPayableService } from '../../../../../core/services/httpServices/accounts-payable.service';
 
 @Component({
@@ -38,14 +34,13 @@ export class NewCheckComponent implements OnInit, OnChanges {
       disabled: true
     }, Validators.required),
     note: new FormControl(''),
+    bank: new FormControl('INTERBANCO', Validators.required),
     state: new FormControl('CREADO', Validators.required),
   });
 
   constructor(
     private checkService: CheckService,
     private toastyService: ToastyService,
-    private printService: PrintService,
-    private numberToWords: NumberToWordsPipe,
     private accountsPayableService: AccountsPayableService
   ) { }
 
@@ -74,6 +69,7 @@ export class NewCheckComponent implements OnInit, OnChanges {
       amount: this.amount,
       accountsPayables: this.accountsPayables,
       note: this.form.controls.note.value,
+      bank: this.form.controls.bank.value,
       state: this.form.controls.state.value,
     }
     this.loading = true;
@@ -81,7 +77,7 @@ export class NewCheckComponent implements OnInit, OnChanges {
       .subscribe(resp => {
         this.toastyService.success('Cheque creado exitosamente')
         this.accountsPayableService.loadData();
-        this.print(resp.check)
+        this.checkService.print(resp.check)
         this.close.emit()
         this.form.reset({
           no: '',
@@ -90,32 +86,12 @@ export class NewCheckComponent implements OnInit, OnChanges {
           name: '',
           amount: '',
           note: '',
+          bank: 'INTERBANCO',
           state: 'CREADO'
         })
         this.loading = false;
       })
 
-  }
-
-  print(check: CheckItem) {
-    const body = [];
-
-    body.push({ text: '\n' });
-    body.push(
-      {
-        layout: 'noBorders',
-        table: {
-          widths: ['50%', '10%'],
-          headerRows: 1,
-          body: [
-            [{ text: `${check.city}, ${moment(check.date).format('DD [de] MMMM [de] YYYY')}`, style: 'text9' }, { text: check.amount.toFixed(2), style: 'text9' }],
-            [{ text: check.name, style: 'text9', colSpan: 2 }],
-            [{ text: this.numberToWords.transform(check.amount), style: 'text9', colSpan: 2 }],
-          ]
-        }
-      });
-
-    this.printService.print(body);
   }
 
 }
