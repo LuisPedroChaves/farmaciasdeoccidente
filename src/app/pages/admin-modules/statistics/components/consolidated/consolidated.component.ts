@@ -59,7 +59,7 @@ export class ConsolidatedComponent implements OnInit {
   }
 
   isStickyEnd(name: string): boolean {
-    return (name === 'PEDIDO GLOBAL' || name === 'INVENTARIO BODEGA' || name === 'TOTAL') ? true : false
+    return (name === 'PEDIDO GLOBAL' || name === 'PEDIDO ESTADISTICA GLOBAL' || name === 'INVENTARIO BODEGA' || name === 'TOTAL') ? true : false
   }
 
   getConsolidated(): void {
@@ -89,6 +89,7 @@ export class ConsolidatedComponent implements OnInit {
         row.PRODUCTO = element._id.description
 
         let supplyGlobal = 0;
+        let supplyStatisticGlobal = 0;
         let stockBodega = 0;
 
         element.cellars.forEach(item => {
@@ -100,6 +101,9 @@ export class ConsolidatedComponent implements OnInit {
             // Agregando filas en la data
             row[item._cellar.name] = item.stock;
             supplyGlobal += item.supply;
+            if (item.supplyStatistic) {
+              supplyStatisticGlobal += item.supplyStatistic;
+            }
 
             // Buscando si ya fueron agregadas las columnas
             const INDEX = this.displayedColumns.findIndex(c => c === item._cellar.name);
@@ -109,11 +113,14 @@ export class ConsolidatedComponent implements OnInit {
               this.columnsToDisplay.push(item._cellar.name);
               this.displayedColumns.push(`Pedido${COLUMN}`);
               this.columnsToDisplay.push(`Pedido${COLUMN}`);
+              this.displayedColumns.push(`PedidoEstadistica${COLUMN}`);
+              this.columnsToDisplay.push(`PedidoEstadistica${COLUMN}`);
               this.displayedColumns.push(`Devoluciones${COLUMN}`);
               this.columnsToDisplay.push(`Devoluciones${COLUMN}`);
               this.displayedColumns.push(`Faltantes${COLUMN}`);
               this.columnsToDisplay.push(`Faltantes${COLUMN}`);
               row[`Pedido${COLUMN}`] = item.supply;
+              row[`PedidoEstadistica${COLUMN}`] = item.supplyStatistic;
               if (item.stock > item.maxStock) {
                 row[`Devoluciones${COLUMN}`] = +item.stock - +item.maxStock;
               } else {
@@ -126,6 +133,7 @@ export class ConsolidatedComponent implements OnInit {
               }
             } else {
               row[`Pedido${INDEX + 1}`] = item.supply;
+              row[`PedidoEstadistica${INDEX + 1}`] = item.supplyStatistic;
               if (item.stock > item.maxStock) {
                 row[`Devoluciones${INDEX + 1}`] = +item.stock - +item.maxStock;
               } else {
@@ -140,13 +148,16 @@ export class ConsolidatedComponent implements OnInit {
           }
         });
         row['PEDIDO GLOBAL'] = supplyGlobal;
+        row['PEDIDO ESTADISTICA GLOBAL'] = supplyStatisticGlobal;
         row['INVENTARIO BODEGA'] = stockBodega;
-        row['TOTAL'] = supplyGlobal - stockBodega;
+        row['TOTAL'] = supplyStatisticGlobal - stockBodega;
 
         return row;
       });
       this.displayedColumns.push('PEDIDO GLOBAL');
       this.columnsToDisplay.push('PEDIDO GLOBAL');
+      this.displayedColumns.push('PEDIDO ESTADISTICA GLOBAL');
+      this.columnsToDisplay.push('PEDIDO ESTADISTICA GLOBAL');
       this.displayedColumns.push('INVENTARIO BODEGA');
       this.columnsToDisplay.push('INVENTARIO BODEGA');
       this.displayedColumns.push('TOTAL');
