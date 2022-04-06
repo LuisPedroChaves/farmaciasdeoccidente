@@ -1,0 +1,232 @@
+<ngx-simplebar class="layout">
+    <header fxLayout="row wrap" fxLayoutAlign="start center" fxLayoutGap="10px">
+        <button mat-icon-button (click)="return.emit()">
+      <mat-icon>arrow_back</mat-icon>
+    </button>
+        <h2 class="ma-0">Atras</h2>
+    </header>
+    <ngx-simplebar class="content">
+        <div fxLayout="row wrap" fxLayoutAlign="center start">
+            <div fxFlex.gt-md="70" fxFlex.lt-lg="95">
+                <mat-card class="mat-elevation-z4">
+                    <mat-card-header>
+                        <mat-icon matCardAvatar color="warn">credit_score</mat-icon>
+                        <mat-card-title>{{accountsPayable.serie}} - {{accountsPayable.noBill }}</mat-card-title>
+                        <mat-card-subtitle>
+                            <span *ngIf="accountsPayable.docType === 'FACTURA'">Electrónica</span>
+                            <span *ngIf="accountsPayable.docType === 'CAMBIARIA'">Cambiaria electrónica</span>
+                            <span *ngIf="accountsPayable.docType === 'PEQUEÑO'">Pequeño contribuyente</span>
+                            <span *ngIf="accountsPayable.docType === 'ABONO'">Nota de abono</span>
+                            <span *ngIf="accountsPayable.docType === 'CREDITO'">Nota de crédito</span>
+                        </mat-card-subtitle>
+                        <span fxFlex></span>
+                        <h2 *ngIf="accountsPayable.type === 'PRODUCTOS'" class="ma-0">PRODUCTOS</h2>
+                        <h2 *ngIf="accountsPayable.type === 'GASTOS'" class="ma-0">
+                            <span *ngIf="accountsPayable._expense">{{accountsPayable._expense.name}}</span>
+                            <span *ngIf="!accountsPayable._expense">GASTOS</span>
+                        </h2>
+                    </mat-card-header>
+                    <mat-card-content>
+                        <div fxLayout="row wrap">
+                            <div fxFlex.gt-xs="50" fxFlex.lt-sm="100" fxLayout="column" fxLayoutGap="5px">
+                                <div>
+                                    <b>Fecha</b>: {{accountsPayable.date | date: 'dd/MM/yyyy' }}
+                                </div>
+                                <div>
+                                    <b>Proveedor</b>: {{accountsPayable._provider.name }}
+                                </div>
+                                <div *ngIf="accountsPayable.file">
+                                    <b>Archivo</b>: <a mat-button color="warn" mat-line *ngIf="accountsPayable.file" [href]="accountsPayable.file | file: 'accountsPayable'" target="_blank">{{ accountsPayable.file }}</a>
+                                </div>
+                                <div>
+                                    <b>Usuario</b>: {{accountsPayable._user.name }}
+                                </div>
+                                <br>
+                                <div>
+                                    <b>Tipo de pago</b>:
+                                    <span *ngIf="accountsPayable.toCredit">Al Crédito</span>
+                                    <span *ngIf="!accountsPayable.toCredit">Al Contado</span>
+                                </div>
+                                <div *ngIf="accountsPayable.toCredit">
+                                    <b>Fecha de vencimiento</b>: {{accountsPayable.expirationCredit | date: 'dd/MM/yyyy' }}
+                                </div>
+                                <mat-chip-list selectable="false">
+                                    <mat-chip *ngIf="expired(accountsPayable.expirationCredit)"><span class="warning">Vencido</span>
+                                    </mat-chip>
+                                    <mat-chip *ngIf="accountsPayable.paid" color="warn" selected>Pagado</mat-chip>
+                                    <mat-chip *ngIf="!accountsPayable.paid" class="warning">Pendiente de pago</mat-chip>
+                                </mat-chip-list>
+                            </div>
+                            <div fxFlex.gt-xs="50" fxFlex.lt-sm="100" fxLayout="column">
+                                <div *ngIf="accountsPayable.unaffectedAmount > 0" fxLayout="row">
+                                    <div fxFlex fxLayout="row" fxLayoutAlign="end center">
+                                        <h3>Compras no afectas:</h3>
+                                    </div>
+                                    <div fxFlex fxFlexOffset="5px" fxLayout="row" fxLayoutAlign="start center">
+                                        <h3>Q {{ accountsPayable.unaffectedAmount | number: '.2' }}</h3>
+                                    </div>
+                                </div>
+                                <div *ngIf="accountsPayable.exemptAmount > 0" fxLayout="row">
+                                    <div fxFlex fxLayout="row" fxLayoutAlign="end center">
+                                        <h3>Compras y servicios exentos:</h3>
+                                    </div>
+                                    <div fxFlex fxFlexOffset="5px" fxLayout="row" fxLayoutAlign="start center">
+                                        <h3>Q {{ accountsPayable.exemptAmount | number: '.2' }}</h3>
+                                    </div>
+                                </div>
+                                <div *ngIf="accountsPayable.netPurchaseAmount > 0" fxLayout="row">
+                                    <div fxFlex fxLayout="row" fxLayoutAlign="end center">
+                                        <h3>Compras Neto:</h3>
+                                    </div>
+                                    <div fxFlex fxFlexOffset="5px" fxLayout="row" fxLayoutAlign="start center">
+                                        <h3>Q {{ accountsPayable.netPurchaseAmount | number: '.2' }}</h3>
+                                    </div>
+                                </div>
+                                <div *ngIf="accountsPayable.netServiceAmount > 0" fxLayout="row">
+                                    <div fxFlex fxLayout="row" fxLayoutAlign="end center">
+                                        <h3>Servicios Neto:</h3>
+                                    </div>
+                                    <div fxFlex fxFlexOffset="5px" fxLayout="row" fxLayoutAlign="start center">
+                                        <h3>Q {{ accountsPayable.netServiceAmount | number: '.2' }}</h3>
+                                    </div>
+                                </div>
+                                <div *ngIf="accountsPayable.otherTaxes > 0" fxLayout="row">
+                                    <div fxFlex fxLayout="row" fxLayoutAlign="end center">
+                                        <h3>Otros Impuestos:</h3>
+                                    </div>
+                                    <div fxFlex fxFlexOffset="5px" fxLayout="row" fxLayoutAlign="start center">
+                                        <h3>Q {{ accountsPayable.otherTaxes | number: '.2' }}</h3>
+                                    </div>
+                                </div>
+                                <div *ngIf="accountsPayable.iva > 0" fxLayout="row">
+                                    <div fxFlex fxLayout="row" fxLayoutAlign="end center">
+                                        <h3>I.V.A. Crédito Fiscal:</h3>
+                                    </div>
+                                    <div fxFlex fxFlexOffset="5px" fxLayout="row" fxLayoutAlign="start center">
+                                        <h3>Q {{ accountsPayable.iva | number: '.2' }}</h3>
+                                    </div>
+                                </div>
+                                <div fxLayout="row">
+                                    <div fxFlex fxLayout="row" fxLayoutAlign="end center">
+                                        <h3>Total Afecto:</h3>
+                                    </div>
+                                    <div fxFlex fxFlexOffset="5px" fxLayout="row" fxLayoutAlign="start center">
+                                        <h3><b>Q {{ getTotalAfecto() | number: '.2' }}</b></h3>
+                                    </div>
+                                </div>
+                                <div fxLayout="row">
+                                    <div fxFlex fxLayout="row" fxLayoutAlign="end center">
+                                        <h3>Total General:</h3>
+                                    </div>
+                                    <div fxFlex fxFlexOffset="5px" fxLayout="row" fxLayoutAlign="start center">
+                                        <h3><b>Q {{ accountsPayable.total | number: '.2' }}</b></h3>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <br>
+                        <br>
+                        <mat-card *ngIf="accountsPayable.emptyWithholdingIVA || accountsPayable.emptyWithholdingISR" class="mat-elevation-z8">
+                            <mat-card-header class="warning">
+                                <mat-icon matCardAvatar>warning</mat-icon>
+                                <mat-card-title>Retención pendiente de {{ accountsPayable.emptyWithholdingIVA ? 'IVA' : '' }} {{ accountsPayable.emptyWithholdingISR ? 'ISR' : '' }}</mat-card-title>
+                                <mat-card-subtitle>¡IMPORTANTE!, el documento tiene estas retenciones pendientes de ingreso.
+                                </mat-card-subtitle>
+                            </mat-card-header>
+                            <mat-card-content>
+                                <form [formGroup]="form" autocomplete="off">
+                                    <div fxLayout="row wrap" fxLayoutGap="10px">
+                                        <div fxFlex>
+                                            <mat-form-field fxFill appearance="outline" color="accent">
+                                                <mat-label>Fecha</mat-label>
+                                                <input matInput [matDatepicker]="picker" formControlName="date" title="Fecha de la factura" placeholder="Ingrese una fecha">
+                                                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                                                <mat-datepicker #picker></mat-datepicker>
+                                            </mat-form-field>
+                                        </div>
+                                        <div fxFlex>
+                                            <mat-form-field fxFill appearance="outline" color="accent">
+                                                <mat-label>Documento</mat-label>
+                                                <input formControlName="document" type="text" matInput placeholder="Ingrese el no. de documento">
+                                            </mat-form-field>
+                                        </div>
+                                        <div fxFlex>
+                                            <mat-form-field fxFill appearance="outline" color="accent">
+                                                <mat-select formControlName="credit">
+                                                    <mat-option value="">
+                                                        Seleccione un tipo
+                                                    </mat-option>
+                                                    <mat-option value="RETENCION_IVA" [disabled]="!accountsPayable.emptyWithholdingIVA">
+                                                        Retención de IVA
+                                                    </mat-option>
+                                                    <mat-option value="RETENCION_ISR" [disabled]="!accountsPayable.emptyWithholdingISR">
+                                                        Retención de ISR
+                                                    </mat-option>
+                                                </mat-select>
+                                            </mat-form-field>
+                                        </div>
+                                        <div fxFlex>
+                                            <mat-form-field fxFill appearance="outline" color="accent">
+                                                <mat-label>Monto</mat-label>
+                                                <span matPrefix>Q &nbsp;</span>
+                                                <input #Iamount matInput formControlName="amount" type="number" placeholder="0">
+                                            </mat-form-field>
+                                        </div>
+                                        <div fxFlex fxLayoutAlign="start center"><button mat-raised-button (click)="enter()" [disabled]="loading || form.invalid" color="warn">Ingresar</button></div>
+                                    </div>
+                                    <mat-progress-bar *ngIf="loading" mode="indeterminate" color="warn"></mat-progress-bar>
+                                </form>
+                            </mat-card-content>
+                        </mat-card>
+                        <br>
+                        <h2>Abonos a cuenta</h2>
+                        <table mat-table [dataSource]="dataSource" class="mat-elevation-z0">
+
+                            <ng-container matColumnDef="check">
+                                <th mat-header-cell *matHeaderCellDef>Cheque</th>
+                                <td mat-cell *matCellDef="let element">
+                                    <span *ngIf="element._check">{{element._check.no}}</span>
+                                    <span *ngIf="!element._check">-</span>
+                                </td>
+                            </ng-container>
+                            <ng-container matColumnDef="date">
+                                <th mat-header-cell *matHeaderCellDef> Fecha </th>
+                                <td mat-cell *matCellDef="let element"> {{element.date | date: 'dd/MM/yyyy'}} </td>
+                            </ng-container>
+                            <ng-container matColumnDef="document">
+                                <th mat-header-cell *matHeaderCellDef> Documento </th>
+                                <td mat-cell *matCellDef="let element"> {{ element.document }}
+                                </td>
+                            </ng-container>
+                            <ng-container matColumnDef="credit">
+                                <th mat-header-cell *matHeaderCellDef> Tipo </th>
+                                <td mat-cell *matCellDef="let element">
+                                    <span *ngIf="element.credit === 'CHEQUE'">Cheque</span>
+                                    <span *ngIf="element.credit === 'DEPOSITO'">Deposito</span>
+                                    <span *ngIf="element.credit === 'TRANSFERENCIA'">Transferencia</span>
+                                    <span *ngIf="element.credit === 'EFECTIVO'">Efectivo</span>
+                                    <span *ngIf="element.credit === 'RETENCION_IVA'">Retención de IVA</span>
+                                    <span *ngIf="element.credit === 'RETENCION_ISR'">Retención de ISR</span>
+                                </td>
+                            </ng-container>
+                            <ng-container matColumnDef="amount">
+                                <th mat-header-cell *matHeaderCellDef> Total </th>
+                                <td mat-cell *matCellDef="let element"> Q {{ element.amount | number: '.2' }} </td>
+                            </ng-container>
+                            <!-- <ng-container matColumnDef="file">
+                            <th mat-header-cell *matHeaderCellDef> Archivo </th>
+                            <td mat-cell *matCellDef="let element"> {{ element.file }} </td>
+                        </ng-container> -->
+
+                            <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+                            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                        </table>
+                    </mat-card-content>
+                    <mat-card-actions>
+                        <!-- <button mat-button>Anular</button> -->
+                    </mat-card-actions>
+                </mat-card>
+            </div>
+        </div>
+    </ngx-simplebar>
+</ngx-simplebar>

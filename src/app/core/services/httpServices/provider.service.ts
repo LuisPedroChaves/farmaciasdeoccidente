@@ -65,6 +65,9 @@ export class ProviderService implements IDataService<ProviderItem[]> {
   updateProvider(u: ProviderItem): Observable<any> {
     return this.http.put(this.apiConfigService.API_PROVIDER + '/' + u._id, u);
   }
+  updateBalance(body: any): Observable<any> {
+    return this.http.put(`${this.apiConfigService.API_PROVIDER}/balance`, body);
+  }
   deleteProvider(u: ProviderItem): Observable<any> {
     return this.http.delete(this.apiConfigService.API_PROVIDER + '/' + u._id);
   }

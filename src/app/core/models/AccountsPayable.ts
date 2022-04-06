@@ -10,7 +10,6 @@ export interface AccountsPayableItem  {
   _provider: ProviderItem,
   _purchase: PurchaseItem,
   _expense: ExpenseItem,
-  _check: CheckItem,
   date: Date,
   serie: string,
   noBill: string,
@@ -25,20 +24,18 @@ export interface AccountsPayableItem  {
   total: number,
   type: string,
   file: string,
-  withholdingIVA: string,
-  amountIVA: number,
-  withholdingISR: string,
-  amountISR: number,
+  emptyWithholdingIVA: boolean,
+  emptyWithholdingISR: boolean,
   toCredit: boolean,
   expirationCredit: Date,
   paid: boolean,
 }
 
 export interface AccountsPayableBalanceItem {
-  _check: CheckItem,
+  _check?: CheckItem,
   date: Date,
   document: string,
   credit: string,
   amount: number,
-  file: string,
+  file?: string,
 }

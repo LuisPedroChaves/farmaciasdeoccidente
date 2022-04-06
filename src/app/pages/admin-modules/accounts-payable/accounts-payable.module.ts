@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 
+import { CoreModule } from 'src/app/core/core.module';
 import { IndexComponent } from './pages/index/index.component';
 import { SharedComponentsModule } from '../../shared-components/shared-components.module';
 import { AccountsPayableRoutes } from './accounts-payable.routing';
@@ -16,8 +17,12 @@ import { ComponentsModule } from '../../shared/components/components.module';
 import { FilterPipe } from 'src/app/core/shared/pipes/filterPipes/filter.pipe';
 import { ProgressBalanceComponent } from './components/progress-balance.component';
 import { NewCheckComponent } from './components/new-check/new-check.component';
-import { NumberToWordsPipe } from '../../../core/shared/pipes/formatPipes/number-to-words.pipe';
 import { NewProviderComponent } from './components/new-provider/new-provider.component';
+import { NewBalanceComponent } from './components/new-balance/new-balance.component';
+import { TableAccountsPayableComponent } from './components/table-accounts-payable/table-accounts-payable.component';
+import { AccountsPayableComponent } from './components/accounts-payable/accounts-payable.component';
+import { CheckComponent } from './components/check/check.component';
+import { CheckDeliveriesComponent } from './pages/check-deliveries/check-deliveries.component';
 
 @NgModule({
   declarations: [
@@ -30,18 +35,23 @@ import { NewProviderComponent } from './components/new-provider/new-provider.com
     ProviderAccountComponent,
     ProgressBalanceComponent,
     NewCheckComponent,
-    NewProviderComponent
+    NewProviderComponent,
+    NewBalanceComponent,
+    TableAccountsPayableComponent,
+    AccountsPayableComponent,
+    CheckComponent,
+    CheckDeliveriesComponent
   ],
   imports: [
     CommonModule,
     RouterModule.forChild(AccountsPayableRoutes),
     SharedComponentsModule,
     InputsModule,
-    ComponentsModule
+    ComponentsModule,
+    CoreModule
   ],
   providers: [
-    FilterPipe,
-    NumberToWordsPipe
+    FilterPipe
   ]
 })
 export class AccountsPayableModule { }

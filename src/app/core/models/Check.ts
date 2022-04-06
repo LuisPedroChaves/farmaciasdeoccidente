@@ -10,7 +10,17 @@ export interface CheckItem {
     name: string,
     amount: number,
     note: string,
+    receipt?: ICheckReceipt,
     accountsPayables: AccountsPayableItem[],
+    paymentDate?: Date,
+    bank: string,
     state: string,
-    delivered?: boolean
+    delivered?: boolean,
+    voided?: boolean,
+    created?: Date,
+}
+
+export interface ICheckReceipt {
+    no: string,
+    file: string,
 }

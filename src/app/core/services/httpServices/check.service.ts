@@ -3,10 +3,13 @@ import { HttpClient } from '@angular/common/http';
 
 import { Observable, Subject } from 'rxjs';
 import { map } from 'rxjs/operators';
+import * as moment from 'moment';
 
 import { IDataService } from '../config/i-data-service';
 import { CheckItem } from '../../models/Check';
 import { ApiConfigService } from '../config/api-config.service';
+import { PrintService } from '../internal/print.service';
+import { NumberToWordsPipe } from '../../shared/pipes/formatPipes/number-to-words.pipe';
 
 @Injectable({
   providedIn: 'root'
@@ -19,12 +22,14 @@ export class CheckService implements IDataService<CheckItem[]> {
 
   constructor(
     public http: HttpClient,
-    public apiConfigService: ApiConfigService
+    public apiConfigService: ApiConfigService,
+    private printService: PrintService,
+    private numberToWords: NumberToWordsPipe,
   ) { }
 
   loadData(): void {
     this.http
-      .get(`${this.apiConfigService.API_CHECK}`)
+      .get(`${this.apiConfigService.API_CHECK}/state`)
       .pipe(
         map((response: any) => {
 
@@ -56,12 +61,41 @@ export class CheckService implements IDataService<CheckItem[]> {
     }
   }
 
+  getToday(): Observable<any> {
+    return this.http.get(this.apiConfigService.API_CHECK + '/today');
+  }
+
+  getDeliveries(): Observable<any> {
+    return this.http.get(this.apiConfigService.API_CHECK + '/deliveries');
+  }
+
   create(check: CheckItem): Observable<any> {
     check._user = this.userID;
     return this.http.post(this.apiConfigService.API_CHECK, check);
   }
 
-  update(check: CheckItem): Observable<any> {
-    return this.http.put(this.apiConfigService.API_CHECK + '/' + check._id, check);
+  updateState(check: CheckItem): Observable<any> {
+    return this.http.put(`${this.apiConfigService.API_CHECK}/state/${check._id}`, check);
+  }
+
+  print(check: CheckItem) {
+    const body = [];
+
+    body.push({ text: '\n' });
+    body.push(
+      {
+        layout: 'noBorders',
+        table: {
+          widths: ['50%', '10%'],
+          headerRows: 1,
+          body: [
+            [{ text: `${check.city}, ${moment(check.date).format('DD [de] MMMM [de] YYYY')}`, style: 'text9' }, { text: check.amount.toFixed(2), style: 'text9' }],
+            [{ text: check.name, style: 'text9', colSpan: 2 }],
+            [{ text: this.numberToWords.transform(check.amount), style: 'text9', colSpan: 2 }],
+          ]
+        }
+      });
+
+    this.printService.print(body);
   }
 }

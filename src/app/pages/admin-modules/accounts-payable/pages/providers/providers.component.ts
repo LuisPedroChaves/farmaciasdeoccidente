@@ -26,7 +26,6 @@ export class ProvidersComponent implements OnInit, AfterContentInit, OnDestroy {
     _provider: null,
     _purchase: null,
     _expense: null,
-    _check: null,
     date: null,
     serie: '',
     noBill: '',
@@ -41,10 +40,8 @@ export class ProvidersComponent implements OnInit, AfterContentInit, OnDestroy {
     total: 0,
     type: 'PRODUCTOS',
     file: '',
-    withholdingIVA: '',
-    amountIVA: 0,
-    withholdingISR: '',
-    amountISR: 0,
+    emptyWithholdingIVA: false,
+    emptyWithholdingISR: false,
     toCredit: false,
     expirationCredit: null,
     paid: false,
@@ -98,9 +95,49 @@ export class ProvidersComponent implements OnInit, AfterContentInit, OnDestroy {
 
   selectProvider(provider: ProviderItem) {
     this.drawerComponent = 'PROVEEDOR'
-    this.title = `${provider.nit} - ${provider.name}`
+    this.title = `${provider.nit} | ${provider.name}`
     this.provider = provider;
     this.drawer.opened = true;
+  }
+
+  getAccountsPayable(accountsPayable: AccountsPayableItem): void {
+    this.drawerComponent = 'CUENTA'
+    this.accountsPayable = accountsPayable;
+  }
+
+  getAmount(amount: number): void {
+    this.provider.balance -= amount;
+  }
+
+  reset() {
+    this.drawerComponent = 'DOCUMENTO';
+    this.drawer.opened = false;
+    this.accountsPayable = {
+      _id: null,
+      _user: null,
+      _provider: null,
+      _purchase: null,
+      _expense: null,
+      date: null,
+      serie: '',
+      noBill: '',
+      docType: '',
+      balance: [],
+      unaffectedAmount: 0,
+      exemptAmount: 0,
+      netPurchaseAmount: 0,
+      netServiceAmount: 0,
+      otherTaxes: 0,
+      iva: 0,
+      total: 0,
+      type: 'PRODUCTOS',
+      file: '',
+      emptyWithholdingIVA: false,
+      emptyWithholdingISR: false,
+      toCredit: false,
+      expirationCredit: null,
+      paid: false,
+    };
   }
 
   reload() {

@@ -1,0 +1,31 @@
+.layout {
+    height: calc(100vh - 192px);
+    background-color: #fafafa;
+}
+
+header {
+    padding: 9px 15px 0px 15px;
+}
+
+.content {
+    height: calc(100vh - 266px);
+    padding: 10px 0px 15px 0px;
+}
+
+mat-card {
+    border-radius: 10px;
+}
+
+table {
+    margin-bottom: 24px;
+    border-radius: 10px;
+}
+
+.mat-table-sticky {
+    background: #f6fbe6;
+    opacity: 1;
+}
+
+.warning {
+    color: brown;
+}

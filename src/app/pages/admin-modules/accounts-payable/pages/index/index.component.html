@@ -17,9 +17,15 @@
             </mat-chip>
             <mat-chip [routerLink]="['/admin/accountsPayable/cheques']" [selected]="router.url === '/admin/accountsPayable/cheques'" color="primary">
                 <mat-chip-avatar>
-                    <mat-icon>account_balance</mat-icon>
+                    <mat-icon>local_atm</mat-icon>
                 </mat-chip-avatar>
                 Cheques
+            </mat-chip>
+            <mat-chip [routerLink]="['/admin/accountsPayable/checkDeliveries']" [selected]="router.url === '/admin/accountsPayable/checkDeliveries'" color="primary">
+                <mat-chip-avatar>
+                    <mat-icon>local_atm</mat-icon>
+                </mat-chip-avatar>
+                Entregas
             </mat-chip>
         </mat-chip-list>
     </header>

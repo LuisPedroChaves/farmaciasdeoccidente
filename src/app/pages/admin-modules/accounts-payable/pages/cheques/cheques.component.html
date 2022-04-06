@@ -1,294 +1,87 @@
-<mat-drawer-container class="my-layout">
-    <mat-drawer #drawer class="sidenav" position="end" mode="over">
-        <header fxLayout="row wrap" fxLayoutAlign="start center">
-            <h2 class="ma-0">{{title}}</h2>
+<mat-drawer-container>
+    <ngx-simplebar class="my-layout">
+        <mat-drawer #drawer class="sidenav" position="end" mode="over">
+            <header fxLayout="row wrap" fxLayoutAlign="start center">
+                <h2 class="ma-0">{{title}}</h2>
+                <span fxFlex></span>
+                <button mat-icon-button (click)="drawer.opened = false">
+          <mat-icon>close</mat-icon>
+        </button>
+            </header>
+            <app-new-edit *ngIf="drawerComponent === 'DOCUMENTO'" [accountsPayable]="accountsPayable" (close)="drawer.opened = false"></app-new-edit>
+            <app-provider-account *ngIf="drawerComponent === 'PROVEEDOR'" [provider]="provider" (close)="drawer.opened = false">
+            </app-provider-account>
+        </mat-drawer>
+        <header>
+            <app-filter (send)="applyFilter($event)"></app-filter>
             <span fxFlex></span>
-            <button mat-icon-button (click)="drawer.opened = false">
-        <mat-icon>close</mat-icon>
+            <button mat-fab color="warn" [matMenuTriggerFor]="payablesMenu" matTooltip="Nuevo documento">
+        <mat-icon>add</mat-icon>
       </button>
+            <mat-menu #payablesMenu="matMenu" xPosition="before">
+                <button mat-menu-item (click)="newDocument('PRODUCTOS')">
+          <mat-icon>medication</mat-icon>
+          <span>Productos</span>
+        </button>
+                <button mat-menu-item (click)="newDocument('GASTOS')">
+          <mat-icon>payments</mat-icon>
+          <span>Gastos</span>
+        </button>
+            </mat-menu>
         </header>
-        <app-new-edit *ngIf="drawerComponent === 'DOCUMENTO'" [accountsPayable]="accountsPayable" (close)="drawer.opened = false"></app-new-edit>
-        <app-provider-account *ngIf="drawerComponent === 'PROVEEDOR'" [provider]="provider" (close)="drawer.opened = false">
-        </app-provider-account>
-    </mat-drawer>
-    <header>
-        <app-filter></app-filter>
-        <span fxFlex></span>
-        <button mat-fab color="warn" [matMenuTriggerFor]="payablesMenu" matTooltip="Nuevo documento">
-      <mat-icon>add</mat-icon>
-    </button>
-        <mat-menu #payablesMenu="matMenu" xPosition="before">
-            <button mat-menu-item (click)="newDocument('PRODUCTOS')">
-        <mat-icon>medication</mat-icon>
-        <span>Productos</span>
-      </button>
-            <button mat-menu-item (click)="newDocument('GASTOS')">
-        <mat-icon>payments</mat-icon>
-        <span>Gastos</span>
-      </button>
-        </mat-menu>
-    </header>
-    <mat-tab-group mat-align-tabs="center">
-        <mat-tab>
-            <ng-template mat-tab-label>
-                <span [matBadge]="2" matBadgeOverlap="false" matBadgeColor="primary">
-          Del día
-        </span>
-            </ng-template>
-            <ng-template matTabContent>
+        <mat-progress-bar *ngIf="loading" mode="indeterminate" color="warn"></mat-progress-bar>
+        <mat-tab-group mat-align-tabs="center">
+            <mat-tab [label]="'Del día (' + checksToday.length + ')'">
                 <ngx-simplebar class="content">
-                    <mat-progress-bar *ngIf="loading" mode="indeterminate" color="warn"></mat-progress-bar>
-                    <table mat-table [dataSource]="dataSource">
-
-
-                        <ng-container matColumnDef="no">
-                            <th mat-header-cell *matHeaderCellDef> No. Cheque </th>
-                            <td mat-cell *matCellDef="let element"> {{element.no}}</td>
-                        </ng-container>
-
-                        <ng-container matColumnDef="city">
-                            <th mat-header-cell *matHeaderCellDef> Lugar </th>
-                            <td mat-cell *matCellDef="let element"> {{element.city}}</td>
-                        </ng-container>
-
-                        <ng-container matColumnDef="date">
-                            <th mat-header-cell *matHeaderCellDef> Fecha </th>
-                            <td mat-cell *matCellDef="let element"> {{element.date | date: 'dd/MM/yyyy'}} </td>
-                        </ng-container>
-
-                        <ng-container matColumnDef="name">
-                            <th mat-header-cell *matHeaderCellDef> Nombre </th>
-                            <td mat-cell *matCellDef="let element">
-                                {{element.name }}
-                            </td>
-                        </ng-container>
-
-                        <ng-container matColumnDef="description">
-                            <th mat-header-cell *matHeaderCellDef> Detalles </th>
-                            <td mat-cell *matCellDef="let element">
-                                {{element.description }}
-                            </td>
-                        </ng-container>
-
-                        <ng-container matColumnDef="amount">
-                            <th mat-header-cell *matHeaderCellDef> Monto (Q) </th>
-                            <td mat-cell *matCellDef="let element">
-                                {{element.amount | number: '.2' }}
-                            </td>
-                        </ng-container>
-
-                        <ng-container matColumnDef="state">
-                            <th mat-header-cell *matHeaderCellDef> Estado </th>
-                            <td mat-cell *matCellDef="let element">
-                                {{element.state }}
-                            </td>
-                        </ng-container>
-
-                        <tr mat-header-row *matHeaderRowDef="columns;  sticky: true"></tr>
-                        <tr mat-row *matRowDef="let row; columns: columns;"></tr>
-                        <!-- Fila mostrada cuando no hay datos coincidentes. -->
-                        <tr class="mat-row" *matNoDataRow>
-                            <td class="mat-cell" colspan="13">No hay datos que coincidan con algún filtro o busqueda</td>
-                        </tr>
-                    </table>
+                    <app-no-found *ngIf="!checksToday || checksToday.length === 0" text="No se encontraron cheques" subtitle="Actualmente no hay cheques para el día de hoy"></app-no-found>
+                    <div fxLayout="row wrap" fxLayoutGap="15px grid" class="grid">
+                        <div fxFlex.gt-lg="20" fxFlex.gt-md="33" fxFlex.gt-sm="50" fxFlex.lt-md="100" *ngFor="let check of checksToday; let i = index">
+                            <app-check (sendId)="getVoided($event)" [i]="i" [check]="check"></app-check>
+                        </div>
+                    </div>
                 </ngx-simplebar>
-            </ng-template>
-        </mat-tab>
-        <mat-tab>
-            <ng-template mat-tab-label>
-                <span [matBadge]="7" matBadgeOverlap="false" matBadgeColor="warn">
-                    Desbloqueados
-        </span>
-            </ng-template>
-            <ng-template matTabContent>
+            </mat-tab>
+            <mat-tab [label]="'Girados (' + checksCreated.length + ')'">
                 <ngx-simplebar class="content">
-                    <mat-progress-bar *ngIf="loading" mode="indeterminate" color="warn"></mat-progress-bar>
-                    <table mat-table [dataSource]="dataSource">
-
-
-                        <ng-container matColumnDef="no">
-                            <th mat-header-cell *matHeaderCellDef> No. Cheque </th>
-                            <td mat-cell *matCellDef="let element"> {{element.no}}</td>
-                        </ng-container>
-
-                        <ng-container matColumnDef="city">
-                            <th mat-header-cell *matHeaderCellDef> Lugar </th>
-                            <td mat-cell *matCellDef="let element"> {{element.city}}</td>
-                        </ng-container>
-
-                        <ng-container matColumnDef="date">
-                            <th mat-header-cell *matHeaderCellDef> Fecha </th>
-                            <td mat-cell *matCellDef="let element"> {{element.date | date: 'dd/MM/yyyy'}} </td>
-                        </ng-container>
-
-                        <ng-container matColumnDef="name">
-                            <th mat-header-cell *matHeaderCellDef> Nombre </th>
-                            <td mat-cell *matCellDef="let element">
-                                {{element.name }}
-                            </td>
-                        </ng-container>
-
-                        <ng-container matColumnDef="description">
-                            <th mat-header-cell *matHeaderCellDef> Detalles </th>
-                            <td mat-cell *matCellDef="let element">
-                                {{element.description }}
-                            </td>
-                        </ng-container>
-
-                        <ng-container matColumnDef="amount">
-                            <th mat-header-cell *matHeaderCellDef> Monto (Q) </th>
-                            <td mat-cell *matCellDef="let element">
-                                {{element.amount | number: '.2' }}
-                            </td>
-                        </ng-container>
-
-                        <ng-container matColumnDef="state">
-                            <th mat-header-cell *matHeaderCellDef> Estado </th>
-                            <td mat-cell *matCellDef="let element">
-                                {{element.state }}
-                            </td>
-                        </ng-container>
-
-                        <tr mat-header-row *matHeaderRowDef="columns;  sticky: true"></tr>
-                        <tr mat-row *matRowDef="let row; columns: columns;"></tr>
-                        <!-- Fila mostrada cuando no hay datos coincidentes. -->
-                        <tr class="mat-row" *matNoDataRow>
-                            <td class="mat-cell" colspan="13">No hay datos que coincidan con algún filtro o busqueda</td>
-                        </tr>
-                    </table>
+                    <app-no-found *ngIf="!checksCreated || checksCreated.length === 0" text="No se encontraron cheques" subtitle="Actualmente no hay cheques girados"></app-no-found>
+                    <div fxLayout="row wrap" fxLayoutGap="15px grid" class="grid">
+                        <div fxFlex.gt-lg="20" fxFlex.gt-md="33" fxFlex.gt-sm="50" fxFlex.lt-md="100" *ngFor="let check of checksCreated; let i = index">
+                            <app-check (sendId)="getVoided($event)" [i]="i" [check]="check"></app-check>
+                        </div>
+                    </div>
                 </ngx-simplebar>
-            </ng-template>
-        </mat-tab>
-        <mat-tab>
-            <ng-template mat-tab-label>
-                <span [matBadge]="15" matBadgeOverlap="false" matBadgeColor="warn">
-                    Pagados
-        </span>
-            </ng-template>
-            <ng-template matTabContent>
+            </mat-tab>
+            <mat-tab [label]="'Interbanco (' + checksInter.length + ')'">
                 <ngx-simplebar class="content">
-                    <mat-progress-bar *ngIf="loading" mode="indeterminate" color="warn"></mat-progress-bar>
-                    <table mat-table [dataSource]="dataSource">
-
-
-                        <ng-container matColumnDef="no">
-                            <th mat-header-cell *matHeaderCellDef> No. Cheque </th>
-                            <td mat-cell *matCellDef="let element"> {{element.no}}</td>
-                        </ng-container>
-
-                        <ng-container matColumnDef="city">
-                            <th mat-header-cell *matHeaderCellDef> Lugar </th>
-                            <td mat-cell *matCellDef="let element"> {{element.city}}</td>
-                        </ng-container>
-
-                        <ng-container matColumnDef="date">
-                            <th mat-header-cell *matHeaderCellDef> Fecha </th>
-                            <td mat-cell *matCellDef="let element"> {{element.date | date: 'dd/MM/yyyy'}} </td>
-                        </ng-container>
-
-                        <ng-container matColumnDef="name">
-                            <th mat-header-cell *matHeaderCellDef> Nombre </th>
-                            <td mat-cell *matCellDef="let element">
-                                {{element.name }}
-                            </td>
-                        </ng-container>
-
-                        <ng-container matColumnDef="description">
-                            <th mat-header-cell *matHeaderCellDef> Detalles </th>
-                            <td mat-cell *matCellDef="let element">
-                                {{element.description }}
-                            </td>
-                        </ng-container>
-
-                        <ng-container matColumnDef="amount">
-                            <th mat-header-cell *matHeaderCellDef> Monto (Q) </th>
-                            <td mat-cell *matCellDef="let element">
-                                {{element.amount | number: '.2' }}
-                            </td>
-                        </ng-container>
-
-                        <ng-container matColumnDef="state">
-                            <th mat-header-cell *matHeaderCellDef> Estado </th>
-                            <td mat-cell *matCellDef="let element">
-                                {{element.state }}
-                            </td>
-                        </ng-container>
-
-                        <tr mat-header-row *matHeaderRowDef="columns;  sticky: true"></tr>
-                        <tr mat-row *matRowDef="let row; columns: columns;"></tr>
-                        <!-- Fila mostrada cuando no hay datos coincidentes. -->
-                        <tr class="mat-row" *matNoDataRow>
-                            <td class="mat-cell" colspan="13">No hay datos que coincidan con algún filtro o busqueda</td>
-                        </tr>
-                    </table>
+                    <app-no-found *ngIf="!checksInter || checksInter.length === 0" text="No se encontraron cheques" subtitle="Actualmente no hay cheques aprobados por Interbanco"></app-no-found>
+                    <div fxLayout="row wrap" fxLayoutGap="15px grid" class="grid">
+                        <div fxFlex.gt-lg="20" fxFlex.gt-md="33" fxFlex.gt-sm="50" fxFlex.lt-md="100" *ngFor="let check of checksInter; let i = index">
+                            <app-check (sendId)="getVoided($event)" [i]="i" [check]="check"></app-check>
+                        </div>
+                    </div>
                 </ngx-simplebar>
-            </ng-template>
-        </mat-tab>
-        <mat-tab>
-            <ng-template mat-tab-label>
-                <span [matBadge]="36" matBadgeOverlap="false" matBadgeColor="warn">
-                    Girados
-        </span>
-            </ng-template>
-            <ng-template matTabContent>
+            </mat-tab>
+            <mat-tab [label]="'En Espera (' + checksWait.length + ')'">
                 <ngx-simplebar class="content">
-                    <mat-progress-bar *ngIf="loading" mode="indeterminate" color="warn"></mat-progress-bar>
-                    <table mat-table [dataSource]="dataSource">
-
-
-                        <ng-container matColumnDef="no">
-                            <th mat-header-cell *matHeaderCellDef> No. Cheque </th>
-                            <td mat-cell *matCellDef="let element"> {{element.no}}</td>
-                        </ng-container>
-
-                        <ng-container matColumnDef="city">
-                            <th mat-header-cell *matHeaderCellDef> Lugar </th>
-                            <td mat-cell *matCellDef="let element"> {{element.city}}</td>
-                        </ng-container>
-
-                        <ng-container matColumnDef="date">
-                            <th mat-header-cell *matHeaderCellDef> Fecha </th>
-                            <td mat-cell *matCellDef="let element"> {{element.date | date: 'dd/MM/yyyy'}} </td>
-                        </ng-container>
-
-                        <ng-container matColumnDef="name">
-                            <th mat-header-cell *matHeaderCellDef> Nombre </th>
-                            <td mat-cell *matCellDef="let element">
-                                {{element.name }}
-                            </td>
-                        </ng-container>
-
-                        <ng-container matColumnDef="description">
-                            <th mat-header-cell *matHeaderCellDef> Detalles </th>
-                            <td mat-cell *matCellDef="let element">
-                                {{element.description }}
-                            </td>
-                        </ng-container>
-
-                        <ng-container matColumnDef="amount">
-                            <th mat-header-cell *matHeaderCellDef> Monto (Q) </th>
-                            <td mat-cell *matCellDef="let element">
-                                {{element.amount | number: '.2' }}
-                            </td>
-                        </ng-container>
-
-                        <ng-container matColumnDef="state">
-                            <th mat-header-cell *matHeaderCellDef> Estado </th>
-                            <td mat-cell *matCellDef="let element">
-                                {{element.state }}
-                            </td>
-                        </ng-container>
-
-                        <tr mat-header-row *matHeaderRowDef="columns;  sticky: true"></tr>
-                        <tr mat-row *matRowDef="let row; columns: columns;"></tr>
-                        <!-- Fila mostrada cuando no hay datos coincidentes. -->
-                        <tr class="mat-row" *matNoDataRow>
-                            <td class="mat-cell" colspan="13">No hay datos que coincidan con algún filtro o busqueda</td>
-                        </tr>
-                    </table>
+                    <app-no-found *ngIf="!checksWait || checksWait.length === 0" text="No se encontraron cheques" subtitle="Actualmente no hay cheques en espera"></app-no-found>
+                    <div fxLayout="row wrap" fxLayoutGap="15px grid" class="grid">
+                        <div fxFlex.gt-lg="20" fxFlex.gt-md="33" fxFlex.gt-sm="50" fxFlex.lt-md="100" *ngFor="let check of checksWait; let i = index">
+                            <app-check (sendId)="getVoided($event)" [i]="i" [check]="check"></app-check>
+                        </div>
+                    </div>
                 </ngx-simplebar>
-            </ng-template>
-        </mat-tab>
-        <mat-tab label="Historial">En proceso... </mat-tab>
-    </mat-tab-group>
+            </mat-tab>
+            <mat-tab [label]="'Autorizados (' + checksAuth.length + ')'">
+                <ngx-simplebar class="content">
+                    <app-no-found *ngIf="!checksAuth || checksAuth.length === 0" text="No se encontraron cheques" subtitle="Actualmente no hay cheques autorizados"></app-no-found>
+                    <div fxLayout="row wrap" fxLayoutGap="15px grid" class="grid">
+                        <div fxFlex.gt-lg="20" fxFlex.gt-md="33" fxFlex.gt-sm="50" fxFlex.lt-md="100" *ngFor="let check of checksAuth; let i = index">
+                            <app-check (sendId)="getVoided($event)" [i]="i" [check]="check"></app-check>
+                        </div>
+                    </div>
+                </ngx-simplebar>
+            </mat-tab>
+            <mat-tab label="Historial">En proceso... </mat-tab>
+        </mat-tab-group>
+    </ngx-simplebar>
 </mat-drawer-container>
