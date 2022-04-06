@@ -21,6 +21,8 @@ import { NewProviderComponent } from './components/new-provider/new-provider.com
 import { NewBalanceComponent } from './components/new-balance/new-balance.component';
 import { TableAccountsPayableComponent } from './components/table-accounts-payable/table-accounts-payable.component';
 import { AccountsPayableComponent } from './components/accounts-payable/accounts-payable.component';
+import { CheckComponent } from './components/check/check.component';
+import { CheckDeliveriesComponent } from './pages/check-deliveries/check-deliveries.component';
 
 @NgModule({
   declarations: [
@@ -36,7 +38,9 @@ import { AccountsPayableComponent } from './components/accounts-payable/accounts
     NewProviderComponent,
     NewBalanceComponent,
     TableAccountsPayableComponent,
-    AccountsPayableComponent
+    AccountsPayableComponent,
+    CheckComponent,
+    CheckDeliveriesComponent
   ],
   imports: [
     CommonModule,

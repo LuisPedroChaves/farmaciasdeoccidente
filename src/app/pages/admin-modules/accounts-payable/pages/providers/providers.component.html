@@ -9,7 +9,7 @@
         </header>
         <app-new-edit *ngIf="drawerComponent === 'DOCUMENTO'" [accountsPayable]="accountsPayable" (close)="reload()"></app-new-edit>
         <app-provider-account *ngIf="drawerComponent === 'PROVEEDOR'" (sendAccountsPayable)="getAccountsPayable($event)" [provider]="provider"></app-provider-account>
-        <app-accounts-payable *ngIf="drawerComponent === 'CUENTA'" (return)="drawerComponent = 'PROVEEDOR'" [accountsPayable]="accountsPayable"></app-accounts-payable>
+        <app-accounts-payable *ngIf="drawerComponent === 'CUENTA'" (return)="drawerComponent = 'PROVEEDOR'" (sendAmount)="getAmount($event)" [accountsPayable]="accountsPayable"></app-accounts-payable>
     </mat-drawer>
     <header>
         <app-filter (send)="applyFilter($event)"></app-filter>

@@ -19,6 +19,8 @@ export class AccountsPayableComponent implements OnInit, OnChanges {
   accountsPayable: AccountsPayableItem;
   @Output()
   return = new EventEmitter();
+  @Output()
+  sendAmount = new EventEmitter();
 
   form = new FormGroup({
     date: new FormControl('', Validators.required),
@@ -70,13 +72,13 @@ export class AccountsPayableComponent implements OnInit, OnChanges {
 
     this.accountsPayable.balance.push({ ...this.form.value })
     this.accountsPayableService.update(this.accountsPayable)
-    .pipe(
-      switchMap(({ resp }) => this.providerService.updateBalance({
-        _provider: this.accountsPayable._provider._id,
-        amount: AMOUNT,
-        action: 'RESTA'
-      }))
-    )
+      .pipe(
+        switchMap(({ resp }) => this.providerService.updateBalance({
+          _provider: this.accountsPayable._provider._id,
+          amount: AMOUNT,
+          action: 'RESTA'
+        }))
+      )
       .subscribe(resp => {
         this.toastyService.success('Retención ingresada exitosamente');
         this.dataSource = new MatTableDataSource<AccountsPayableBalanceItem>(this.accountsPayable.balance);
@@ -84,6 +86,7 @@ export class AccountsPayableComponent implements OnInit, OnChanges {
         this.form.reset({
           credit: ''
         });
+        this.sendAmount.emit(AMOUNT);
         this.loading = false;
       })
   }

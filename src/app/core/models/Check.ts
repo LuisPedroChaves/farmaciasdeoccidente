@@ -16,6 +16,7 @@ export interface CheckItem {
     bank: string,
     state: string,
     delivered?: boolean,
+    voided?: boolean,
     created?: Date,
 }
 

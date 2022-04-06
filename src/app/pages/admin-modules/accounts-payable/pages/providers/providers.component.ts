@@ -105,6 +105,10 @@ export class ProvidersComponent implements OnInit, AfterContentInit, OnDestroy {
     this.accountsPayable = accountsPayable;
   }
 
+  getAmount(amount: number): void {
+    this.provider.balance -= amount;
+  }
+
   reset() {
     this.drawerComponent = 'DOCUMENTO';
     this.drawer.opened = false;

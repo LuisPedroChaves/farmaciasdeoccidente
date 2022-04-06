@@ -315,7 +315,7 @@ export class NewEditComponent implements OnInit, AfterContentInit, OnDestroy {
           }else if (this.accountsPayable.type === 'GASTOS') {
             // Si es un documento de gastos entonces los estados del cheque cambian
             this.formCheck.controls.bank.setValue('BANRURAL');
-            this.formCheck.controls.state.setValue('INTERBANCO'); // Interbanco es un estado
+            this.formCheck.controls.state.setValue('ESPERA');
           }
         }
       }

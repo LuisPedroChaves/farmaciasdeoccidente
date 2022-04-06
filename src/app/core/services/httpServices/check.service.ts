@@ -29,7 +29,7 @@ export class CheckService implements IDataService<CheckItem[]> {
 
   loadData(): void {
     this.http
-      .get(`${this.apiConfigService.API_CHECK}`)
+      .get(`${this.apiConfigService.API_CHECK}/state`)
       .pipe(
         map((response: any) => {
 
@@ -65,13 +65,17 @@ export class CheckService implements IDataService<CheckItem[]> {
     return this.http.get(this.apiConfigService.API_CHECK + '/today');
   }
 
+  getDeliveries(): Observable<any> {
+    return this.http.get(this.apiConfigService.API_CHECK + '/deliveries');
+  }
+
   create(check: CheckItem): Observable<any> {
     check._user = this.userID;
     return this.http.post(this.apiConfigService.API_CHECK, check);
   }
 
-  update(check: CheckItem): Observable<any> {
-    return this.http.put(this.apiConfigService.API_CHECK + '/' + check._id, check);
+  updateState(check: CheckItem): Observable<any> {
+    return this.http.put(`${this.apiConfigService.API_CHECK}/state/${check._id}`, check);
   }
 
   print(check: CheckItem) {
