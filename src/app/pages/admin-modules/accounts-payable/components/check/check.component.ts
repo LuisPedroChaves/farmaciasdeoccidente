@@ -5,6 +5,7 @@ import { CheckItem } from 'src/app/core/models/Check';
 import { CheckService } from 'src/app/core/services/httpServices/check.service';
 import { ToastyService } from 'src/app/core/services/internal/toasty.service';
 import { ConfirmationDialogComponent } from 'src/app/pages/shared-components/confirmation-dialog/confirmation-dialog.component';
+import { EnterPaymentComponent } from '../enter-payment/enter-payment.component';
 
 @Component({
   selector: 'app-check',
@@ -78,6 +79,39 @@ export class CheckComponent implements OnInit {
     dialogRef.afterClosed().subscribe((result) => {
       if (result !== undefined) {
         check.state = state;
+
+        this.checkService.updateState(check)
+          .subscribe(resp => {
+            this.toastyService.success('Cheque actualizado exitosamente')
+            const { state, paymentDate, receipt, delivered } = resp.check;
+            this.check.state = state;
+            this.check.paymentDate = paymentDate;
+            this.check.receipt = receipt;
+            this.check.delivered = delivered;
+            this.checkService.loadData();
+          })
+      }
+    });
+  }
+
+  pay(check: CheckItem, state: string): void {
+    const dialogRef = this.dialog.open(EnterPaymentComponent, {
+      width: '350px',
+      data: {
+        message:
+          '¿Confirma que desea actualizar el cheque:  ' +
+          check.no +
+          '?',
+        check
+      },
+      disableClose: true,
+      panelClass: ['farmacia-dialog', 'farmacia'],
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result !== undefined) {
+        check.state = state;
+        check.receipt.no = result;
 
         this.checkService.updateState(check)
           .subscribe(resp => {
