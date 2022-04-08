@@ -1,0 +1,25 @@
+<header class="header" fxLayout="row wrap" fxLayoutAlign="center center">
+    <h2 class="product-font">Pagar cheque</h2>
+</header>
+<div class="message" fxLayout="row wrap" fxLayoutAlign="center center" *ngIf="data.message">
+    {{ data.message }}
+</div>
+<mat-card-content>
+    <mat-form-field fxFill>
+        <mat-label>No. recibo</mat-label>
+        <input matInput [(ngModel)]="noReceipt" placeholder="Ingresar el número de recibo">
+    </mat-form-field>
+
+    <mat-form-field fxFill *ngIf="data.check && !data.check.receipt.file">
+        <ngx-mat-file-input #removableInput [(ngModel)]="data.check.receipt.file" placeholder="Ingrese un archivo" (change)="upload($event.target.files[0], data.check)">
+        </ngx-mat-file-input>
+        <button mat-icon-button matSuffix *ngIf="!removableInput.empty" (click)="removableInput.clear($event)">
+      <mat-icon>clear</mat-icon>
+    </button>
+    </mat-form-field>
+</mat-card-content>
+<div fxLayout="row wrap" class="options">
+    <button mat-button color="primary" (click)="dialogRef.close()">Cancelar</button>
+    <span fxFlex></span>
+    <button mat-stroked-button color="primary" (click)="dialogRef.close(noReceipt)">Aceptar</button>
+</div>

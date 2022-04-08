@@ -8,6 +8,8 @@ import { ProviderItem } from '../../../../../core/models/Provider';
 import { AccountsPayableService } from '../../../../../core/services/httpServices/accounts-payable.service';
 import { AccountsPayableItem } from '../../../../../core/models/AccountsPayable';
 import { ToastyService } from '../../../../../core/services/internal/toasty.service';
+import { FormControl, FormGroup } from '@angular/forms';
+import { debounceTime } from 'rxjs/operators';
 
 interface totalSelection {
   facturas: {
@@ -57,13 +59,30 @@ export class ProviderAccountComponent implements OnInit, AfterContentInit, OnDes
   filterProcess = '';
   /* #endregion */
 
+/* #region  Historial */
+  accountsPayablesHistory: AccountsPayableItem[];
+  filterHistory = '';
+  range = new FormGroup({
+    start: new FormControl(),
+    end: new FormControl()
+  });
+/* #endregion */
+
   constructor(
     private accountsPayableService: AccountsPayableService,
     private toastyService: ToastyService
   ) { }
 
   ngOnInit(): void {
-
+    this.range.valueChanges
+    .pipe(
+      debounceTime(500),
+    )
+    .subscribe(range => {
+      if (range.start && range.end) {
+        this.getHistory(range.start._d, range.end._d);
+      }
+    });
   }
 
   ngAfterContentInit(): void {
@@ -106,6 +125,19 @@ export class ProviderAccountComponent implements OnInit, AfterContentInit, OnDes
 
   applyFilterProcess(filter: string) {
     this.filterProcess = filter;
+  }
+
+  applyFilterHistory(filter: string) {
+    this.filterHistory = filter;
+  }
+
+  getHistory(startDate, EndDate) {
+    this.loading = true;
+    this.accountsPayableService.getHistory(startDate, EndDate, this.provider._id)
+      .subscribe(data => {
+        this.accountsPayablesHistory = data;
+        this.loading = false;
+      });
   }
 
   /* #region  Selected */

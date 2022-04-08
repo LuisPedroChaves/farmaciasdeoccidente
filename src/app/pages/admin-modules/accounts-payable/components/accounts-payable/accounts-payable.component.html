@@ -51,7 +51,7 @@
                                     <b>Fecha de vencimiento</b>: {{accountsPayable.expirationCredit | date: 'dd/MM/yyyy' }}
                                 </div>
                                 <mat-chip-list selectable="false">
-                                    <mat-chip *ngIf="expired(accountsPayable.expirationCredit)"><span class="warning">Vencido</span>
+                                    <mat-chip *ngIf="!accountsPayable.paid && accountsPayable.expirationCredit && expired(accountsPayable.expirationCredit)"><span class="warning">Vencido</span>
                                     </mat-chip>
                                     <mat-chip *ngIf="accountsPayable.paid" color="warn" selected>Pagado</mat-chip>
                                     <mat-chip *ngIf="!accountsPayable.paid" class="warning">Pendiente de pago</mat-chip>

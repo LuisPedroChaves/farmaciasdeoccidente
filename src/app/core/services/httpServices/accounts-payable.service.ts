@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 
 import { Observable, Subject } from 'rxjs';
 import { map } from 'rxjs/operators';
@@ -54,6 +54,17 @@ export class AccountsPayableService implements IDataService<AccountsPayableItem[
     } else {
       delete this.accountsPayableList;
     }
+  }
+
+  getHistory(startDate, endDate, _provider: string = null): Observable<any> {
+    return this.http.get(`${this.apiConfigService.API_ACCOUNTS_PAYABLE}/history/${_provider}`, {
+      params: new HttpParams()
+      .set('startDate', startDate.toString())
+      .set('endDate', endDate.toString())
+    })
+      .pipe(
+        map((resp: any) => resp.accountsPayables)
+      );
   }
 
   create(accountPayable: AccountsPayableItem): Observable<any> {

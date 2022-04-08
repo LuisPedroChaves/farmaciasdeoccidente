@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 
 import { Observable, Subject } from 'rxjs';
 import { map } from 'rxjs/operators';
@@ -67,6 +67,17 @@ export class CheckService implements IDataService<CheckItem[]> {
 
   getDeliveries(): Observable<any> {
     return this.http.get(this.apiConfigService.API_CHECK + '/deliveries');
+  }
+
+  getHistory(startDate, endDate): Observable<any> {
+    return this.http.get(`${this.apiConfigService.API_CHECK}/history`, {
+      params: new HttpParams()
+      .set('startDate', startDate.toString())
+      .set('endDate', endDate.toString())
+    })
+      .pipe(
+        map((resp: any) => resp.checks)
+      );
   }
 
   create(check: CheckItem): Observable<any> {

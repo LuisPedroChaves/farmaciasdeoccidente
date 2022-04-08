@@ -1,7 +1,9 @@
 import { AfterContentInit, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { FormControl, FormGroup } from '@angular/forms';
 import { MatDrawer } from '@angular/material/sidenav';
 
 import { Subscription } from 'rxjs';
+import { debounceTime } from 'rxjs/operators';
 
 import { AccountsPayableItem } from 'src/app/core/models/AccountsPayable';
 import { CheckItem } from 'src/app/core/models/Check';
@@ -60,6 +62,15 @@ export class ChequesComponent implements OnInit, AfterContentInit, OnDestroy {
   checksAuth: CheckItem[] = [];
   checksAuthTemp: CheckItem[] = [];
 
+  /* #region  Historial */
+  checksHistory: CheckItem[] = [];
+  checksHistoryTemp: CheckItem[] = [];
+  range = new FormGroup({
+    start: new FormControl(),
+    end: new FormControl()
+  });
+  /* #endregion */
+
   constructor(
     private checkService: CheckService,
     private filter: FilterPipe
@@ -74,16 +85,26 @@ export class ChequesComponent implements OnInit, AfterContentInit, OnDestroy {
         this.loading = false;
       });
 
-      this.checkSubscription = this.checkService.readData().subscribe((data) => {
-        this.checksCreatedTemp = data.filter(d => d.state === "CREADO");
-        this.checksCreated = this.checksCreatedTemp;
-        this.checksInterTemp = data.filter(d => d.state === "INTERBANCO");
-        this.checksInter = this.checksInterTemp;
-        this.checksWaitTemp = data.filter(d => d.state === "ESPERA");
-        this.checksWait = this.checksWaitTemp;
-        this.checksAuthTemp = data.filter(d => d.state === "AUTORIZADO");
-        this.checksAuth = this.checksAuthTemp;
-        this.loading = false
+    this.checkSubscription = this.checkService.readData().subscribe((data) => {
+      this.checksCreatedTemp = data.filter(d => d.state === "CREADO");
+      this.checksCreated = this.checksCreatedTemp;
+      this.checksInterTemp = data.filter(d => d.state === "INTERBANCO");
+      this.checksInter = this.checksInterTemp;
+      this.checksWaitTemp = data.filter(d => d.state === "ESPERA");
+      this.checksWait = this.checksWaitTemp;
+      this.checksAuthTemp = data.filter(d => d.state === "AUTORIZADO");
+      this.checksAuth = this.checksAuthTemp;
+      this.loading = false
+    });
+
+    this.range.valueChanges
+      .pipe(
+        debounceTime(500),
+      )
+      .subscribe(range => {
+        if (range.start && range.end) {
+          this.getHistory(range.start._d, range.end._d);
+        }
       });
   }
 
@@ -95,15 +116,16 @@ export class ChequesComponent implements OnInit, AfterContentInit, OnDestroy {
     this.checkSubscription?.unsubscribe();
   }
 
-  applyFilter(text: string) {
+  applyFilter(text: string): void {
     this.checksToday = this.filter.transform(this.checksTodayTemp, text, ['no', 'date', 'name', 'amount', 'note']);
     this.checksCreated = this.filter.transform(this.checksCreatedTemp, text, ['no', 'date', 'name', 'amount', 'note']);
     this.checksInter = this.filter.transform(this.checksInterTemp, text, ['no', 'date', 'name', 'amount', 'note']);
     this.checksWait = this.filter.transform(this.checksWaitTemp, text, ['no', 'date', 'name', 'amount', 'note']);
     this.checksAuth = this.filter.transform(this.checksAuthTemp, text, ['no', 'date', 'name', 'amount', 'note']);
+    this.checksHistory = this.filter.transform(this.checksHistoryTemp, text, ['no', 'date', 'name', 'amount', 'note']);
   }
 
-  newDocument(type: string) {
+  newDocument(type: string): void {
     if (type === 'PRODUCTOS') {
       this.title = 'Nuevo documento de productos'
     } else {
@@ -118,6 +140,15 @@ export class ChequesComponent implements OnInit, AfterContentInit, OnDestroy {
   getVoided(_id: string): void {
     this.checksTodayTemp = this.checksTodayTemp.filter(c => c._id !== _id);
     this.checksToday = this.checksToday.filter(c => c._id !== _id);
+  }
+
+  getHistory(startDate, endDate): void {
+    this.loading = true;
+    this.checkService.getHistory(startDate, endDate)
+      .subscribe(data => {
+        this.checksHistory = data;
+        this.loading = false;
+      })
   }
 
 }

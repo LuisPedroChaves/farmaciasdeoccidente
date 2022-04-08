@@ -31,7 +31,11 @@
         <p><b>Documentos: </b><span *ngFor="let account of check.accountsPayables">{{account.noBill}}, </span></p>
         <p *ngIf="check.note.length > 0">{{ check.note.length }}</p>
         <p *ngIf="check.state === 'PAGADO'"><b>Fecha de pago: </b>{{ check.paymentDate | date: 'dd/MM/yyyy HH:mm' }}</p>
-        <p *ngIf="check.state === 'PAGADO'"><b>Recibo: </b>{{ check.receipt.no }}</p>
+        <p *ngIf="check.state === 'PAGADO'">
+            <b>Recibo: </b>
+            <span *ngIf="!check.receipt.file"> {{ check.receipt.no }}</span>
+            <a mat-button mat-line *ngIf="check.receipt.file" color="warn" [href]="check.receipt.file | file: 'checkReceipts'" target="_blank">{{ check.receipt.no }}</a>
+        </p>
         <span> <span fxFlex></span>
         <b>Q{{ check.amount | number: '.2' }}</b>
         </span>
@@ -42,7 +46,7 @@
             <button mat-button *ngIf="check.state === 'CREADO'" (click)="update(check, 'INTERBANCO', 'Ingresar')" color="accent">Interbanco</button>
             <button mat-button *ngIf="check.state === 'INTERBANCO'" (click)="update(check, 'ESPERA', 'Aprobar')" color="primary">Aprobado</button>
             <button mat-button *ngIf="check.state === 'ESPERA'" (click)="update(check, 'AUTORIZADO', 'Autorizar')" color="warn">Autorizar</button>
-            <button mat-button *ngIf="check.state === 'AUTORIZADO'" (click)="update(check, 'PAGADO', 'Pagar')" color="warn">PAGAR</button>
+            <button mat-button *ngIf="check.state === 'AUTORIZADO'" (click)="pay(check, 'PAGADO')" color="warn">PAGAR</button>
             <button mat-button *ngIf="check.state === 'AUTORIZADO'" (click)="update(check, 'RECHAZADO', 'Rechazar')">Rechazar</button>
             <button mat-button *ngIf="check.state !== 'PAGADO' && check.state !== 'RECHAZADO'" (click)="void(check)">Anular</button>
         </ng-container>
