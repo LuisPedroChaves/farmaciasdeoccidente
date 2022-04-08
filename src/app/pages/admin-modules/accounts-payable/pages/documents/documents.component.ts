@@ -1,8 +1,10 @@
 import { Component, OnInit, ViewChild, AfterContentInit, OnDestroy } from '@angular/core';
+import { FormControl, FormGroup } from '@angular/forms';
 import { MatDrawer } from '@angular/material/sidenav';
 import { MatTableDataSource } from '@angular/material/table';
 
 import { Subscription } from 'rxjs';
+import { debounceTime } from 'rxjs/operators';
 
 import { AccountsPayableItem } from 'src/app/core/models/AccountsPayable';
 import { AccountsPayableService } from 'src/app/core/services/httpServices/accounts-payable.service';
@@ -51,19 +53,22 @@ export class DocumentsComponent implements OnInit, AfterContentInit, OnDestroy {
   accountsPayableSubscription: Subscription;
   accountsPayables: AccountsPayableItem[];
 
-  /* #region  Retenciones */
+  /* #region  Lists */
   accountsPayablesReten: AccountsPayableItem[] = [];
   filterReten = '';
-  /* #endregion */
 
-    /* #region  Productos */
-    accountsPayablesProd: AccountsPayableItem[] = [];
+  accountsPayablesProd: AccountsPayableItem[] = [];
   filterProd = '';
-    /* #endregion */
 
-      /* #region  Gastos */
   accountsPayablesGast: AccountsPayableItem[] = [];
   filterGast = '';
+
+  accountsPayablesHistory: AccountsPayableItem[] = [];
+  filterHistory = '';
+  range = new FormGroup({
+    start: new FormControl(),
+    end: new FormControl()
+  });
   /* #endregion */
 
   constructor(
@@ -80,6 +85,16 @@ export class DocumentsComponent implements OnInit, AfterContentInit, OnDestroy {
       this.accountsPayablesGast = this.accountsPayables.filter(ap => ap.type === 'GASTOS');
       this.loading = false
     });
+    //Historial
+    this.range.valueChanges
+    .pipe(
+      debounceTime(500),
+    )
+    .subscribe(range => {
+      if (range.start && range.end) {
+        this.history(range.start._d, range.end._d);
+      }
+    });
   }
 
   ngAfterContentInit(): void {
@@ -94,6 +109,7 @@ export class DocumentsComponent implements OnInit, AfterContentInit, OnDestroy {
     this.filterReten = filter
     this.filterProd = filter
     this.filterGast = filter
+    this.filterHistory = filter
   }
 
   newDocument(type: string) {
@@ -164,6 +180,15 @@ export class DocumentsComponent implements OnInit, AfterContentInit, OnDestroy {
   reload() {
     this.drawer.opened = false;
     this.accountsPayableService.loadData();
+  }
+
+  history(startDate, endDate) {
+    this.loading = true;
+    this.accountsPayableService.getHistory(startDate, endDate)
+      .subscribe(data => {
+        this.accountsPayablesHistory = data;
+        this.loading = false;
+      })
   }
 
 }

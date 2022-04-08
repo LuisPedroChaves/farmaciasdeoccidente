@@ -101,6 +101,7 @@
                     </div>
                 </div>
             </header>
+            <mat-progress-bar *ngIf="loading" mode="indeterminate" color="warn"></mat-progress-bar>
             <mat-tab-group mat-align-tabs="center">
                 <mat-tab [label]="getTotalPending()">
                     <ngx-simplebar class="table">
@@ -114,7 +115,6 @@
                             <span fxFlex></span>
                             <button mat-raised-button (click)="newPay()" color="accent">Ingresar Pago</button>
                         </div>
-                        <mat-progress-bar *ngIf="loading" mode="indeterminate" color="warn"></mat-progress-bar>
                         <app-table-accounts-payable (sendSelected)="getSelected($event)" (sendAccountsPayable)="sendAccountsPayable.emit($event)" [accountsPayable]="accountsPayablePend" [filter]="filterPend" [addSelection]="true" [showProvider]="false"></app-table-accounts-payable>
                     </ngx-simplebar>
                 </mat-tab>
@@ -123,11 +123,30 @@
                         <div fxLayout="row" fxLayoutAlign="space-between center" class="header2">
                             <app-filter (send)="applyFilterProcess($event)"></app-filter>
                         </div>
-                        <mat-progress-bar *ngIf="loading" mode="indeterminate" color="warn"></mat-progress-bar>
                         <app-table-accounts-payable (sendAccountsPayable)="sendAccountsPayable.emit($event)" [accountsPayable]="accountsPayableProcess" [filter]="filterProcess" [addSelection]="false" [showProvider]="false"></app-table-accounts-payable>
                     </ngx-simplebar>
                 </mat-tab>
-                <mat-tab label="Historial">En proceso... </mat-tab>
+                <mat-tab label="Historial">
+                    <ngx-simplebar class="table">
+                        <div fxLayout="row" fxLayoutAlign="space-between center" class="header2">
+                            <app-filter (send)="applyFilterHistory($event)"></app-filter>
+                            <mat-form-field appearance="outline">
+                                <mat-label>Introduzca un rango de fechas</mat-label>
+                                <mat-date-range-input [formGroup]="range" [rangePicker]="picker">
+                                    <input matStartDate formControlName="start" placeholder="Fecha de inicio">
+                                    <input matEndDate formControlName="end" placeholder="Fecha de finalización">
+                                </mat-date-range-input>
+                                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                                <mat-date-range-picker #picker></mat-date-range-picker>
+                                <mat-error *ngIf="range.get('start').hasError('matStartDateInvalid')">Fecha de inicio no válida
+                                </mat-error>
+                                <mat-error *ngIf="range.controls.end.hasError('matEndDateInvalid')">Fecha de finalización no válida
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+                        <app-table-accounts-payable (sendAccountsPayable)="sendAccountsPayable.emit($event)" [accountsPayable]="accountsPayablesHistory" [filter]="filterHistory" [addSelection]="false" [showProvider]="false"></app-table-accounts-payable>
+                    </ngx-simplebar>
+                </mat-tab>
             </mat-tab-group>
         </ngx-simplebar>
     </mat-drawer-content>
