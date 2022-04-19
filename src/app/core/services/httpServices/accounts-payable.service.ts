@@ -67,6 +67,13 @@ export class AccountsPayableService implements IDataService<AccountsPayableItem[
       );
   }
 
+  getTempCredits(): Observable<any> {
+    return this.http.get(`${this.apiConfigService.API_ACCOUNTS_PAYABLE}/tempCredits`)
+      .pipe(
+        map((resp: any) => resp.accountsPayables)
+      )
+  }
+
   create(accountPayable: AccountsPayableItem): Observable<any> {
     accountPayable._user = this.userID;
     return this.http.post(this.apiConfigService.API_ACCOUNTS_PAYABLE, accountPayable);

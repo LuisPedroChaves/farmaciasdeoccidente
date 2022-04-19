@@ -40,6 +40,7 @@ export class TableAccountsPayableComponent implements OnInit, OnChanges {
     'iva',
     'total',
     'expirationCredit',
+    'additionalDiscount',
   ];
 
   constructor() { }

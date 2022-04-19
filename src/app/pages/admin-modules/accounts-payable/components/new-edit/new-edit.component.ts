@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, AfterContentInit, OnDestroy, ViewChild, ElementRef, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, AfterContentInit, OnDestroy, ViewChild, ElementRef, Output, EventEmitter, SimpleChanges, OnChanges } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { MatDrawer } from '@angular/material/sidenav';
 
@@ -8,20 +8,20 @@ import { FileInput } from 'ngx-material-file-input';
 
 import { AccountsPayableService } from 'src/app/core/services/httpServices/accounts-payable.service';
 import { UploadFileService } from 'src/app/core/services/httpServices/upload-file.service';
+import { CheckService } from 'src/app/core/services/httpServices/check.service';
+import { CheckItem } from 'src/app/core/models/Check';
 import { AccountsPayableBalanceItem, AccountsPayableItem } from '../../../../../core/models/AccountsPayable';
 import { ToastyService } from '../../../../../core/services/internal/toasty.service';
 import { ExpenseItem } from '../../../../../core/models/Expense';
 import { ExpenseService } from '../../../../../core/services/httpServices/expense.service';
 import { ProviderItem } from '../../../../../core/models/Provider';
-import { CheckService } from 'src/app/core/services/httpServices/check.service';
-import { CheckItem } from 'src/app/core/models/Check';
 
 @Component({
   selector: 'app-new-edit',
   templateUrl: './new-edit.component.html',
   styleUrls: ['./new-edit.component.scss']
 })
-export class NewEditComponent implements OnInit, AfterContentInit, OnDestroy {
+export class NewEditComponent implements OnInit, AfterContentInit, OnDestroy, OnChanges {
 
   @Input() accountsPayable: AccountsPayableItem;
   @Output() close = new EventEmitter();
@@ -50,6 +50,7 @@ export class NewEditComponent implements OnInit, AfterContentInit, OnDestroy {
     file: new FormControl(''),
     emptyWithholdingIVA: new FormControl(false, Validators.required),
     emptyWithholdingISR: new FormControl(false, Validators.required),
+    additionalDiscount: new FormControl(false, Validators.required),
     toCredit: new FormControl(true, Validators.required),
     expirationCredit: new FormControl(null),
     paid: new FormControl(false, Validators.required)
@@ -124,6 +125,40 @@ export class NewEditComponent implements OnInit, AfterContentInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.expensesSubscription?.unsubscribe();
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes.accountsPayable) {
+      let { _id, _provider, _purchase, _expense, date, serie, noBill, docType, unaffectedAmount, exemptAmount, netPurchaseAmount, netServiceAmount, otherTaxes, iva, total, type, file, emptyWithholdingIVA, emptyWithholdingISR, additionalDiscount, toCredit, expirationCredit, paid } = changes.accountsPayable.currentValue;
+      if (_id) {
+        // Si existe el id entonces editamos la cuenta por pagar
+        this.form.controls._provider.setValue(_provider);
+        this.form.controls._purchase.setValue(_purchase);
+        this.form.controls._expense.setValue(_expense);
+        this.form.controls.date.setValue(date);
+        this.form.controls.serie.setValue(serie);
+        this.form.controls.noBill.setValue(noBill);
+        if (docType === 'CREDITO_TEMP') {
+          docType = 'CREDITO'
+        }
+        this.form.controls.docType.setValue(docType);
+        this.form.controls.unaffectedAmount.setValue(unaffectedAmount);
+        this.form.controls.exemptAmount.setValue(exemptAmount);
+        this.form.controls.netPurchaseAmount.setValue(netPurchaseAmount);
+        this.form.controls.netServiceAmount.setValue(netServiceAmount);
+        this.form.controls.otherTaxes.setValue(otherTaxes);
+        this.form.controls.iva.setValue(iva);
+        this.form.controls.total.setValue(total);
+        this.form.controls.type.setValue(type);
+        this.form.controls.file.setValue(file);
+        this.form.controls.emptyWithholdingIVA.setValue(emptyWithholdingIVA);
+        this.form.controls.emptyWithholdingISR.setValue(emptyWithholdingISR);
+        this.form.controls.additionalDiscount.setValue(additionalDiscount);
+        this.form.controls.toCredit.setValue(toCredit);
+        this.form.controls.expirationCredit.setValue(expirationCredit);
+        this.form.controls.paid.setValue(paid);
+      }
+    }
   }
 
   private _filterExpenses(value: string): ExpenseItem[] {
@@ -261,6 +296,7 @@ export class NewEditComponent implements OnInit, AfterContentInit, OnDestroy {
       file: '',
       emptyWithholdingIVA: false,
       emptyWithholdingISR: false,
+      additionalDiscount: false,
       toCredit: true,
       expirationCredit: null,
       paid: false
@@ -284,44 +320,6 @@ export class NewEditComponent implements OnInit, AfterContentInit, OnDestroy {
     this.form.controls.type.setValue(this.accountsPayable.type);
     this.form.controls.total.setValue(TOTAL);
 
-    /* #region  Validaciones */
-    const TO_CREDIT = this.form.controls.toCredit.value
-    const DOC_TYPE = this.form.controls.docType.value
-    const PROVIDER: ProviderItem = this.form.controls._provider.value
-    const NEW_BALANCES: AccountsPayableBalanceItem[] = [];
-
-    if (DOC_TYPE !== 'ABONO' && DOC_TYPE !== 'CREDITO') {
-      if (PROVIDER.iva && TOTAL >= 2500) {
-        // Si el proveedor tiene retencion de iva entonces será obligatoria
-        this.form.controls.emptyWithholdingIVA.setValue(true);
-      }
-      if (PROVIDER.isr && TOTAL >= 2500) {
-        // Si el proveedor tiene retencion de isr entonces será obligatoria
-        this.form.controls.emptyWithholdingISR.setValue(true);
-      }
-      if (!TO_CREDIT) {
-        // Validamos si la factura es al contado y que no sea pago con cheque para marcarla como pagada
-        if (this.paymentMethod !== 'CHEQUE') {
-          this.form.controls.paid.setValue(true);
-          this.formPay.controls.credit.setValue(this.paymentMethod);
-          this.formPay.controls.amount.setValue(TOTAL);
-          NEW_BALANCES.push({ ...this.formPay.value });
-        }else {
-          // Si es al contado y se paga con cheque
-          if (this.accountsPayable.type === 'PRODUCTOS') {
-            // Si es un documento de productos entonces los estados del cheque cambian
-            this.formCheck.controls.bank.setValue('INTERBANCO');
-            this.formCheck.controls.state.setValue('CREADO');
-          }else if (this.accountsPayable.type === 'GASTOS') {
-            // Si es un documento de gastos entonces los estados del cheque cambian
-            this.formCheck.controls.bank.setValue('BANRURAL');
-            this.formCheck.controls.state.setValue('ESPERA');
-          }
-        }
-      }
-    }
-    /* #endregion */
-
     // Manejo de archivo
     const FILE: FileInput = this.form.controls.file.value;
     if (FILE) {
@@ -331,10 +329,70 @@ export class NewEditComponent implements OnInit, AfterContentInit, OnDestroy {
     }
 
     if (this.accountsPayable._id) {
-      // TODO: Editar
-
+      // Editar
+      this.accountsPayableService.update({
+        ...this.form.value,
+        _id: this.accountsPayable._id
+      })
+        .subscribe(resp => {
+          // Manejo de archivo
+          if (FILE) {
+            if (FILE.files) {
+              this.uploadFileService.uploadFile(FILE.files[0], 'accountsPayable', resp.accountsPayable._id)
+                .then((resp: any) => {
+                  this.saveSuccess();
+                })
+                .catch(err => {
+                  this.loading = false;
+                  this.toastyService.error('Error al cargar el archivo');
+                });
+            }else {
+              this.saveSuccess();
+            }
+          } else {
+            this.saveSuccess();
+          }
+        })
     } else {
       // Nueva
+      /* #region  Validaciones */
+      const TO_CREDIT = this.form.controls.toCredit.value
+      const DOC_TYPE = this.form.controls.docType.value
+      const PROVIDER: ProviderItem = this.form.controls._provider.value
+      const NEW_BALANCES: AccountsPayableBalanceItem[] = [];
+
+      if (DOC_TYPE !== 'ABONO' && DOC_TYPE !== 'CREDITO' && DOC_TYPE !== 'CREDITO_TEMP') {
+        if (PROVIDER.iva && TOTAL >= 2500) {
+          // Si el proveedor tiene retencion de iva entonces será obligatoria
+          this.form.controls.emptyWithholdingIVA.setValue(true);
+        }
+        if (PROVIDER.isr && TOTAL >= 2500) {
+          // Si el proveedor tiene retencion de isr entonces será obligatoria
+          this.form.controls.emptyWithholdingISR.setValue(true);
+        }
+        if (!TO_CREDIT) {
+          // Validamos si la factura es al contado y que no sea pago con cheque para marcarla como pagada
+          if (this.paymentMethod !== 'CHEQUE') {
+            this.form.controls.paid.setValue(true);
+            this.formPay.controls.credit.setValue(this.paymentMethod);
+            this.formPay.controls.amount.setValue(TOTAL);
+            NEW_BALANCES.push({ ...this.formPay.value });
+          } else {
+            // Si es al contado y se paga con cheque
+            if (this.accountsPayable.type === 'PRODUCTOS') {
+              // Si es un documento de productos entonces los estados del cheque cambian
+              this.formCheck.controls.bank.setValue('INTERBANCO');
+              this.formCheck.controls.state.setValue('CREADO');
+            } else if (this.accountsPayable.type === 'GASTOS') {
+              // Si es un documento de gastos entonces los estados del cheque cambian
+              this.formCheck.controls.bank.setValue('BANRURAL');
+              this.formCheck.controls.state.setValue('ESPERA');
+            }
+          }
+        }
+      }
+      /* #endregion */
+
       this.accountsPayableService.create({
         ...this.form.value,
         balance: NEW_BALANCES
@@ -346,7 +404,7 @@ export class NewEditComponent implements OnInit, AfterContentInit, OnDestroy {
               .then((resp: any) => {
                 if (!TO_CREDIT && this.paymentMethod === 'CHEQUE') {
                   this.saveCheck(TOTAL, resp.accountsPayable)
-                }else {
+                } else {
                   this.saveSuccess();
                 }
               })
@@ -357,7 +415,7 @@ export class NewEditComponent implements OnInit, AfterContentInit, OnDestroy {
           } else {
             if (!TO_CREDIT && this.paymentMethod === 'CHEQUE') {
               this.saveCheck(TOTAL, resp.accountsPayable)
-            }else {
+            } else {
               this.saveSuccess();
             }
           }
@@ -365,14 +423,14 @@ export class NewEditComponent implements OnInit, AfterContentInit, OnDestroy {
     }
   }
 
-  saveCheck(total: number, accountPayable: AccountsPayableItem):void {
+  saveCheck(total: number, accountPayable: AccountsPayableItem): void {
     const CHECK: CheckItem = {
       no: this.formCheck.controls.no.value,
       city: this.formCheck.controls.city.value,
       date: this.formCheck.controls.date.value,
       name: this.formCheck.controls.name.value,
       amount: total,
-      accountsPayables: [{...accountPayable}],
+      accountsPayables: [{ ...accountPayable }],
       note: this.formCheck.controls.note.value,
       bank: this.formCheck.controls.bank.value,
       state: this.formCheck.controls.state.value,

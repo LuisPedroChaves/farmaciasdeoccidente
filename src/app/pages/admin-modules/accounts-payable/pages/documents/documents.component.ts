@@ -44,6 +44,7 @@ export class DocumentsComponent implements OnInit, AfterContentInit, OnDestroy {
     file: '',
     emptyWithholdingIVA: false,
     emptyWithholdingISR: false,
+    additionalDiscount: false,
     toCredit: false,
     expirationCredit: null,
     paid: false,
@@ -56,6 +57,9 @@ export class DocumentsComponent implements OnInit, AfterContentInit, OnDestroy {
   /* #region  Lists */
   accountsPayablesReten: AccountsPayableItem[] = [];
   filterReten = '';
+
+  accountsPayablesTemp: AccountsPayableItem[] = [];
+  filterTemp = '';
 
   accountsPayablesProd: AccountsPayableItem[] = [];
   filterProd = '';
@@ -77,6 +81,9 @@ export class DocumentsComponent implements OnInit, AfterContentInit, OnDestroy {
 
   ngOnInit(): void {
     this.loading = true;
+    this.accountsPayableService.getTempCredits()
+      .subscribe(data => this.accountsPayablesTemp = data);
+
     this.accountsPayableSubscription = this.accountsPayableService.readData().subscribe((data) => {
       console.log('SUBSCRIPTION');
       this.accountsPayables = data;
@@ -87,14 +94,14 @@ export class DocumentsComponent implements OnInit, AfterContentInit, OnDestroy {
     });
     //Historial
     this.range.valueChanges
-    .pipe(
-      debounceTime(500),
-    )
-    .subscribe(range => {
-      if (range.start && range.end) {
-        this.history(range.start._d, range.end._d);
-      }
-    });
+      .pipe(
+        debounceTime(500),
+      )
+      .subscribe(range => {
+        if (range.start && range.end) {
+          this.history(range.start._d, range.end._d);
+        }
+      });
   }
 
   ngAfterContentInit(): void {
@@ -107,6 +114,7 @@ export class DocumentsComponent implements OnInit, AfterContentInit, OnDestroy {
 
   applyFilter(filter: string) {
     this.filterReten = filter
+    this.filterTemp = filter
     this.filterProd = filter
     this.filterGast = filter
     this.filterHistory = filter
@@ -121,6 +129,18 @@ export class DocumentsComponent implements OnInit, AfterContentInit, OnDestroy {
 
     this.drawerComponent = 'DOCUMENTO'
     this.accountsPayable.type = type;
+    this.drawer.opened = true;
+  }
+
+  editDocument(accountsPayable: AccountsPayableItem) {
+    if (accountsPayable.type === 'PRODUCTOS') {
+      this.title = 'Editar documento de productos'
+    } else {
+      this.title = 'Editar documento de gastos'
+    }
+
+    this.drawerComponent = 'DOCUMENTO'
+    this.accountsPayable = accountsPayable;
     this.drawer.opened = true;
   }
 
@@ -141,6 +161,9 @@ export class DocumentsComponent implements OnInit, AfterContentInit, OnDestroy {
     }
     if (accountsPayable.docType === 'CREDITO') {
       this.title += ' | Nota de crédito'
+    }
+    if (accountsPayable.docType === 'CREDITO_TEMP') {
+      this.title += ' | Nota de crédito (Temporal)'
     }
     this.drawerComponent = 'CUENTA'
     this.drawer.opened = true;
@@ -171,6 +194,7 @@ export class DocumentsComponent implements OnInit, AfterContentInit, OnDestroy {
       file: '',
       emptyWithholdingIVA: false,
       emptyWithholdingISR: false,
+      additionalDiscount: false,
       toCredit: false,
       expirationCredit: null,
       paid: false,
@@ -180,6 +204,8 @@ export class DocumentsComponent implements OnInit, AfterContentInit, OnDestroy {
   reload() {
     this.drawer.opened = false;
     this.accountsPayableService.loadData();
+    this.accountsPayableService.getTempCredits()
+    .subscribe(data => this.accountsPayablesTemp = data);
   }
 
   history(startDate, endDate) {

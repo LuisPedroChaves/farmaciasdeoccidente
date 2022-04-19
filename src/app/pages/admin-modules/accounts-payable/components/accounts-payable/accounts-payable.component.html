@@ -18,6 +18,7 @@
                             <span *ngIf="accountsPayable.docType === 'PEQUEÑO'">Pequeño contribuyente</span>
                             <span *ngIf="accountsPayable.docType === 'ABONO'">Nota de abono</span>
                             <span *ngIf="accountsPayable.docType === 'CREDITO'">Nota de crédito</span>
+                            <span *ngIf="accountsPayable.docType === 'CREDITO_TEMP'">Nota de crédito (Temporal)</span>
                         </mat-card-subtitle>
                         <span fxFlex></span>
                         <h2 *ngIf="accountsPayable.type === 'PRODUCTOS'" class="ma-0">PRODUCTOS</h2>
@@ -53,6 +54,7 @@
                                 <mat-chip-list selectable="false">
                                     <mat-chip *ngIf="!accountsPayable.paid && accountsPayable.expirationCredit && expired(accountsPayable.expirationCredit)"><span class="warning">Vencido</span>
                                     </mat-chip>
+                                    <mat-chip *ngIf="accountsPayable.additionalDiscount" color="warn" selected>Descuento Adicional</mat-chip>
                                     <mat-chip *ngIf="accountsPayable.paid" color="warn" selected>Pagado</mat-chip>
                                     <mat-chip *ngIf="!accountsPayable.paid" class="warning">Pendiente de pago</mat-chip>
                                 </mat-chip-list>
@@ -223,7 +225,7 @@
                         </table>
                     </mat-card-content>
                     <mat-card-actions>
-                        <!-- <button mat-button>Anular</button> -->
+                        <button mat-button *ngIf="accountsPayable.docType === 'CREDITO_TEMP'" (click)="sendEdit.emit(accountsPayable)" color="accent">Editar</button>
                     </mat-card-actions>
                 </mat-card>
             </div>
