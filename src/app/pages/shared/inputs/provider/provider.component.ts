@@ -81,7 +81,7 @@ export class ProviderComponent implements OnInit, AfterContentInit, OnDestroy {
     if (value) {
       const filterValue = value.toLowerCase();
       return this.providers.filter((option) =>
-        option.nit.toLowerCase().includes(filterValue)
+        option.nit.toLowerCase().includes(filterValue) || option.name.toLowerCase().includes(filterValue)
       );
     } else {
       return [];
