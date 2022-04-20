@@ -26,6 +26,7 @@ export interface AccountsPayableItem  {
   file: string,
   emptyWithholdingIVA: boolean,
   emptyWithholdingISR: boolean,
+  additionalDiscount: boolean,
   toCredit: boolean,
   expirationCredit: Date,
   paid: boolean,

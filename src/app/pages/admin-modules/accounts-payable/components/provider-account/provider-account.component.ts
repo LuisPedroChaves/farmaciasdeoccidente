@@ -149,9 +149,9 @@ export class ProviderAccountComponent implements OnInit, AfterContentInit, OnDes
   getTotalsSelection(): totalSelection {
     let totals: totalSelection = {
       facturas: {
-        total: this.selectedPend.filter(s => s.docType !== 'ABONO' && s.docType !== 'CREDITO').length,
+        total: this.selectedPend.filter(s => s.docType !== 'ABONO' && s.docType !== 'CREDITO' && s.docType !== 'CREDITO_TEMP').length,
         amount: this.selectedPend.reduce((sum, item) => {
-          if (item.docType !== 'ABONO' && item.docType !== 'CREDITO') {
+          if (item.docType !== 'ABONO' && item.docType !== 'CREDITO' && item.docType !== 'CREDITO_TEMP') {
             return sum + (item.total - item.balance.reduce((sum, item) => sum += item.amount, 0))
           } else {
             return sum + 0;
@@ -169,9 +169,9 @@ export class ProviderAccountComponent implements OnInit, AfterContentInit, OnDes
         }, 0)
       },
       creditos: {
-        total: this.selectedPend.filter(s => s.docType === 'CREDITO').length,
+        total: this.selectedPend.filter(s => s.docType === 'CREDITO' || s.docType === 'CREDITO_TEMP').length,
         amount: this.selectedPend.reduce((sum, item) => {
-          if (item.docType === 'CREDITO') {
+          if (item.docType === 'CREDITO' || item.docType === 'CREDITO_TEMP') {
             return sum + item.total
           } else {
             return sum + 0;
@@ -179,7 +179,7 @@ export class ProviderAccountComponent implements OnInit, AfterContentInit, OnDes
         }, 0)
       },
       total: this.selectedPend.reduce((sum, item) => {
-        if (item.docType !== 'ABONO' && item.docType !== 'CREDITO') {
+        if (item.docType !== 'ABONO' && item.docType !== 'CREDITO' && item.docType !== 'CREDITO_TEMP') {
           return sum + (item.total - item.balance.reduce((sum, item) => sum += item.amount, 0))
         } else {
           return sum - item.total;
@@ -259,7 +259,7 @@ export class ProviderAccountComponent implements OnInit, AfterContentInit, OnDes
   /* #region  Cards */
   getTotalBills(): number {
     return this.accountsPayables ? this.accountsPayables.filter(ap => (ap._provider._id === this.provider._id)).reduce((sum, item) => {
-      if (item.docType !== 'ABONO' && item.docType !== 'CREDITO') {
+      if (item.docType !== 'ABONO' && item.docType !== 'CREDITO' && item.docType !== 'CREDITO_TEMP') {
         return sum + (item.total - item.balance.reduce((sum, item) => {
           if (item.credit !== 'CHEQUE') {
             return sum + item.amount
@@ -285,7 +285,7 @@ export class ProviderAccountComponent implements OnInit, AfterContentInit, OnDes
 
   getTotalCredito(): number {
     return this.accountsPayables ? this.accountsPayables.filter(ap => (ap._provider._id === this.provider._id)).reduce((sum, item) => {
-      if (item.docType === 'CREDITO') {
+      if (item.docType === 'CREDITO' || item.docType === 'CREDITO_TEMP') {
         return sum + item.total;
       } else {
         return sum + 0;

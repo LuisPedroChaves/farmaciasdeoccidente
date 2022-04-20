@@ -21,6 +21,8 @@ export class AccountsPayableComponent implements OnInit, OnChanges {
   return = new EventEmitter();
   @Output()
   sendAmount = new EventEmitter();
+  @Output()
+  sendEdit = new EventEmitter();
 
   form = new FormGroup({
     date: new FormControl('', Validators.required),

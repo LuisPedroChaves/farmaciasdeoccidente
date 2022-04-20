@@ -44,6 +44,7 @@ export class ChequesComponent implements OnInit, AfterContentInit, OnDestroy {
     file: '',
     emptyWithholdingIVA: false,
     emptyWithholdingISR: false,
+    additionalDiscount: false,
     toCredit: false,
     expirationCredit: null,
     paid: false,

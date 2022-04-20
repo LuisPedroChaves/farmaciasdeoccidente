@@ -37,6 +37,7 @@
             <span *ngIf="element.docType === 'PEQUEÑO'">Pequeño contribuyente</span>
             <span *ngIf="element.docType === 'ABONO'">Nota de abono</span>
             <span *ngIf="element.docType === 'CREDITO'">Nota de crédito</span>
+            <span *ngIf="element.docType === 'CREDITO_TEMP'">Nota de crédito (Temp.)</span>
         </td>
     </ng-container>
 
@@ -100,6 +101,13 @@
         <th mat-header-cell *matHeaderCellDef> Fecha de vencimiento </th>
         <td mat-cell *matCellDef="let element">
             <span class="text-muted" [ngClass]="{warning: getExpired(element.expirationCredit)}" [matTooltip]="getExpired(element.expirationCredit) ? 'Vencido': ''"> {{ element.expirationCredit | date: 'dd/MM/yyyy' }}</span>
+        </td>
+    </ng-container>
+
+    <ng-container matColumnDef="additionalDiscount">
+        <th mat-header-cell *matHeaderCellDef> dto. Adicional </th>
+        <td mat-cell *matCellDef="let element">
+            <mat-icon *ngIf="element.additionalDiscount" matTooltip="Documento con DESCUENTO ADICIONAL" color="warn">warning</mat-icon>
         </td>
     </ng-container>
 

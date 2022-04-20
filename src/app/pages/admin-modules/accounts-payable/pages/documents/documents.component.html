@@ -10,7 +10,7 @@
         <app-new-edit *ngIf="drawerComponent === 'DOCUMENTO'" [accountsPayable]="accountsPayable" (close)="reload()"></app-new-edit>
         <app-provider-account *ngIf="drawerComponent === 'PROVEEDOR'" [provider]="provider" (close)="drawer.opened = false">
         </app-provider-account>
-        <app-accounts-payable *ngIf="drawerComponent === 'CUENTA'" (return)="reset()" [accountsPayable]="accountsPayable"></app-accounts-payable>
+        <app-accounts-payable *ngIf="drawerComponent === 'CUENTA'" (return)="reset()" (sendEdit)="editDocument($event)" [accountsPayable]="accountsPayable"></app-accounts-payable>
     </mat-drawer>
     <header>
         <app-filter (send)="applyFilter($event)"></app-filter>
@@ -34,6 +34,11 @@
         <mat-tab [label]=" 'Retenciones pendientes (' + accountsPayablesReten.length  + ')'   ">
             <ngx-simplebar class="content">
                 <app-table-accounts-payable (sendAccountsPayable)="getAccountPayable($event)" [accountsPayable]="accountsPayablesReten" [filter]="filterReten" [addSelection]="false"></app-table-accounts-payable>
+            </ngx-simplebar>
+        </mat-tab>
+        <mat-tab [label]=" 'Notas de crédito temporales (' + accountsPayablesTemp.length  + ')'   ">
+            <ngx-simplebar class="content">
+                <app-table-accounts-payable (sendAccountsPayable)="getAccountPayable($event)" [accountsPayable]="accountsPayablesTemp" [filter]="filterTemp" [addSelection]="false"></app-table-accounts-payable>
             </ngx-simplebar>
         </mat-tab>
         <mat-tab [label]=" 'Pagos a proveedores (' + accountsPayablesProd.length  + ')'   ">

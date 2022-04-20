@@ -61,7 +61,7 @@
                                                 <input #noBill formControlName="noBill" type="text" matInput placeholder="Ingrese el No. de factura">
                                             </mat-form-field>
                                         </div>
-                                        <div fxFlex.gt-lg="25" fxFlex.gt-md="25" fxFlex.gt-sm="33" fxFlex.gt-xs="45" fxFlex.xs="100">
+                                        <div *ngIf="!accountsPayable._id" fxFlex.gt-lg="25" fxFlex.gt-md="25" fxFlex.gt-sm="33" fxFlex.gt-xs="45" fxFlex.xs="100">
                                             <mat-form-field fxFill appearance="outline" color="accent">
                                                 <mat-label>Tipo de documento</mat-label>
                                                 <mat-select formControlName="docType" name="docType">
@@ -80,10 +80,13 @@
                                                     <mat-option value="CREDITO">
                                                         Nota de crédito
                                                     </mat-option>
+                                                    <mat-option value="CREDITO_TEMP">
+                                                        Nota de crédito (Temporal)
+                                                    </mat-option>
                                                 </mat-select>
                                             </mat-form-field>
                                         </div>
-                                        <div fxFlex.gt-lg="50" fxFlex.gt-md="50" fxFlex.gt-sm="61" fxFlex.gt-xs="50" fxFlex.xs="100">
+                                        <div *ngIf="!accountsPayable._id" fxFlex.gt-lg="50" fxFlex.gt-md="50" fxFlex.gt-sm="61" fxFlex.gt-xs="50" fxFlex.xs="100">
                                             <app-provider *ngIf="accountsPayable.type === 'PRODUCTOS'" (send)="getProvider($event)">
                                             </app-provider>
                                             <app-provider *ngIf="accountsPayable.type === 'GASTOS'" [isExpenses]="true" [new]="true" (send)="getProvider($event)" (emitNew)="newProvider()"></app-provider>
@@ -125,7 +128,7 @@
                                     <mat-divider></mat-divider>
                                     <br>
                                     <h3>Montos, impuestos y totales</h3>
-                                    <div fxLayout="row wrap" fxLayoutGap="10px" fxLayoutAlign="start center">
+                                    <div *ngIf="!accountsPayable._id" fxLayout="row wrap" fxLayoutGap="10px" fxLayoutAlign="start center">
                                         <mat-icon mat-list-icon fxHide.lt-md>paid</mat-icon>
                                         <mat-form-field fxFlex="20" fxFlex.lt-md="100" appearance="outline" color="accent">
                                             <mat-label>Monto</mat-label>
@@ -196,9 +199,10 @@
                                         <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
                                     </table>
                                     <div fxLayout="row wrap">
-                                        <div *ngIf="form.get('docType').value !== 'ABONO' && form.get('docType').value !== 'CREDITO'" fxFlex.lt-md="100" fxLayout="column" fxLayoutGap="5px">
-                                            <div fxFlex>
+                                        <div *ngIf="form.get('docType').value !== 'ABONO' && form.get('docType').value !== 'CREDITO' && form.get('docType').value !== 'CREDITO_TEMP'" fxFlex.lt-md="100" fxLayout="column" fxLayoutGap="5px">
+                                            <div fxFlex fxLayoutGap="10px">
                                                 <mat-slide-toggle formControlName="toCredit">Al Crédito</mat-slide-toggle>
+                                                <mat-slide-toggle formControlName="additionalDiscount" color="warn">Descuento Adicional</mat-slide-toggle>
                                             </div>
                                             <div *ngIf="form.get('toCredit').value" fxFlex>
                                                 <mat-form-field fxFill appearance="outline" color="accent">
