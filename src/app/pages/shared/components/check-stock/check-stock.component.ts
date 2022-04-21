@@ -97,7 +97,7 @@ export class CheckStockComponent implements OnInit {
   }
 
   searchStock(product: ProductItem) {
-    console.log("🚀 ~ file: check-stock.component.ts ~ line 95 ~ CheckStockComponent ~ searchStock ~ product", product)
+    // console.log("🚀 ~ file: check-stock.component.ts ~ line 95 ~ CheckStockComponent ~ searchStock ~ product", product)
     this.loading = true;
     this.selectedProduct = product;
     if (product.presentations.length > 0) {
