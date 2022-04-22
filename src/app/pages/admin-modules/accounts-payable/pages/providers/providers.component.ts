@@ -1,10 +1,13 @@
 import { Component, OnInit, ViewChild, AfterContentInit, OnDestroy } from '@angular/core';
 import { MatDrawer } from '@angular/material/sidenav';
+import { Store } from '@ngrx/store';
 
 import { Subscription } from 'rxjs';
+import { filter } from 'rxjs/operators';
 
 import { ProviderItem } from 'src/app/core/models/Provider';
 import { ProviderService } from 'src/app/core/services/httpServices/provider.service';
+import { AppState } from 'src/app/core/store/app.reducer';
 import { AccountsPayableItem } from '../../../../../core/models/AccountsPayable';
 import { FilterPipe } from '../../../../../core/shared/pipes/filterPipes/filter.pipe';
 
@@ -56,9 +59,13 @@ export class ProvidersComponent implements OnInit, AfterContentInit, OnDestroy {
   provider: ProviderItem;
   indexHovered = -1;
 
+  sessionSubscription: Subscription;
+  permissions: string[] = [];
+
   constructor(
     private providerService: ProviderService,
-    private filter: FilterPipe
+    private filter: FilterPipe,
+    public store: Store<AppState>,
   ) { }
 
   ngOnInit(): void {
@@ -68,6 +75,13 @@ export class ProvidersComponent implements OnInit, AfterContentInit, OnDestroy {
       this.providersPage = this.providers;
       this.loading = false
     });
+
+    this.sessionSubscription = this.store.select('session').pipe(filter(session => session !== null)).subscribe(session => {
+      if (session.permissions !== null) {
+        const MODULOS = session.permissions.filter(pr => pr.name === 'accountsPyabaleProviders');
+        this.permissions = MODULOS.length > 0 ? MODULOS[0].options : [];
+      }
+    });
   }
 
   ngAfterContentInit(): void {
@@ -76,6 +90,7 @@ export class ProvidersComponent implements OnInit, AfterContentInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.providersSubscription?.unsubscribe();
+    this.sessionSubscription?.unsubscribe();
   }
 
   applyFilter(text: string) {

@@ -10,12 +10,12 @@
         <app-new-edit *ngIf="drawerComponent === 'DOCUMENTO'" [accountsPayable]="accountsPayable" (close)="reload()"></app-new-edit>
         <app-provider-account *ngIf="drawerComponent === 'PROVEEDOR'" [provider]="provider" (close)="drawer.opened = false">
         </app-provider-account>
-        <app-accounts-payable *ngIf="drawerComponent === 'CUENTA'" (return)="reset()" (sendEdit)="editDocument($event)" [accountsPayable]="accountsPayable"></app-accounts-payable>
+        <app-accounts-payable *ngIf="drawerComponent === 'CUENTA'" (return)="reset()" (sendEdit)="editDocument($event)" [accountsPayable]="accountsPayable" [permissions]="permissions"></app-accounts-payable>
     </mat-drawer>
     <header>
         <app-filter (send)="applyFilter($event)"></app-filter>
         <span fxFlex></span>
-        <button mat-fab color="warn" [matMenuTriggerFor]="payablesMenu" matTooltip="Nuevo documento">
+        <button mat-fab *ngIf="permissions && permissions.includes('create')" color="warn" [matMenuTriggerFor]="payablesMenu" matTooltip="Nuevo documento">
       <mat-icon>add</mat-icon>
     </button>
         <mat-menu #payablesMenu="matMenu" xPosition="before">
@@ -30,7 +30,8 @@
         </mat-menu>
     </header>
     <mat-progress-bar *ngIf="loading" mode="indeterminate" color="warn"></mat-progress-bar>
-    <mat-tab-group mat-align-tabs="center">
+    <app-no-found *ngIf="permissions && !permissions.includes('read')" text="Acceso Denegado" subtitle="Actualmente no cuenta con permisos para acceder a este apartado"></app-no-found>
+    <mat-tab-group mat-align-tabs="center" *ngIf="permissions && permissions.includes('read')">
         <mat-tab [label]=" 'Retenciones pendientes (' + accountsPayablesReten.length  + ')'   ">
             <ngx-simplebar class="content">
                 <app-table-accounts-payable (sendAccountsPayable)="getAccountPayable($event)" [accountsPayable]="accountsPayablesReten" [filter]="filterReten" [addSelection]="false"></app-table-accounts-payable>

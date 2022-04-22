@@ -1,13 +1,15 @@
 import { AfterContentInit, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { MatDrawer } from '@angular/material/sidenav';
+import { Store } from '@ngrx/store';
 
 import { Subscription } from 'rxjs';
-import { debounceTime } from 'rxjs/operators';
+import { debounceTime, filter } from 'rxjs/operators';
 
 import { AccountsPayableItem } from 'src/app/core/models/AccountsPayable';
 import { CheckItem } from 'src/app/core/models/Check';
 import { CheckService } from 'src/app/core/services/httpServices/check.service';
+import { AppState } from 'src/app/core/store/app.reducer';
 import { FilterPipe } from '../../../../../core/shared/pipes/filterPipes/filter.pipe';
 
 @Component({
@@ -72,9 +74,14 @@ export class ChequesComponent implements OnInit, AfterContentInit, OnDestroy {
   });
   /* #endregion */
 
+  sessionSubscription: Subscription;
+permissions: string[] = [];
+
+
   constructor(
     private checkService: CheckService,
-    private filter: FilterPipe
+    private filter: FilterPipe,
+    public store: Store<AppState>,
   ) { }
 
   ngOnInit(): void {
@@ -107,6 +114,13 @@ export class ChequesComponent implements OnInit, AfterContentInit, OnDestroy {
           this.getHistory(range.start._d, range.end._d);
         }
       });
+
+      this.sessionSubscription= this.store.select('session').pipe(filter( session => session !== null)).subscribe( session => {
+        if (session.permissions !== null) {
+          const MODULOS = session.permissions.filter(pr => pr.name === 'accountsPyabaleChecks');
+          this.permissions = MODULOS.length > 0 ? MODULOS[0].options : [];
+        }
+    });
   }
 
   ngAfterContentInit(): void {
@@ -115,6 +129,7 @@ export class ChequesComponent implements OnInit, AfterContentInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.checkSubscription?.unsubscribe();
+    this.sessionSubscription?.unsubscribe();
   }
 
   applyFilter(text: string): void {

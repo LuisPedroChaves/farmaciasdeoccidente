@@ -1,31 +1,32 @@
 <div class="app" fxLayout="column wrap" fxLayoutAlign="center center">
-  <mat-card fxLayout="row wrap" fxLayoutAlign="center center" class="example-card">
-    <img src="/assets/images/logoverde.png" fxLayout="row wrap" fxLayoutAlign="center center" class="separator">
-    <form [formGroup]="form" (ngSubmit)="onSubmit()" class="example-form" autocomplete="off">
-      <mat-card-content>
-        <mat-form-field class="example-full-width">
-          <mat-label>Usuario</mat-label>
-          <input matInput formControlName="user" placeholder="Ingresar Usuario">
-        </mat-form-field>
+    <mat-card fxLayout="row wrap" fxLayoutAlign="center center" class="example-card">
+        <img src="/assets/images/logoverde.png" fxLayout="row wrap" fxLayoutAlign="center center" class="separator">
+        <form [formGroup]="form" (ngSubmit)="onSubmit()" class="example-form" autocomplete="off">
+            <mat-card-content>
+                <mat-form-field class="example-full-width">
+                    <mat-label>Usuario</mat-label>
+                    <input matInput formControlName="user" placeholder="Ingresar Usuario">
+                </mat-form-field>
 
-        <mat-form-field class="example-full-width">
-          <mat-label>Contraseña</mat-label>
-          <input matInput [type]="visible ? 'text': 'password'" formControlName="password"
-            placeholder="Ingresar contraseña" type="password">
-          <mat-icon matSuffix class="material-icons-outlined cursor-poiner"
-            [ngClass]="{'text-muted': visible === false}" (click)="visible = !visible">
-            {{ visible ? 'visibility': 'visibility_off'}}</mat-icon>
-        </mat-form-field>
-        <!-- <mat-checkbox color="warn">Recordar</mat-checkbox> -->
-      </mat-card-content>
-      <button mat-raised-button [disabled]="form.invalid" class="button" type="submit" color="primary">Iniciar
+                <mat-form-field class="example-full-width">
+                    <mat-label>Contraseña</mat-label>
+                    <input matInput [type]="visible ? 'text': 'password'" formControlName="password" placeholder="Ingresar contraseña" type="password">
+                    <mat-icon matSuffix class="material-icons-outlined cursor-poiner" [ngClass]="{'text-muted': visible === false}" (click)="visible = !visible">
+                        {{ visible ? 'visibility': 'visibility_off'}}</mat-icon>
+                </mat-form-field>
+                <!-- <mat-checkbox color="warn">Recordar</mat-checkbox> -->
+            </mat-card-content>
+            <button mat-raised-button [disabled]="form.invalid" class="button" type="submit" color="primary">Iniciar
         Sesión</button>
-    </form>
-    <br>
-    <div class="session-start" fxLayout="column wrap" fxLayoutAlign="center center">
-      <span *ngIf="!loading" class="mat-text-muted">¿Ha olvidado su contraseña?</span>
-      <mat-spinner *ngIf="loading" diameter="30" mode="indeterminate"  color="warn"></mat-spinner>
-      <span *ngIf="showError === true" class="formerror">{{ error }}</span>
-    </div>
-  </mat-card>
+        </form>
+        <br>
+        <div class="session-start" fxLayout="column wrap" fxLayoutAlign="center center">
+            <span *ngIf="!loading" class="mat-text-muted">¿Ha olvidado su contraseña?</span>
+            <mat-spinner *ngIf="loading" diameter="30" mode="indeterminate" color="warn"></mat-spinner>
+            <span *ngIf="showError === true" class="formerror">
+        <br>
+        {{ error }}
+      </span>
+        </div>
+    </mat-card>
 </div>
