@@ -42,7 +42,7 @@ export class SigninComponent implements OnInit, OnDestroy {
       this.errormsg = null;
       this.showError = false;
       if (session.error !== null) {
-        this.error = session.error.errorMessage;
+        this.error = session.error.errorMsg;
         this.showError = true;
       }
       this.loaded = session.loaded;

@@ -8,13 +8,13 @@
       </button>
         </header>
         <app-new-edit *ngIf="drawerComponent === 'DOCUMENTO'" [accountsPayable]="accountsPayable" (close)="reload()"></app-new-edit>
-        <app-provider-account *ngIf="drawerComponent === 'PROVEEDOR'" (sendAccountsPayable)="getAccountsPayable($event)" [provider]="provider"></app-provider-account>
-        <app-accounts-payable *ngIf="drawerComponent === 'CUENTA'" (return)="drawerComponent = 'PROVEEDOR'" (sendAmount)="getAmount($event)" [accountsPayable]="accountsPayable"></app-accounts-payable>
+        <app-provider-account *ngIf="drawerComponent === 'PROVEEDOR'" (sendAccountsPayable)="getAccountsPayable($event)" [provider]="provider" [permissions]="permissions"></app-provider-account>
+        <app-accounts-payable *ngIf="drawerComponent === 'CUENTA'" (return)="drawerComponent = 'PROVEEDOR'" (sendAmount)="getAmount($event)" [accountsPayable]="accountsPayable" [permissions]="permissions"></app-accounts-payable>
     </mat-drawer>
     <header>
         <app-filter (send)="applyFilter($event)"></app-filter>
         <span fxFlex></span>
-        <button mat-fab color="warn" [matMenuTriggerFor]="payablesMenu" matTooltip="Nuevo documento">
+        <button mat-fab *ngIf="permissions && permissions.includes('create')" color="warn" [matMenuTriggerFor]="payablesMenu" matTooltip="Nuevo documento">
       <mat-icon>add</mat-icon>
     </button>
         <mat-menu #payablesMenu="matMenu" xPosition="before">
@@ -30,37 +30,40 @@
     </header>
     <ngx-simplebar class="content">
         <mat-progress-bar *ngIf="loading" mode="indeterminate" color="warn"></mat-progress-bar>
-        <app-no-found *ngIf="!providersPage || providersPage.length === 0" text="No se encontraron proveedores" subtitle="Actualmente no contiene cuentas por pagar"></app-no-found>
-        <div fxLayout="row wrap" fxLayoutGap="15px grid" class="grid">
-            <div fxFlex.gt-lg="20" fxFlex.gt-md="33" fxFlex.gt-sm="50" fxFlex.lt-md="100" *ngFor="let provider of providersPage; let i = index">
-                <mat-card matRipple (click)="selectProvider(provider)" class="cursor-pointer mat-elevation-z0" [ngClass]="{'mat-elevation-z4': i === indexHovered}" (mouseenter)="indexHovered = i" (mouseleave)="indexHovered = -1">
-                    <mat-card-header>
-                        <mat-icon matCardAvatar *ngIf="((provider.balance * 100)/ provider.credit) <= 99">business</mat-icon>
-                        <mat-icon matCardAvatar *ngIf="((provider.balance * 100)/ provider.credit) > 99" color="warn" matTooltip="Límite de crédito superado">warning</mat-icon>
-                        <mat-card-group>
-                            <mat-card-title>{{ provider.nit }}</mat-card-title>
-                            <mat-card-subtitle>{{ provider.name }}</mat-card-subtitle>
-                        </mat-card-group>
-                    </mat-card-header>
-                    <mat-card-content>
-                        <p>Tel: <b>{{ provider.phone }}</b></p>
-                        <p>{{ provider.creditDays }} días de crédito</p>
-                        <mat-chip-list *ngIf="provider.iva || provider.isr">
-                            <mat-chip *ngIf="provider.iva">Retención de IVA</mat-chip>
-                            <mat-chip *ngIf="provider.isr">Retención de ISR</mat-chip>
-                        </mat-chip-list>
-                        <br>
-                        <div fxLayout="row" fxLayoutAlign="space-between center">
-                            <span>Saldo</span>
-                            <span>Crédito</span>
-                        </div>
-                        <app-progress-balance [value]="(provider.balance * 100)/ provider.credit"></app-progress-balance>
-                        <div fxLayout="row" fxLayoutAlign="space-between center">
-                            <b>Q{{ provider.balance | number: '.2' }}</b> Q{{ provider.credit | number: '.2' }}
-                        </div>
-                    </mat-card-content>
-                </mat-card>
+        <app-no-found *ngIf="permissions && !permissions.includes('read')" text="Acceso Denegado" subtitle="Actualmente no cuenta con permisos para acceder a este apartado"></app-no-found>
+        <ng-container *ngIf="permissions && permissions.includes('read')">
+            <app-no-found *ngIf="!providersPage || providersPage.length === 0" text="No se encontraron proveedores" subtitle="Actualmente no contiene cuentas por pagar"></app-no-found>
+            <div fxLayout="row wrap" fxLayoutGap="15px grid" class="grid">
+                <div fxFlex.gt-lg="20" fxFlex.gt-md="33" fxFlex.gt-sm="50" fxFlex.lt-md="100" *ngFor="let provider of providersPage; let i = index">
+                    <mat-card matRipple (click)="selectProvider(provider)" class="cursor-pointer mat-elevation-z0" [ngClass]="{'mat-elevation-z4': i === indexHovered}" (mouseenter)="indexHovered = i" (mouseleave)="indexHovered = -1">
+                        <mat-card-header>
+                            <mat-icon matCardAvatar *ngIf="((provider.balance * 100)/ provider.credit) <= 99">business</mat-icon>
+                            <mat-icon matCardAvatar *ngIf="((provider.balance * 100)/ provider.credit) > 99" color="warn" matTooltip="Límite de crédito superado">warning</mat-icon>
+                            <mat-card-group>
+                                <mat-card-title>{{ provider.nit }}</mat-card-title>
+                                <mat-card-subtitle>{{ provider.name }}</mat-card-subtitle>
+                            </mat-card-group>
+                        </mat-card-header>
+                        <mat-card-content>
+                            <p>Tel: <b>{{ provider.phone }}</b></p>
+                            <p>{{ provider.creditDays }} días de crédito</p>
+                            <mat-chip-list *ngIf="provider.iva || provider.isr">
+                                <mat-chip *ngIf="provider.iva">Retención de IVA</mat-chip>
+                                <mat-chip *ngIf="provider.isr">Retención de ISR</mat-chip>
+                            </mat-chip-list>
+                            <br>
+                            <div fxLayout="row" fxLayoutAlign="space-between center">
+                                <span>Saldo</span>
+                                <span>Crédito</span>
+                            </div>
+                            <app-progress-balance [value]="(provider.balance * 100)/ provider.credit"></app-progress-balance>
+                            <div fxLayout="row" fxLayoutAlign="space-between center">
+                                <b>Q{{ provider.balance | number: '.2' }}</b> Q{{ provider.credit | number: '.2' }}
+                            </div>
+                        </mat-card-content>
+                    </mat-card>
+                </div>
             </div>
-        </div>
+        </ng-container>
     </ngx-simplebar>
 </mat-drawer-container>

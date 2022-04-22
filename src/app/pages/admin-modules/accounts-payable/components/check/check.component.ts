@@ -20,6 +20,8 @@ export class CheckComponent implements OnInit {
   check: CheckItem;
   @Input()
   isDelivery = false;
+  @Input()
+  permissions: string[] = [];
   @Output()
   sendId = new EventEmitter();
 
@@ -35,6 +37,10 @@ export class CheckComponent implements OnInit {
   }
 
   delivery(check: CheckItem): void {
+    if (this.permissions && !this.permissions.includes('update')) {
+      this.toastyService.error('Acceso Denegado', 'Actualmente no cuenta con permisos para realizar esta acción')
+      return;
+    }
     const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
       width: '350px',
       data: {
@@ -62,6 +68,10 @@ export class CheckComponent implements OnInit {
   }
 
   update(check: CheckItem, state: string, action: string): void {
+    if (this.permissions && !this.permissions.includes('update')) {
+      this.toastyService.error('Acceso Denegado', 'Actualmente no cuenta con permisos para realizar esta acción')
+      return;
+    }
     const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
       width: '350px',
       data: {
@@ -95,6 +105,10 @@ export class CheckComponent implements OnInit {
   }
 
   pay(check: CheckItem, state: string): void {
+    if (this.permissions && !this.permissions.includes('update')) {
+      this.toastyService.error('Acceso Denegado', 'Actualmente no cuenta con permisos para realizar esta acción')
+      return;
+    }
     const dialogRef = this.dialog.open(EnterPaymentComponent, {
       width: '350px',
       data: {
@@ -128,6 +142,10 @@ export class CheckComponent implements OnInit {
   }
 
   void(check: CheckItem): void {
+    if (this.permissions && !this.permissions.includes('delete')) {
+      this.toastyService.error('Acceso Denegado', 'Actualmente no cuenta con permisos para realizar esta acción')
+      return;
+    }
     const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
       width: '350px',
       data: {

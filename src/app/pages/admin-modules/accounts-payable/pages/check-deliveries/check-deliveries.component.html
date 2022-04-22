@@ -4,11 +4,14 @@
     </header>
     <mat-progress-bar *ngIf="loading" mode="indeterminate" color="warn"></mat-progress-bar>
     <ngx-simplebar class="content">
-        <app-no-found *ngIf="!checks || checks.length === 0" text="No se encontraron cheques" subtitle="Actualmente no hay cheques para entregar"></app-no-found>
-        <div fxLayout="row wrap" fxLayoutGap="15px grid" class="grid">
-            <div fxFlex.gt-lg="20" fxFlex.gt-md="33" fxFlex.gt-sm="50" fxFlex.lt-md="100" *ngFor="let check of checks; let i = index">
-                <app-check (sendId)="getDelivered($event)" [i]="i" [check]="check" [isDelivery]="true"></app-check>
+        <app-no-found *ngIf="permissions && !permissions.includes('read')" text="Permiso denegado" subtitle="Actualmente no cuenta con permisos para acceder a este apartado"></app-no-found>
+        <ng-container *ngIf="permissions && permissions.includes('read')">
+            <app-no-found *ngIf="!checks || checks.length === 0" text="No se encontraron cheques" subtitle="Actualmente no hay cheques para entregar"></app-no-found>
+            <div fxLayout="row wrap" fxLayoutGap="15px grid" class="grid">
+                <div fxFlex.gt-lg="20" fxFlex.gt-md="33" fxFlex.gt-sm="50" fxFlex.lt-md="100" *ngFor="let check of checks; let i = index">
+                    <app-check (sendId)="getDelivered($event)" [i]="i" [check]="check" [isDelivery]="true" [permissions]="permissions"></app-check>
+                </div>
             </div>
-        </div>
+        </ng-container>
     </ngx-simplebar>
 </ngx-simplebar>

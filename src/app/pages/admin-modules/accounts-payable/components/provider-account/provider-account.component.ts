@@ -36,6 +36,8 @@ export class ProviderAccountComponent implements OnInit, AfterContentInit, OnDes
 
   @Input()
   provider: ProviderItem;
+  @Input()
+  permissions: string[] = [];
   @Output()
   sendAccountsPayable = new EventEmitter();
   @ViewChild('drawer')
@@ -192,6 +194,10 @@ export class ProviderAccountComponent implements OnInit, AfterContentInit, OnDes
 
   /* #region  Pays */
   newPay() {
+    if (!this.permissions.includes('update')) {
+      this.toastyService.error('Acceso Denegado', 'Actualmente no cuenta con permisos para realizar esta acción')
+      return
+    }
     if (this.selectedPend.length === 0) {
       this.toastyService.toasty('warning', 'Ningún documento seleccionado', 'Por favor seleccione los documentos a pagar')
       return;

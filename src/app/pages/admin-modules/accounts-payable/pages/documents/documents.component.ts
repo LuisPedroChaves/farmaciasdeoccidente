@@ -2,13 +2,15 @@ import { Component, OnInit, ViewChild, AfterContentInit, OnDestroy } from '@angu
 import { FormControl, FormGroup } from '@angular/forms';
 import { MatDrawer } from '@angular/material/sidenav';
 import { MatTableDataSource } from '@angular/material/table';
+import { Store } from '@ngrx/store';
 
 import { Subscription } from 'rxjs';
-import { debounceTime } from 'rxjs/operators';
+import { debounceTime, filter } from 'rxjs/operators';
 
 import { AccountsPayableItem } from 'src/app/core/models/AccountsPayable';
 import { AccountsPayableService } from 'src/app/core/services/httpServices/accounts-payable.service';
 import { ProviderService } from 'src/app/core/services/httpServices/provider.service';
+import { AppState } from 'src/app/core/store/app.reducer';
 
 @Component({
   selector: 'app-documents',
@@ -75,8 +77,12 @@ export class DocumentsComponent implements OnInit, AfterContentInit, OnDestroy {
   });
   /* #endregion */
 
+  sessionSubscription: Subscription;
+  permissions: string[] = [];
+
   constructor(
     private accountsPayableService: AccountsPayableService,
+    public store: Store<AppState>,
   ) { }
 
   ngOnInit(): void {
@@ -102,6 +108,13 @@ export class DocumentsComponent implements OnInit, AfterContentInit, OnDestroy {
           this.history(range.start._d, range.end._d);
         }
       });
+
+    this.sessionSubscription = this.store.select('session').pipe(filter(session => session !== null)).subscribe(session => {
+      if (session.permissions !== null) {
+        const MODULOS = session.permissions.filter(pr => pr.name === 'accountsPyabaleDocuments');
+        this.permissions = MODULOS.length > 0 ? MODULOS[0].options : [];
+      }
+    });
   }
 
   ngAfterContentInit(): void {
@@ -110,6 +123,7 @@ export class DocumentsComponent implements OnInit, AfterContentInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.accountsPayableSubscription?.unsubscribe();
+    this.sessionSubscription?.unsubscribe();
   }
 
   applyFilter(filter: string) {
@@ -205,7 +219,7 @@ export class DocumentsComponent implements OnInit, AfterContentInit, OnDestroy {
     this.drawer.opened = false;
     this.accountsPayableService.loadData();
     this.accountsPayableService.getTempCredits()
-    .subscribe(data => this.accountsPayablesTemp = data);
+      .subscribe(data => this.accountsPayablesTemp = data);
   }
 
   history(startDate, endDate) {

@@ -17,6 +17,8 @@ export class AccountsPayableComponent implements OnInit, OnChanges {
 
   @Input()
   accountsPayable: AccountsPayableItem;
+  @Input()
+  permissions: string[] = [];
   @Output()
   return = new EventEmitter();
   @Output()
@@ -61,8 +63,11 @@ export class AccountsPayableComponent implements OnInit, OnChanges {
   }
 
   enter() {
-    this.loading = true;
     /* #region  Validaciones */
+    if (!this.permissions.includes('update')) {
+      this.toastyService.error('Acceso Denegado', 'Actualmente no cuenta con permisos para realizar para realizar esta acción');
+      return
+    }
     if (this.form.controls.credit.value === 'RETENCION_IVA') {
       this.accountsPayable.emptyWithholdingIVA = false;
     }
@@ -70,6 +75,7 @@ export class AccountsPayableComponent implements OnInit, OnChanges {
       this.accountsPayable.emptyWithholdingISR = false;
     }
     /* #endregion */
+    this.loading = true;
     const AMOUNT = this.form.controls.amount.value;
 
     this.accountsPayable.balance.push({ ...this.form.value })

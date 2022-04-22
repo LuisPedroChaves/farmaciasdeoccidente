@@ -15,7 +15,7 @@
         <header>
             <app-filter (send)="applyFilter($event)"></app-filter>
             <span fxFlex></span>
-            <button mat-fab color="warn" [matMenuTriggerFor]="payablesMenu" matTooltip="Nuevo documento">
+            <button mat-fab *ngIf="permissions && permissions.includes('create')" color="warn" [matMenuTriggerFor]="payablesMenu" matTooltip="Nuevo documento">
         <mat-icon>add</mat-icon>
       </button>
             <mat-menu #payablesMenu="matMenu" xPosition="before">
@@ -30,13 +30,14 @@
             </mat-menu>
         </header>
         <mat-progress-bar *ngIf="loading" mode="indeterminate" color="warn"></mat-progress-bar>
-        <mat-tab-group mat-align-tabs="center">
+        <app-no-found *ngIf="permissions && !permissions.includes('read')" text="Acceso Denegado" subtitle="Actualmente no cuenta con permisos para acceder a este apartado"></app-no-found>
+        <mat-tab-group mat-align-tabs="center" *ngIf="permissions && permissions.includes('read')">
             <mat-tab [label]="'Del día (' + checksToday.length + ')'">
                 <ngx-simplebar class="content">
                     <app-no-found *ngIf="!checksToday || checksToday.length === 0" text="No se encontraron cheques" subtitle="Actualmente no hay cheques para el día de hoy"></app-no-found>
                     <div fxLayout="row wrap" fxLayoutGap="15px grid" class="grid">
                         <div fxFlex.gt-lg="20" fxFlex.gt-md="33" fxFlex.gt-sm="50" fxFlex.lt-md="100" *ngFor="let check of checksToday; let i = index">
-                            <app-check (sendId)="getVoided($event)" [i]="i" [check]="check"></app-check>
+                            <app-check (sendId)="getVoided($event)" [i]="i" [check]="check" [permissions]="permissions"></app-check>
                         </div>
                     </div>
                 </ngx-simplebar>
@@ -46,7 +47,7 @@
                     <app-no-found *ngIf="!checksCreated || checksCreated.length === 0" text="No se encontraron cheques" subtitle="Actualmente no hay cheques girados"></app-no-found>
                     <div fxLayout="row wrap" fxLayoutGap="15px grid" class="grid">
                         <div fxFlex.gt-lg="20" fxFlex.gt-md="33" fxFlex.gt-sm="50" fxFlex.lt-md="100" *ngFor="let check of checksCreated; let i = index">
-                            <app-check (sendId)="getVoided($event)" [i]="i" [check]="check"></app-check>
+                            <app-check (sendId)="getVoided($event)" [i]="i" [check]="check" [permissions]="permissions"></app-check>
                         </div>
                     </div>
                 </ngx-simplebar>
@@ -56,7 +57,7 @@
                     <app-no-found *ngIf="!checksInter || checksInter.length === 0" text="No se encontraron cheques" subtitle="Actualmente no hay cheques aprobados por Interbanco"></app-no-found>
                     <div fxLayout="row wrap" fxLayoutGap="15px grid" class="grid">
                         <div fxFlex.gt-lg="20" fxFlex.gt-md="33" fxFlex.gt-sm="50" fxFlex.lt-md="100" *ngFor="let check of checksInter; let i = index">
-                            <app-check (sendId)="getVoided($event)" [i]="i" [check]="check"></app-check>
+                            <app-check (sendId)="getVoided($event)" [i]="i" [check]="check" [permissions]="permissions"></app-check>
                         </div>
                     </div>
                 </ngx-simplebar>
@@ -66,7 +67,7 @@
                     <app-no-found *ngIf="!checksWait || checksWait.length === 0" text="No se encontraron cheques" subtitle="Actualmente no hay cheques en espera"></app-no-found>
                     <div fxLayout="row wrap" fxLayoutGap="15px grid" class="grid">
                         <div fxFlex.gt-lg="20" fxFlex.gt-md="33" fxFlex.gt-sm="50" fxFlex.lt-md="100" *ngFor="let check of checksWait; let i = index">
-                            <app-check (sendId)="getVoided($event)" [i]="i" [check]="check"></app-check>
+                            <app-check (sendId)="getVoided($event)" [i]="i" [check]="check" [permissions]="permissions"></app-check>
                         </div>
                     </div>
                 </ngx-simplebar>
@@ -76,7 +77,7 @@
                     <app-no-found *ngIf="!checksAuth || checksAuth.length === 0" text="No se encontraron cheques" subtitle="Actualmente no hay cheques autorizados"></app-no-found>
                     <div fxLayout="row wrap" fxLayoutGap="15px grid" class="grid">
                         <div fxFlex.gt-lg="20" fxFlex.gt-md="33" fxFlex.gt-sm="50" fxFlex.lt-md="100" *ngFor="let check of checksAuth; let i = index">
-                            <app-check (sendId)="getVoided($event)" [i]="i" [check]="check"></app-check>
+                            <app-check (sendId)="getVoided($event)" [i]="i" [check]="check" [permissions]="permissions"></app-check>
                         </div>
                     </div>
                 </ngx-simplebar>
@@ -101,7 +102,7 @@
                     <app-no-found *ngIf="!checksHistory || checksHistory.length === 0" text="No se encontraron cheques" subtitle="Por favor ingrese un rango de fechas para consultar en su historial"></app-no-found>
                     <div fxLayout="row wrap" fxLayoutGap="15px grid" class="grid">
                         <div fxFlex.gt-lg="20" fxFlex.gt-md="33" fxFlex.gt-sm="50" fxFlex.lt-md="100" *ngFor="let check of checksHistory; let i = index">
-                            <app-check (sendId)="getVoided($event)" [i]="i" [check]="check"></app-check>
+                            <app-check (sendId)="getVoided($event)" [i]="i" [check]="check" [permissions]="permissions"></app-check>
                         </div>
                     </div>
                 </ngx-simplebar>

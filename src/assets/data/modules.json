@@ -14,12 +14,19 @@
     { "name": "pharmaStatistics", "label": "Estadísticas", "parent": "PHARMA", "level": 1, "options": ["read", "update", "delete", "create"] },
     { "name": "storage", "label": "Inventario", "parent": "PHARMA", "level": 1, "options": ["read", "update", "delete", "create"] },
     { "name": "purchases", "label": "Compras", "parent": "PHARMA", "level": 1, "options": ["read", "update", "delete", "create"] },
+
     { "name": "/admin", "label": "Sucursales", "parent": "ADMIN", "level": 1, "options": ["read", "update", "delete", "create"] },
     { "name": "adminCheckStock", "label": "Consultar existencias", "parent": "ADMIN", "level": 1, "options": [] },
     { "name": "adminDeliveries", "label": "Rutas y entregas", "parent": "ADMIN", "level": 1, "options": ["read", "update", "delete", "create"] },
     { "name": "adminOrders", "label": "Ordenes", "parent": "ADMIN", "level": 1, "options": ["read", "update", "delete", "create"] },
     { "name": "receivables", "label": "Cuentas por cobrar", "parent": "ADMIN", "level": 1, "options": ["read", "update", "delete", "create"] },
+
     { "name": "accountsPayable", "label": "Cuentas por pagar", "parent": "ADMIN", "level": 1, "options": ["read", "update", "delete", "create"] },
+    { "name": "accountsPyabaleProviders", "label": "Proveedores", "parent": "accountsPayable", "level": 2, "options": ["read", "update", "delete", "create"] },
+    { "name": "accountsPyabaleDocuments", "label": "Documentos", "parent": "accountsPayable", "level": 2, "options": ["read", "update", "delete", "create"] },
+    { "name": "accountsPyabaleChecks", "label": "Cheques", "parent": "accountsPayable", "level": 2, "options": ["read", "update", "delete", "create"] },
+    { "name": "accountsPyabaleCheckDeliveries", "label": "Entrega de cheques", "parent": "accountsPayable", "level": 2, "options": ["read", "update"] },
+
     { "name": "uploads", "label": "Carga de archivos", "parent": "ADMIN", "level": 1, "options": ["read", "update", "delete", "create"] },
     { "name": "statistics", "label": "Estadísticas", "parent": "ADMIN", "level": 1, "options": ["read", "update", "delete", "create"] },
     { "name": "tempStatistics", "label": "Estadísticas Temp.", "parent": "ADMIN", "level": 1, "options": ["read", "update", "delete", "create"] },
