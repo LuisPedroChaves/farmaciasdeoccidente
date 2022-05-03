@@ -9,6 +9,7 @@ import { IndexComponent } from './pages/index/index.component';
 import { ListSalesComponent } from './components/list-sales/list-sales.component';
 import { InputsModule } from '../../shared/inputs/inputs.module';
 import { NewSaleComponent } from './components/new-sale/new-sale.component';
+import { ComponentsModule } from '../../shared/components/components.module';
 
 
 
@@ -19,7 +20,8 @@ import { NewSaleComponent } from './components/new-sale/new-sale.component';
     RouterModule.forChild(SalesRoutes),
     SharedComponentsModule,
     CoreModule,
-    InputsModule
+    InputsModule,
+    ComponentsModule,
   ]
 })
 export class SalesModule { }

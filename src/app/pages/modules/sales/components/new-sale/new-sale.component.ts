@@ -1,4 +1,4 @@
-import { AfterContentInit, Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
+import { AfterContentInit, Component, ElementRef, EventEmitter, Input, OnDestroy, OnInit, Output, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 
 import { Observable, Subscription } from 'rxjs';
@@ -21,31 +21,22 @@ export class NewSaleComponent implements OnInit, AfterContentInit, OnDestroy {
 
   @Input()
   currentCellar: CellarItem;
-
   @Output()
   close = new EventEmitter();
+  @ViewChild('findInput')
+  findInput: ElementRef<HTMLInputElement>;
 
   loading = false;
 
   form = new FormGroup({
     _cellar: new FormControl(null,),
-    name: new FormControl(null, [Validators.required]),
-    nit: new FormControl(null, [Validators.required]),
-    phone: new FormControl(null, [Validators.required]),
-    address: new FormControl(null, [Validators.required]),
-    town: new FormControl(null,),
-    department: new FormControl('Huehuetenango',),
-    code: new FormControl('', [Validators.required]),
-    company: new FormControl(null,),
-    transport: new FormControl(null,),
-    limitCredit: new FormControl(null, [Validators.required]),
-    limitDaysCredit: new FormControl(null, [Validators.required]),
+    _customer: new FormControl(null),
     _seller: new FormControl(null, [Validators.required]),
     date: new FormControl(new Date(), [Validators.required]),
     noBill: new FormControl(null, [Validators.required]),
     total: new FormControl('', [Validators.required]),
   });
-  idCustomer = null;
+  selectedCustomer: CustomerItem;
   timeAvaliable = true;
   credit = 0;
 
@@ -77,6 +68,10 @@ export class NewSaleComponent implements OnInit, AfterContentInit, OnDestroy {
     this.userSubscription = this.userService.readData().subscribe(data => {
       this.sellers = data.filter(user => user._role.type === 'SELLER');
     });
+
+    setTimeout(() => {
+      this.findInput.nativeElement.focus();
+    }, 500);
   }
 
   ngAfterContentInit(): void {
@@ -101,55 +96,39 @@ export class NewSaleComponent implements OnInit, AfterContentInit, OnDestroy {
   }
 
   selected(code: string) {
-    const INDEX = this.customers.findIndex(c => c.code === code);
-    if (INDEX > -1) {
+    const CUSTOMER = this.customers.find(c => c.code === code);
+    this.selectedCustomer = CUSTOMER;
+    if (CUSTOMER) {
+      this.form.controls["_seller"].setValue(CUSTOMER._seller._id)
       this.loading = true;
-      this.form.controls.code.setValue(this.customers[INDEX].code);
-      this.form.controls.nit.setValue(this.customers[INDEX].nit);
-      this.form.controls.name.setValue(this.customers[INDEX].name);
-      this.form.controls.phone.setValue(this.customers[INDEX].phone);
-      this.form.controls.address.setValue(this.customers[INDEX].address);
-      this.form.controls.town.setValue(this.customers[INDEX].town);
-      this.form.controls.department.setValue(this.customers[INDEX].department);
-      this.form.controls.company.setValue(this.customers[INDEX].company);
-      this.form.controls.transport.setValue(this.customers[INDEX].transport);
-      this.form.controls.limitCredit.setValue(this.customers[INDEX].limitCredit);
-      this.form.controls.limitDaysCredit.setValue(this.customers[INDEX].limitDaysCredit);
-      this.form.controls._seller.setValue(this.customers[INDEX]._seller._id);
-      this.idCustomer = this.customers[INDEX]._id;
-      this.customerService.getCustomer(this.idCustomer).subscribe(data => {
+      this.customerService.getCustomer(CUSTOMER._id).subscribe(data => {
         this.timeAvaliable = data.timeAvaliable;
         this.credit = data.credit;
         this.loading = false;
       });
     }
-    else {
-      this.resetForm();
-    }
+  }
+
+  clearCustomer() {
+    this.selectedCustomer = null;
+    this.timeAvaliable = true;
+    this.credit = 0;
+    this._customer.setValue('')
   }
 
   resetForm(): void {
     this._customer.setValue('')
 
-    this.form.controls.nit.setValue('');
-    this.form.controls.name.setValue('');
-    this.form.controls.phone.setValue('');
-    this.form.controls.address.setValue('');
-    this.form.controls.town.setValue('');
-    this.form.controls.department.setValue('Huehuetenango');
-    this.form.controls.code.setValue('');
-    this.form.controls.company.setValue('');
-    this.form.controls.transport.setValue('');
-    this.form.controls.limitCredit.setValue('');
-    this.form.controls.limitDaysCredit.setValue('');
     this.form.controls._seller.setValue('');
     this.form.controls.date.setValue(new Date());
     this.form.controls.noBill.setValue('');
     this.form.controls.total.setValue('');
 
-    this.idCustomer = null;
+    this.selectedCustomer = null;
     this.timeAvaliable = true;
     this.credit = 0;
+
+    this.findInput.nativeElement.focus();
   }
 
   save(): void {
@@ -161,10 +140,13 @@ export class NewSaleComponent implements OnInit, AfterContentInit, OnDestroy {
     }
     this.loading = true;
     this.form.get('_cellar').setValue(this.currentCellar);
+    this.form.get('_customer').setValue(this.selectedCustomer);
     const sale: any = { ...this.form.value };
     this.saleService.createSale(sale).subscribe(data => {
       if (data.ok === true) {
+        this.customerService.loadData();
         this.toastyService.success('Venta creada exitosamente');
+        this.resetForm()
         this.loading = false;
       } else {
         this.loading = false;

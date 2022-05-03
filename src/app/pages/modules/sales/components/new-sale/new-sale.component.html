@@ -2,128 +2,44 @@
     <div fxLayout="row" fxLayoutAlign="center center">
         <div fxFlex.gt-lg="60" fxFlex.gt-md="70" fxFlex.gt-sm="80" fxFlex.gt-xs="80" fxFlex.xs="100">
             <form [formGroup]="form" autocomplete="off">
-                <mat-card fxLayout="column" class="mat-elevation-z4">
+                <mat-card fxLayout="column" class="mat-elevation-z3">
                     <mat-card-header>
                         <mat-icon matCardAvatar>point_of_sale </mat-icon>
                         <mat-form-field fxFlex appearance="outline" color="accent">
                             <mat-label>Cliente</mat-label>
-                            <input matInput [formControl]="_customer" [matAutocomplete]="auto1" type="text" placeholder="Buscar cliente..." aria-label="text">
+                            <input #findInput matInput [formControl]="_customer" [matAutocomplete]="auto1" type="text" placeholder="Buscar cliente..." aria-label="text">
                             <mat-hint>Ingrese el código o el nombre del cliente.</mat-hint>
                             <mat-autocomplete autoActiveFirstOption #auto1="matAutocomplete" (optionSelected)="selected($event.option.value)">
                                 <mat-option *ngFor="let option of filteredOptions | async" [value]="option.code">
                                     <span>{{ option.code }} - {{option.name}}</span>
                                 </mat-option>
                             </mat-autocomplete>
-                            <button *ngIf="_customer.value" matSuffix mat-icon-button aria-label="Clear" (click)="resetForm()">
-                              <mat-icon>close</mat-icon>
-                            </button>
+                            <button *ngIf="_customer.value" matSuffix mat-icon-button aria-label="Clear" (click)="clearCustomer()">
+                <mat-icon>close</mat-icon>
+              </button>
                         </mat-form-field>
                     </mat-card-header>
                     <mat-card-content>
-                        <br>
-                        <mat-divider></mat-divider>
-                        <br>
-                        <div fxLayout="row wrap" fxLayoutGap="10px">
-                            <div fxFlex.gt-lg="20" fxFlex.gt-md="20" fxFlex.gt-sm="20" fxFlex.gt-xs="20" fxFlex.xs="100">
-                                <mat-form-field fxFill appearance="outline" color="primary">
-                                    <mat-label>Código</mat-label>
-                                    <input type="text" placeholder="Ingrese un código" matInput formControlName="code">
-                                </mat-form-field>
-                            </div>
-                            <div fxFlex.gt-lg="25" fxFlex.gt-md="25" fxFlex.gt-sm="25" fxFlex.gt-xs="25" fxFlex.xs="100">
-                                <mat-form-field fxFill appearance="outline" color="primary">
-                                    <mat-label>Nit.</mat-label>
-                                    <input type="text" placeholder="Ingrese el numero de Nit" matInput formControlName="nit">
-                                </mat-form-field>
-                            </div>
-                            <div fxFlex.gt-lg="50" fxFlex.gt-md="50" fxFlex.gt-sm="50" fxFlex.gt-xs="70" fxFlex.xs="100">
-                                <mat-form-field fxFill appearance="outline" color="primary">
-                                    <mat-label>Nombre</mat-label>
-                                    <input formControlName="name" type="text" matInput placeholder="Ingrese el nombre del cliente">
-                                </mat-form-field>
-                            </div>
-                        </div>
-                        <div fxLayout="row wrap" fxLayoutGap="10px">
-                            <div fxFlex.gt-lg="20" fxFlex.gt-md="20" fxFlex.gt-sm="25" fxFlex.gt-xs="25" fxFlex.xs="100">
-                                <mat-form-field fxFill appearance="outline" color="primary">
-                                    <mat-label>Teléfono</mat-label>
-                                    <input formControlName="phone" type="text" matInput placeholder="Ingrese un número de teléfono">
-                                </mat-form-field>
-                            </div>
-                            <div fxFlex.gt-lg="75" fxFlex.gt-md="75" fxFlex.gt-sm="70" fxFlex.gt-xs="70" fxFlex.xs="100">
-                                <mat-form-field fxFill appearance="outline" color="primary">
-                                    <mat-label>Direccion</mat-label>
-                                    <input formControlName="address" type="text" matInput placeholder="Ingrese la Zona">
-                                </mat-form-field>
-                            </div>
-                        </div>
-                        <div fxLayout="row wrap" fxLayoutGap="10px">
-                            <div fxFlex.gt-lg="25" fxFlex.gt-md="32" fxFlex.gt-sm="32" fxFlex.gt-xs="32" fxFlex.xs="100">
-                                <mat-form-field fxFill appearance="outline" color="primary" class="width-all">
-                                    <mat-label>Municipio</mat-label>
-                                    <input formControlName="town" type="text" matInput placeholder="Ingrese el municipio">
-                                </mat-form-field>
-                            </div>
-                            <div fxFlex.gt-lg="25" fxFlex.gt-md="32" fxFlex.gt-sm="32" fxFlex.gt-xs="32" fxFlex.xs="100">
-                                <mat-form-field fxFill color="primary" class="width-all" appearance="outline">
-                                    <mat-label>Departamento</mat-label>
-                                    <mat-select formControlName="department">
-                                        <mat-option value="Alta Verapaz">Alta Verapaz</mat-option>
-                                        <mat-option value="Baja Verapaz">Baja Verapaz</mat-option>
-                                        <mat-option value="Chimaltenango">Chimaltenango</mat-option>
-                                        <mat-option value="Chiquimula">Chiquimula</mat-option>
-                                        <mat-option value="Petén">Petén</mat-option>
-                                        <mat-option value="El Progreso">El Progreso</mat-option>
-                                        <mat-option value="Quiché">Quiché</mat-option>
-                                        <mat-option value="Escuintla">Escuintla</mat-option>
-                                        <mat-option value="Guatemala">Guatemala</mat-option>
-                                        <mat-option value="Huehuetenango">Huehuetenango</mat-option>
-                                        <mat-option value="Izabal">Izabal</mat-option>
-                                        <mat-option value="Jalapa">Jalapa</mat-option>
-                                        <mat-option value="Jutiapa">Jutiapa</mat-option>
-                                        <mat-option value="Quetzaltenango">Quetzaltenango</mat-option>
-                                        <mat-option value="Retalhuleu">Retalhuleu</mat-option>
-                                        <mat-option value="Sacatepéquez">Sacatepéquez</mat-option>
-                                        <mat-option value="San Marcos">San Marcos</mat-option>
-                                        <mat-option value="Santa Rosa">Santa Rosa</mat-option>
-                                        <mat-option value="Sololá">Sololá</mat-option>
-                                        <mat-option value="Suchitepéquez">Suchitepéquez</mat-option>
-                                        <mat-option value="Totonicapán">Totonicapán</mat-option>
-                                        <mat-option value="Zacapa">Zacapa</mat-option>
-                                    </mat-select>
-                                </mat-form-field>
-                            </div>
-                            <div fxFlex.gt-lg="25" fxFlex.gt-md="32" fxFlex.gt-sm="32" fxFlex.gt-xs="32" fxFlex.xs="100">
-                                <mat-form-field fxFill appearance="outline" color="primary">
-                                    <mat-label>Empresa</mat-label>
-                                    <input formControlName="company" type="text" matInput placeholder="Ingrese el nombre de la empresa">
-                                </mat-form-field>
-                            </div>
-                        </div>
-                        <div fxLayout="row wrap" fxLayoutGap="10px">
-                            <div fxFlex.gt-lg="25" fxFlex.gt-md="32" fxFlex.gt-sm="32" fxFlex.gt-xs="32" fxFlex.xs="100">
-                                <mat-form-field fxFill appearance="outline" color="primary">
-                                    <mat-label>Transporte</mat-label>
-                                    <input formControlName="transport" type="text" matInput placeholder="Ingrese el transporte">
-                                </mat-form-field>
-                            </div>
-                            <div fxFlex.gt-lg="25" fxFlex.gt-md="32" fxFlex.gt-sm="32" fxFlex.gt-xs="32" fxFlex.xs="100">
-                                <mat-form-field fxFill appearance="outline" color="primary">
-                                    <mat-label>Limite de dias de Crédito</mat-label>
-                                    <input formControlName="limitDaysCredit" type="number" matInput placeholder="Ingrese los días de crédito">
-                                </mat-form-field>
-                            </div>
-                            <div fxFlex.gt-lg="25" fxFlex.gt-md="32" fxFlex.gt-sm="32" fxFlex.gt-xs="32" fxFlex.xs="100">
-                                <mat-form-field fxFill appearance="outline" color="primary">
-                                    <mat-label>Límite de Crédito</mat-label>
-                                    <span matPrefix><b>Q.</b></span>
-                                    <input formControlName="limitCredit" type="number" matInput placeholder="Ingrese el limite de crédito">
-                                </mat-form-field>
-                            </div>
-                        </div>
-                        <br>
-                        <mat-divider></mat-divider>
-                        <br>
+                        <mat-card *ngIf="!selectedCustomer" class="infoCustomer mat-elevation-z4">
+                            <app-no-found text="Ningún cliente seleccionado" subtitle="Por favor seleccione un cliente, puede buscar al cliente por código o nombre."></app-no-found>
+                        </mat-card>
+                        <mat-card *ngIf="selectedCustomer" class="infoCustomer mat-elevation-z4">
+                            <mat-card-header>
+                                <mat-icon matCardAvatar>person_search </mat-icon>
+                                <mat-card-title>{{ selectedCustomer.name }}</mat-card-title>
+                                <mat-card-subtitle>{{ selectedCustomer.nit }}</mat-card-subtitle>
+                                <span fxFlex></span>
+                                <h2>{{ selectedCustomer.code }}</h2>
+                            </mat-card-header>
+                            <mat-card-content>
+                                <p *ngIf="selectedCustomer.phone">Tel: <b>{{ selectedCustomer.phone }}</b></p>
+                                <p>Dirección: {{ selectedCustomer.address }}, {{ selectedCustomer.town }} {{ selectedCustomer.department }}</p>
+                                <p>Empresa: <b>{{ selectedCustomer.company }}</b></p>
+                                <p>{{ selectedCustomer.transport }} <span fxFlex></span> Crédito</p>
+                                <p fxLayoutAlign="end center"><b>{{ selectedCustomer.limitDaysCredit }} días |
+                    Q{{ selectedCustomer.limitCredit | number: '.2'}}</b></p>
+                            </mat-card-content>
+                        </mat-card>
                         <div fxLayout="row wrap" fxLayoutGap="10px">
                             <div fxFlex.gt-lg="25" fxFlex.gt-md="32" fxFlex.gt-sm="32" fxFlex.gt-xs="32" fxFlex.xs="100">
                                 <mat-form-field fxFill appearance="outline" color="primary">
@@ -159,7 +75,7 @@
                                 </mat-form-field>
                             </div>
                             <div fxFlex.gt-lg="50" fxFlex.gt-md="50" fxFlex.gt-sm="50" fxFlex.gt-xs="50" fxFlex.xs="100">
-                                <div *ngIf="idCustomer" fxLayout="column wrap" fxLayoutAlign="center center">
+                                <div *ngIf="selectedCustomer" fxLayout="column wrap" fxLayoutAlign="center center">
                                     <mat-chip-list>
                                         <mat-chip *ngIf="!timeAvaliable">
                                             <mat-icon class="material-icons-outlined" style="margin-right: 5px;">event_busy</mat-icon>
@@ -179,10 +95,10 @@
                         <mat-progress-bar *ngIf="loading" mode="indeterminate" color="warn"></mat-progress-bar>
                     </mat-card-content>
                     <mat-card-actions>
-                        <button mat-button (click)="close.emit()">Cancelar</button>
+                        <button mat-button (click)="close.emit(); resetForm()">Cancelar</button>
                         <button mat-button (click)="resetForm()" color="accent">Limpiar</button>
                         <span fxFlex></span>
-                        <button mat-raised-button (click)="save()" color="warn" [disabled]="loading || form.invalid  || (idCustomer && (!timeAvaliable || credit <= 0))">Guardar</button>
+                        <button mat-raised-button (click)="save()" color="warn" [disabled]="loading || form.invalid  || (!selectedCustomer && (!timeAvaliable || credit <= 0))">Guardar</button>
                     </mat-card-actions>
                 </mat-card>
             </form>
