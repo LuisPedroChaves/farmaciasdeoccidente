@@ -1,0 +1,182 @@
+<div class="farmacia">
+    <header fxLayout="row wrap" fxLayoutAlign="center center" class="header">
+        <h2 style="margin: 0;" class="h2">Nueva Venta</h2>
+        <span fxFlex></span>
+        <button mat-icon-button *ngIf="!loading" (click)="dialogRef.close()">
+      <mat-icon>close</mat-icon>
+    </button>
+    </header>
+    <mat-divider></mat-divider>
+    <form [formGroup]="form" autocomplete="off">
+        <div class="clientspace" data-simplebar>
+            <div fxLayout="row wrap" fxLayoutAlign="start center" style="margin-top: 20px;">
+                <div fxFlex="50px"></div>
+                <div fxFlex="50px" fxHide.xs>
+                    <mat-icon color="accent" class="material-icons-outlined grayicon">how_to_reg</mat-icon>
+                </div>
+                <div fxFlex fxLayout="row wrap">
+                    <div fxFlex="100%" fxFlex.xs="100%" class="inputpadding">
+                        <mat-form-field appearance="outline" color="primary" class="width-all">
+                            <mat-label>Código.</mat-label>
+                            <input type="text" (ngModelChange)="findThis($event)" placeholder="Ingrese el código del cliente" matInput formControlName="code" [matAutocomplete]="auto">
+                            <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete">
+                                <mat-option *ngFor="let option of filteredOptions | async" [value]="option.code">
+                                    <span>{{option.code}}</span> |
+                                    <small class="mat-text-muted">{{option.name}}</small>
+                                </mat-option>
+                            </mat-autocomplete>
+                        </mat-form-field>
+                    </div>
+                </div>
+                <div fxFlex="50px"></div>
+            </div>
+            <div fxLayout="row wrap" fxLayoutAlign="start center" style="margin-top: 20px;">
+                <div fxFlex="50px"></div>
+                <div fxFlex="50px" fxHide.xs>
+                    <mat-icon color="accent" class="material-icons-outlined grayicon">person</mat-icon>
+                </div>
+                <div fxFlex fxLayout="row wrap">
+                    <div fxFlex="30%" fxFlex.xs="100%" class="inputpadding">
+
+                    </div>
+                    <div fxFlex="70%" fxFlex.xs="100%" class="inputpadding">
+
+                    </div>
+                </div>
+                <div fxFlex="50px"></div>
+            </div>
+            <div fxLayout="row wrap" fxLayoutAlign="start center" style="margin-top: 8px;">
+                <div fxFlex="50px"></div>
+                <div fxFlex="50px" fxHide.xs>
+                    <mat-icon color="accent" class="material-icons-outlined grayicon">phone
+                    </mat-icon>
+                </div>
+                <div fxFlex fxLayout="row wrap">
+                    <div fxFlex="30%" fxFlex.xs="100%" class="inputpadding">
+
+                    </div>
+                    <div fxFlex="70%" class="inputpadding">
+
+                    </div>
+                </div>
+                <div fxFlex="50px"></div>
+            </div>
+            <div fxLayout="row wrap" fxLayoutAlign="start center" style="margin-top: 8px;">
+                <div fxFlex="50px"></div>
+                <div fxFlex="50px" fxHide.xs>
+                    <mat-icon color="accent" class="material-icons-outlined grayicon">place
+                    </mat-icon>
+                </div>
+                <div fxFlex fxLayout="row wrap">
+                    <div fxFlex="50%" fxFlex.xs="100%" class="inputpadding">
+
+                    </div>
+                    <div fxFlex="50%" fxFlex.xs="100%" class="inputpadding">
+
+                    </div>
+                </div>
+                <div fxFlex="50px"></div>
+            </div>
+            <div fxLayout="row wrap" fxLayoutAlign="start center" style="margin-top: 8px;">
+                <div fxFlex="50px"></div>
+                <div fxFlex="50px" fxHide.xs>
+                    <mat-icon color="accent" class="material-icons-outlined grayicon">business
+                    </mat-icon>
+                </div>
+                <div fxFlex fxLayout="row wrap">
+                    <div fxFlex="70%" fxFlex.xs="100%" class="inputpadding">
+
+                    </div>
+                    <div fxFlex="30%" class="inputpadding">
+
+                    </div>
+                </div>
+                <div fxFlex="50px"></div>
+            </div>
+            <div fxLayout="row wrap" fxLayoutAlign="start center" style="margin-top: 8px;">
+                <div fxFlex="50px"></div>
+                <div fxFlex="50px" fxHide.xs>
+                    <mat-icon color="accent" class="material-icons-outlined grayicon">
+                        monetization_on
+                    </mat-icon>
+                </div>
+                <div fxFlex fxLayout="row wrap">
+                    <div fxFlex="50%" fxFlex.xs="100%" class="inputpadding">
+
+                    </div>
+                    <div fxFlex="50%" fxFlex.xs="100%" class="inputpadding">
+
+                    </div>
+                </div>
+                <div fxFlex="50px"></div>
+            </div>
+            <mat-divider></mat-divider>
+            <div fxLayout="row wrap" fxLayoutAlign="start center" style="margin-top: 20px;">
+                <div fxFlex="50px"></div>
+                <div fxFlex="50px" fxHide.xs>
+                    <mat-icon color="accent" class="material-icons-outlined grayicon">face</mat-icon>
+                </div>
+                <div fxFlex fxLayout="row wrap">
+                    <div fxFlex="33%" fxFlex.xs="100%" class="inputpadding">
+
+                    </div>
+                    <div fxFlex="33%" fxFlex.xs="100%" class="inputpadding">
+
+                    </div>
+                    <div fxFlex="33" class="inputpadding">
+
+                    </div>
+                </div>
+                <div fxFlex="50px"></div>
+            </div>
+            <div fxLayout="row wrap" fxLayoutAlign="start center" style="margin-top: 8px;">
+                <div fxFlex="50px"></div>
+                <div fxFlex="50px" fxHide.xs>
+                    <mat-icon color="accent" class="material-icons-outlined grayicon">
+                        note_add
+                    </mat-icon>
+                </div>
+                <div fxFlex fxLayout="row wrap">
+                    <div fxFlex="50%" fxFlex.xs="100%" class="inputpadding">
+
+                    </div>
+                    <div fxFlex="50%" fxFlex.xs="100%" class="inputpadding">
+                        <div *ngIf="idCustomer" fxLayout="column wrap" fxLayoutAlign="center center">
+                            <mat-chip-list>
+                                <mat-chip *ngIf="!timeAvaliable">
+                                    <mat-icon class="material-icons-outlined" style="margin-right: 5px;">event_busy</mat-icon>
+                                    Tiempo vencido
+                                </mat-chip>
+                                <mat-chip *ngIf="timeAvaliable" selected color="warn">
+                                    <mat-icon class="material-icons-outlined" style="margin-right: 5px;">
+                                        event_available</mat-icon>
+                                    Tiempo vigente
+                                </mat-chip>
+                            </mat-chip-list>
+                            <h3 *ngIf="credit <= 0" style="color: brown;">Crédito Disponible: Q{{ credit | number: '.2' }}</h3>
+                            <h3 *ngIf="credit > 0">Crédito Disponible: Q{{ credit | number: '.2' }}</h3>
+                        </div>
+                    </div>
+                </div>
+                <div fxFlex="50px"></div>
+            </div>
+            <div fxLayout="row wrap">
+                <div fxFlex="100px" fxHide.xs></div>
+            </div>
+        </div>
+    </form>
+    <mat-divider></mat-divider>
+    <div fxLayout="row" class="header">
+        <button mat-button *ngIf="!loading" (click)="dialogRef.close()" class="info-row">
+      CANCELAR
+    </button>
+        <button mat-button *ngIf="!loading" (click)="clear()" class="info-row" color="accent">
+      LIMPIAR
+    </button>
+        <span fxFlex></span>
+        <button mat-button *ngIf="!loading" (click)="saveSale()" [disabled]="this.form.invalid || (idCustomer && (!timeAvaliable || credit <= 0))" color="primary">
+      GUARDAR
+    </button>
+        <mat-progress-spinner *ngIf="loading" mode="indeterminate" diameter="30" color="warn"></mat-progress-spinner>
+    </div>
+</div>
