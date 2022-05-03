@@ -1,0 +1,121 @@
+<mat-drawer-container class="my-layout">
+    <mat-drawer #drawer class="sidenav" position="end" mode="over">
+        <header fxLayout="row wrap" fxLayoutAlign="start center">
+            <h2 class="ma-0">Nueva Venta</h2>
+            <span fxFlex></span>
+            <button mat-icon-button (click)="drawer.opened = false">
+        <mat-icon>close</mat-icon>
+      </button>
+        </header>
+        <app-new-sale (close)="drawer.opened = false" [currentCellar]="currentCellar"></app-new-sale>
+    </mat-drawer>
+    <header fxLayoutGap="15px">
+        <mat-form-field appearance="outline">
+            <mat-label>Introduzca un rango de fechas</mat-label>
+            <mat-date-range-input [formGroup]="range" [rangePicker]="picker">
+                <input matStartDate formControlName="start" placeholder="Fecha de inicio">
+                <input matEndDate formControlName="end" placeholder="Fecha de finalización">
+            </mat-date-range-input>
+            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-date-range-picker #picker></mat-date-range-picker>
+            <mat-error *ngIf="range.get('start').hasError('matStartDateInvalid')">Fecha de inicio no válida
+            </mat-error>
+            <mat-error *ngIf="range.controls.end.hasError('matEndDateInvalid')">Fecha de finalización no válida
+            </mat-error>
+        </mat-form-field>
+        <app-filter (send)="applyFilter($event)" [placeholder]="'Ej. 234343'"></app-filter>
+        <span fxFlex></span>
+        <button mat-fab *ngIf="permissions && permissions.includes('create')" color="warn" (click)="this.drawer.opened = true;" matTooltip="Nueva Venta">
+      <mat-icon>add</mat-icon>
+    </button>
+    </header>
+    <mat-progress-bar *ngIf="loading" mode="indeterminate" color="warn"></mat-progress-bar>
+    <app-no-found *ngIf="permissions && !permissions.includes('read')" text="Acceso Denegado" subtitle="Actualmente no cuenta con permisos para acceder a este apartado"></app-no-found>
+
+    <ngx-simplebar *ngIf="permissions && permissions.includes('read')" class="content">
+        <table mat-table [dataSource]="dataSource">
+
+            <ng-container matColumnDef="noBill">
+                <th mat-header-cell *matHeaderCellDef> No. Factura </th>
+                <td mat-cell *matCellDef="let element"> {{element.noBill}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="date">
+                <th mat-header-cell *matHeaderCellDef> Fecha </th>
+                <td mat-cell *matCellDef="let element"> {{element.date | date: 'dd/MM/yyyy' }} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="code">
+                <th mat-header-cell *matHeaderCellDef> Código </th>
+                <td mat-cell *matCellDef="let element">
+                    {{element._customer.code}}
+                </td>
+            </ng-container>
+
+            <ng-container matColumnDef="nit">
+                <th mat-header-cell *matHeaderCellDef> Nit </th>
+                <td mat-cell *matCellDef="let element">
+                    {{element._customer.nit}}
+                </td>
+            </ng-container>
+
+            <ng-container matColumnDef="name">
+                <th mat-header-cell *matHeaderCellDef> Nombre </th>
+                <td mat-cell *matCellDef="let element">
+                    {{element._customer.name}}
+                </td>
+            </ng-container>
+
+            <ng-container matColumnDef="phone">
+                <th mat-header-cell *matHeaderCellDef> Teléfono </th>
+                <td mat-cell *matCellDef="let element">
+                    {{element._customer.phone}}
+                </td>
+            </ng-container>
+
+            <ng-container matColumnDef="paid">
+                <th mat-header-cell *matHeaderCellDef> Estado</th>
+                <td mat-cell *matCellDef="let element">
+                    <mat-chip-list>
+                        <mat-chip *ngIf="!element.paid" selected color="accent">
+                            Pendiente
+                        </mat-chip>
+                        <mat-chip *ngIf="element.paid" selected color="warn">
+                            Pagada
+                        </mat-chip>
+                    </mat-chip-list>
+                </td>
+            </ng-container>
+
+            <ng-container matColumnDef="total">
+                <th mat-header-cell *matHeaderCellDef> Total </th>
+                <td mat-cell *matCellDef="let element"> Q {{element.total | number: '.2'}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="options">
+                <th mat-header-cell *matHeaderCellDef> </th>
+                <td mat-cell *matCellDef="let element">
+                    <button mat-icon-button [matMenuTriggerFor]="menu">
+            <mat-icon>info</mat-icon>
+          </button>
+                    <mat-menu #menu="matMenu">
+                        <button mat-menu-item (click)="pay(element)" color="warn">
+              <mat-icon class="material-icons-outlined">account_balance_wallet</mat-icon> Consultar Balance
+            </button>
+
+                        <button mat-menu-item *ngIf="permissions && permissions.includes('delete')" [disabled]="element.paid" color="warn" (click)="delete(element)">
+              <mat-icon class="material-icons-outlined">block</mat-icon> Anular Venta
+            </button>
+                    </mat-menu>
+                </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="columns;  sticky: true"></tr>
+            <tr mat-row *matRowDef="let row; columns: columns;"></tr>
+            <!-- Fila mostrada cuando no hay datos coincidentes. -->
+            <tr class="mat-row" *matNoDataRow>
+                <td class="mat-cell" colspan="13">No hay datos que coincidan con algún filtro o busqueda</td>
+            </tr>
+        </table>
+    </ngx-simplebar>
+</mat-drawer-container>
