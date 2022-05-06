@@ -34,6 +34,7 @@ export class ProvidersComponent implements OnInit, AfterContentInit, OnDestroy {
     noBill: '',
     docType: '',
     balance: [],
+    deletedBalance: [],
     unaffectedAmount: 0,
     exemptAmount: 0,
     netPurchaseAmount: 0,
@@ -122,7 +123,7 @@ export class ProvidersComponent implements OnInit, AfterContentInit, OnDestroy {
   }
 
   getAmount(amount: number): void {
-    this.provider.balance -= amount;
+    this.provider.balance += amount;
   }
 
   reset() {
@@ -139,6 +140,7 @@ export class ProvidersComponent implements OnInit, AfterContentInit, OnDestroy {
       noBill: '',
       docType: '',
       balance: [],
+      deletedBalance: [],
       unaffectedAmount: 0,
       exemptAmount: 0,
       netPurchaseAmount: 0,

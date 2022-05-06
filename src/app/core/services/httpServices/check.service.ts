@@ -97,16 +97,17 @@ export class CheckService implements IDataService<CheckItem[]> {
       {
         layout: 'noBorders',
         table: {
-          widths: ['50%', '10%'],
+          widths: [354.3307, '*'],
           headerRows: 1,
           body: [
             [{ text: `${check.city}, ${moment(check.date).format('DD [de] MMMM [de] YYYY')}`, style: 'text9' }, { text: check.amount.toFixed(2), style: 'text9' }],
-            [{ text: check.name, style: 'text9', colSpan: 2 }],
-            [{ text: this.numberToWords.transform(check.amount), style: 'text9', colSpan: 2 }],
+            [{ text: '', style: 'text9', colSpan: 2, 	alignment: 'center' }],
+            [{ text: check.name, style: 'text9', colSpan: 2, 	alignment: 'center' }],
+            [{ text: this.numberToWords.transform(check.amount), style: 'text9', colSpan: 2, alignment: 'center' }],
           ]
         }
       });
 
-    this.printService.print(body);
+    this.printService.printCheck(body);
   }
 }

@@ -24,6 +24,7 @@ import { AccountsPayableComponent } from './components/accounts-payable/accounts
 import { CheckComponent } from './components/check/check.component';
 import { CheckDeliveriesComponent } from './pages/check-deliveries/check-deliveries.component';
 import { EnterPaymentComponent } from './components/enter-payment/enter-payment.component';
+import { ReportsComponent } from './pages/reports/reports.component';
 
 @NgModule({
   declarations: [
@@ -42,7 +43,8 @@ import { EnterPaymentComponent } from './components/enter-payment/enter-payment.
     AccountsPayableComponent,
     CheckComponent,
     CheckDeliveriesComponent,
-    EnterPaymentComponent
+    EnterPaymentComponent,
+    ReportsComponent
   ],
   imports: [
     CommonModule,
