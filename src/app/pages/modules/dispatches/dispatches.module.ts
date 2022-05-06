@@ -5,6 +5,7 @@ import { DispatchesRoutes } from './dispatches.routing';
 import { SharedComponentsModule } from '../../shared-components/shared-components.module';
 import { DispatchesComponent } from './components/dispatches/dispatches.component';
 import { CoreModule } from 'src/app/core/core.module';
+import { ComponentsModule } from '../../shared/components/components.module';
 
 
 
@@ -14,7 +15,8 @@ import { CoreModule } from 'src/app/core/core.module';
     CommonModule,
     RouterModule.forChild(DispatchesRoutes),
     CoreModule,
-    SharedComponentsModule
+    SharedComponentsModule,
+    ComponentsModule
   ]
 })
 export class DispatchesModule { }

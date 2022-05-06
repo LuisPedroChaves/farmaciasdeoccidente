@@ -1,14 +1,14 @@
 <header class="header" fxLayout="row wrap" fxLayoutAlign="center center">
-  <h2 class="product-font">{{ data.title }}</h2>
+    <h2 class="product-font">{{ data.title }}</h2>
 </header>
 <div class="message" fxLayout="row wrap" fxLayoutAlign="center center" *ngIf="data.message">
-  {{ data.message }}
+    {{ data.message }}
 </div>
 <div *ngIf="data.description" fxLayout="row wrap" fxLayoutAlign="center center">
-  <mat-form-field appearance="outline" color="primary" class="width-all">
-    <mat-label>Motivo</mat-label>
-    <textarea matInput [(ngModel)]="textArea" rows="4" placeholder="Describe los motivos..."></textarea>
-  </mat-form-field>
+    <mat-form-field appearance="outline" color="primary" class="width-all">
+        <mat-label>Motivo</mat-label>
+        <textarea matInput [(ngModel)]="textArea" rows="4" placeholder="Describe los motivos..."></textarea>
+    </mat-form-field>
 </div>
 <div *ngIf="data.number" fxLayout="row wrap" fxLayoutAlign="center center">
   <mat-form-field appearance="outline" color="primary" class="width-all">
@@ -24,60 +24,51 @@
   </mat-form-field>
 </div>
 <mat-card-content *ngIf="data.isLogin">
-  <mat-form-field class="width-all">
-    <mat-label>Usuario</mat-label>
-    <input matInput [(ngModel)]="user" placeholder="Ingresar Usuario">
-  </mat-form-field>
+    <mat-form-field class="width-all">
+        <mat-label>Usuario</mat-label>
+        <input matInput [(ngModel)]="user" placeholder="Ingresar Usuario">
+    </mat-form-field>
 
-  <mat-form-field class="width-all">
-    <mat-label>Contraseña</mat-label>
-    <input matInput [(ngModel)]="pass" (keyup.enter)="login()" type="password" placeholder="Ingresar contraseña"
-      type="password">
-  </mat-form-field>
+    <mat-form-field class="width-all">
+        <mat-label>Contraseña</mat-label>
+        <input matInput [(ngModel)]="pass" (keyup.enter)="login()" type="password" placeholder="Ingresar contraseña" type="password">
+    </mat-form-field>
 </mat-card-content>
 <mat-form-field *ngIf="data.isDelivery" color="primary" class="width-all" appearance="outline">
-  <mat-label>Repartidor</mat-label>
-  <mat-select [(ngModel)]="delivery">
-    <mat-option [value]="null">Sin Repartidor</mat-option>
-    <mat-option *ngFor="let d of deliveries" [value]="d._id">{{ d.name }}</mat-option>
-  </mat-select>
+    <mat-label>Repartidor</mat-label>
+    <mat-select [(ngModel)]="delivery">
+        <mat-option [value]="null">Sin Repartidor</mat-option>
+        <mat-option *ngFor="let d of deliveries" [value]="d._id">{{ d.name }}</mat-option>
+    </mat-select>
 </mat-form-field>
 <mat-form-field *ngIf="data.internalOrder && !data.internalOrder.dispatchFile" class="width-all">
-  <ngx-mat-file-input #removableInput [(ngModel)]="data.internalOrder.dispatchFile" placeholder="Ingrese un archivo"
-    (change)="upload($event.target.files[0], data.internalOrder)">
-  </ngx-mat-file-input>
-  <button mat-icon-button matSuffix *ngIf="!removableInput.empty" (click)="removableInput.clear($event)">
+    <ngx-mat-file-input #removableInput [(ngModel)]="data.internalOrder.dispatchFile" placeholder="Ingrese un archivo" (change)="upload($event.target.files[0], data.internalOrder)">
+    </ngx-mat-file-input>
+    <button mat-icon-button matSuffix *ngIf="!removableInput.empty" (click)="removableInput.clear($event)">
     <mat-icon>clear</mat-icon>
   </button>
 </mat-form-field>
 <div class="alert" fxLayout="row wrap" *ngIf="data.alert">
-  <div fxFlex="40px" fxLayoutAlign="start center">
-    <mat-icon class="material-icons-outlined">report_problem</mat-icon>
-  </div>
-  <div fxFlex>
-    {{ data.alert }}
-  </div>
+    <div fxFlex="40px" fxLayoutAlign="start center">
+        <mat-icon class="material-icons-outlined">report_problem</mat-icon>
+    </div>
+    <div fxFlex>
+        {{ data.alert }}
+    </div>
 </div>
 <div class="info" fxLayout="row wrap" *ngIf="data.info">
-  <div fxFlex="40px" fxLayoutAlign="start center">
-    <mat-icon class="material-icons-outlined">info</mat-icon>
-  </div>
-  <div fxFlex>
-    {{ data.info }}
-  </div>
+    <div fxFlex="40px" fxLayoutAlign="start center">
+        <mat-icon class="material-icons-outlined">info</mat-icon>
+    </div>
+    <div fxFlex>
+        {{ data.info }}
+    </div>
 </div>
 <div fxLayout="row wrap" class="options">
-  <button mat-button color="primary" (click)="dialogRef.close()">Cancelar</button>
-  <span fxFlex></span>
-  <button mat-stroked-button *ngIf="data.number && data.reason" color="primary" [disabled]="reason === ''"
-    (click)="closeDialogInventoryPending(numberOne,reason)">Aceptar</button>
-  <button mat-stroked-button *ngIf="data.description" color="primary" [disabled]="textArea === ''"
-    (click)="dialogRef.close(textArea)">Aceptar</button>
-  <button mat-stroked-button *ngIf="data.isDelivery" color="primary"
-    (click)="dialogRef.close(delivery)">Aceptar</button>
-  <button mat-stroked-button *ngIf="data.isLogin" color="primary" [disabled]="user === '' || pass === ''"
-    (click)="login()">Aceptar</button>
-  <button mat-stroked-button
-    *ngIf="!data.description && !data.isLogin && !data.isDelivery&& !data.reason&& !data.number" color="primary"
-    (click)="dialogRef.close(true)">Aceptar</button>
+    <button mat-button color="primary" (click)="dialogRef.close()">Cancelar</button>
+    <span fxFlex></span>
+    <button mat-stroked-button *ngIf="data.description" color="primary" [disabled]="textArea === ''" (click)="dialogRef.close(textArea)">Aceptar</button>
+    <button mat-stroked-button *ngIf="data.isDelivery" color="primary" (click)="dialogRef.close(delivery)">Aceptar</button>
+    <button mat-stroked-button *ngIf="data.isLogin" color="primary" [disabled]="user === '' || pass === ''" (click)="login()">Aceptar</button>
+    <button mat-stroked-button *ngIf="!data.description && !data.isLogin && !data.isDelivery" color="primary" (click)="dialogRef.close(true)">Aceptar</button>
 </div>

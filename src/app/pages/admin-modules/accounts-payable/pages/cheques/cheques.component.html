@@ -1,0 +1,112 @@
+<mat-drawer-container>
+    <mat-drawer #drawer class="sidenav" position="end" mode="over">
+        <header fxLayout="row wrap" fxLayoutAlign="start center">
+            <h2 class="ma-0">{{title}}</h2>
+            <span fxFlex></span>
+            <button mat-icon-button (click)="drawer.opened = false">
+        <mat-icon>close</mat-icon>
+      </button>
+        </header>
+        <app-new-edit *ngIf="drawerComponent === 'DOCUMENTO'" [accountsPayable]="accountsPayable" (close)="drawer.opened = false"></app-new-edit>
+        <app-provider-account *ngIf="drawerComponent === 'PROVEEDOR'" [provider]="provider" (close)="drawer.opened = false">
+        </app-provider-account>
+    </mat-drawer>
+    <ngx-simplebar class="my-layout">
+        <header>
+            <app-filter (send)="applyFilter($event)"></app-filter>
+            <span fxFlex></span>
+            <button mat-fab *ngIf="permissions && permissions.includes('create')" color="warn" [matMenuTriggerFor]="payablesMenu" matTooltip="Nuevo documento">
+        <mat-icon>add</mat-icon>
+      </button>
+            <mat-menu #payablesMenu="matMenu" xPosition="before">
+                <button mat-menu-item (click)="newDocument('PRODUCTOS')">
+          <mat-icon>medication</mat-icon>
+          <span>Productos</span>
+        </button>
+                <button mat-menu-item (click)="newDocument('GASTOS')">
+          <mat-icon>payments</mat-icon>
+          <span>Gastos</span>
+        </button>
+            </mat-menu>
+        </header>
+        <mat-progress-bar *ngIf="loading" mode="indeterminate" color="warn"></mat-progress-bar>
+        <app-no-found *ngIf="permissions && !permissions.includes('read')" text="Acceso Denegado" subtitle="Actualmente no cuenta con permisos para acceder a este apartado"></app-no-found>
+        <mat-tab-group mat-align-tabs="center" *ngIf="permissions && permissions.includes('read')">
+            <mat-tab [label]="'Del día (' + checksToday.length + ')'">
+                <ngx-simplebar class="content">
+                    <app-no-found *ngIf="!checksToday || checksToday.length === 0" text="No se encontraron cheques" subtitle="Actualmente no hay cheques para el día de hoy"></app-no-found>
+                    <div fxLayout="row wrap" fxLayoutGap="15px grid" class="grid">
+                        <div fxFlex.gt-lg="20" fxFlex.gt-md="33" fxFlex.gt-sm="50" fxFlex.lt-md="100" *ngFor="let check of checksToday; let i = index">
+                            <app-check (sendId)="getVoided($event)" [i]="i" [check]="check" [permissions]="permissions"></app-check>
+                        </div>
+                    </div>
+                </ngx-simplebar>
+            </mat-tab>
+            <mat-tab [label]="'Girados (' + checksCreated.length + ')'">
+                <ngx-simplebar class="content">
+                    <app-no-found *ngIf="!checksCreated || checksCreated.length === 0" text="No se encontraron cheques" subtitle="Actualmente no hay cheques girados"></app-no-found>
+                    <div fxLayout="row wrap" fxLayoutGap="15px grid" class="grid">
+                        <div fxFlex.gt-lg="20" fxFlex.gt-md="33" fxFlex.gt-sm="50" fxFlex.lt-md="100" *ngFor="let check of checksCreated; let i = index">
+                            <app-check (sendId)="getVoided($event)" [i]="i" [check]="check" [permissions]="permissions"></app-check>
+                        </div>
+                    </div>
+                </ngx-simplebar>
+            </mat-tab>
+            <mat-tab [label]="'Interbanco (' + checksInter.length + ')'">
+                <ngx-simplebar class="content">
+                    <app-no-found *ngIf="!checksInter || checksInter.length === 0" text="No se encontraron cheques" subtitle="Actualmente no hay cheques aprobados por Interbanco"></app-no-found>
+                    <div fxLayout="row wrap" fxLayoutGap="15px grid" class="grid">
+                        <div fxFlex.gt-lg="20" fxFlex.gt-md="33" fxFlex.gt-sm="50" fxFlex.lt-md="100" *ngFor="let check of checksInter; let i = index">
+                            <app-check (sendId)="getVoided($event)" [i]="i" [check]="check" [permissions]="permissions"></app-check>
+                        </div>
+                    </div>
+                </ngx-simplebar>
+            </mat-tab>
+            <mat-tab [label]="'En Espera (' + checksWait.length + ')'">
+                <ngx-simplebar class="content">
+                    <app-no-found *ngIf="!checksWait || checksWait.length === 0" text="No se encontraron cheques" subtitle="Actualmente no hay cheques en espera"></app-no-found>
+                    <div fxLayout="row wrap" fxLayoutGap="15px grid" class="grid">
+                        <div fxFlex.gt-lg="20" fxFlex.gt-md="33" fxFlex.gt-sm="50" fxFlex.lt-md="100" *ngFor="let check of checksWait; let i = index">
+                            <app-check (sendId)="getVoided($event)" [i]="i" [check]="check" [permissions]="permissions"></app-check>
+                        </div>
+                    </div>
+                </ngx-simplebar>
+            </mat-tab>
+            <mat-tab [label]="'Autorizados (' + checksAuth.length + ')'">
+                <ngx-simplebar class="content">
+                    <app-no-found *ngIf="!checksAuth || checksAuth.length === 0" text="No se encontraron cheques" subtitle="Actualmente no hay cheques autorizados"></app-no-found>
+                    <div fxLayout="row wrap" fxLayoutGap="15px grid" class="grid">
+                        <div fxFlex.gt-lg="20" fxFlex.gt-md="33" fxFlex.gt-sm="50" fxFlex.lt-md="100" *ngFor="let check of checksAuth; let i = index">
+                            <app-check (sendId)="getVoided($event)" [i]="i" [check]="check" [permissions]="permissions"></app-check>
+                        </div>
+                    </div>
+                </ngx-simplebar>
+            </mat-tab>
+            <mat-tab label="Historial">
+                <ngx-simplebar class="content">
+                    <div fxLayout="row wrap" fxLayoutAlign="end center" class="headerHistory">
+                        <mat-form-field appearance="outline">
+                            <mat-label>Introduzca un rango de fechas</mat-label>
+                            <mat-date-range-input [formGroup]="range" [rangePicker]="picker">
+                                <input matStartDate formControlName="start" placeholder="Fecha de inicio">
+                                <input matEndDate formControlName="end" placeholder="Fecha de finalización">
+                            </mat-date-range-input>
+                            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                            <mat-date-range-picker #picker></mat-date-range-picker>
+                            <mat-error *ngIf="range.get('start').hasError('matStartDateInvalid')">Fecha de inicio no válida
+                            </mat-error>
+                            <mat-error *ngIf="range.controls.end.hasError('matEndDateInvalid')">Fecha de finalización no válida
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+                    <app-no-found *ngIf="!checksHistory || checksHistory.length === 0" text="No se encontraron cheques" subtitle="Por favor ingrese un rango de fechas para consultar en su historial"></app-no-found>
+                    <div fxLayout="row wrap" fxLayoutGap="15px grid" class="grid">
+                        <div fxFlex.gt-lg="20" fxFlex.gt-md="33" fxFlex.gt-sm="50" fxFlex.lt-md="100" *ngFor="let check of checksHistory; let i = index">
+                            <app-check (sendId)="getVoided($event)" [i]="i" [check]="check" [permissions]="permissions"></app-check>
+                        </div>
+                    </div>
+                </ngx-simplebar>
+            </mat-tab>
+        </mat-tab-group>
+    </ngx-simplebar>
+</mat-drawer-container>

@@ -1,36 +1,13 @@
-.header {
-    padding: 20px;
+.my-layout {
+    height: calc(100vh - 231px);
+    padding: 15px 0px 24px 0px;
 }
 
-.clientspace {
-    height: 600px;
-    width: 100%;
+mat-card {
+    border-radius: 10px;
 }
 
-.grayicon {
-    color: #0a1958;
-}
-
-.width-all {
-    width: 100%;
-    font-size: 13px;
-}
-
-.inputpadding {
-    padding-left: 3px;
-    padding-right: 3px;
-}
-
-.radio {
-    margin-right: 10px;
-    font-size: 13px;
-}
-
-.h2 {
-    color: #0a1958;
-}
-
-.info-row {
-    margin-bottom: 5px;
-    margin-top: 3px;
+.infoCustomer {
+    background-color: #fafafa;
+    margin: 26px 0px 26px 0px !important;
 }

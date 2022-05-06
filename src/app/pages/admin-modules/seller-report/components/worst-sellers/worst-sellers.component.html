@@ -1,0 +1,80 @@
+<div class="my-container">
+    <form [formGroup]="form">
+        <div fxLayout="row wrap" fxLayoutGap="10px" class="header">
+            <div fxFlex>
+                <app-cellar [onlyBodegas]="false" [returnAll]="true" (send)="getCellar($event)"></app-cellar>
+            </div>
+            <mat-form-field fxFlex appearance="outline" color="accent">
+                <mat-label>Rango de fechas</mat-label>
+                <mat-date-range-input [rangePicker]="picker">
+                    <input matStartDate formControlName="startDate" placeholder="Fecha de inicio">
+                    <input matEndDate formControlName="endDate" placeholder="Fecha de finalización">
+                </mat-date-range-input>
+                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                <mat-date-range-picker #picker></mat-date-range-picker>
+                <mat-error *ngIf="form.get('startDate').hasError('matStartDateInvalid')">Fecha de inicio no válida
+                </mat-error>
+                <mat-error *ngIf="form.controls.endDate.hasError('matEndDateInvalid')">Fecha de finalización no válida
+                </mat-error>
+            </mat-form-field>
+            <div fxFlex>
+                <button (click)="buttomLoadData()" mat-raised-button [disabled]="loading" color="accent">Consultar</button>
+            </div>
+            <div fxFlex></div>
+            <div fxFlex fxLayoutAlign="end center">
+                <app-filter (send)="applyFilter($event)"></app-filter>
+                <button mat-fab color="warn" (click)="downloadXlsx()">
+              <mat-icon>get_app</mat-icon>
+            </button>
+            </div>
+        </div>
+    </form>
+
+    <mat-card class="card mat-elevation-z2">
+        <mat-card-content>
+            <div *ngIf="loading" class="table">
+                <mat-progress-bar mode="indeterminate" color="warn"></mat-progress-bar>
+            </div>
+            <ngx-simplebar *ngIf="!loading" class="table">
+                <div *ngIf="worstSellers !== undefined" class="allspace" data-simplebar>
+                    <table mat-table matSort matTableResponsive [dataSource]="dataSource" multiTemplateDataRows class="mat-elevation-z2 noborder-table ">
+                        <ng-container matColumnDef="image">
+                            <th mat-header-cell *matHeaderCellDef></th>
+                            <td mat-cell *matCellDef="let element">
+                                <mat-icon color="primary" class="material-icons-outlined">receipt_long</mat-icon>
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="barcode">
+                            <th mat-header-cell *matHeaderCellDef> Codigo de Barras </th>
+                            <td mat-cell *matCellDef="let element"> {{element.barcode}} </td>
+                        </ng-container>
+                        <ng-container matColumnDef="description">
+                            <th mat-header-cell *matHeaderCellDef> Descripción </th>
+                            <td mat-cell *matCellDef="let element"> {{element.description}} </td>
+                        </ng-container>
+                        <ng-container matColumnDef="brand">
+                            <th mat-header-cell *matHeaderCellDef> Laboratorio </th>
+                            <td mat-cell *matCellDef="let element">
+                                {{element.brand}}
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="total">
+                            <th mat-header-cell *matHeaderCellDef> Total de Ventas </th>
+                            <td mat-cell *matCellDef="let element">
+                                {{element.total}}
+                            </td>
+                        </ng-container>
+
+                        <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
+                        <tr mat-row *matRowDef="let element; columns: columnsToDisplay;" class="example-element-row">
+                        </tr>
+                    </table>
+                </div>
+            </ngx-simplebar>
+        </mat-card-content>
+        <mat-card-footer>
+            <mat-paginator [pageSizeOptions]="[10, 50, 100]" showFirstLastButtons>
+            </mat-paginator>
+        </mat-card-footer>
+    </mat-card>
+</div>

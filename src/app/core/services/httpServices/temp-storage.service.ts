@@ -69,6 +69,16 @@ export class TempStorageService {
       )
   }
 
+  search(_cellar: string, search: string = ''): Observable<TempStorageItem[]> {
+    return this.http.get(`${this.apiConfigService.API_TEMP_STORAGE}/search/${_cellar}`, {
+      params: new HttpParams().set('search', search.toString()),
+    }).pipe(
+      map((resp: any) => {
+        return resp.products;
+      })
+    )
+  }
+
   uploadFile(file: File, _cellar: string) {
     return new Promise((resolve, reject) => {
       const formData = new FormData();
@@ -106,5 +116,14 @@ export class TempStorageService {
 
   stockReset(_cellar: string): Observable<any> {
     return this.http.put(`${this.apiConfigService.API_TEMP_STORAGE}/stockReset/${_cellar}`, null);
+  }
+
+  // tslint:disable-next-line: variable-name
+  updateByBarcode(_cellar: string, barcode: string, stock: number): Observable<any> {
+    return this.http.put(`${this.apiConfigService.API_TEMP_STORAGE}/xlsx/${_cellar}`, null, {
+      params: new HttpParams()
+      .set('barcode', barcode.toString())
+      .set('stock', stock.toString())
+    });
   }
 }

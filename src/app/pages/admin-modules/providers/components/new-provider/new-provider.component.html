@@ -21,15 +21,30 @@
                 <div fxFlex="50%" fxFlex.xs="100%" class="inputpadding">
                     <mat-form-field appearance="outline" color="primary" class="width-all">
                         <mat-label>Nombre</mat-label>
-                        <input formControlName="name" type="text" matInput
-                            placeholder="Ingrese el nombre del proveedor">
+                        <input formControlName="name" type="text" matInput placeholder="Ingrese el nombre del proveedor">
                     </mat-form-field>
                 </div>
                 <div fxFlex="50%" fxFlex.xs="100%" class="inputpadding">
                     <mat-form-field appearance="outline" color="primary" class="width-all">
                         <mat-label>Teléfono</mat-label>
-                        <input formControlName="phone" type="text" matInput
-                            placeholder="Ingrese el Teléfono del proveedor">
+                        <input formControlName="phone" type="text" matInput placeholder="Ingrese el Teléfono del proveedor">
+                    </mat-form-field>
+                </div>
+            </div>
+            <div fxFlex="50px"></div>
+        </div>
+
+        <div fxLayout="row wrap" fxLayoutAlign="start center" style="margin-top: 8px;">
+            <div fxFlex="50px"></div>
+            <div fxFlex="50px" fxHide.xs>
+                <mat-icon color="accent" class="mSaterial-icons-outlined grayicon">credit_score
+                </mat-icon>
+            </div>
+            <div fxFlex fxLayout="row wrap">
+                <div fxFlex="100%" fxFlex.xs="100%" class="inputpadding">
+                    <mat-form-field appearance="outline" color="primary" class="width-all">
+                        <mat-label>Cheques a nombre de: </mat-label>
+                        <input formControlName="checkName" type="text" matInput placeholder="Ingrese un nombre para emitir cheques futuros">
                     </mat-form-field>
                 </div>
             </div>
@@ -46,8 +61,7 @@
                 <div fxFlex="100%" fxFlex.xs="100%" class="inputpadding">
                     <mat-form-field appearance="outline" color="primary" class="width-all">
                         <mat-label>Direccion</mat-label>
-                        <input formControlName="address" type="text" matInput
-                            placeholder="Ingrese la dirección del proveedor">
+                        <input formControlName="address" type="text" matInput placeholder="Ingrese la dirección del proveedor">
                     </mat-form-field>
                 </div>
             </div>
@@ -69,8 +83,7 @@
                 <div fxFlex="50%" fxFlex.xs="100%" class="inputpadding">
                     <mat-form-field appearance="outline" color="primary" class="width-all">
                         <mat-label>Correo</mat-label>
-                        <input formControlName="email" type="email" matInput
-                            placeholder="Ingrese el correo del proveedor">
+                        <input formControlName="email" type="email" matInput placeholder="Ingrese el correo del proveedor">
                     </mat-form-field>
                 </div>
             </div>
@@ -83,12 +96,33 @@
                 </mat-icon>
             </div>
             <div fxFlex fxLayout="row wrap">
-                <div fxFlex="40%" fxFlex.xs="100%" class="inputpadding">
+                <div fxFlex="50%" fxFlex.xs="100%" class="inputpadding">
                     <mat-form-field appearance="outline" color="primary" class="width-all">
                         <mat-label>Días de Crédito</mat-label>
-                        <input formControlName="creditDays" type="number" matInput
-                            placeholder="Ingrese la cantidad de días al crédito brindados por el proveedor">
+                        <input formControlName="creditDays" type="number" matInput placeholder="Ingrese la cantidad de días al crédito brindados por el proveedor">
                     </mat-form-field>
+                </div>
+                <div fxFlex="50%" fxFlex.xs="100%" class="inputpadding">
+                    <mat-form-field appearance="outline" color="primary" class="width-all">
+                        <mat-label>Crédito</mat-label>
+                        <input formControlName="credit" type="number" matInput placeholder="Ingrese la cantidad de crédito brindado por el proveedor">
+                    </mat-form-field>
+                </div>
+            </div>
+            <div fxFlex="50px"></div>
+        </div>
+        <div fxLayout="row wrap" fxLayoutAlign="start center" style="margin-top: 8px;">
+            <div fxFlex="50px"></div>
+            <div fxFlex="50px" fxHide.xs>
+                <mat-icon color="accent" class="mSaterial-icons-outlined grayicon">account_balance
+                </mat-icon>
+            </div>
+            <div fxFlex fxLayout="row wrap">
+                <div fxFlex="50%" fxFlex.xs="100%" class="inputpadding">
+                    <mat-slide-toggle formControlName="iva">Retención de IVA</mat-slide-toggle>
+                </div>
+                <div fxFlex="50%" fxFlex.xs="100%" class="inputpadding">
+                    <mat-slide-toggle formControlName="isr">Retención de ISR</mat-slide-toggle>
                 </div>
             </div>
             <div fxFlex="50px"></div>

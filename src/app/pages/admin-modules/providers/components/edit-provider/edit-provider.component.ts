@@ -21,11 +21,15 @@ export class EditProviderComponent implements OnInit {
 
   form = new FormGroup({
     name: new FormControl(null, [Validators.required]),
+    checkName: new FormControl(null, [Validators.required]),
     nit: new FormControl(null, [Validators.required]),
     phone: new FormControl(null),
     address: new FormControl(null),
     email: new FormControl(null),
     creditDays: new FormControl(null),
+    credit: new FormControl(null),
+    iva: new FormControl(false),
+    isr: new FormControl(false),
   });
 
   constructor(
@@ -39,6 +43,7 @@ export class EditProviderComponent implements OnInit {
   ngOnInit(): void {
     this.form = new FormGroup({
       name: new FormControl(this.data.provider.name, [Validators.required]),
+      checkName: new FormControl(this.data.provider.checkName, [Validators.required]),
       nit: new FormControl(this.data.provider.nit, [Validators.required]),
       phone: new FormControl(this.data.provider.phone),
       address: new FormControl(this.data.provider.address),
@@ -46,11 +51,17 @@ export class EditProviderComponent implements OnInit {
       creditDays: new FormControl(this.data.provider.creditDays, [
         Validators.required,
       ]),
+      credit: new FormControl(this.data.provider.credit, [
+        Validators.required,
+      ]),
+      iva: new FormControl(this.data.provider.iva),
+      isr: new FormControl(this.data.provider.isr),
     });
   }
 
   saveClient(): void {
     if (this.form.invalid) {
+      this.toasty.error('Algunos campos son requeridos')
       return;
     }
     this.loading = true;

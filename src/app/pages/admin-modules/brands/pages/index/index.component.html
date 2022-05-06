@@ -1,0 +1,46 @@
+<ngx-simplebar fxFlex fxLayout="row wrap" class="main-container">
+    <div fxLayout="column">
+        <header fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px">
+            <h2 class="module-title product-font ma-0">Laboratorios</h2>
+            <span fxFlex></span>
+            <app-filter placeholder="Ej. caplinpoint" (send)="applyFilter($event)"></app-filter>
+            <button mat-mini-fab color="primary" (click)="downloadXlsx()" matTooltip="Descargar en Excel">
+        <mat-icon>get_app</mat-icon>
+      </button>
+            <button mat-fab (click)="newBrand()" color="warn" matTooltip="Nuevo Laboratorio">
+        <mat-icon>add</mat-icon>
+      </button>
+        </header>
+        <mat-drawer-container class="my-container">
+            <mat-drawer #drawer class="sidenav mat-elevation-z4" mode="side" position="end" [ngClass]="{sidenav100: smallScreen}">
+                <app-new-edit [brandForm]="brandForm" (close)="drawer.opened = false" (save)="pushBrand($event)" (delete)="removeBrand($event)"></app-new-edit>
+            </mat-drawer>
+            <div fxLayout="column" class="list-container">
+                <mat-card class="my-card mat-elevation-z0">
+                    <ngx-simplebar class="list">
+                        <div fxLayout="row wrap" fxLayoutGap="15px grid">
+                            <div fxFlex.gt-lg="20" fxFlex.lg="25" fxFlex.md="50" fxFlex.sm="50" fxFlex.lt-sm="100" *ngFor="let brand of brandsPage">
+                                <mat-card matRipple (click)="editBrand(brand)" class="brand-card cursor-pointer mat-elevation-z2">
+                                    <mat-card-header>
+                                        <mat-icon mat-card-avatar color="accent">science</mat-icon>
+                                        <mat-card-title>
+                                            {{ brand.code}}
+                                        </mat-card-title>
+                                    </mat-card-header>
+                                    <mat-card-content>
+                                        {{brand.name}}
+                                    </mat-card-content>
+                                </mat-card>
+                            </div>
+                        </div>
+                    </ngx-simplebar>
+                    <mat-card-footer>
+                        <span fxFlex></span>
+                        <mat-paginator (page)="onPageChange($event)" [length]="brands?.length" [pageSize]="24" [pageSizeOptions]="[12, 24, 64, 124]">
+                        </mat-paginator>
+                    </mat-card-footer>
+                </mat-card>
+            </div>
+        </mat-drawer-container>
+    </div>
+</ngx-simplebar>

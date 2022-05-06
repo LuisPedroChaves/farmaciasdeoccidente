@@ -1,0 +1,55 @@
+<mat-drawer-container class="my-container" autosize>
+    <mat-drawer #drawer class="sidenav" position="end" mode="over">
+        <header fxLayout="row wrap" fxLayoutAlign="start center">
+            <h2 class="ma-0">{{title}}</h2>
+            <span fxFlex></span>
+            <button mat-icon-button (click)="drawer.opened = false">
+              <mat-icon>close</mat-icon>
+            </button>
+        </header>
+        <app-new *ngIf="title === 'Nueva Configuración Automática'" (close)="drawer.opened = false; title = '';"></app-new>
+        <app-edit *ngIf="title === 'Editar Configuración Automática'" [autoStatistic]="autoStatistic" (close)="drawer.opened = false; title = '';"></app-edit>
+    </mat-drawer>
+
+    <div fxLayout="row wrap" fxLayoutGap="10px" class="header">
+        <div fxFlex>
+            <button mat-stroked-button (click)="loadStatistics()" color="primary">Ingreso de estadísticas manual</button>
+        </div>
+        <div fxFlex></div>
+        <div fxFlex fxLayoutAlign="end center">
+            <!-- <app-filter (send)="applyFilter($event)"></app-filter> -->
+            <button mat-fab color="warn" (click)="drawer.opened = true; title = 'Nueva Configuración Automática'" matTooltip="Nueva configuración automática">
+        <mat-icon>add</mat-icon>
+      </button>
+        </div>
+    </div>
+
+    <ngx-simplebar class="content">
+        <div fxLayout="row wrap" fxLayoutGap="15px grid">
+            <div fxFlex.gt-lg="25" fxFlex.lg="33" fxFlex.md="33" fxFlex.sm="50" fxFlex.xs="100" *ngFor="let autoStatistic of autoStatistics">
+                <mat-card matRipple class="my-card mat-elevation-z2">
+                    <mat-card-header>
+                        <mat-icon matCardAvatar color="accent">schedule</mat-icon>
+                        <mat-card-group>
+                            <mat-card-title>{{ autoStatistic.name }}</mat-card-title>
+                            <mat-card-subtitle>Horario: {{ autoStatistic.hour }}:{{ autoStatistic.minute }}</mat-card-subtitle>
+                            <mat-card-subtitle>{{ autoStatistic._user.name }} {{ autoStatistic.date | date: 'dd/MM/yyyy HH:mm' }}</mat-card-subtitle>
+                        </mat-card-group>
+                        <span fxFlex></span>
+                        <mat-slide-toggle [(ngModel)]="autoStatistic.activated" (ngModelChange)="updateActivated(autoStatistic)"></mat-slide-toggle>
+                    </mat-card-header>
+                    <mat-card-content (click)="selectAutoStatistic(autoStatistic)" class="cursor-pointer">
+                        {{ autoStatistic.note }}
+                        <hr> Proveedor: {{autoStatistic.daysRequest}} días
+                        <br> Abastecimiento: {{autoStatistic.daysSupply}} días
+                        <br> Farmacias: {{ autoStatistic.cellars.length }}
+                        <br> Laboratorios: {{ autoStatistic.brands.length }}
+                        <hr>
+                        <mat-card-subtitle>Última actualización: {{ autoStatistic.updated | date: 'dd/MM/yyyy HH:mm' }}</mat-card-subtitle>
+                    </mat-card-content>
+                </mat-card>
+            </div>
+        </div>
+    </ngx-simplebar>
+
+</mat-drawer-container>

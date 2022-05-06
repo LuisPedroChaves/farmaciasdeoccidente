@@ -1,7 +1,7 @@
 import { Routes } from '@angular/router';
-import { UploadsComponent } from './components/uploads/uploads.component';
+import { IndexComponent } from './pages/index/index.component';
 
 export const UploadsRoutes: Routes = [{
     path: '',
-    component: UploadsComponent
+    component: IndexComponent
 }];

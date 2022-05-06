@@ -1,0 +1,76 @@
+<mat-drawer-container class="my-layout">
+    <mat-drawer #drawer class="sidenav" position="end" mode="over">
+        <header fxLayout="row wrap" fxLayoutAlign="start center">
+            <h2 class="ma-0">{{title}}</h2>
+            <span fxFlex></span>
+            <button mat-icon-button (click)="reset()">
+        <mat-icon>close</mat-icon>
+      </button>
+        </header>
+        <app-new-edit *ngIf="drawerComponent === 'DOCUMENTO'" [accountsPayable]="accountsPayable" (close)="reload()"></app-new-edit>
+        <app-provider-account *ngIf="drawerComponent === 'PROVEEDOR'" [provider]="provider" (close)="drawer.opened = false">
+        </app-provider-account>
+        <app-accounts-payable *ngIf="drawerComponent === 'CUENTA'" (return)="reset()" (sendEdit)="editDocument($event)" [accountsPayable]="accountsPayable" [permissions]="permissions"></app-accounts-payable>
+    </mat-drawer>
+    <header>
+        <app-filter (send)="applyFilter($event)"></app-filter>
+        <span fxFlex></span>
+        <button mat-fab *ngIf="permissions && permissions.includes('create')" color="warn" [matMenuTriggerFor]="payablesMenu" matTooltip="Nuevo documento">
+      <mat-icon>add</mat-icon>
+    </button>
+        <mat-menu #payablesMenu="matMenu" xPosition="before">
+            <button mat-menu-item (click)="newDocument('PRODUCTOS')">
+        <mat-icon>medication</mat-icon>
+        <span>Productos</span>
+      </button>
+            <button mat-menu-item (click)="newDocument('GASTOS')">
+        <mat-icon>payments</mat-icon>
+        <span>Gastos</span>
+      </button>
+        </mat-menu>
+    </header>
+    <mat-progress-bar *ngIf="loading" mode="indeterminate" color="warn"></mat-progress-bar>
+    <app-no-found *ngIf="permissions && !permissions.includes('read')" text="Acceso Denegado" subtitle="Actualmente no cuenta con permisos para acceder a este apartado"></app-no-found>
+    <mat-tab-group mat-align-tabs="center" *ngIf="permissions && permissions.includes('read')">
+        <mat-tab [label]=" 'Retenciones pendientes (' + accountsPayablesReten.length  + ')'   ">
+            <ngx-simplebar class="content">
+                <app-table-accounts-payable (sendAccountsPayable)="getAccountPayable($event)" [accountsPayable]="accountsPayablesReten" [filter]="filterReten" [addSelection]="false"></app-table-accounts-payable>
+            </ngx-simplebar>
+        </mat-tab>
+        <mat-tab [label]=" 'Notas de crédito temporales (' + accountsPayablesTemp.length  + ')'   ">
+            <ngx-simplebar class="content">
+                <app-table-accounts-payable (sendAccountsPayable)="getAccountPayable($event)" [accountsPayable]="accountsPayablesTemp" [filter]="filterTemp" [addSelection]="false"></app-table-accounts-payable>
+            </ngx-simplebar>
+        </mat-tab>
+        <mat-tab [label]=" 'Pagos a proveedores (' + accountsPayablesProd.length  + ')'   ">
+            <ngx-simplebar class="content">
+                <app-table-accounts-payable (sendAccountsPayable)="getAccountPayable($event)" [accountsPayable]="accountsPayablesProd" [filter]="filterProd" [addSelection]="false"></app-table-accounts-payable>
+            </ngx-simplebar>
+        </mat-tab>
+        <mat-tab [label]=" 'Gastos internos (' + accountsPayablesGast.length  + ')'   ">
+            <ngx-simplebar class="content">
+                <app-table-accounts-payable (sendAccountsPayable)="getAccountPayable($event)" [accountsPayable]="accountsPayablesGast" [filter]="filterGast" [addSelection]="false"></app-table-accounts-payable>
+            </ngx-simplebar>
+        </mat-tab>
+        <mat-tab label="Historial">
+            <ngx-simplebar class="content">
+                <div fxLayout="row" fxLayoutAlign="end center" class="headerHistory">
+                    <mat-form-field appearance="outline">
+                        <mat-label>Introduzca un rango de fechas</mat-label>
+                        <mat-date-range-input [formGroup]="range" [rangePicker]="picker">
+                            <input matStartDate formControlName="start" placeholder="Fecha de inicio">
+                            <input matEndDate formControlName="end" placeholder="Fecha de finalización">
+                        </mat-date-range-input>
+                        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                        <mat-date-range-picker #picker></mat-date-range-picker>
+                        <mat-error *ngIf="range.get('start').hasError('matStartDateInvalid')">Fecha de inicio no válida
+                        </mat-error>
+                        <mat-error *ngIf="range.controls.end.hasError('matEndDateInvalid')">Fecha de finalización no válida
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+                <app-table-accounts-payable (sendAccountsPayable)="getAccountPayable($event)" [accountsPayable]="accountsPayablesHistory" [filter]="filterHistory" [addSelection]="false"></app-table-accounts-payable>
+            </ngx-simplebar>
+        </mat-tab>
+    </mat-tab-group>
+</mat-drawer-container>

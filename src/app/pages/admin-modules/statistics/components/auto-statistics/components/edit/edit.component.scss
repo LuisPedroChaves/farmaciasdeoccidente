@@ -1,0 +1,72 @@
+mat-horizontal-stepper {
+    height: calc(100% - 55px);
+    border-radius: 10px;
+    background-color: #f2f2f2 !important;
+}
+
+.my-step {
+    height: calc(100vh - 211px);
+}
+
+.my-card-1 {
+    margin-top: 15px;
+    border-radius: 10px;
+}
+
+.my-card-2 {
+    height: calc(100vh - 28%);
+    background-color: white;
+    border-radius: 10px;
+}
+
+.my-card-3 {
+    height: calc(100vh - 28%);
+    background-color: #f2f2f2;
+}
+
+.my-content {
+    height: calc(100% - 6%);
+}
+
+.list {
+    height: calc(100% - 10%);
+    padding-right: 10px;
+    padding-top: 3px;
+    padding-left: 3px;
+}
+
+.brand-card {
+    border-radius: 10px;
+}
+
+.brand-card:hover {
+    background-color: whitesmoke;
+    border-style: solid;
+    border-width: 2px;
+    border-color: #b4de32;
+}
+
+.brand-card-2 {
+    border-radius: 10px;
+}
+
+.brand-card-2:hover {
+    background-color: whitesmoke;
+    border-style: solid;
+    border-width: 2px;
+    border-color: red;
+}
+
+.inactive {
+    opacity: 0.5;
+}
+
+mat-card-footer {
+    background-color: #f2f2f2;
+    border-radius: 10px;
+}
+
+mat-paginator {
+    background-color: #f2f2f2;
+    border-radius: 10px;
+}

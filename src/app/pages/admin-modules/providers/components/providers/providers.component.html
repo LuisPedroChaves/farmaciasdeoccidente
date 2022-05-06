@@ -5,8 +5,7 @@
             <mat-icon>add</mat-icon><span class="extended-fab-button__text">Proveedor</span>
         </button>
         <div>
-            <header class="module-header" [ngClass]="{'padding-25': !smallScreen, 'padding-15': smallScreen }"
-                fxLayoutAlign="start center" fxLayout="row wrap">
+            <header class="module-header" [ngClass]="{'padding-25': !smallScreen, 'padding-15': smallScreen }" fxLayoutAlign="start center" fxLayout="row wrap">
                 <h1 class="product-font ma-0 module-title">Proveedores</h1>
             </header>
             <mat-divider></mat-divider>
@@ -32,8 +31,7 @@
                 <!-- *ngIf="providers !== undefined && (providersp && providersp.includes('read'))"> -->
                 <div class="costumers-header" *ngIf="providers !== undefined">
                     <!-- *****Tabla responsiva agregar: matSort matTableResponsive -------------- e importar el módulo en sharedCompnents y tambien en el style SCSS -->
-                    <table mat-table matSort matTableResponsive [dataSource]="dataSource" multiTemplateDataRows
-                        class="mat-elevation-z2 noborder-table ">
+                    <table mat-table matSort matTableResponsive [dataSource]="dataSource" multiTemplateDataRows class="mat-elevation-z2 noborder-table ">
                         <ng-container matColumnDef="image">
                             <th mat-header-cell *matHeaderCellDef></th>
                             <td mat-cell *matCellDef="let element">
@@ -67,14 +65,16 @@
                             <th mat-header-cell *matHeaderCellDef> Días de Crédito </th>
                             <td mat-cell *matCellDef="let element"> {{element.creditDays}} </td>
                         </ng-container>
+                        <ng-container matColumnDef="credit">
+                            <th mat-header-cell *matHeaderCellDef> Crédito </th>
+                            <td mat-cell *matCellDef="let element"> {{element.credit}} </td>
+                        </ng-container>
                         <tr mat-header-row *matHeaderRowDef="columnsToDisplay2"></tr>
-                        <tr mat-row *matRowDef="let element; columns: columnsToDisplay2;" class="example-element-row"
-                            (click)="editProvider(element)">
+                        <tr mat-row *matRowDef="let element; columns: columnsToDisplay2;" class="example-element-row" (click)="editProvider(element)">
                         </tr>
                     </table>
                 </div>
-                <div fxLayout="column wrap" fxLayoutAlign="center center" class="padding-15 loader-screen"
-                    *ngIf="providers === undefined">
+                <div fxLayout="column wrap" fxLayoutAlign="center center" class="padding-15 loader-screen" *ngIf="providers === undefined">
                     <mat-progress-spinner mode="indeterminate" diameter="60" color="warn"></mat-progress-spinner>
                 </div>
                 <!-- </div> -->
