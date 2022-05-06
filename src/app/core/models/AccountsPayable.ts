@@ -15,6 +15,7 @@ export interface AccountsPayableItem  {
   noBill: string,
   docType: string,
   balance: AccountsPayableBalanceItem[],
+  deletedBalance: AccountsPayableBalanceItem[],
   unaffectedAmount: number,
   exemptAmount: number,
   netPurchaseAmount: number,
@@ -33,6 +34,7 @@ export interface AccountsPayableItem  {
 }
 
 export interface AccountsPayableBalanceItem {
+  _id?: string,
   _check?: CheckItem,
   date: Date,
   document: string,

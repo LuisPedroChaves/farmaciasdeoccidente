@@ -2,7 +2,7 @@
     <header fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="10px">
         <h2 class="module-title product-font ma-0">Cuentas por pagar</h2>
         <span fxFlex></span>
-        <mat-chip-list aria-label="Dog selection">
+        <mat-chip-list>
             <mat-chip *ngIf="searchModule('accountsPyabaleProviders')" [routerLink]="['/admin/accountsPayable']" [selected]="router.url === '/admin/accountsPayable'" color="primary" matTooltip="Cuentas por pagar">
                 <mat-chip-avatar>
                     <mat-icon>business</mat-icon>
@@ -26,6 +26,12 @@
                     <mat-icon>local_atm</mat-icon>
                 </mat-chip-avatar>
                 Entregas
+            </mat-chip>
+            <mat-chip *ngIf="searchModule('accountsPyabaleReports')" [routerLink]="['/admin/accountsPayable/reports']" [selected]="router.url === '/admin/accountsPayable/reports'" color="primary" matTooltip="Reportes Generales">
+                <mat-chip-avatar>
+                    <mat-icon>description</mat-icon>
+                </mat-chip-avatar>
+                Reportes
             </mat-chip>
         </mat-chip-list>
     </header>

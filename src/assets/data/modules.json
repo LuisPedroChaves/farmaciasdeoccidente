@@ -31,6 +31,7 @@
     { "name": "accountsPyabaleDocuments", "label": "Documentos", "parent": "accountsPayable", "level": 2, "options": ["read", "update", "delete", "create"] },
     { "name": "accountsPyabaleChecks", "label": "Cheques", "parent": "accountsPayable", "level": 2, "options": ["read", "update", "delete", "create"] },
     { "name": "accountsPyabaleCheckDeliveries", "label": "Entrega de cheques", "parent": "accountsPayable", "level": 2, "options": ["read", "update"] },
+    { "name": "accountsPyabaleReports", "label": "Reportes", "parent": "accountsPayable", "level": 2, "options": ["read"] },
 
     { "name": "uploads", "label": "Carga de archivos", "parent": "ADMIN", "level": 1, "options": ["read", "update", "delete", "create"] },
     { "name": "statistics", "label": "Estadísticas", "parent": "ADMIN", "level": 1, "options": ["read", "update", "delete", "create"] },

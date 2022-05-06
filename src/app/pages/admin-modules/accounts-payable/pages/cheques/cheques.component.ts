@@ -35,6 +35,7 @@ export class ChequesComponent implements OnInit, AfterContentInit, OnDestroy {
     noBill: '',
     docType: '',
     balance: [],
+    deletedBalance: [],
     unaffectedAmount: 0,
     exemptAmount: 0,
     netPurchaseAmount: 0,

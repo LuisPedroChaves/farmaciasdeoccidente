@@ -28,7 +28,7 @@ export class CheckComponent implements OnInit {
   indexHovered = -1;
 
   constructor(
-    private checkService: CheckService,
+    public checkService: CheckService,
     private toastyService: ToastyService,
     private dialog: MatDialog
   ) { }

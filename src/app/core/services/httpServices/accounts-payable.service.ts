@@ -47,7 +47,7 @@ export class AccountsPayableService implements IDataService<AccountsPayableItem[
     return this.accountsPayableSubject.asObservable();
   }
 
-  setData(): void {}
+  setData(): void { }
 
   invalidateData(): void {
     if (this.accountsPayableList === undefined) {
@@ -59,8 +59,8 @@ export class AccountsPayableService implements IDataService<AccountsPayableItem[
   getHistory(startDate, endDate, _provider: string = null): Observable<any> {
     return this.http.get(`${this.apiConfigService.API_ACCOUNTS_PAYABLE}/history/${_provider}`, {
       params: new HttpParams()
-      .set('startDate', startDate.toString())
-      .set('endDate', endDate.toString())
+        .set('startDate', startDate.toString())
+        .set('endDate', endDate.toString())
     })
       .pipe(
         map((resp: any) => resp.accountsPayables)
@@ -83,7 +83,10 @@ export class AccountsPayableService implements IDataService<AccountsPayableItem[
     return this.http.put(this.apiConfigService.API_ACCOUNTS_PAYABLE + '/' + accountPayable._id, accountPayable);
   }
 
-  delete(accountPayable: AccountsPayableItem): Observable<any> {
-    return this.http.delete(this.apiConfigService.API_ACCOUNTS_PAYABLE + '/' + accountPayable._id);
+  delete(accountPayable: AccountsPayableItem, details: string): Observable<any> {
+    return this.http.delete(this.apiConfigService.API_ACCOUNTS_PAYABLE + '/' + accountPayable._id, {
+      params: new HttpParams()
+        .set('details', details.toString())
+    });
   }
 }

@@ -50,5 +50,9 @@
             <button mat-button *ngIf="check.state === 'AUTORIZADO'" (click)="update(check, 'RECHAZADO', 'Rechazar')">Rechazar</button>
             <button mat-button *ngIf="check.state !== 'PAGADO' && check.state !== 'RECHAZADO'" (click)="void(check)">Anular</button>
         </ng-container>
+        <span fxFlex></span>
+        <button mat-mini-fab (click)="checkService.print(check)">
+            <mat-icon>print</mat-icon>
+          </button>
     </mat-card-actions>
 </mat-card>

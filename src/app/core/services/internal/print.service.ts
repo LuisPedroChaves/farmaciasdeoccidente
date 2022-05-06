@@ -30,6 +30,20 @@ export class PrintService {
 
   constructor() { }
 
+  printCheck(body: any) {
+    const printpage = {
+      pageSize: 'LETTER',
+      pageOrientation: 'portrait',
+      pageMargins: [127.559, 48.189, 0, 0],
+      content: [],
+      styles: this.style
+    };
+    printpage.content = body;
+    setTimeout(t => {
+      pdfMake.createPdf(printpage).print();
+    }, 500);
+  }
+
   print(body: any) {
     const printpage = {
       pageSize: 'A6',
