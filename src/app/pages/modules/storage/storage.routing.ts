@@ -12,8 +12,8 @@ export const StorageRoutes: Routes = [
     path: 'storageclosing',
     component: InventoryClosingComponent,
   },
-  // {
-  //   path: '',
-  //   component: StorageHistoryComponent,
-  // },
+  {
+    path: 'storagehistory',
+    component: StorageHistoryComponent,
+  },
 ];
