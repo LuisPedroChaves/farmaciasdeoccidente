@@ -1,0 +1,28 @@
+<ngx-simplebar class="my-layout">
+    <header fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="10px">
+        <h2 class="module-title product-font ma-0">Cajas</h2>
+        <span fxFlex></span>
+        <mat-chip-list>
+            <mat-chip *ngIf="searchModule('cashAdmin')" [routerLink]="['/admin/cash']" [selected]="router.url === '/admin/cash'" color="primary" matTooltip="Administración de cajas">
+                <mat-chip-avatar>
+                    <mat-icon>admin_panel_settings</mat-icon>
+                </mat-chip-avatar>
+                Administración
+            </mat-chip>
+            <mat-chip *ngIf="searchModule('cashIndependentBox')" [routerLink]="['/admin/cash/independentBox']" [selected]="router.url === '/admin/cash/independentBox'" color="primary" matTooltip="Mi caja independiente">
+                <mat-chip-avatar>
+                    <mat-icon>point_of_sale</mat-icon>
+                </mat-chip-avatar>
+                Mi caja independiente
+            </mat-chip>
+            <mat-chip *ngIf="searchModule('cashAccountingBox')" [routerLink]="['/admin/cash/accountingBox']" [selected]="router.url === '/admin/cash/accountingBox'" color="primary" matTooltip="Mi caja contable">
+                <mat-chip-avatar>
+                    <mat-icon>point_of_sale</mat-icon>
+                </mat-chip-avatar>
+                Mi caja contable
+            </mat-chip>
+        </mat-chip-list>
+    </header>
+    <app-no-found *ngIf="modules && modules.length === 0" text="Permiso denegado" subtitle="Actualmente no cuenta con permisos para acceder a este apartado"></app-no-found>
+    <router-outlet *ngIf="modules && modules.length > 0"></router-outlet>
+</ngx-simplebar>

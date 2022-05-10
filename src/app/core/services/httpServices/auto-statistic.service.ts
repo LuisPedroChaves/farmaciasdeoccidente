@@ -14,7 +14,6 @@ import { ApiConfigService } from '../config/api-config.service';
 export class AutoStatisticService implements IDataService<AutoStatisticItem[]> {
   public autoStatisticList: AutoStatisticItem[];
   autoStatisticSubject = new Subject<AutoStatisticItem[]>();
-  userID = JSON.parse(localStorage.getItem('farmaciasDO-session')).id;
 
   constructor(
     public http: HttpClient,
@@ -56,7 +55,7 @@ export class AutoStatisticService implements IDataService<AutoStatisticItem[]> {
   }
 
   create(autoStatistic: AutoStatisticItem): Observable<any> {
-    autoStatistic._user = this.userID;
+    autoStatistic._user = JSON.parse(localStorage.getItem('farmaciasDO-session')).id;
     return this.http.post(this.apiConfigService.API_AUTO_STATISTIC, autoStatistic);
   }
 

@@ -18,7 +18,6 @@ export class CheckService implements IDataService<CheckItem[]> {
 
   public checkList: CheckItem[];
   checkSubject = new Subject<CheckItem[]>();
-  userID = JSON.parse(localStorage.getItem('farmaciasDO-session')).id;
 
   constructor(
     public http: HttpClient,
@@ -81,7 +80,7 @@ export class CheckService implements IDataService<CheckItem[]> {
   }
 
   create(check: CheckItem): Observable<any> {
-    check._user = this.userID;
+    check._user = JSON.parse(localStorage.getItem('farmaciasDO-session')).id;
     return this.http.post(this.apiConfigService.API_CHECK, check);
   }
 

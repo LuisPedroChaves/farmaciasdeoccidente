@@ -15,7 +15,6 @@ export class AccountsPayableService implements IDataService<AccountsPayableItem[
 
   public accountsPayableList: AccountsPayableItem[];
   accountsPayableSubject = new Subject<AccountsPayableItem[]>();
-  userID = JSON.parse(localStorage.getItem('farmaciasDO-session')).id;
 
   constructor(
     public http: HttpClient,
@@ -75,7 +74,7 @@ export class AccountsPayableService implements IDataService<AccountsPayableItem[
   }
 
   create(accountPayable: AccountsPayableItem): Observable<any> {
-    accountPayable._user = this.userID;
+    accountPayable._user = JSON.parse(localStorage.getItem('farmaciasDO-session')).id;
     return this.http.post(this.apiConfigService.API_ACCOUNTS_PAYABLE, accountPayable);
   }
 

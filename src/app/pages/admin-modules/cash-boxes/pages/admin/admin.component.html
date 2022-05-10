@@ -1,0 +1,65 @@
+<mat-drawer-container class="my-layout">
+    <mat-drawer #drawer class="sidenav" position="end" mode="over">
+        <header fxLayout="row wrap" fxLayoutAlign="start center">
+            <h2 class="ma-0">{{title}}</h2>
+            <span fxFlex></span>
+            <button mat-icon-button (click)="reset()">
+        <mat-icon>close</mat-icon>
+      </button>
+        </header>
+        <app-independent-cash *ngIf="cash?.type === 'INDEPENDIENTE'" (close)="reset()" [currentCash]="cash" [isAdmin]="true" [permissions]="permissions">
+        </app-independent-cash>
+    </mat-drawer>
+    <mat-drawer-content>
+        <header>
+            <span fxFlex></span>
+            <button mat-fab *ngIf="permissions && permissions.includes('create')" (click)="drawer2.opened = true" color="warn" matTooltip="Nueva caja">
+        <mat-icon>add</mat-icon>
+      </button>
+        </header>
+        <mat-drawer-container>
+            <mat-drawer #drawer2 mode="over">
+                <header fxLayout="row wrap" fxLayoutAlign="start center">
+                    <h2 class="ma-0">Crear nueva caja</h2>
+                    <span fxFlex></span>
+                    <button mat-icon-button (click)="drawer2.opened = false">
+            <mat-icon>close</mat-icon>
+          </button>
+                </header>
+                <ngx-simplebar class="cash-layout">
+                    <app-new-cash (close)="drawer2.opened = false" [cashes]="cashes"></app-new-cash>
+                </ngx-simplebar>
+            </mat-drawer>
+            <mat-drawer-content>
+                <ngx-simplebar class="content">
+                    <mat-progress-bar *ngIf="loading" mode="indeterminate" color="warn"></mat-progress-bar>
+                    <app-no-found *ngIf="permissions && !permissions.includes('read')" text="Acceso Denegado" subtitle="Actualmente no cuenta con permisos para acceder a este apartado"></app-no-found>
+                    <ng-container *ngIf="permissions && permissions.includes('read')">
+                        <app-no-found *ngIf="!cashesPage || cashesPage.length === 0" text="No se encontraron cajas" subtitle="Actualmente no cuenta con cajas activas"></app-no-found>
+                        <div fxLayout="row wrap" fxLayoutGap="15px grid" class="grid">
+                            <div fxFlex.gt-lg="20" fxFlex.gt-md="33" fxFlex.gt-sm="50" fxFlex.lt-md="100" *ngFor="let cash of cashesPage; let i = index">
+                                <mat-card matRipple (click)="selectCash(cash)" class="cursor-pointer mat-elevation-z0" [ngClass]="{'mat-elevation-z4': i === indexHovered}" (mouseenter)="indexHovered = i" (mouseleave)="indexHovered = -1">
+                                    <mat-card-header>
+                                        <mat-icon matCardAvatar>point_of_sale
+                                        </mat-icon>
+                                        <mat-card-group>
+                                            <mat-card-title>{{ cash._user.name }}</mat-card-title>
+                                            <mat-card-subtitle>{{ cash.type }}</mat-card-subtitle>
+                                        </mat-card-group>
+                                    </mat-card-header>
+                                    <mat-card-content>
+                                        <div fxLayoutAlign="center center">
+                                            <h2><span class="text-muted">Saldo: </span> <b>Q{{ cash.balance | number: '.2'}}</b></h2>
+                                        </div>
+                                        <p *ngIf="cash.updated">Última edición: {{ cash.updated | date: 'dd/MM/yyyy HH:mm' }}</p>
+                                        <p>Creada: {{ cash.created | date: 'dd/MM/yyyy HH:mm' }}</p>
+                                    </mat-card-content>
+                                </mat-card>
+                            </div>
+                        </div>
+                    </ng-container>
+                </ngx-simplebar>
+            </mat-drawer-content>
+        </mat-drawer-container>
+    </mat-drawer-content>
+</mat-drawer-container>
