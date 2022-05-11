@@ -25,6 +25,9 @@ import { CheckDeliveriesComponent } from './pages/check-deliveries/check-deliver
 import { EnterPaymentComponent } from './components/enter-payment/enter-payment.component';
 import { ReportsComponent } from './pages/reports/reports.component';
 import { TableAccountsPayableComponent } from './components/table-accounts-payable/table-accounts-payable.component';
+import { TimeFormatPipe } from 'src/app/core/shared/pipes/timePipes/time-format.pipe';
+import { ReportProviderComponent } from './components/report-provider/report-provider.component';
+import { ReportGlobalExpenseComponent } from './components/report-global-expense/report-global-expense.component';
 
 @NgModule({
   declarations: [
@@ -45,6 +48,8 @@ import { TableAccountsPayableComponent } from './components/table-accounts-payab
     EnterPaymentComponent,
     ReportsComponent,
     TableAccountsPayableComponent,
+    ReportProviderComponent,
+    ReportGlobalExpenseComponent,
 
   ],
   imports: [
@@ -56,7 +61,8 @@ import { TableAccountsPayableComponent } from './components/table-accounts-payab
     CoreModule
   ],
   providers: [
-    FilterPipe
+    FilterPipe,
+    TimeFormatPipe
   ]
 })
 export class AccountsPayableModule { }

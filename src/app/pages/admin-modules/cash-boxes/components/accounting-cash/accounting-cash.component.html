@@ -99,6 +99,9 @@
                                         </table>
                                     </mat-tab>
                                     <mat-tab label="Requisiciones">
+                                        <div fxLayoutAlign="start center" class="header">
+                                            <button mat-button color="accent">Solicitar</button>
+                                        </div>
                                         <table mat-table [dataSource]="dataSource3">
                                             <ng-container matColumnDef="select">
                                                 <th mat-header-cell *matHeaderCellDef>

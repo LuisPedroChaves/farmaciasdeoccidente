@@ -33,6 +33,7 @@ export class IndexComponent implements OnInit, OnDestroy {
           'accountsPyabaleDocuments': () => this.router.navigate(['/admin/accountsPayable/documents']),
           'accountsPyabaleChecks': () => this.router.navigate(['/admin/accountsPayable/cheques']),
           'accountsPyabaleCheckDeliveries': () => this.router.navigate(['/admin/accountsPayable/checkDeliveries']),
+          'accountsPyabaleReports': () => this.router.navigate(['/admin/accountsPayable/reports']),
         }
 
         if (this.modules.length > 0) {

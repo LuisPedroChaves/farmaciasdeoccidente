@@ -55,6 +55,28 @@ export class AccountsPayableService implements IDataService<AccountsPayableItem[
     }
   }
 
+  getReportExpenses(startDate, endDate): Observable<any> {
+    return this.http.get(`${this.apiConfigService.API_ACCOUNTS_PAYABLE}/expenses`, {
+      params: new HttpParams()
+        .set('startDate', startDate.toString())
+        .set('endDate', endDate.toString())
+    })
+      .pipe(
+        map((resp: any) => resp.accountsPayables)
+      );
+  }
+
+  getReportProvider(startDate, endDate, _provider: string = null): Observable<any> {
+    return this.http.get(`${this.apiConfigService.API_ACCOUNTS_PAYABLE}/report/${_provider}`, {
+      params: new HttpParams()
+        .set('startDate', startDate.toString())
+        .set('endDate', endDate.toString())
+    })
+      .pipe(
+        map((resp: any) => resp.accountsPayables)
+      );
+  }
+
   getHistory(startDate, endDate, _provider: string = null): Observable<any> {
     return this.http.get(`${this.apiConfigService.API_ACCOUNTS_PAYABLE}/history/${_provider}`, {
       params: new HttpParams()

@@ -2,29 +2,3 @@
     height: calc(100vh - 122px);
     background-color: #f2f2f2;
 }
-
-header {
-    padding: 15px;
-}
-
-.content {
-    height: calc(100vh - 272px);
-    background-color: white;
-}
-
-mat-tab-group {
-    background-color: white;
-}
-
-.mat-table-sticky {
-    background: #f6fbe6;
-    opacity: 1;
-}
-
-.mat-row:hover {
-    background: whitesmoke;
-}
-
-.warning {
-    color: brown;
-}

@@ -3,8 +3,6 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
-
-import { AccountsPayableService } from 'src/app/core/services/httpServices/accounts-payable.service';
 import { AppState } from 'src/app/core/store/app.reducer';
 
 @Component({
@@ -14,13 +12,10 @@ import { AppState } from 'src/app/core/store/app.reducer';
 })
 export class ReportsComponent implements OnInit, OnDestroy {
 
-  loading = false;
-
   sessionSubscription: Subscription;
   permissions: string[] = [];
 
   constructor(
-    private accountsPayableService: AccountsPayableService,
     public store: Store<AppState>,
   ) { }
 
@@ -36,5 +31,4 @@ export class ReportsComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.sessionSubscription?.unsubscribe();
   }
-
 }
