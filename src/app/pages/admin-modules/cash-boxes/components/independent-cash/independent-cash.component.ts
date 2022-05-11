@@ -2,15 +2,13 @@ import { Component, Input, OnDestroy, OnInit, SimpleChanges, OnChanges, Output, 
 import { FormControl, FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
-import { Store } from '@ngrx/store';
 
 import { Subscription } from 'rxjs';
-import { debounceTime, filter } from 'rxjs/operators';
+import { debounceTime } from 'rxjs/operators';
 import { CashFlowItem } from 'src/app/core/models/CashFlow';
 import { CashFlowService } from 'src/app/core/services/httpServices/cash-flow.service';
 import { CashService } from 'src/app/core/services/httpServices/cash.service';
 import { ToastyService } from 'src/app/core/services/internal/toasty.service';
-import { AppState } from 'src/app/core/store/app.reducer';
 import { ConfirmationDialogComponent } from 'src/app/pages/shared-components/confirmation-dialog/confirmation-dialog.component';
 import { CashItem } from '../../../../../core/models/Cash';
 

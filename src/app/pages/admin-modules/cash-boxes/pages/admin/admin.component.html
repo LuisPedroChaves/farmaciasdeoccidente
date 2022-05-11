@@ -9,6 +9,8 @@
         </header>
         <app-independent-cash *ngIf="cash?.type === 'INDEPENDIENTE'" (close)="reset()" [currentCash]="cash" [isAdmin]="true" [permissions]="permissions">
         </app-independent-cash>
+        <app-accounting-cash *ngIf="cash?.type === 'CONTABLE'" (close)="reset()" [currentCash]="cash" [isAdmin]="true" [permissions]="permissions">
+        </app-accounting-cash>
     </mat-drawer>
     <mat-drawer-content>
         <header>
