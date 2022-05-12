@@ -19,12 +19,15 @@ import { ProgressBalanceComponent } from './components/progress-balance.componen
 import { NewCheckComponent } from './components/new-check/new-check.component';
 import { NewProviderComponent } from './components/new-provider/new-provider.component';
 import { NewBalanceComponent } from './components/new-balance/new-balance.component';
-import { TableAccountsPayableComponent } from './components/table-accounts-payable/table-accounts-payable.component';
 import { AccountsPayableComponent } from './components/accounts-payable/accounts-payable.component';
 import { CheckComponent } from './components/check/check.component';
 import { CheckDeliveriesComponent } from './pages/check-deliveries/check-deliveries.component';
 import { EnterPaymentComponent } from './components/enter-payment/enter-payment.component';
 import { ReportsComponent } from './pages/reports/reports.component';
+import { TableAccountsPayableComponent } from './components/table-accounts-payable/table-accounts-payable.component';
+import { TimeFormatPipe } from 'src/app/core/shared/pipes/timePipes/time-format.pipe';
+import { ReportProviderComponent } from './components/report-provider/report-provider.component';
+import { ReportGlobalExpenseComponent } from './components/report-global-expense/report-global-expense.component';
 
 @NgModule({
   declarations: [
@@ -39,12 +42,15 @@ import { ReportsComponent } from './pages/reports/reports.component';
     NewCheckComponent,
     NewProviderComponent,
     NewBalanceComponent,
-    TableAccountsPayableComponent,
     AccountsPayableComponent,
     CheckComponent,
     CheckDeliveriesComponent,
     EnterPaymentComponent,
-    ReportsComponent
+    ReportsComponent,
+    TableAccountsPayableComponent,
+    ReportProviderComponent,
+    ReportGlobalExpenseComponent,
+
   ],
   imports: [
     CommonModule,
@@ -55,7 +61,8 @@ import { ReportsComponent } from './pages/reports/reports.component';
     CoreModule
   ],
   providers: [
-    FilterPipe
+    FilterPipe,
+    TimeFormatPipe
   ]
 })
 export class AccountsPayableModule { }

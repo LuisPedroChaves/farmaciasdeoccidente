@@ -1,0 +1,60 @@
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
+
+import { CashItem } from 'src/app/core/models/Cash';
+import { CashFlowService } from 'src/app/core/services/httpServices/cash-flow.service';
+import { ToastyService } from 'src/app/core/services/internal/toasty.service';
+
+@Component({
+  selector: 'app-new-cash-flow',
+  templateUrl: './new-cash-flow.component.html',
+  styleUrls: ['./new-cash-flow.component.scss']
+})
+export class NewCashFlowComponent implements OnInit {
+
+  @Input() cash: CashItem;
+  @Input() typeNew: string;
+  @Output() close = new EventEmitter;
+  @Output() sendBalance = new EventEmitter;
+
+  loading = false;
+
+  form = new FormGroup({
+    _cash: new FormControl(null),
+    details: new FormControl('', Validators.required),
+    income: new FormControl(0, Validators.required),
+    expense: new FormControl(0, Validators.required),
+  });
+
+  constructor(
+    private cashFlowService: CashFlowService,
+    private toastyService: ToastyService,
+  ) { }
+
+  ngOnInit(): void {
+  }
+
+  save(): void {
+
+    this.loading = true;
+    this.form.controls['_cash'].setValue(this.cash);
+
+    this.cashFlowService.create({
+      ...this.form.value,
+    })
+      .subscribe((resp: any) => {
+        this.toastyService.success('Movimiento creado exitosamente')
+        this.cashFlowService.loadData(this.cash._id);
+        this.close.emit()
+        this.form.reset({
+          _cash: null,
+          details: '',
+          income: 0,
+          expense: 0,
+        })
+        this.sendBalance.emit(resp.cashFlow.balance)
+        this.loading = false;
+      })
+  }
+
+}

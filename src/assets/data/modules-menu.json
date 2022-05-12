@@ -191,12 +191,20 @@
         "order": 6
     },
     {
+        "state": "cash",
+        "name": "Cajas",
+        "type": "link",
+        "icon": "point_of_sale",
+        "iconType": "icon",
+        "order": 7
+    },
+    {
         "state": "uploads",
         "name": "Carga de archivos",
         "type": "link",
         "icon": "upload_file",
         "iconType": "icon",
-        "order": 7
+        "order": 8
     },
     {
         "state": "statistics",
@@ -204,7 +212,7 @@
         "type": "link",
         "icon": "trending_up",
         "iconType": "icon",
-        "order": 8
+        "order": 9
     },
     {
         "state": "tempStatistics",
@@ -212,7 +220,7 @@
         "type": "link",
         "icon": "trending_up",
         "iconType": "icon",
-        "order": 9
+        "order": 10
     },
     {
         "state": "adminSellersReport",
@@ -220,7 +228,7 @@
         "type": "link",
         "icon": "sell",
         "iconType": "icon",
-        "order": 10
+        "order": 11
     },
     {
         "state": "adminProducts",
@@ -228,7 +236,7 @@
         "type": "link",
         "icon": "category",
         "iconType": "icon",
-        "order": 11
+        "order": 12
     },
     {
         "state": "brands",
@@ -236,7 +244,7 @@
         "type": "link",
         "icon": "science",
         "iconType": "icon",
-        "order": 12
+        "order": 13
     },
     {
         "state": "providers",
@@ -244,7 +252,7 @@
         "type": "link",
         "icon": "business",
         "iconType": "icon",
-        "order": 13
+        "order": 14
     },
     {
         "state": "users",
@@ -252,6 +260,6 @@
         "type": "link",
         "icon": "people",
         "iconType": "icon",
-        "order": 14
+        "order": 15
     }
 ]

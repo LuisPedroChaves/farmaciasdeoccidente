@@ -6,10 +6,11 @@ import { CellarComponent } from './cellar/cellar.component';
 import { FilterComponent } from './filter/filter.component';
 import { ProviderComponent } from './provider/provider.component';
 import { SharedComponentsModule } from '../../shared-components/shared-components.module';
+import { InputUserComponent } from './user/user.component';
 
 
 @NgModule({
-  declarations: [BrandComponent, CellarComponent, FilterComponent, ProviderComponent],
+  declarations: [BrandComponent, CellarComponent, FilterComponent, ProviderComponent, InputUserComponent],
   imports: [
     CommonModule,
     SharedComponentsModule,
@@ -19,6 +20,7 @@ import { SharedComponentsModule } from '../../shared-components/shared-component
     CellarComponent,
     FilterComponent,
     ProviderComponent,
+    InputUserComponent
   ]
 })
 export class InputsModule { }

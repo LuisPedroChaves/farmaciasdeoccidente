@@ -3,7 +3,6 @@ import { CommonModule } from '@angular/common';
 
 import { CheckStockComponent } from './check-stock/check-stock.component';
 import { SharedComponentsModule } from '../../shared-components/shared-components.module';
-import { CoreModule } from '../../../core/core.module';
 import { DetailsQuotesComponent } from './details-quotes/details-quotes.component';
 import { NoFoundComponent } from './no-found/no-found.component';
 
@@ -11,7 +10,7 @@ import { NoFoundComponent } from './no-found/no-found.component';
   declarations: [
     CheckStockComponent,
     DetailsQuotesComponent,
-    NoFoundComponent
+    NoFoundComponent,
   ],
   imports: [
     CommonModule,
@@ -19,7 +18,7 @@ import { NoFoundComponent } from './no-found/no-found.component';
   ],
   exports: [
     CheckStockComponent,
-    NoFoundComponent
+    NoFoundComponent,
   ]
 })
 export class ComponentsModule { }

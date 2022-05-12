@@ -15,8 +15,6 @@ export class InternalOrderService implements IDataService<InternalOrderItem[]> {
   public internalOrderList: InternalOrderItem[];
   internalOrderSubject = new Subject<InternalOrderItem[]>();
 
-  userID = JSON.parse(localStorage.getItem('farmaciasDO-session')).id;
-
   constructor(
     public http: HttpClient,
     public apiConfigService: ApiConfigService,
@@ -87,13 +85,13 @@ export class InternalOrderService implements IDataService<InternalOrderItem[]> {
 
   createInternalOrder(u: InternalOrderItem): Observable<any> {
     // const jsonParms = JSON.stringify(u);
-    u._user = this.userID;
+    u._user = JSON.parse(localStorage.getItem('farmaciasDO-session')).id;
     return this.http.post(this.apiConfigService.API_INTERNAL_ORDER, u);
   }
 
   updateInternalOrder(u: InternalOrderItem): Observable<any> {
     // const jsonParms = JSON.stringify(u);
-    u._user = this.userID;
+    u._user = JSON.parse(localStorage.getItem('farmaciasDO-session')).id;
     return this.http.put(this.apiConfigService.API_INTERNAL_ORDER + '/' + u._id, u);
   }
 

@@ -1,0 +1,41 @@
+.my-layout {
+    height: calc(100vh - 101px);
+    padding: 26px 0px 15px 0px;
+    background-color: #f2f2f2;
+}
+
+.my-layout-admin {
+    height: calc(100vh - 237px);
+    padding: 15px 0px 15px 0px;
+    background-color: #f2f2f2;
+}
+
+header {
+    padding: 15px;
+    background-color: #f2f2f2;
+}
+
+.cashFlow-layout {
+    height: calc(100vh - 323px);
+    width: 375px;
+    padding: 15px;
+    background-color: white;
+}
+
+mat-card {
+    border-radius: 10px;
+}
+
+table {
+    margin-bottom: 24px;
+    border-radius: 10px;
+}
+
+.mat-table-sticky {
+    background: #f6fbe6;
+    opacity: 1;
+}
+
+.warning {
+    color: brown !important;
+}
