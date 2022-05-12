@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-
 import { Store } from '@ngrx/store';
+
 import { Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
 
@@ -26,14 +26,12 @@ export class IndexComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.sessionSubscription = this.store.select('session').pipe(filter(session => session !== null)).subscribe(session => {
       if (session.permissions !== null) {
-        this.modules = session.permissions.filter(pr => pr.parent === 'accountsPayable');
+        this.modules = session.permissions.filter(pr => pr.parent === 'cash');
 
         const MODULE_TYPES = {
-          'accountsPyabaleProviders': () => this.router.navigate(['/admin/accountsPayable']),
-          'accountsPyabaleDocuments': () => this.router.navigate(['/admin/accountsPayable/documents']),
-          'accountsPyabaleChecks': () => this.router.navigate(['/admin/accountsPayable/cheques']),
-          'accountsPyabaleCheckDeliveries': () => this.router.navigate(['/admin/accountsPayable/checkDeliveries']),
-          'accountsPyabaleReports': () => this.router.navigate(['/admin/accountsPayable/reports']),
+          'cashAdmin': () => this.router.navigate(['/admin/cash']),
+          'cashIndependentBox': () => this.router.navigate(['/admin/cash/independentBox']),
+          'cashAccountingBox': () => this.router.navigate(['/admin/cash/accountingBox']),
         }
 
         if (this.modules.length > 0) {

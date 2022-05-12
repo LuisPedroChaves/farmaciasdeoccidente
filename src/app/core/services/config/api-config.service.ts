@@ -87,5 +87,11 @@ export class ApiConfigService {
   // check
   public API_CHECK = this.API_URL + '/check';
 
+  // cash
+  public API_CASH = this.API_URL + '/cash';
+
+  // cashFlow
+  public API_CASH_FLOW = this.API_URL + '/cashFlow';
+
   /* #endregion */
 }

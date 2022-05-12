@@ -129,6 +129,10 @@ const routes: Routes = [
         canActivate: [CheckTokenGuard]
       },
       {
+        path: 'cash', loadChildren: () => import('./pages/admin-modules/cash-boxes/cash-boxes.module').then(m => m.CashBoxesModule),
+        canActivate: [CheckTokenGuard]
+      },
+      {
         path: 'statements/:id/:return', pathMatch: 'full',  loadChildren: () => import('./pages/admin-modules/statements/statements.module').then(m => m.StatementsModule),
         canActivate: [CheckTokenGuard]
       },
