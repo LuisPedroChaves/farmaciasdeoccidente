@@ -1,0 +1,199 @@
+<header fxLayout="row wrap" fxLayoutAlign="center center" class="header">
+    <h2 style="margin: 0;" class="h2">Detalle de Lote No.: <strong>
+            {{loteExample.noLote}}
+        </strong>
+    </h2>
+    <span fxFlex></span>
+    <button mat-icon-button (click)="dialogRef.close()">
+        <mat-icon>close</mat-icon>
+    </button>
+</header>
+<div class="content">
+    <mat-divider></mat-divider>
+    <br><br>
+    <div fxFlex="100%" fxFlex.md="100%" fxFlex.sm="100%" fxFlex.xs="100%" *ngIf="!showMovements">
+        <div *ngIf="data.cellarType.type === 'BODEGA'" fxLayout="row wrap" class=" input-padding"
+            style="flex: 1 1 100%; box-sizing: border-box; max-width: 100%;">
+            <div fxFlex="50%" fxFlex.md="50%" fxFlex.sm="50%" fxFlex.xs="50%" fxLayoutAlign="end">
+                <strong>
+                    <h3 class=" text-muted ma-0 ">Fecha de Expiración:</h3>
+                </strong>
+            </div>
+            <div fxFlex="50%" fxFlex.md="50%" fxFlex.sm="50%" fxFlex.xs="50%">
+                <strong>
+                    <h3 class="input-padding">{{loteExample.expiration_date}}</h3>
+                </strong>
+            </div>
+            <div fxFlex="50%" fxFlex.md="50%" fxFlex.sm="50%" fxFlex.xs="50%" fxLayoutAlign="end">
+                <h3 class="text-muted ma-0 ">Costo de Lote:</h3>
+            </div>
+            <div fxFlex="50%" fxFlex.md="50%" fxFlex.sm="50%" fxFlex.xs="50%">
+                <h3 class="input-padding"> Q.{{loteExample.cost}}</h3>
+            </div>
+            <div fxFlex="50%" fxFlex.md="50%" fxFlex.sm="50%" fxFlex.xs="50%" fxLayoutAlign="end">
+                <h3 class="text-muted ma-0 ">Cantidad de Compra: </h3>
+            </div>
+            <div fxFlex="50%" fxFlex.md="50%" fxFlex.sm="50%" fxFlex.xs="50%">
+                <h3 class="input-padding">{{loteExample.quantity}} Unidades</h3>
+            </div>
+            <div fxFlex="50%" fxFlex.md="50%" fxFlex.sm="50%" fxFlex.xs="50%" fxLayoutAlign="end">
+                <h3 class="text-muted ma-0 ">Existencias de Lote: </h3>
+            </div>
+            <div fxFlex="50%" fxFlex.md="50%" fxFlex.sm="50%" fxFlex.xs="50%">
+                <h3 class="input-padding">{{loteExample.stock}} Unidades</h3>
+            </div>
+            <div fxFlex="15%" fxFlex.md="15%" fxFlex.sm="15%" fxFlex.xs="15%"></div>
+            <div fxFlex="70%" fxFlex.md="70%" fxFlex.sm="70%" fxFlex.xs="70%" fxLayoutAlign="end">
+                <button mat-menu-item (click)="dialogRef.close(true)" color="warn">
+                    <mat-icon class="material-icons-outlined">route</mat-icon> Ver Movimientos de Lote
+                </button>
+            </div>
+            <div fxFlex="15%" fxFlex.md="15%" fxFlex.sm="15%" fxFlex.xs="15%"></div>
+        </div>
+        <div *ngIf="data.cellarType.type === 'FARMACIA'" fxLayout="row wrap" class=" input-padding"
+            style="flex: 1 1 100%; box-sizing: border-box; max-width: 100%;">
+            <div fxFlex="50%" fxFlex.md="50%" fxFlex.sm="50%" fxFlex.xs="50%" fxLayoutAlign="end">
+                <strong>
+                    <h3 class=" text-muted ma-0 ">Fecha de Expiración:</h3>
+                </strong>
+            </div>
+            <div fxFlex="50%" fxFlex.md="50%" fxFlex.sm="50%" fxFlex.xs="50%">
+                <strong>
+                    <h3 class="input-padding">{{loteExample.expiration_date}}</h3>
+                </strong>
+            </div>
+            <div fxFlex="50%" fxFlex.md="50%" fxFlex.sm="50%" fxFlex.xs="50%" fxLayoutAlign="end">
+                <h3 class="text-muted ma-0 ">Existencias de Lote: </h3>
+            </div>
+            <div fxFlex="50%" fxFlex.md="50%" fxFlex.sm="50%" fxFlex.xs="50%">
+                <h3 class="input-padding">{{loteExample.stock}} Unidades</h3>
+            </div>
+
+        </div>
+    </div>
+
+    <div *ngIf="showMovements" fxFlex="100%" fxFlex.md="100%" fxFlex.sm="100%" fxFlex.xs="100%">
+        <div fxFlex="40%" fxFlex.md="40%" fxFlex.sm="40%" fxFlex.xs="40%">
+            <div *ngIf="data.cellarType.type === 'BODEGA'" fxLayout="row wrap" class=" input-padding"
+                style="flex: 1 1 100%; box-sizing: border-box; max-width: 100%;">
+                <div fxFlex="50%" fxFlex.md="50%" fxFlex.sm="50%" fxFlex.xs="50%" fxLayoutAlign="end">
+                    <strong>
+                        <h3 class=" text-muted ma-0 ">Fecha de Expiración:</h3>
+                    </strong>
+                </div>
+                <div fxFlex="50%" fxFlex.md="50%" fxFlex.sm="50%" fxFlex.xs="50%">
+                    <strong>
+                        <h3 class="input-padding">{{loteExample.expiration_date}}</h3>
+                    </strong>
+                </div>
+                <div fxFlex="50%" fxFlex.md="50%" fxFlex.sm="50%" fxFlex.xs="50%" fxLayoutAlign="end">
+                    <h3 class="text-muted ma-0 ">Costo de Lote:</h3>
+                </div>
+                <div fxFlex="50%" fxFlex.md="50%" fxFlex.sm="50%" fxFlex.xs="50%">
+                    <h3 class="input-padding"> Q.{{loteExample.cost}}</h3>
+                </div>
+                <div fxFlex="50%" fxFlex.md="50%" fxFlex.sm="50%" fxFlex.xs="50%" fxLayoutAlign="end">
+                    <h3 class="text-muted ma-0 ">Cantidad de Compra: </h3>
+                </div>
+                <div fxFlex="50%" fxFlex.md="50%" fxFlex.sm="50%" fxFlex.xs="50%">
+                    <h3 class="input-padding">{{loteExample.quantity}} Unidades</h3>
+                </div>
+                <div fxFlex="50%" fxFlex.md="50%" fxFlex.sm="50%" fxFlex.xs="50%" fxLayoutAlign="end">
+                    <h3 class="text-muted ma-0 ">Existencias de Lote: </h3>
+                </div>
+                <div fxFlex="50%" fxFlex.md="50%" fxFlex.sm="50%" fxFlex.xs="50%">
+                    <h3 class="input-padding">{{loteExample.stock}} Unidades</h3>
+                </div>
+            </div>
+            <div *ngIf="data.cellarType.type === 'FARMACIA'" fxLayout="row wrap" class=" input-padding"
+                style="flex: 1 1 100%; box-sizing: border-box; max-width: 100%;">
+                <div fxFlex="50%" fxFlex.md="50%" fxFlex.sm="50%" fxFlex.xs="50%" fxLayoutAlign="end">
+                    <strong>
+                        <h3 class=" text-muted ma-0 ">Fecha de Expiración:</h3>
+                    </strong>
+                </div>
+                <div fxFlex="50%" fxFlex.md="50%" fxFlex.sm="50%" fxFlex.xs="50%">
+                    <strong>
+                        <h3 class="input-padding">{{loteExample.expiration_date}}</h3>
+                    </strong>
+                </div>
+                <div fxFlex="50%" fxFlex.md="50%" fxFlex.sm="50%" fxFlex.xs="50%" fxLayoutAlign="end">
+                    <h3 class="text-muted ma-0 ">Existencias de Lote: </h3>
+                </div>
+                <div fxFlex="50%" fxFlex.md="50%" fxFlex.sm="50%" fxFlex.xs="50%">
+                    <h3 class="input-padding">{{loteExample.stock}} Unidades</h3>
+                </div>
+
+            </div>
+        </div>
+        <div fxFlex="60%" fxFlex.md="60%" fxFlex.sm="60%" fxFlex.xs="60%">
+            <div class="mat-elevation-z8" fxFlex="100%">
+                <table mat-table [dataSource]="dataMovements">
+                    <!-- Position lote -->
+                    <ng-container matColumnDef="lote">
+                        <th mat-header-cell *matHeaderCellDef> Lote </th>
+                        <td mat-cell *matCellDef="let element">
+                            {{element.lote}}
+                        </td>
+                    </ng-container>
+                    <!-- Weight source -->
+                    <ng-container matColumnDef="source">
+                        <th mat-header-cell *matHeaderCellDef> Origen </th>
+                        <td mat-cell *matCellDef="let element"> {{element.source}} </td>
+                    </ng-container>
+
+                    <!-- Symbol destiny -->
+                    <ng-container matColumnDef="destiny">
+                        <th mat-header-cell *matHeaderCellDef> Destino </th>
+                        <td mat-cell *matCellDef="let element"> {{element.destiny}} </td>
+                    </ng-container>
+                    <!-- Income -->
+                    <ng-container matColumnDef="income">
+                        <th mat-header-cell *matHeaderCellDef> Entrada </th>
+                        <td mat-cell *matCellDef="let element">
+                            <label *ngIf="element.action === 'IN'"> {{element.quantity}} </label>
+                            <label *ngIf="element.action !== 'IN'"> -- </label>
+                        </td>
+                    </ng-container>
+                    <!-- Outcome -->
+                    <ng-container matColumnDef="outcome">
+                        <th mat-header-cell *matHeaderCellDef> Salida </th>
+                        <td mat-cell *matCellDef="let element">
+                            <label *ngIf="element.action === 'OUT'"> {{element.quantity}} </label>
+                            <label *ngIf="element.action !== 'OUT'"> -- </label>
+                        </td>
+                    </ng-container>
+                    <!-- Name date -->
+                    <ng-container matColumnDef="residue">
+                        <th mat-header-cell *matHeaderCellDef> Saldo </th>
+                        <td mat-cell *matCellDef="let element"> {{element.residue}} </td>
+                    </ng-container>
+                    <!-- Name date -->
+                    <ng-container matColumnDef="date">
+                        <th mat-header-cell *matHeaderCellDef> Fecha </th>
+                        <td mat-cell *matCellDef="let element"> {{element.date}} </td>
+                    </ng-container>
+
+                    <tr mat-header-row *matHeaderRowDef="displayedColumnsActivity"></tr>
+                    <tr mat-row *matRowDef="let row; columns: displayedColumnsActivity;"></tr>
+                </table>
+
+                <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons
+                    aria-label="Seleccione una pagina de movimientos">
+                </mat-paginator>
+            </div>
+
+        </div>
+    </div>
+
+    <br>
+    <br>
+
+    <mat-divider></mat-divider>
+
+</div>
+<div fxLayout="row" class="header" flexlayout="center">
+    <button mat-button (click)="dialogRef.close()" class="info-row">
+        Cerrar
+    </button>
+</div>

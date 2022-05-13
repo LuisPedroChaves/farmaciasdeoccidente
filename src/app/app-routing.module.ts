@@ -15,8 +15,12 @@ const routes: Routes = [
     children: [
       // tslint:disable-next-line: max-line-length
       {
-        path: '', loadChildren: () => import('./pages/modules/dashboards/dashboards.module').then(m => m.DashboardsModule),
-        canActivate: [CheckTokenGuard]
+        path: '',
+        loadChildren: () =>
+          import('./pages/modules/dashboards/dashboards.module').then(
+            (m) => m.DashboardsModule
+          ),
+        canActivate: [CheckTokenGuard],
       },
       {
         path: 'quotes', loadChildren: () => import('./pages/modules/quotes/quotes.module').then(m => m.QuotesModule),
@@ -27,48 +31,99 @@ const routes: Routes = [
         canActivate: [CheckTokenGuard]
       },
       {
-        path: 'order/:id/:return', pathMatch: 'full',  loadChildren: () => import('./pages/modules/order/order.module').then(m => m.OrderModule),
-        canActivate: [CheckTokenGuard]
+        path: 'order/:id/:return',
+        pathMatch: 'full',
+        loadChildren: () =>
+          import('./pages/modules/order/order.module').then(
+            (m) => m.OrderModule
+          ),
+        canActivate: [CheckTokenGuard],
       },
       {
-        path: 'dispatches', pathMatch: 'full',  loadChildren: () => import('./pages/modules/dispatches/dispatches.module').then(m => m.DispatchesModule),
-        canActivate: [CheckTokenGuard]
+        path: 'dispatches',
+        pathMatch: 'full',
+        loadChildren: () =>
+          import('./pages/modules/dispatches/dispatches.module').then(
+            (m) => m.DispatchesModule
+          ),
+        canActivate: [CheckTokenGuard],
       },
       {
-        path: 'deliveries', loadChildren: () => import('./pages/modules/deliveries/deliveries.module').then(m => m.DeliveriesModule),
-        canActivate: [CheckTokenGuard]
+        path: 'deliveries',
+        loadChildren: () =>
+          import('./pages/modules/deliveries/deliveries.module').then(
+            (m) => m.DeliveriesModule
+          ),
+        canActivate: [CheckTokenGuard],
       },
       {
-        path: 'customersRoutes', pathMatch: 'full',  loadChildren: () => import('./pages/modules/customers-routes/customers-routes.module').then(m => m.CustomersRoutesModule),
-        canActivate: [CheckTokenGuard]
+        path: 'customersRoutes',
+        pathMatch: 'full',
+        loadChildren: () =>
+          import(
+            './pages/modules/customers-routes/customers-routes.module'
+          ).then((m) => m.CustomersRoutesModule),
+        canActivate: [CheckTokenGuard],
       },
       {
-        path: 'internalOrders',  loadChildren: () => import('./pages/modules/internal-orders/internal-orders.module').then(m => m.InternalOrdersModule),
-        canActivate: [CheckTokenGuard]
+        path: 'internalOrders',
+        loadChildren: () =>
+          import('./pages/modules/internal-orders/internal-orders.module').then(
+            (m) => m.InternalOrdersModule
+          ),
+        canActivate: [CheckTokenGuard],
       },
       {
-        path: 'transfers',  loadChildren: () => import('./pages/modules/transfers/transfers.module').then(m => m.TransfersModule),
-        canActivate: [CheckTokenGuard]
-      },// Aquí comienza Cuentas por cobrar
+        path: 'transfers',
+        loadChildren: () =>
+          import('./pages/modules/transfers/transfers.module').then(
+            (m) => m.TransfersModule
+          ),
+        canActivate: [CheckTokenGuard],
+      }, // Aquí comienza Cuentas por cobrar
       {
-        path: 'customers', pathMatch: 'full',  loadChildren: () => import('./pages/modules/customers/customers.module').then(m => m.CustomersModule),
-        canActivate: [CheckTokenGuard]
+        path: 'customers',
+        pathMatch: 'full',
+        loadChildren: () =>
+          import('./pages/modules/customers/customers.module').then(
+            (m) => m.CustomersModule
+          ),
+        canActivate: [CheckTokenGuard],
       },
       {
-        path: 'sales', pathMatch: 'full',  loadChildren: () => import('./pages/modules/sales/sales.module').then(m => m.SalesModule),
-        canActivate: [CheckTokenGuard]
+        path: 'sales',
+        pathMatch: 'full',
+        loadChildren: () =>
+          import('./pages/modules/sales/sales.module').then(
+            (m) => m.SalesModule
+          ),
+        canActivate: [CheckTokenGuard],
       },
       {
-        path: 'checkStock', pathMatch: 'full',  loadChildren: () => import('./pages/modules/check-stock/check-stock.module').then(m => m.CheckStockModule),
-        canActivate: [CheckTokenGuard]
+        path: 'checkStock',
+        pathMatch: 'full',
+        loadChildren: () =>
+          import('./pages/modules/check-stock/check-stock.module').then(
+            (m) => m.CheckStockModule
+          ),
+        canActivate: [CheckTokenGuard],
       },
       {
-        path: 'storage', pathMatch: 'full',  loadChildren: () => import('./pages/modules/storage/storage.module').then(m => m.StorageModule),
-        canActivate: [CheckTokenGuard]
+        path: 'storage',
+        loadChildren: () =>
+          import('./pages/modules/storage/storage.module').then(
+            (m) => m.StorageModule
+          ),
+        canActivate: [CheckTokenGuard],
       },
       {
-        path: 'tempStorage', pathMatch: 'full',  loadChildren: () => import('./pages/modules/temp-storage/temp-storage.module').then(m => m.TempStorageModule),
-        canActivate: [CheckTokenGuard]
+        path: 'tempStorage',
+        pathMatch: 'full',
+        loadChildren: () =>
+          import('./pages/modules/temp-storage/temp-storage.module').then(
+            (m) => m.TempStorageModule
+          ),
+        canActivate: [CheckTokenGuard],
       },
       {
         path: 'pharmaStatistics', pathMatch: 'full',  loadChildren: () => import('./pages/modules/statistics/statistics.module').then(m => m.StatisticsModule),
@@ -78,7 +133,7 @@ const routes: Routes = [
         path: 'purchases', loadChildren: () => import('./pages/modules/purchases/purchases.module').then(m => m.PurchasesModule),
         canActivate: [CheckTokenGuard]
       },
-    ]
+    ],
   },
   {
     path: 'admin',
@@ -87,42 +142,80 @@ const routes: Routes = [
     children: [
       {
         // tslint:disable-next-line: max-line-length
-        path: '', pathMatch: 'full', loadChildren: () => import('./pages/admin-modules/dashboard/dashboard.module').then(m => m.DashboardModule),
-        canActivate: [CheckTokenGuard]
+        path: '',
+        pathMatch: 'full',
+        loadChildren: () =>
+          import('./pages/admin-modules/dashboard/dashboard.module').then(
+            (m) => m.DashboardModule
+          ),
+        canActivate: [CheckTokenGuard],
       },
       {
         // tslint:disable-next-line: max-line-length
-        path: 'users', pathMatch: 'full', loadChildren: () => import('./pages/admin-modules/users/users.module').then(m => m.UsersModule),
-        canActivate: [CheckTokenGuard]
+        path: 'users',
+        pathMatch: 'full',
+        loadChildren: () =>
+          import('./pages/admin-modules/users/users.module').then(
+            (m) => m.UsersModule
+          ),
+        canActivate: [CheckTokenGuard],
       },
       {
-        path: 'reports', loadChildren: () => import('./pages/admin-modules/reports/reports.module').then(m => m.ReportsModule),
-        canActivate: [CheckTokenGuard]
+        path: 'reports',
+        loadChildren: () =>
+          import('./pages/admin-modules/reports/reports.module').then(
+            (m) => m.ReportsModule
+          ),
+        canActivate: [CheckTokenGuard],
       },
       {
-        path: 'adminProducts', loadChildren: () => import('./pages/admin-modules/products/products.module').then(m => m.ProductsModule),
-        canActivate: [CheckTokenGuard]
+        path: 'adminProducts',
+        loadChildren: () =>
+          import('./pages/admin-modules/products/products.module').then(
+            (m) => m.ProductsModule
+          ),
+        canActivate: [CheckTokenGuard],
       },
       {
-        path: 'adminDeliveries', loadChildren: () => import('./pages/admin-modules/deliveries/deliveries.module').then(m => m.DeliveriesModule),
-        canActivate: [CheckTokenGuard]
+        path: 'adminDeliveries',
+        loadChildren: () =>
+          import('./pages/admin-modules/deliveries/deliveries.module').then(
+            (m) => m.DeliveriesModule
+          ),
+        canActivate: [CheckTokenGuard],
       },
       {
-        path: 'adminOrders', pathMatch: 'full',  loadChildren: () => import('./pages/admin-modules/orders/orders.module').then(m => m.OrdersModule),
-        canActivate: [CheckTokenGuard]
+        path: 'adminOrders',
+        pathMatch: 'full',
+        loadChildren: () =>
+          import('./pages/admin-modules/orders/orders.module').then(
+            (m) => m.OrdersModule
+          ),
+        canActivate: [CheckTokenGuard],
       },
       {
-        path: 'order/:id/:return', pathMatch: 'full',  loadChildren: () => import('./pages/modules/order/order.module').then(m => m.OrderModule),
-        canActivate: [CheckTokenGuard]
+        path: 'order/:id/:return',
+        pathMatch: 'full',
+        loadChildren: () =>
+          import('./pages/modules/order/order.module').then(
+            (m) => m.OrderModule
+          ),
+        canActivate: [CheckTokenGuard],
       },
       // {
       //   // tslint:disable-next-line: max-line-length
-      //   path: 'employees', pathMatch: 'full', loadChildren: () => import('./pages/modules/employees/employees.module').then(m => m.EmployeesModule),
+      //   path: 'employees', pathMatch:
+      // 'full', loadChildren: () => import('./pages/modules/employees/employees.module').then(m => m.EmployeesModule),
       //   canActivate: [CheckTokenGuard]
       // },
       {
-        path: 'receivables', pathMatch: 'full',  loadChildren: () => import('./pages/admin-modules/receivables/receivables.module').then(m => m.ReceivablesModule),
-        canActivate: [CheckTokenGuard]
+        path: 'receivables',
+        pathMatch: 'full',
+        loadChildren: () =>
+          import('./pages/admin-modules/receivables/receivables.module').then(
+            (m) => m.ReceivablesModule
+          ),
+        canActivate: [CheckTokenGuard],
       },
       {
         path: 'accountsPayable', loadChildren: () => import('./pages/admin-modules/accounts-payable/accounts-payable.module').then(m => m.AccountsPayableModule),
@@ -145,20 +238,40 @@ const routes: Routes = [
         canActivate: [CheckTokenGuard]
       },
       {
-        path: 'uploads', pathMatch: 'full',  loadChildren: () => import('./pages/admin-modules/uploads/uploads.module').then(m => m.UploadsModule),
-        canActivate: [CheckTokenGuard]
+        path: 'uploads',
+        pathMatch: 'full',
+        loadChildren: () =>
+          import('./pages/admin-modules/uploads/uploads.module').then(
+            (m) => m.UploadsModule
+          ),
+        canActivate: [CheckTokenGuard],
       },
       {
-        path: 'statistics', pathMatch: 'full',  loadChildren: () => import('./pages/admin-modules/statistics/statistics.module').then(m => m.StatisticsModule),
-        canActivate: [CheckTokenGuard]
+        path: 'statistics',
+        pathMatch: 'full',
+        loadChildren: () =>
+          import('./pages/admin-modules/statistics/statistics.module').then(
+            (m) => m.StatisticsModule
+          ),
+        canActivate: [CheckTokenGuard],
       },
       {
-        path: 'tempStatistics', pathMatch: 'full',  loadChildren: () => import('./pages/admin-modules/temp-statistics/temp-statistics.module').then(m => m.TempStatisticsModule),
-        canActivate: [CheckTokenGuard]
+        path: 'tempStatistics',
+        pathMatch: 'full',
+        loadChildren: () =>
+          import(
+            './pages/admin-modules/temp-statistics/temp-statistics.module'
+          ).then((m) => m.TempStatisticsModule),
+        canActivate: [CheckTokenGuard],
       },
       {
-        path: 'adminCheckStock', pathMatch: 'full',  loadChildren: () => import('./pages/admin-modules/check-stock/check-stock.module').then(m => m.CheckStockModule),
-        canActivate: [CheckTokenGuard]
+        path: 'adminCheckStock',
+        pathMatch: 'full',
+        loadChildren: () =>
+          import('./pages/admin-modules/check-stock/check-stock.module').then(
+            (m) => m.CheckStockModule
+          ),
+        canActivate: [CheckTokenGuard],
       },
       {
         path: 'adminSellersReport', pathMatch: 'full',  loadChildren: () => import('./pages/admin-modules/seller-report/seller-report.module').then(m => m.SellerReportModule),
@@ -170,22 +283,27 @@ const routes: Routes = [
     path: '',
     component: AuthLayoutComponent,
     children: [
-      { path: 'session', loadChildren: () => import('./pages/modules/session/session.module').then(m => m.SessionModule) }
-    ]
+      {
+        path: 'session',
+        loadChildren: () =>
+          import('./pages/modules/session/session.module').then(
+            (m) => m.SessionModule
+          ),
+      },
+    ],
   },
   {
     path: '**',
-    redirectTo: 'session/not-found'
-  }
+    redirectTo: 'session/not-found',
+  },
 ];
 export const appRoutingProviders: any[] = [];
-export const routing: ModuleWithProviders<any> = RouterModule.forRoot(routes, { relativeLinkResolution: 'legacy' });
+export const routing: ModuleWithProviders<any> = RouterModule.forRoot(routes, {
+  relativeLinkResolution: 'legacy',
+});
 
 @NgModule({
-  imports: [
-    RouterModule.forRoot(routes, { relativeLinkResolution: 'legacy' })
-  ],
-  exports: [RouterModule]
+  imports: [RouterModule.forRoot(routes, { relativeLinkResolution: 'legacy' })],
+  exports: [RouterModule],
 })
-
-export class AppRoutingModule { }
+export class AppRoutingModule {}

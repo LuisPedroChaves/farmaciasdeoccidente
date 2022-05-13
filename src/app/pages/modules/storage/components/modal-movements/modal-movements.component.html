@@ -1,0 +1,30 @@
+<header fxLayout="row wrap" fxLayoutAlign="center center" class="header">
+    <h2 style="margin: 0;" class="h2">Historial de Movimientos</h2>
+    <span fxFlex></span>
+    <button mat-icon-button (click)="dialogRef.close()">
+        <mat-icon>close</mat-icon>
+    </button>
+</header>
+<mat-tab-group mat-align-tabs="center">
+    <mat-tab>
+        <ng-template mat-tab-label>
+            <mat-icon class="example-tab-icon">move_to_inbox</mat-icon>
+            Actividad
+        </ng-template>
+        <app-activity-inventory></app-activity-inventory>
+    </mat-tab>
+    <mat-tab>
+        <ng-template mat-tab-label>
+            <mat-icon class="example-tab-icon">move_to_inbox</mat-icon>
+            Entradas
+        </ng-template>
+        <app-kardex-income></app-kardex-income>
+    </mat-tab>
+    <mat-tab>
+        <ng-template mat-tab-label>
+            <mat-icon class="example-tab-icon">unarchive</mat-icon>
+            Salidas
+        </ng-template>
+        <app-kardex-output></app-kardex-output>
+    </mat-tab>
+</mat-tab-group>

@@ -11,8 +11,13 @@
     { "name": "customers", "label": "Catálogo de clientes", "parent": "PHARMA", "level": 1, "options": ["read", "update", "delete", "create"] },
     { "name": "checkStock", "label": "Consultar existencias", "parent": "PHARMA", "level": 1, "options": ["read", "update", "delete", "create"] },
     { "name": "tempStorage", "label": "Inventario", "parent": "PHARMA", "level": 1, "options": ["read", "update", "delete", "create"] },
+
+    { "name": "STORAGE", "label": "Inventario", "parent": "PHARMA", "level": 1, "options": ["read", "update", "delete", "create"] },
+    { "name": "storage", "label": "Inventario", "parent": "STORAGE", "level": 2, "options": ["read", "update", "delete", "create"] },
+    { "name": "storage/storageclosing", "label": "Cierre", "parent": "STORAGE", "level": 2, "options": ["read", "update", "delete", "create"] },
+    { "name": "storage/storagehistory", "label": "Historial", "parent": "STORAGE", "level": 2, "options": ["read", "update", "delete", "create"] },
+
     { "name": "pharmaStatistics", "label": "Estadísticas", "parent": "PHARMA", "level": 1, "options": ["read", "update", "delete", "create"] },
-    { "name": "storage", "label": "Inventario", "parent": "PHARMA", "level": 1, "options": ["read", "update", "delete", "create"] },
     { "name": "purchases", "label": "Compras", "parent": "PHARMA", "level": 1, "options": ["read", "update", "delete", "create"] },
 
     { "name": "/admin", "label": "Sucursales", "parent": "ADMIN", "level": 1, "options": ["read", "update", "delete", "create"] },
