@@ -92,7 +92,7 @@ export class InternalOrderService implements IDataService<InternalOrderItem[]> {
 
   createInternalOrderNew(u: any): Observable<any> {
     // const jsonParms = JSON.stringify(u);
-    u._user = this.userID;
+    u._user = JSON.parse(localStorage.getItem('farmaciasDO-session')).id;
     return this.http.post(this.apiConfigService.API_INTERNAL_ORDER, u);
   }
 
