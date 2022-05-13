@@ -1,0 +1,17 @@
+<div class="section-content farmacia" data-simplebar>
+    <div>
+        <header class="module-header padding-15" fxLayoutAlign="start center" fxLayout="row wrap">
+            <h4 class="product-font ma-0 module-title">Reportes</h4> &nbsp;&nbsp;&nbsp;&nbsp;
+            <h2 class="title1 product-font ma-0">Productos más vendidos y los menos vendidos</h2>
+        </header>
+        <mat-divider></mat-divider>
+        <mat-tab-group mat-align-tabs="center">
+            <mat-tab label="Productos más vendidos">
+                <app-best-sellers></app-best-sellers>
+            </mat-tab>
+            <mat-tab label="Productos menos vendidos">
+                <app-worst-sellers></app-worst-sellers>
+            </mat-tab>
+        </mat-tab-group>
+    </div>
+</div>

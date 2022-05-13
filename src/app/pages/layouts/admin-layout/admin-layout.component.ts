@@ -81,6 +81,7 @@ export class AdminLayoutComponent implements OnInit, OnDestroy {
       this.menuService.initMenu()
     ]).subscribe(data => {
       this.myrole = data[0].role.permissions;
+      this.store.dispatch(actions.setMyRole({ myroles: this.myrole }));
       this.calculateMenu(data[1], this.myrole);
     });
 

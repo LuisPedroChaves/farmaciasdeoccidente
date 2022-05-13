@@ -1,0 +1,23 @@
+<form [formGroup]="form" autocomplete="off">
+    <div fxLayout="column">
+        <mat-form-field fxFill appearance="outline" color="accent">
+            <mat-label>Descripción</mat-label>
+            <input formControlName="details" type="text" matInput placeholder="Descripción del movimiento">
+        </mat-form-field>
+        <mat-form-field fxFill *ngIf="typeNew === 'Ingreso'" appearance="outline" color="accent">
+            <mat-label>Monto</mat-label>
+            <span matPrefix>Q &nbsp;</span>
+            <input matInput formControlName="income" type="number" placeholder="0">
+        </mat-form-field>
+        <mat-form-field fxFill *ngIf="typeNew === 'Egreso'" appearance="outline" color="accent">
+            <mat-label>Monto</mat-label>
+            <span matPrefix>Q &nbsp;</span>
+            <input matInput formControlName="expense" type="number" placeholder="0">
+        </mat-form-field>
+        <div fxLayout="row" fxLayoutAlign="space-between center">
+            <button mat-button (click)="close.emit()">Cancelar</button>
+            <button mat-raised-button (click)="save()" color="warn" [disabled]="loading || form.invalid">Guardar</button>
+        </div>
+        <mat-progress-bar *ngIf="loading" mode="indeterminate" color="warn"></mat-progress-bar>
+    </div>
+</form>

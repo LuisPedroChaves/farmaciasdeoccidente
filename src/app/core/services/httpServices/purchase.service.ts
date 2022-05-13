@@ -17,8 +17,6 @@ export class PurchaseService implements IDataService<PurchaseItem[]> {
   public purchaseList: PurchaseItem[];
   purchaseSubject = new Subject<PurchaseItem[]>();
 
-  userID = JSON.parse(localStorage.getItem('farmaciasDO-session')).id;
-
   constructor(
     private http: HttpClient,
     public apiConfigService: ApiConfigService,
@@ -89,12 +87,12 @@ export class PurchaseService implements IDataService<PurchaseItem[]> {
 
   createPurchase(body: PurchaseItem): Observable<any> {
     // const jsonParms = JSON.stringify(u);
-    body._user = this.userID;
+    body._user = JSON.parse(localStorage.getItem('farmaciasDO-session')).id;
     return this.http.post(this.apiConfigService.API_PURCHASE, body);
   }
 
   statePurchase(body: PurchaseItem): Observable<any> {
-    body._lastUpdate = this.userID;
+    body._lastUpdate = JSON.parse(localStorage.getItem('farmaciasDO-session')).id;
     return this.http.put(this.apiConfigService.API_PURCHASE + '/state/' + body._id, body);
   }
 
@@ -103,7 +101,7 @@ export class PurchaseService implements IDataService<PurchaseItem[]> {
   }
 
   deletePurchase(body: PurchaseItem): Observable<any> {
-    body._userDeleted = this.userID;
+    body._userDeleted = JSON.parse(localStorage.getItem('farmaciasDO-session')).id;
     return this.http.put(this.apiConfigService.API_PURCHASE + '/delete/' + body._id, body);
   }
 }

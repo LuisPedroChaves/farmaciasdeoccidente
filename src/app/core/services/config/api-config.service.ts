@@ -65,11 +65,33 @@ export class ApiConfigService {
   // Purchase
   public API_PURCHASE = this.API_URL + '/purchase';
 
-    // tempStorage
-    public API_TEMP_STORAGE = this.API_URL + '/tempStorage';
+  // tempStorage
+  public API_TEMP_STORAGE = this.API_URL + '/tempStorage';
 
-    // tempSale
-    public API_TEMP_SALE = this.API_URL + '/tempSale';
+  // tempSale
+  public API_TEMP_SALE = this.API_URL + '/tempSale';
+
+  // Report Best and Worst Sellers
+  public API_BEST_SELLERS = this.API_URL + '/tempSale/bestSellers';
+  public API_WORST_SELLERS = this.API_URL + '/tempSale/worstSellers';
+
+  // AutoStatistic
+  public API_AUTO_STATISTIC = this.API_URL + '/autoStatistic';
+
+  // accountsPayable
+  public API_ACCOUNTS_PAYABLE = this.API_URL + '/accountsPayable';
+
+  // expense
+  public API_EXPENSE = this.API_URL + '/expense';
+
+  // check
+  public API_CHECK = this.API_URL + '/check';
+
+  // cash
+  public API_CASH = this.API_URL + '/cash';
+
+  // cashFlow
+  public API_CASH_FLOW = this.API_URL + '/cashFlow';
 
   /* #endregion */
 }

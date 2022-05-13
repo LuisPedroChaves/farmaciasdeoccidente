@@ -5,18 +5,17 @@ import {
   ViewChild,
   ElementRef,
 } from '@angular/core';
-import { AfterContentInit, OnDestroy } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { FormControl } from '@angular/forms';
 
-import { fromEvent, Observable, Subscription } from 'rxjs';
+import { fromEvent } from 'rxjs';
 import {
   debounceTime,
   distinctUntilChanged,
-  map,
+  pairwise,
   startWith,
   tap,
 } from 'rxjs/operators';
@@ -25,11 +24,11 @@ import { ToastyService } from 'src/app/core/services/internal/toasty.service';
 import { AppState } from 'src/app/core/store/app.reducer';
 import { BrandItem } from 'src/app/core/models/Brand';
 import { TempStorageService } from 'src/app/core/services/httpServices/temp-storage.service';
+import { TimeFormatPipe } from 'src/app/core/shared/pipes/timePipes/time-format.pipe';
+import { TempStorageItem } from 'src/app/core/models/TempStorage';
 import { tempStorageDataSource } from '../../../../../core/services/cdks/tempStorages.datasource';
 import { CellarItem } from '../../../../../core/models/Cellar';
-import { BrandService } from 'src/app/core/services/httpServices/brand.service';
 import { XlsxService } from '../../../../../core/services/internal/XlsxService.service';
-import { TimeFormatPipe } from 'src/app/core/shared/pipes/timePipes/time-format.pipe';
 
 @Component({
   selector: 'app-temp-storage',
@@ -37,13 +36,17 @@ import { TimeFormatPipe } from 'src/app/core/shared/pipes/timePipes/time-format.
   styleUrls: ['./temp-storage.component.scss'],
 })
 export class TempStorageComponent
-  implements OnInit, AfterViewInit, AfterContentInit, OnDestroy {
+  implements OnInit, AfterViewInit {
   smallScreen = window.innerWidth < 960 ? true : false;
-  currentCellar: CellarItem;
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild('search') search: ElementRef<HTMLInputElement>;
 
+  currentCellar: CellarItem;
+  brand: BrandItem;
+  type = new FormControl('all');
+
+  tempData: TempStorageItem[] = [];
   dataSource: tempStorageDataSource;
   columns = [
     'barcode',
@@ -61,18 +64,12 @@ export class TempStorageComponent
   ];
   currentPage = 0;
 
-  brandsSubscription: Subscription;
-  brands: BrandItem[];
-  filteredBrands: Observable<BrandItem[]>;
-  brand = new FormControl();
-
   constructor(
     public store: Store<AppState>,
     public tempStorageService: TempStorageService,
     public toasty: ToastyService,
     public router: Router,
     public dialog: MatDialog,
-    public brandService: BrandService,
     public xlsxService: XlsxService,
     public timeFormat: TimeFormatPipe,
   ) { }
@@ -89,15 +86,37 @@ export class TempStorageComponent
       ''
     );
 
-    this.brandsSubscription = this.brandService.readData().subscribe((data) => {
-      this.brands = data;
-      // this.options = [...this.brands];
-    });
-    this.filteredBrands = this.brand.valueChanges.pipe(
-      startWith(''),
-      map((value) => this._filterBrands(value))
-    );
-    console.log(this.dataSource);
+    // Escuchamos el filtro de tipo para filtar el dataSource con los valores seleccionados PEDIDOS SUGERIDOS | DEVOLUCIONES
+    // PIPE'S
+    // startWith: Cuando se inicia el componente el valor de PREV no existe entonces lo seteamos como un NULL de tipo string
+    // pairwise: Agrupa el valor actual y el valor anterior como un array, y lo emite.
+    this.type.valueChanges.pipe(startWith(null as string), pairwise()).subscribe(([prev, value]) => {
+
+      const TYPE_OPTIONS = {
+        'all': () => this.dataSource.tempStorageSubject.next(this.tempData),
+        'requests': () => {
+          if (!prev || prev === 'all') {
+            // Si anteroirmente estaba cargada toda la data entonces la asignamos a tempData antes de filtrarlos para no perder todos los datos
+            this.tempData = this.dataSource.tempStorageSubject.value;
+            this.dataSource.tempStorageSubject.next(this.tempData.filter(t => t.supply > 0))
+          }else {
+            // Solo filtramos los datos previamente asignados a tempData
+            this.dataSource.tempStorageSubject.next(this.tempData.filter(t => t.supply > 0))
+          }
+        },
+        'returns': () =>{
+          if (!prev || prev === 'all') {
+            // Si anteroirmente estaba cargada toda la data entonces la asignamos a tempData antes de filtrarlos para no perder todos los datos
+            this.tempData = this.dataSource.tempStorageSubject.value;
+            this.dataSource.tempStorageSubject.next(this.tempData.filter(t => t.stock > t.maxStock))
+          }else {
+            // Solo filtramos los datos previamente asignados a tempData
+            this.dataSource.tempStorageSubject.next(this.tempData.filter(t => t.stock > t.maxStock))
+          }
+        }
+      }
+      TYPE_OPTIONS[value]();
+    })
   }
 
   ngAfterViewInit(): void {
@@ -116,16 +135,14 @@ export class TempStorageComponent
     this.paginator.page.pipe(tap(() => this.loadTempStorages())).subscribe();
   }
 
-  ngAfterContentInit(): void {
-    this.brandService.loadData();
+  getBrand(brand: BrandItem) {
+    this.brand = brand;
+    this.loadTempStorages();
   }
 
-  ngOnDestroy(): void {
-    this.brandsSubscription?.unsubscribe();
-  }
 
   loadTempStorages(): void {
-    const BRAND = this.brand.value ? this.brand.value._id : '';
+    const BRAND = this.brand ? this.brand._id : '';
 
     this.dataSource.loadTempStorage(
       this.currentCellar._id,
@@ -138,22 +155,6 @@ export class TempStorageComponent
 
   getShowName(brand: BrandItem): string {
     return brand ? brand.name : '';
-  }
-
-  private _filterBrands(value: string): BrandItem[] {
-    if (value && typeof value === 'string') {
-      const filterValue = value.toLowerCase();
-      return this.brands.filter((option) =>
-        option.name.toLowerCase().includes(filterValue)
-      );
-    } else {
-      return [];
-    }
-  }
-
-  clearBrand(): void {
-    this.brand.setValue('');
-    this.loadTempStorages();
   }
 
   downloadTempStorageXlsx(): void {

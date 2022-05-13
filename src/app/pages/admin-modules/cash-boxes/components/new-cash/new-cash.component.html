@@ -1,0 +1,26 @@
+<form [formGroup]="form" autocomplete="off">
+    <div fxLayout="column">
+        <app-inputUser (send)="getUser($event)"></app-inputUser>
+        <mat-form-field fxFill appearance="outline" color="accent">
+            <mat-label>Tipo de caja</mat-label>
+            <mat-select formControlName="type" name="type">
+                <mat-option value="INDEPENDIENTE">
+                    Independiente
+                </mat-option>
+                <mat-option value="CONTABLE">
+                    Contable
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+        <mat-form-field fxFill appearance="outline" color="accent">
+            <mat-label>Saldo inicial</mat-label>
+            <span matPrefix>Q &nbsp;</span>
+            <input matInput formControlName="balance" type="number" placeholder="0">
+        </mat-form-field>
+        <div fxLayout="row" fxLayoutAlign="space-between center">
+            <button mat-button (click)="close.emit()">Cancelar</button>
+            <button mat-raised-button (click)="save()" color="warn" [disabled]="loading || form.invalid">Guardar</button>
+        </div>
+        <mat-progress-bar *ngIf="loading" mode="indeterminate" color="warn"></mat-progress-bar>
+    </div>
+</form>

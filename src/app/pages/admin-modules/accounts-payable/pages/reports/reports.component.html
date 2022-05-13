@@ -1,0 +1,11 @@
+<div class="my-layout">
+    <app-no-found *ngIf="permissions && !permissions.includes('read')" text="Acceso Denegado" subtitle="Actualmente no cuenta con permisos para acceder a este apartado"></app-no-found>
+    <mat-tab-group mat-align-tabs="center" *ngIf="permissions && permissions.includes('read')">
+        <mat-tab label="Proveedores">
+            <app-report-provider></app-report-provider>
+        </mat-tab>
+        <mat-tab label="Gastos">
+            <app-report-global-expense></app-report-global-expense>
+        </mat-tab>
+    </mat-tab-group>
+</div>

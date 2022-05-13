@@ -1,0 +1,21 @@
+<form [formGroup]="brandForm" autocomplete="off">
+    <div fxLayout="column" fxLayoutAlign="center center" class="my-container">
+        <div fxFill fxLayout="row" fxLayoutAlign="start center" class="header">
+            <button mat-icon-button (click)="close.emit()">
+                <mat-icon>close</mat-icon>
+            </button>
+            <h2 class="ma-0">{{brandForm.get('_id').value ? 'Editar' : 'Nuevo' }} Laboratorio</h2>
+        </div>
+        <mat-form-field fxFill appearance="outline" color="primary">
+            <mat-label>Nombre</mat-label>
+            <input type="text" matInput formControlName="name" placeholder="Ingrese un laboratorio">
+        </mat-form-field>
+        <div fxFill fxLayout="row" fxLayoutGap="10px">
+            <button mat-stroked-button *ngIf="brandForm.get('_id').value" (click)="remove(brandForm.value)" class="my-button" style="color: brown;">Eliminar</button>
+            <span fxFlex></span>
+            <button mat-stroked-button (click)="close.emit()">Cancelar</button>
+            <button mat-flat-button color="warn" (click)="newBrand()" [disabled]="brandForm.invalid || loading">Guardar</button>
+        </div>
+        <mat-progress-bar *ngIf="loading" mode="indeterminate" color="warn"></mat-progress-bar>
+    </div>
+</form>

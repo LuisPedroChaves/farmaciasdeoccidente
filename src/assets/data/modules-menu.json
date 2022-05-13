@@ -1,10 +1,18 @@
 [{
+        "state": "quotes",
+        "name": "Cotizaciones",
+        "type": "link",
+        "icon": "request_quote",
+        "iconType": "icon",
+        "order": 1
+    },
+    {
         "state": "ORDER",
         "name": "Ordenes",
         "type": "sub",
         "icon": "receipt_long",
         "iconType": "icon",
-        "order": 1
+        "order": 2
     },
     {
         "state": "orders",
@@ -36,7 +44,7 @@
         "type": "link",
         "icon": "person_pin_circle",
         "iconType": "icon",
-        "order": 2
+        "order": 3
     },
     {
         "state": "internalOrders",
@@ -44,7 +52,7 @@
         "type": "link",
         "icon": "send",
         "iconType": "icon",
-        "order": 3
+        "order": 4
     },
     {
         "state": "ordersInternal",
@@ -60,7 +68,7 @@
         "type": "link",
         "icon": "moped",
         "iconType": "icon",
-        "order": 4
+        "order": 5
     },
     {
         "state": "sales",
@@ -68,7 +76,7 @@
         "type": "link",
         "icon": "point_of_sale",
         "iconType": "icon",
-        "order": 5
+        "order": 6
     },
     {
         "state": "customers",
@@ -76,7 +84,7 @@
         "type": "link",
         "icon": "person_search",
         "iconType": "icon",
-        "order": 6
+        "order": 7
     },
     {
         "state": "checkStock",
@@ -84,7 +92,7 @@
         "type": "link",
         "icon": "checklist",
         "iconType": "icon",
-        "order": 7
+        "order": 8
     },
     {
         "state": "tempStorage",
@@ -92,7 +100,15 @@
         "type": "link",
         "icon": "inventory",
         "iconType": "icon",
-        "order": 8
+        "order": 9
+    },
+    {
+        "state": "pharmaStatistics",
+        "name": "Estadísticas",
+        "type": "link",
+        "icon": "trending_up",
+        "iconType": "icon",
+        "order": 10
     },
     {
         "state": "storage",
@@ -100,7 +116,7 @@
         "type": "link",
         "icon": "inventory",
         "iconType": "icon",
-        "order": 9
+        "order": 11
     },
     {
         "state": "purchases",
@@ -108,7 +124,7 @@
         "type": "link",
         "icon": "shopping_basket",
         "iconType": "icon",
-        "order": 10
+        "order": 12
     },
     {
         "state": "/admin",
@@ -119,12 +135,20 @@
         "order": 1
     },
     {
+        "state": "adminCheckStock",
+        "name": "Consultar existencias",
+        "type": "link",
+        "icon": "checklist",
+        "iconType": "icon",
+        "order": 2
+    },
+    {
         "state": "adminDeliveries",
         "name": "Rutas y entregas",
         "type": "link",
         "icon": "electric_moped",
         "iconType": "icon",
-        "order": 2
+        "order": 3
     },
     {
         "state": "adminOrders",
@@ -132,7 +156,7 @@
         "type": "link",
         "icon": "receipt_long",
         "iconType": "icon",
-        "order": 3
+        "order": 4
     },
     {
         "state": "receivables",
@@ -140,7 +164,23 @@
         "type": "link",
         "icon": "request_quote",
         "iconType": "icon",
-        "order": 4
+        "order": 5
+    },
+    {
+        "state": "accountsPayable",
+        "name": "Cuentas por pagar",
+        "type": "link",
+        "icon": "credit_score",
+        "iconType": "icon",
+        "order": 6
+    },
+    {
+        "state": "cash",
+        "name": "Cajas",
+        "type": "link",
+        "icon": "point_of_sale",
+        "iconType": "icon",
+        "order": 7
     },
     {
         "state": "uploads",
@@ -148,7 +188,7 @@
         "type": "link",
         "icon": "upload_file",
         "iconType": "icon",
-        "order": 5
+        "order": 8
     },
     {
         "state": "statistics",
@@ -156,7 +196,7 @@
         "type": "link",
         "icon": "trending_up",
         "iconType": "icon",
-        "order": 6
+        "order": 9
     },
     {
         "state": "tempStatistics",
@@ -164,7 +204,15 @@
         "type": "link",
         "icon": "trending_up",
         "iconType": "icon",
-        "order": 7
+        "order": 10
+    },
+    {
+        "state": "adminSellersReport",
+        "name": "Reporte de Ventas",
+        "type": "link",
+        "icon": "sell",
+        "iconType": "icon",
+        "order": 11
     },
     {
         "state": "adminProducts",
@@ -172,7 +220,15 @@
         "type": "link",
         "icon": "category",
         "iconType": "icon",
-        "order": 8
+        "order": 12
+    },
+    {
+        "state": "brands",
+        "name": "Laboratorios",
+        "type": "link",
+        "icon": "science",
+        "iconType": "icon",
+        "order": 13
     },
     {
         "state": "providers",
@@ -180,7 +236,7 @@
         "type": "link",
         "icon": "business",
         "iconType": "icon",
-        "order": 9
+        "order": 14
     },
     {
         "state": "users",
@@ -188,6 +244,6 @@
         "type": "link",
         "icon": "people",
         "iconType": "icon",
-        "order": 10
+        "order": 15
     }
 ]

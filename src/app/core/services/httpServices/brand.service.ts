@@ -51,4 +51,16 @@ export class BrandService implements IDataService<BrandItem[]> {
       delete this.brandList;
     }
   }
+
+  create(brand: BrandItem): Observable<any> {
+    return this.http.post(this.apiConfigService.API_BRAND, brand);
+  }
+
+  update(brand: BrandItem): Observable<any> {
+    return this.http.put(this.apiConfigService.API_BRAND + '/' + brand._id, brand);
+  }
+
+  delete(brand: BrandItem): Observable<any> {
+    return this.http.delete(this.apiConfigService.API_BRAND + '/' + brand._id);
+  }
 }

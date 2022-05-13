@@ -26,6 +26,9 @@
     "@ngrx/effects": "^10.1.2",
     "@ngrx/store": "^10.1.2",
     "@ngrx/store-devtools": "^10.1.2",
+    "@ngx-loading-bar/core": "^5.1.2",
+    "@ngx-loading-bar/http-client": "^5.1.2",
+    "@ngx-loading-bar/router": "^5.1.2",
     "@types/socket.io-client": "^1.4.36",
     "moment": "^2.29.1",
     "moment-timezone": "^0.5.33",
@@ -39,7 +42,7 @@
     "simplebar-angular": "^2.3.0",
     "socket.io-client": "^4.0.0",
     "tslib": "^2.0.0",
-    "xlsx": "^0.17.4",
+    "xlsx": "^0.17.5",
     "zone.js": "~0.10.2"
   },
   "devDependencies": {

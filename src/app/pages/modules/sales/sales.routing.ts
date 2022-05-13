@@ -1,7 +1,7 @@
 import { Routes } from '@angular/router';
-import { SalesComponent } from './components/sales/sales.component';
+import { IndexComponent } from './pages/index/index.component';
 
 export const SalesRoutes: Routes = [{
     path: '',
-    component: SalesComponent
+    component: IndexComponent
 }];

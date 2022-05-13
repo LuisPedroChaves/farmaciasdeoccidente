@@ -1,0 +1,40 @@
+<ngx-simplebar class="my-layout">
+    <header fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="10px">
+        <h2 class="module-title product-font ma-0">Cuentas por pagar</h2>
+        <span fxFlex></span>
+        <mat-chip-list>
+            <mat-chip *ngIf="searchModule('accountsPyabaleProviders')" [routerLink]="['/admin/accountsPayable']" [selected]="router.url === '/admin/accountsPayable'" color="primary" matTooltip="Cuentas por pagar">
+                <mat-chip-avatar>
+                    <mat-icon>business</mat-icon>
+                </mat-chip-avatar>
+                Proveedores
+            </mat-chip>
+            <mat-chip *ngIf="searchModule('accountsPyabaleDocuments')" [routerLink]="['/admin/accountsPayable/documents']" [selected]="router.url === '/admin/accountsPayable/documents'" color="primary" matTooltip="Todos los documentos">
+                <mat-chip-avatar>
+                    <mat-icon>receipt</mat-icon>
+                </mat-chip-avatar>
+                Documentos
+            </mat-chip>
+            <mat-chip *ngIf="searchModule('accountsPyabaleChecks')" [routerLink]="['/admin/accountsPayable/cheques']" [selected]="router.url === '/admin/accountsPayable/cheques'" color="primary">
+                <mat-chip-avatar>
+                    <mat-icon>local_atm</mat-icon>
+                </mat-chip-avatar>
+                Cheques
+            </mat-chip>
+            <mat-chip *ngIf="searchModule('accountsPyabaleCheckDeliveries')" [routerLink]="['/admin/accountsPayable/checkDeliveries']" [selected]="router.url === '/admin/accountsPayable/checkDeliveries'" color="primary">
+                <mat-chip-avatar>
+                    <mat-icon>local_atm</mat-icon>
+                </mat-chip-avatar>
+                Entregas
+            </mat-chip>
+            <mat-chip *ngIf="searchModule('accountsPyabaleReports')" [routerLink]="['/admin/accountsPayable/reports']" [selected]="router.url === '/admin/accountsPayable/reports'" color="primary" matTooltip="Reportes Generales">
+                <mat-chip-avatar>
+                    <mat-icon>description</mat-icon>
+                </mat-chip-avatar>
+                Reportes
+            </mat-chip>
+        </mat-chip-list>
+    </header>
+    <app-no-found *ngIf="modules && modules.length === 0" text="Permiso denegado" subtitle="Actualmente no cuenta con permisos para acceder a este apartado"></app-no-found>
+    <router-outlet *ngIf="modules && modules.length > 0"></router-outlet>
+</ngx-simplebar>

@@ -1,0 +1,197 @@
+<mat-horizontal-stepper #stepper>
+    <mat-step [stepControl]="form1" errorMessage="Complete los campos.">
+        <ng-template matStepLabel>Programar configuración</ng-template>
+        <div fxLayout="row" fxLayoutAlign="center start" class="my-step">
+            <form [formGroup]="form1">
+                <mat-card class="my-card-1 mat-elevation-z4">
+                    <mat-card-header>
+                        <mat-icon matCardAvatar color="primary">schedule</mat-icon>
+                        <mat-card-title>Programar configuración automática</mat-card-title>
+                        <mat-card-subtitle>Se creará una nueva configuración para cargas automáticas de estadísticas
+                        </mat-card-subtitle>
+                    </mat-card-header>
+                    <mat-card-content>
+                        <div fxLayout="column">
+                            <mat-form-field appearance="outline">
+                                <mat-label>Nombre</mat-label>
+                                <input matInput placeholder="Ingrese el nombre de la configuración" formControlName="name" required>
+                            </mat-form-field>
+                            <div fxLayout="row" fxLayoutGap="10px">
+                                <mat-form-field fxFlex appearance="outline">
+                                    <mat-label>Hora</mat-label>
+                                    <mat-select formControlName="hour" name="hour">
+                                        <mat-option *ngFor="let hour of hours" [value]="hour">
+                                            {{hour}}
+                                        </mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                                <mat-form-field fxFlex appearance="outline">
+                                    <mat-label>Minutos</mat-label>
+                                    <mat-select formControlName="minute" name="minute">
+                                        <mat-option *ngFor="let minute of minutes" [value]="minute">
+                                            {{minute}}
+                                        </mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                            </div>
+                            <div fxLayoutAlign="end center">
+                                <mat-checkbox [(ngModel)]="selectedAll" [ngModelOptions]="{standalone: true}" (click)="selectAllCellars()">Seleccionar todas</mat-checkbox>
+                            </div>
+                            <mat-form-field appearance="outline" color="primary">
+                                <mat-label>Farmacias</mat-label>
+                                <mat-select formControlName="cellars" multiple>
+                                    <mat-option *ngFor="let cellar of cellars" [value]="cellar._id">{{cellar.name}}</mat-option>
+                                </mat-select>
+                                <mat-hint>Seleccione todas las farmacias donde se aplicarán los cambios de la configuración</mat-hint>
+                            </mat-form-field>
+                        </div>
+                    </mat-card-content>
+                    <mat-card-actions>
+                        <button mat-button matStepperNext>Siguiente</button>
+                    </mat-card-actions>
+                </mat-card>
+            </form>
+        </div>
+    </mat-step>
+    <mat-step>
+        <ng-template matStepLabel>Laboratorios</ng-template>
+        <div fxLayout="column" class="my-step">
+            <div fxLayout="row">
+                <div fxFlex>
+                    <mat-card class="my-card-2 mat-elevation-z0">
+                        <mat-card-header>
+                            <mat-card-title>Laboratorios</mat-card-title>
+                        </mat-card-header>
+                        <mat-card-content class="my-content">
+                            <div fxLayout="row">
+                                <app-filter placeholder="Ej. Mediproducts" (send)="applyFilter($event)"></app-filter>
+                                <span fxFlex></span>
+                                <button mat-mini-fab (click)="selectAll()" matTooltip="Agregar todos">
+                <mat-icon>done_all</mat-icon>
+              </button>
+                            </div>
+                            <ngx-simplebar class="list">
+                                <div fxLayout="row wrap" fxLayoutGap="10px grid">
+                                    <div fxFlex.gt-lg="33" fxFlex.lg="33" fxFlex.md="50" fxFlex.sm="100" fxFlex.lt-sm="100" *ngFor="let brand of brandsPage">
+                                        <mat-card matRipple (click)="selectBrand(brand)" [ngClass]="{inactive: brand.selected}" class="brand-card cursor-pointer mat-elevation-z2">
+                                            <mat-card-header>
+                                                <mat-icon *ngIf="!brand.selected" mat-card-avatar color="accent">science</mat-icon>
+                                                <mat-icon *ngIf="brand.selected" mat-card-avatar color="warn">check</mat-icon>
+                                                <mat-card-title>
+                                                    {{ brand.code}}
+                                                </mat-card-title>
+                                            </mat-card-header>
+                                            <mat-card-content>
+                                                {{brand.name}}
+                                            </mat-card-content>
+                                        </mat-card>
+                                    </div>
+                                </div>
+                            </ngx-simplebar>
+                        </mat-card-content>
+                        <mat-card-footer>
+                            <span fxFlex></span>
+                            <mat-paginator #paginator1 (page)="onPageChange($event)" [length]="brands?.length" [pageSize]="24" [pageSizeOptions]="[12, 24, 64, 124]">
+                            </mat-paginator>
+                        </mat-card-footer>
+                    </mat-card>
+                </div>
+                <div fxFlex>
+                    <mat-card class="my-card-3 mat-elevation-z0">
+                        <mat-card-header>
+                            <mat-card-title>Seleccionados
+                                <button mat-button matStepperPrevious>Volver</button>
+                                <button mat-button matStepperNext (click)="checkBrands()">Siguiente</button>
+                            </mat-card-title>
+                        </mat-card-header>
+                        <mat-card-content class="my-content">
+                            <div fxLayout="row">
+                                <app-filter placeholder="Ej. Mediproducts" (send)="applyFilter2($event)"></app-filter>
+                                <span fxFlex></span>
+                                <button mat-mini-fab (click)="removeAll()" matTooltip="Quitar todos" style="background-color: brown;">
+                <mat-icon>playlist_remove</mat-icon>
+              </button>
+                            </div>
+                            <ngx-simplebar class="list">
+                                <div fxLayout="row wrap" fxLayoutAlign="center center" *ngIf="selectedBrands.length === 0">
+                                    <h3 fxLayoutAlign="center center">
+                                        <mat-icon>warning</mat-icon>
+                                        No hay laboratorios seleccionados
+                                    </h3>
+                                </div>
+                                <div *ngIf="selectedBrands.length > 0" fxLayout="row wrap" fxLayoutGap="10px grid">
+                                    <div fxFlex.gt-lg="33" fxFlex.lg="33" fxFlex.md="50" fxFlex.sm="100" fxFlex.lt-sm="100" *ngFor="let brand of selectedBrandsPage">
+                                        <mat-card matRipple (click)="removeBrand(brand)" class="brand-card-2 cursor-pointer mat-elevation-z2">
+                                            <mat-card-header>
+                                                <mat-icon mat-card-avatar color="warn">check</mat-icon>
+                                                <mat-card-title>
+                                                    {{ brand.code}}
+                                                </mat-card-title>
+                                            </mat-card-header>
+                                            <mat-card-content>
+                                                {{brand.name}}
+                                            </mat-card-content>
+                                        </mat-card>
+                                    </div>
+                                </div>
+                            </ngx-simplebar>
+                        </mat-card-content>
+                        <mat-card-footer>
+                            <span fxFlex></span>
+                            <mat-paginator #paginator2 (page)="onPageChange2($event)" [length]="selectedBrands?.length" [pageSize]="24" [pageSizeOptions]="[12, 24, 64, 124]">
+                            </mat-paginator>
+                        </mat-card-footer>
+                    </mat-card>
+                </div>
+            </div>
+        </div>
+    </mat-step>
+    <mat-step [stepControl]="form3" errorMessage="Complete los campos.">
+        <ng-template matStepLabel>Finalizar</ng-template>
+        <div fxLayout="row" fxLayoutAlign="center start" class="my-step">
+            <form [formGroup]="form3">
+                <mat-card class="my-card-1 mat-elevation-z4">
+                    <mat-card-header>
+                        <mat-icon matCardAvatar color="warn">check_circle_outline</mat-icon>
+                        <mat-card-title>Finalizar configuración automática</mat-card-title>
+                        <mat-card-subtitle>Por favor ingrese los días para finalizar la configuración
+                        </mat-card-subtitle>
+                    </mat-card-header>
+                    <mat-card-content>
+                        <div fxLayout="column" fxLayoutGap="10px">
+                            <div fxLayout="row wrap" fxLayoutGap="10px">
+                                <mat-form-field fxFlex appearance="outline">
+                                    <mat-label>Días del proveedor</mat-label>
+                                    <input formControlName="daysRequest" matInput type="number" required>
+                                    <mat-hint>Días que tarda un proveedor en realizar entrega</mat-hint>
+                                </mat-form-field>
+                                <mat-form-field fxFlex appearance="outline">
+                                    <mat-label>Días de abastecimiento</mat-label>
+                                    <input formControlName="daysSupply" matInput type="number" required>
+                                    <mat-hint>Días que se desea mantener abastecido</mat-hint>
+                                </mat-form-field>
+                            </div>
+                            <br>
+                            <br>
+                            <mat-form-field appearance="outline">
+                                <mat-label>Nota</mat-label>
+                                <textarea matInput formControlName="note" rows="6" cols="75" placeholder="Ingresa alguna descripción de la configuración"></textarea>
+                            </mat-form-field>
+                            <mat-slide-toggle formControlName="activated" color="accent" ngDefaultControl>Habilitar configuración automática
+                            </mat-slide-toggle>
+                        </div>
+                    </mat-card-content>
+                    <mat-card-actions>
+                        <button mat-button matStepperPrevious>Volver</button>
+                        <button mat-button (click)="stepper.reset()">Reiniciar</button>
+                        <span fxFlex></span>
+                        <button mat-raised-button (click)="saveAutoStatistic()" color="warn" [disabled]="loading || selectedBrands.length === 0 || form1.invalid || form3.invalid">Guardar</button>
+                    </mat-card-actions>
+                    <mat-card-footer>
+                        <mat-progress-bar *ngIf="loading" mode="indeterminate" color="warn"></mat-progress-bar>
+                    </mat-card-footer>
+                </mat-card>
+            </form>
+        </div>
+    </mat-step>
+</mat-horizontal-stepper>

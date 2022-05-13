@@ -69,6 +69,13 @@ export class ProductService {
     return this.http.post(this.apiConfigService.API_PRODUCT, product);
   }
 
+  update(product: any): Observable<any> {
+    return this.http.put(
+      `${this.apiConfigService.API_PRODUCT}/`,
+      product
+    );
+  }
+
   updateProduct(product: ProductItem): Observable<any> {
 
     return this.http.put(
@@ -97,6 +104,13 @@ export class ProductService {
     });
   }
 
+  searchCheckStock(search: string = '', field = 'barcode'): Observable<any> {
+    return this.http.get(`${this.apiConfigService.API_PRODUCT}/searchCheckStock`, {
+      params: new HttpParams()
+      .set('search', search.toString())
+      .set('field', field.toString())
+    });
+  }
 
   searchByIndex(search: string = ''): Observable<any> {
     return this.http.get(`${this.apiConfigService.API_PRODUCT}/searchByIndex`, {

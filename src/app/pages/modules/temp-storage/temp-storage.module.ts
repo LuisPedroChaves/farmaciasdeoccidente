@@ -7,6 +7,7 @@ import { TimeFormatPipe } from 'src/app/core/shared/pipes/timePipes/time-format.
 import { TempStorageComponent } from './components/temp-storage/temp-storage.component';
 import { SharedComponentsModule } from '../../shared-components/shared-components.module';
 import { TempStorageRoutes } from './temp-storage.routing';
+import { InputsModule } from '../../shared/inputs/inputs.module';
 
 @NgModule({
   declarations: [TempStorageComponent],
@@ -14,7 +15,8 @@ import { TempStorageRoutes } from './temp-storage.routing';
     CommonModule,
     RouterModule.forChild(TempStorageRoutes),
     SharedComponentsModule,
-    CoreModule
+    CoreModule,
+    InputsModule
   ],
   providers: [
     TimeFormatPipe

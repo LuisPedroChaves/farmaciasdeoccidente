@@ -19,6 +19,10 @@ const routes: Routes = [
         canActivate: [CheckTokenGuard]
       },
       {
+        path: 'quotes', loadChildren: () => import('./pages/modules/quotes/quotes.module').then(m => m.QuotesModule),
+        canActivate: [CheckTokenGuard]
+      },
+      {
         path: 'orders', pathMatch: 'full',  loadChildren: () => import('./pages/modules/orders/orders.module').then(m => m.OrdersModule),
         canActivate: [CheckTokenGuard]
       },
@@ -68,6 +72,10 @@ const routes: Routes = [
       },
       {
         path: 'tempStorage', pathMatch: 'full',  loadChildren: () => import('./pages/modules/temp-storage/temp-storage.module').then(m => m.TempStorageModule),
+        canActivate: [CheckTokenGuard]
+      },
+      {
+        path: 'pharmaStatistics', pathMatch: 'full',  loadChildren: () => import('./pages/modules/statistics/statistics.module').then(m => m.StatisticsModule),
         canActivate: [CheckTokenGuard]
       },
       {
@@ -121,7 +129,19 @@ const routes: Routes = [
         canActivate: [CheckTokenGuard]
       },
       {
+        path: 'accountsPayable', loadChildren: () => import('./pages/admin-modules/accounts-payable/accounts-payable.module').then(m => m.AccountsPayableModule),
+        canActivate: [CheckTokenGuard]
+      },
+      {
+        path: 'cash', loadChildren: () => import('./pages/admin-modules/cash-boxes/cash-boxes.module').then(m => m.CashBoxesModule),
+        canActivate: [CheckTokenGuard]
+      },
+      {
         path: 'statements/:id/:return', pathMatch: 'full',  loadChildren: () => import('./pages/admin-modules/statements/statements.module').then(m => m.StatementsModule),
+        canActivate: [CheckTokenGuard]
+      },
+      {
+        path: 'brands', pathMatch: 'full',  loadChildren: () => import('./pages/admin-modules/brands/brands.module').then(m => m.BrandsModule),
         canActivate: [CheckTokenGuard]
       },
       {
@@ -138,6 +158,14 @@ const routes: Routes = [
       },
       {
         path: 'tempStatistics', pathMatch: 'full',  loadChildren: () => import('./pages/admin-modules/temp-statistics/temp-statistics.module').then(m => m.TempStatisticsModule),
+        canActivate: [CheckTokenGuard]
+      },
+      {
+        path: 'adminCheckStock', pathMatch: 'full',  loadChildren: () => import('./pages/admin-modules/check-stock/check-stock.module').then(m => m.CheckStockModule),
+        canActivate: [CheckTokenGuard]
+      },
+      {
+        path: 'adminSellersReport', pathMatch: 'full',  loadChildren: () => import('./pages/admin-modules/seller-report/seller-report.module').then(m => m.SellerReportModule),
         canActivate: [CheckTokenGuard]
       },
     ]

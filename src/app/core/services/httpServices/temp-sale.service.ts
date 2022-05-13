@@ -4,7 +4,6 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 
 import { ApiConfigService } from 'src/app/core/services/config/api-config.service';
-import { TempSaleItem } from '../../models/TempSale';
 
 @Injectable({
   providedIn: 'root'
@@ -40,6 +39,10 @@ export class TempSaleService {
     });
   }
 
+  update(body: any): Observable<any> {
+    return this.http.put(this.apiConfigService.API_TEMP_SALE + '/', body);
+  }
+
   uploadFile(file: File, tempSale: any) {
     return new Promise((resolve, reject) => {
       const formData = new FormData();
@@ -62,7 +65,6 @@ export class TempSaleService {
       };
 
       formData.append('_cellar', tempSale._cellar);
-      formData.append('date', tempSale.date);
 
       const url = this.apiConfigService.API_TEMP_SALE + '/xlsx';
 
@@ -93,7 +95,6 @@ export class TempSaleService {
       };
 
       formData.append('_cellar', tempSale._cellar);
-      formData.append('date', tempSale.date);
 
       const url = this.apiConfigService.API_TEMP_SALE + '/xlsx/delete';
 
