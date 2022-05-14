@@ -130,7 +130,7 @@ const routes: Routes = [
         canActivate: [CheckTokenGuard]
       },
       {
-        path: 'purchases', loadChildren: () => import('./pages/modules/purchases/purchases.module').then(m => m.PurchasesModule),
+        path: 'purchase', loadChildren: () => import('./pages/modules/purchases/purchases.module').then(m => m.PurchasesModule),
         canActivate: [CheckTokenGuard]
       },
     ],

@@ -6,8 +6,19 @@ import { NewPurchaseComponent } from './components/new-purchase/new-purchase.com
 import { UpdatePricesComponent } from './components/update-prices/update-prices.component';
 
 import { IndexComponent } from './pages/index/index.component';
+import { RequisitionPurchasesComponent } from './components/requisition-purchases/requisition-purchases.component';
 
 export const PurchasesRoutes: Routes = [
+    {
+        path: '',
+        component: IndexComponent,
+        children: [
+            {
+              path: '',
+              component: RequisitionPurchasesComponent
+            },
+          ]
+    },
     {
         path: '',
         component: IndexComponent,

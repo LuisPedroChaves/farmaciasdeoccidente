@@ -6,7 +6,6 @@ import { CoreModule } from 'src/app/core/core.module';
 import { SharedComponentsModule } from '../../shared-components/shared-components.module';
 import { PurchasesRoutes } from './purchases.routing';
 import { NewPurchaseComponent } from './components/new-purchase/new-purchase.component';
-import { IndexComponent } from './components/index/index.component';
 import { DeletedPurchasesComponent } from './components/deleted-purchases/deleted-purchases.component';
 import { DetailsPurchaseComponent } from './components/details-purchase/details-purchase.component';
 import { UpdatePricesComponent } from './components/update-prices/update-prices.component';
@@ -17,6 +16,7 @@ import { HistoryPurchasesComponent } from './components/history-purchases/histor
 import { RequisitionPurchasesComponent } from './components/requisition-purchases/requisition-purchases.component';
 import { NewRequisitionComponent } from './components/new-requisition/new-requisition.component';
 import { AdjustsComponent } from './components/adjusts/adjusts.component';
+import { IndexComponent } from './pages/index/index.component';
 
 
 

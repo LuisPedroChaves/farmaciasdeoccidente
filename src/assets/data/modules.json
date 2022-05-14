@@ -1,9 +1,11 @@
 [
     { "name": "quotes", "label": "Cotizaciones", "parent": "PHARMA", "level": 1, "options": ["read", "update", "delete", "create"] },
+
     { "name": "ORDER", "label": "Ordenes", "parent": "PHARMA", "level": 1, "options": ["read", "update", "delete", "create"] },
     { "name": "orders", "label": "Ordenes", "parent": "ORDER", "level": 2, "options": ["read", "update", "delete", "create"] },
     { "name": "dispatches", "label": "Despachos", "parent": "ORDER", "level": 2, "options": ["read", "create"] },
     { "name": "deliveries", "label": "Rutas y Entregas", "parent": "ORDER", "level": 2, "options": ["read", "update", "delete", "create"] },
+
     { "name": "customersRoutes", "label": "Clientes", "parent": "PHARMA", "level": 1, "options": ["read", "update", "delete", "create"] },
     { "name": "internalOrders", "label": "Pedidos a bodegas", "parent": "PHARMA", "level": 1, "options": ["read", "update", "delete", "create"] },
     { "name": "transfers", "label": "Traslados", "parent": "PHARMA", "level": 1, "options": ["read", "update", "delete", "create"] },
@@ -18,7 +20,9 @@
     { "name": "storage/storagehistory", "label": "Historial", "parent": "STORAGE", "level": 2, "options": ["read", "update", "delete", "create"] },
 
     { "name": "pharmaStatistics", "label": "Estadísticas", "parent": "PHARMA", "level": 1, "options": ["read", "update", "delete", "create"] },
-    { "name": "purchases", "label": "Compras", "parent": "PHARMA", "level": 1, "options": ["read", "update", "delete", "create"] },
+
+    { "name": "INGRESOS", "label": "Ingresos", "parent": "PHARMA", "level": 1, "options": ["read", "update", "delete", "create"] },
+    { "name": "purchase", "label": "Requisiciones", "parent": "INGRESOS", "level": 2, "options": ["read", "update", "delete", "create"] },
 
     { "name": "/admin", "label": "Sucursales", "parent": "ADMIN", "level": 1, "options": ["read", "update", "delete", "create"] },
     { "name": "adminCheckStock", "label": "Consultar existencias", "parent": "ADMIN", "level": 1, "options": [] },
