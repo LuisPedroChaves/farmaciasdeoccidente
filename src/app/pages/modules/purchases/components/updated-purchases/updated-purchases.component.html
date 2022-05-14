@@ -11,7 +11,6 @@
             <mat-icon class="text-muted" matPrefix>search</mat-icon>
             <input matInput (keyup)="applyFilter2($event)" type="text">
         </mat-form-field>
-        <h4>NOTA: <b>TODAVIA NO ACTUALIZA INVENTARIOS</b></h4>
     </div>
     <div *ngIf="purchases !== undefined && purchasesp.includes('read')" class="allspace" data-simplebar>
         <table mat-table matSort matTableResponsive [dataSource]="dataSource" multiTemplateDataRows class="mat-elevation-z2 noborder-table ">

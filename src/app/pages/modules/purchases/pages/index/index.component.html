@@ -9,6 +9,18 @@
                 </mat-chip-avatar>
                 Requisiciones
             </mat-chip>
+            <mat-chip *ngIf="searchModule('purchase/updatePrices')" [routerLink]="['/purchase/updatePrices']" [selected]="router.url === '/purchase/updatePrices'" color="primary" matTooltip="Actualización de precios">
+                <mat-chip-avatar>
+                    <mat-icon>price_check</mat-icon>
+                </mat-chip-avatar>
+                Actualizar precios
+            </mat-chip>
+            <mat-chip *ngIf="searchModule('purchase/enterInvoice')" [routerLink]="['/purchase/enterInvoice']" [selected]="router.url === '/purchase/enterInvoice'" color="primary" matTooltip="Ingreso de facturas">
+                <mat-chip-avatar>
+                    <mat-icon>task</mat-icon>
+                </mat-chip-avatar>
+                Ingresar facturas
+            </mat-chip>
         </mat-chip-list>
     </header>
     <app-no-found *ngIf="modules && modules.length === 0" text="Permiso denegado" subtitle="Actualmente no cuenta con permisos para acceder a este apartado"></app-no-found>

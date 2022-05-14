@@ -62,7 +62,7 @@ export class NewRequisitionComponent implements OnInit, AfterContentInit, OnDest
   filteredProducts: Observable<ProductItem[]>[] = [];
   isLoading = false;
 
-  displayedColumns: string[] = ['requested', '_product', 'remove'];
+  displayedColumns: string[] = ['_product', 'requested', 'remove'];
   dataSource = new BehaviorSubject<AbstractControl[]>([]);
 
   constructor(
@@ -191,7 +191,7 @@ export class NewRequisitionComponent implements OnInit, AfterContentInit, OnDest
       (data) => {
         if (data.ok === true) {
           this.toasty.success('Requisición creada exitosamente');
-          this.router.navigate(['/purchases']);
+          this.router.navigate(['/purchase']);
           this.loading = false;
         } else {
           this.loading = false;

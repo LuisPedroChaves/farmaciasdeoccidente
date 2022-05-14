@@ -1,7 +1,7 @@
 <div fxFlex fxLayout="column" class="section-content">
     <mat-progress-bar mode="query" *ngIf="loading"></mat-progress-bar>
     <header class="module-header section" fxLayout="row wrap">
-        <button mat-icon-button class="close-button" [routerLink]="'/purchases'">
+        <button mat-icon-button class="close-button" [routerLink]="'/purchase'">
       <mat-icon>close</mat-icon>
     </button>
         <h2 color="accent" class="ma-0 info-row T">Requisición #{{ form.get('requisition').value }}</h2>
@@ -166,7 +166,7 @@
                     <div fxFlex="100" fxLayoutAlign="center center" fxLayout="row wrap">
                         <h3 class="product-font ma-0">Cantidad: {{ detailForm.length }}</h3>
                         <span fxFlex></span>
-                        <button mat-raised-button class="close-button" [routerLink]="'/purchases'" style="color:brown;">
+                        <button mat-raised-button class="close-button" [routerLink]="'/purchase'" style="color:brown;">
               CANCELAR
             </button>
                         <button *ngIf="!loading" mat-raised-button [disabled]="form.invalid" (click)="savePurchase()" color="warn" class="close-button">

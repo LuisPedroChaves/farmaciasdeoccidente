@@ -151,6 +151,22 @@
         "order": 1
     },
     {
+        "state": "purchase/updatePrices",
+        "name": "Actualizar precios",
+        "type": "link",
+        "icon": "price_check",
+        "iconType": "icon",
+        "order": 2
+    },
+    {
+        "state": "purchase/enterInvoice",
+        "name": "Ingresar facturas",
+        "type": "link",
+        "icon": "task",
+        "iconType": "icon",
+        "order": 3
+    },
+    {
         "state": "/admin",
         "name": "Sucursales",
         "type": "link",

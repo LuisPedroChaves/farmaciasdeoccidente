@@ -26,15 +26,6 @@ export class IndexComponent implements OnInit, OnDestroy {
     this.sessionSubscription = this.store.select('session').pipe(filter(session => session !== null)).subscribe(session => {
       if (session.permissions !== null) {
         this.modules = session.permissions.filter(pr => pr.parent === 'INGRESOS');
-
-        const MODULE_TYPES = {
-          'purchase': () => this.router.navigate(['/purchase']),
-        }
-
-        if (this.modules.length > 0) {
-          MODULE_TYPES[this.modules[0].name]();
-        }
-
       }
     });
   }

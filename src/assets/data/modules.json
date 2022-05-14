@@ -23,6 +23,8 @@
 
     { "name": "INGRESOS", "label": "Ingresos", "parent": "PHARMA", "level": 1, "options": ["read", "update", "delete", "create"] },
     { "name": "purchase", "label": "Requisiciones", "parent": "INGRESOS", "level": 2, "options": ["read", "update", "delete", "create"] },
+    { "name": "purchase/updatePrices", "label": "Actualización de precios", "parent": "INGRESOS", "level": 2, "options": ["read", "update", "delete", "create"] },
+    { "name": "purchase/enterInvoice", "label": "Ingreso de facturas", "parent": "INGRESOS", "level": 2, "options": ["read", "update", "delete", "create"] },
 
     { "name": "/admin", "label": "Sucursales", "parent": "ADMIN", "level": 1, "options": ["read", "update", "delete", "create"] },
     { "name": "adminCheckStock", "label": "Consultar existencias", "parent": "ADMIN", "level": 1, "options": [] },

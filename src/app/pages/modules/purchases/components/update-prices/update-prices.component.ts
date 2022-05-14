@@ -116,7 +116,7 @@ export class UpdatePricesComponent implements OnInit {
         this.purchase.state = 'UPDATED';
         this.purchaseService.statePurchase(this.purchase)
           .subscribe(resp => {
-            this.router.navigate(['/purchases']);
+            this.router.navigate(['/purchase/updatePrices']);
           }, error => {
           this.loading = false;
           this.toasty.error('Error al finalizar edición');

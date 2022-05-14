@@ -1,7 +1,7 @@
 <div fxFlex fxLayout="column" class="section-content">
     <div fxLayout="row">
         <header class="module-header p-10" [ngClass]="{'padding-25': !smallScreen, 'padding-15': smallScreen }" fxFlex fxLayoutAlign="start center" fxLayout="row wrap">
-            <button mat-icon-button class="close-button" [routerLink]="'/purchases'">
+            <button mat-icon-button class="close-button" [routerLink]="'/purchase'">
         <mat-icon>close</mat-icon>
       </button>
             <h2 color="accent" class="ma-0 info-row T">Actualizador de precios</h2>
@@ -33,7 +33,7 @@
                         <div *ngFor="let p of purchase.detail; let i = index" [ngClass]="{'detalle': (selectedProduct && i === selectedProduct.index)}" class="row cursor-pointer" fxFlex="100" (click)="selectProduct(p, i)" fxLayoutAlign="start center" fxLayout="row wrap">
                             <div fxFlex class="ellipsis-text cell">
                                 <mat-chip-list>
-                                    <mat-chip selected color="warn">{{ p.presentation }}</mat-chip>
+                                    <mat-chip selected color="warn">{{ p.presentation.name }}</mat-chip>
                                 </mat-chip-list>
                             </div>
                             <div fxFlex class="ellipsis-text cell">

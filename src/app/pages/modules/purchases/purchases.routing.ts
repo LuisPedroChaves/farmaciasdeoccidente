@@ -7,6 +7,9 @@ import { UpdatePricesComponent } from './components/update-prices/update-prices.
 
 import { IndexComponent } from './pages/index/index.component';
 import { RequisitionPurchasesComponent } from './components/requisition-purchases/requisition-purchases.component';
+import { CreatedPurchasesComponent } from './components/created-purchases/created-purchases.component';
+import { UpdatedPurchasesComponent } from './components/updated-purchases/updated-purchases.component';
+import { LotesCreadosComponent } from './components/lotes-creados/lotes-creados.component';
 
 export const PurchasesRoutes: Routes = [
     {
@@ -17,11 +20,15 @@ export const PurchasesRoutes: Routes = [
               path: '',
               component: RequisitionPurchasesComponent
             },
+            {
+              path: 'updatePrices',
+              component: CreatedPurchasesComponent
+            },
+            {
+              path: 'enterInvoice',
+              component: UpdatedPurchasesComponent
+            },
           ]
-    },
-    {
-        path: '',
-        component: IndexComponent,
     },
     {
         path: 'new',
@@ -33,6 +40,10 @@ export const PurchasesRoutes: Routes = [
     },
     {
         path: 'updatePrices/:id',
-        component: UpdatePricesComponent,
-    },
+        component: UpdatePricesComponent
+      },
+    {
+        path: 'lotesCreados/:id',
+        component: LotesCreadosComponent
+      },
 ];

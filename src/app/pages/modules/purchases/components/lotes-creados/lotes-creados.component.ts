@@ -1,36 +1,19 @@
-import {
-  Component,
-  OnInit,
-  ElementRef,
-  ViewChild,
-} from '@angular/core';
-import { FormGroup, FormControl, Validators, FormBuilder, FormArray, AbstractControl } from '@angular/forms';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { FormArray, FormControl, FormGroup, FormBuilder, Validators, AbstractControl } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { STEPPER_GLOBAL_OPTIONS } from '@angular/cdk/stepper';
-
 import { BehaviorSubject } from 'rxjs';
-
+import { PurchaseService } from 'src/app/core/services/httpServices/purchase.service';
+import { UploadFileService } from 'src/app/core/services/httpServices/upload-file.service';
 import { ToastyService } from 'src/app/core/services/internal/toasty.service';
-import {
-  PurchaseDetailItem,
-  PurchaseItem,
-} from '../../../../../core/models/Purchase';
-import { PurchaseService } from '../../../../../core/services/httpServices/purchase.service';
-import { UploadFileService } from '../../../../../core/services/httpServices/upload-file.service';
+import { PurchaseDetailItem, PurchaseItem } from '../../../../../core/models/Purchase';
 
 @Component({
-  selector: 'app-new-purchase',
-  templateUrl: './new-purchase.component.html',
-  styleUrls: ['./new-purchase.component.scss'],
-  providers: [
-    {
-      provide: STEPPER_GLOBAL_OPTIONS,
-      useValue: { showError: true },
-    },
-  ],
+  selector: 'app-lotes-creados',
+  templateUrl: './lotes-creados.component.html',
+  styleUrls: ['./lotes-creados.component.scss']
 })
-export class NewPurchaseComponent
-  implements OnInit {
+export class LotesCreadosComponent implements OnInit {
+
   smallScreen = window.innerWidth < 960 ? true : false;
   loading = false;
 
@@ -69,7 +52,7 @@ export class NewPurchaseComponent
     expirationDate: new FormControl(''),
   });
 
-  displayedColumns: string[] = ['presentation', '_product', 'quantity', 'price', 'bonus', 'discount', 'total', 'cost', 'realQuantity', 'expirationDate'];
+  displayedColumns: string[] = ['presentation', '_product',  'lote', 'quantity', 'cost', 'expirationDate', 'stock', 'realQuantity', 'options'];
   dataSource = new BehaviorSubject<AbstractControl[]>([]);
 
   constructor(
@@ -112,10 +95,6 @@ export class NewPurchaseComponent
         this.loading = false;
       });
     });
-
-    setTimeout(() => {
-      this.noBill.nativeElement.focus();
-    }, 500);
   }
 
   getTotal(): number {
@@ -188,42 +167,4 @@ export class NewPurchaseComponent
     this.detailForm.at(index).get('total').setValue(TOTAL.toFixed(2), { emitEvent: false });
   }
 
-  savePurchase(): void {
-
-    this.loading = true;
-    this.form.get('total').setValue(this.getTotal());
-    const PURCHASE: PurchaseItem = { ...this.form.value };
-    const FILE: any = PURCHASE.file;
-    if (FILE) {
-      this.uploadFileService.uploadFile(FILE.files[0], 'purchases', PURCHASE._id)
-      .then((resp: any) => {
-      this.putPurchase(PURCHASE);
-      })
-      .catch(err => {
-        this.loading = false;
-        this.toasty.error('Error al cargar el archivo');
-      });
-    }else {
-      this.putPurchase(PURCHASE);
-    }
-  }
-
-  putPurchase(purchase: PurchaseItem): void {
-    this.purchaseService.statePurchase(purchase).subscribe(
-      (data) => {
-        if (data.ok === true) {
-          this.toasty.success('Factura ingresada exitosamente');
-          this.router.navigate(['/purchase']);
-          this.loading = false;
-        } else {
-          this.loading = false;
-          this.toasty.error('Error al ingresar la factura');
-        }
-      },
-      (err) => {
-        this.loading = false;
-        this.toasty.error('Error al ingresar la factura');
-      }
-    );
-  }
 }

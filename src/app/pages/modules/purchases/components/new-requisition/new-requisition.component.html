@@ -1,6 +1,6 @@
 <div fxFlex fxLayout="column" class="section-content">
     <header class="module-header section" fxLayout="row wrap">
-        <button mat-icon-button class="close-button" [routerLink]="'/purchases'">
+        <button mat-icon-button class="close-button" [routerLink]="'/purchase'">
       <mat-icon>close</mat-icon>
     </button>
         <h2 color="accent" class="ma-0 info-row T">Nueva requisición</h2>
@@ -49,16 +49,6 @@
                         <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
                         <tr mat-row *matRowDef="let row; let i = index; columns: displayedColumns;"></tr>
 
-                        <ng-container matColumnDef="requested">
-                            <th mat-header-cell *matHeaderCellDef> Cantidad. </th>
-                            <td mat-cell *matCellDef="let row; let index = index" [formGroupName]="index">
-                                <mat-form-field appearance="outline" color="primary" class="inputrequested">
-                                    <mat-label>Cantidad</mat-label>
-                                    <input matInput formControlName="requested" type="number" placeholder="0" aria-label="Number">
-                                </mat-form-field>
-                            </td>
-                        </ng-container>
-
                         <ng-container matColumnDef="_product">
                             <th mat-header-cell *matHeaderCellDef> Producto </th>
                             <td mat-cell *matCellDef="let row; let index = index" [formGroupName]="index">
@@ -90,6 +80,16 @@
                             </td>
                         </ng-container>
 
+                        <ng-container matColumnDef="requested">
+                            <th mat-header-cell *matHeaderCellDef> Cantidad. </th>
+                            <td mat-cell *matCellDef="let row; let index = index" [formGroupName]="index">
+                                <mat-form-field appearance="outline" color="primary" class="inputrequested">
+                                    <mat-label>Cantidad</mat-label>
+                                    <input matInput formControlName="requested" type="number" placeholder="0" aria-label="Number">
+                                </mat-form-field>
+                            </td>
+                        </ng-container>
+
                         <ng-container matColumnDef="remove">
                             <th mat-header-cell *matHeaderCellDef> Quitar </th>
                             <td mat-cell *matCellDef="let row; let index = index" [formGroupName]="index">
@@ -104,7 +104,7 @@
                     <div fxFlex="100" fxLayoutAlign="center center" fxLayout="row wrap">
                         <h3 class="product-font ma-0">Cantidad: {{ detailForm.length }}</h3>
                         <span fxFlex></span>
-                        <button mat-raised-button [routerLink]="'/purchases'" class="close-button" style="color:brown;">
+                        <button mat-raised-button [routerLink]="'/purchase'" class="close-button" style="color:brown;">
               CANCELAR
             </button>
                         <button *ngIf="!loading" mat-raised-button [disabled]="form.invalid" (click)="savePurchase()" color="warn" class="close-button">

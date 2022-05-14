@@ -2,6 +2,7 @@ import { Component, OnInit, OnDestroy, ViewChild, Output, EventEmitter } from '@
 import { MatDialog } from '@angular/material/dialog';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
+import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 
 import { CellarItem } from 'src/app/core/models/Cellar';
@@ -33,7 +34,8 @@ export class UpdatedPurchasesComponent implements OnInit, OnDestroy {
   constructor(
     public dialog: MatDialog,
     public purchaseService: PurchaseService,
-    private toasty: ToastyService
+    private toasty: ToastyService,
+    private router: Router
   ) { }
 
   ngOnInit(): void {
@@ -112,6 +114,7 @@ export class UpdatedPurchasesComponent implements OnInit, OnDestroy {
             this.sendTotal.emit(this.purchases.length);
             this.dataSource = new MatTableDataSource<any>(this.purchases);
             this.toasty.success('Inventario actualizado');
+            this.router.navigate(['/purchase/lotesCreados/'+purchase._id]);
           }, error => {
             this.toasty.error('Error al finalizar edición');
           });

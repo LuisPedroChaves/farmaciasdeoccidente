@@ -17,11 +17,12 @@ import { RequisitionPurchasesComponent } from './components/requisition-purchase
 import { NewRequisitionComponent } from './components/new-requisition/new-requisition.component';
 import { AdjustsComponent } from './components/adjusts/adjusts.component';
 import { IndexComponent } from './pages/index/index.component';
+import { LotesCreadosComponent } from './components/lotes-creados/lotes-creados.component';
 
 
 
 @NgModule({
-  declarations: [NewPurchaseComponent, IndexComponent, DeletedPurchasesComponent, DetailsPurchaseComponent, UpdatePricesComponent, NewAdjustComponent, CreatedPurchasesComponent, UpdatedPurchasesComponent, HistoryPurchasesComponent, RequisitionPurchasesComponent, NewRequisitionComponent, AdjustsComponent],
+  declarations: [NewPurchaseComponent, IndexComponent, DeletedPurchasesComponent, DetailsPurchaseComponent, UpdatePricesComponent, NewAdjustComponent, CreatedPurchasesComponent, UpdatedPurchasesComponent, HistoryPurchasesComponent, RequisitionPurchasesComponent, NewRequisitionComponent, AdjustsComponent, LotesCreadosComponent],
   imports: [
     CommonModule,
     RouterModule.forChild(PurchasesRoutes),

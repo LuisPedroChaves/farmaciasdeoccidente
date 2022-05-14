@@ -46,14 +46,14 @@
 
 .mat-column-requested {
     width: 12px;
-    border-right: 1px solid currentColor;
-    padding-right: 24px;
     padding-top: 8px;
     text-align: center;
+    padding-left: 16px;
 }
 
 .mat-column-_product {
-    padding-left: 16px;
+    border-right: 1px solid currentColor;
+    padding-right: 24px;
     padding-top: 8px;
     font-size: 20px;
 }
