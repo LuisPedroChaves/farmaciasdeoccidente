@@ -7,7 +7,6 @@ import { Subscription } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
 import { CashFlowItem } from 'src/app/core/models/CashFlow';
 import { CashFlowService } from 'src/app/core/services/httpServices/cash-flow.service';
-import { CashService } from 'src/app/core/services/httpServices/cash.service';
 import { ToastyService } from 'src/app/core/services/internal/toasty.service';
 import { ConfirmationDialogComponent } from 'src/app/pages/shared-components/confirmation-dialog/confirmation-dialog.component';
 import { CashItem } from '../../../../../core/models/Cash';
@@ -43,7 +42,6 @@ export class IndependentCashComponent implements OnInit, OnDestroy, OnChanges {
   constructor(
     private cashFlowService: CashFlowService,
     private toastyService: ToastyService,
-    private cashService: CashService,
     private dialog: MatDialog
   ) { }
 
@@ -86,36 +84,6 @@ export class IndependentCashComponent implements OnInit, OnDestroy, OnChanges {
       })
   }
 
-  delete() {
-    /* #region  Validaciones */
-    if (!this.permissions.includes('delete')) {
-      this.toastyService.error('Acceso Denegado', 'Actualmente no cuenta con permisos para realizar para realizar esta acción');
-      return
-    }
-    /* #endregion */
-
-    const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
-      width: '350px',
-      data: { title: 'Eliminar Caja', message: '¿Confirma que desea eliminar la caja de  ' + this.currentCash._user.name + '?', description: true },
-      disableClose: true,
-      panelClass: ['farmacia-dialog', 'farmacia'],
-    });
-
-    dialogRef.afterClosed().subscribe(result => {
-      if (result !== undefined) {
-        this.loading = true;
-
-        this.cashService.delete(this.currentCash, result)
-          .subscribe(resp => {
-            this.toastyService.success('Caja eliminada exitosamente');
-            this.cashService.loadData();
-            this.loading = false;
-            this.close.emit();
-          })
-      }
-    });
-  }
-
   acceptAll(): void {
     /* #region  Validaciones */
     if (!this.permissions.includes('update')) {
@@ -139,7 +107,7 @@ export class IndependentCashComponent implements OnInit, OnDestroy, OnChanges {
           await this.cashFlowService.update(data).subscribe();
         })
         this.toastyService.success('Egresos aprobados exitosamente');
-        this.cashFlowService.loadData(this.currentCash._id);
+        // this.cashFlowService.loadData(this.currentCash._id);
         this.loading = false;
       }
     });

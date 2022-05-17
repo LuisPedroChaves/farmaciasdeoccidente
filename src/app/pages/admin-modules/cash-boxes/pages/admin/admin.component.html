@@ -15,21 +15,23 @@
     <mat-drawer-content>
         <header>
             <span fxFlex></span>
-            <button mat-fab *ngIf="permissions && permissions.includes('create')" (click)="drawer2.opened = true" color="warn" matTooltip="Nueva caja">
+            <button mat-fab *ngIf="permissions && permissions.includes('create')" (click)="drawer2.opened = true; editCash = null; titleCash='Crear nueva caja'" color="warn" matTooltip="Nueva caja">
         <mat-icon>add</mat-icon>
       </button>
         </header>
         <mat-drawer-container>
             <mat-drawer #drawer2 mode="over">
                 <header fxLayout="row wrap" fxLayoutAlign="start center">
-                    <h2 class="ma-0">Crear nueva caja</h2>
+                    <h2 class="ma-0">{{titleCash}}</h2>
                     <span fxFlex></span>
                     <button mat-icon-button (click)="drawer2.opened = false">
             <mat-icon>close</mat-icon>
           </button>
                 </header>
                 <ngx-simplebar class="cash-layout">
-                    <app-new-cash (close)="drawer2.opened = false" [cashes]="cashes"></app-new-cash>
+                    <app-new-cash *ngIf="!editCash" (close)="drawer2.opened = false" [cashes]="cashes"></app-new-cash>
+                    <app-new-cash *ngIf="editCash" (close)="drawer2.opened = false" [cashes]="cashes" [cash]="editCash">
+                    </app-new-cash>
                 </ngx-simplebar>
             </mat-drawer>
             <mat-drawer-content>
@@ -40,8 +42,8 @@
                         <app-no-found *ngIf="!cashesPage || cashesPage.length === 0" text="No se encontraron cajas" subtitle="Actualmente no cuenta con cajas activas"></app-no-found>
                         <div fxLayout="row wrap" fxLayoutGap="15px grid" class="grid">
                             <div fxFlex.gt-lg="20" fxFlex.gt-md="33" fxFlex.gt-sm="50" fxFlex.lt-md="100" *ngFor="let cash of cashesPage; let i = index">
-                                <mat-card matRipple (click)="selectCash(cash)" class="cursor-pointer mat-elevation-z0" [ngClass]="{'mat-elevation-z4': i === indexHovered}" (mouseenter)="indexHovered = i" (mouseleave)="indexHovered = -1">
-                                    <mat-card-header>
+                                <mat-card matRipple class="mat-elevation-z0" [ngClass]="{'mat-elevation-z4': i === indexHovered}" (mouseenter)="indexHovered = i" (mouseleave)="indexHovered = -1">
+                                    <mat-card-header (click)="selectCash(cash)" class="cursor-pointer">
                                         <mat-icon matCardAvatar>point_of_sale
                                         </mat-icon>
                                         <mat-card-group>
@@ -49,13 +51,18 @@
                                             <mat-card-subtitle>{{ cash.type }}</mat-card-subtitle>
                                         </mat-card-group>
                                     </mat-card-header>
-                                    <mat-card-content>
+                                    <mat-card-content (click)="selectCash(cash)" class="cursor-pointer">
                                         <div fxLayoutAlign="center center">
                                             <h2><span class="text-muted">Saldo: </span> <b>Q{{ cash.balance | number: '.2'}}</b></h2>
                                         </div>
                                         <p *ngIf="cash.updated">Última edición: {{ cash.updated | date: 'dd/MM/yyyy HH:mm' }}</p>
                                         <p>Creada: {{ cash.created | date: 'dd/MM/yyyy HH:mm' }}</p>
+                                        <p>Administrador: {{ cash._admin.name }}</p>
                                     </mat-card-content>
+                                    <mat-card-actions *ngIf="permissions && permissions.includes('update')">
+                                        <button mat-button (click)="drawer2.opened = true; editCash = cash; titleCash='Editar caja'" color="accent">Editar</button>
+                                        <button mat-button (click)="delete(cash)" class="warning">Eliminar</button>
+                                    </mat-card-actions>
                                 </mat-card>
                             </div>
                         </div>

@@ -1,4 +1,4 @@
-import { AfterContentInit, Component, EventEmitter, OnDestroy, OnInit, Output } from '@angular/core';
+import { AfterContentInit, Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { FormControl } from '@angular/forms';
 
 import { Subscription } from 'rxjs';
@@ -10,7 +10,7 @@ import { UserItem } from '../../../../core/models/User';
   selector: 'app-inputUser',
   template: `
     <mat-form-field fxFill appearance="outline" color="accent">
-      <mat-label>Usuario</mat-label>
+      <mat-label>{{ label }}</mat-label>
       <mat-select [formControl]="user">
           <mat-option *ngFor="let u of users" [value]="u._id">
               {{ u.name }}
@@ -22,6 +22,7 @@ import { UserItem } from '../../../../core/models/User';
 })
 export class InputUserComponent implements OnInit, AfterContentInit, OnDestroy {
 
+  @Input() label = 'Usuario';
   @Output() send = new EventEmitter<UserItem>();
 
   userSubscription: Subscription;
