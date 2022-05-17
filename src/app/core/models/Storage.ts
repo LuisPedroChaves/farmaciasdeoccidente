@@ -9,6 +9,7 @@ export interface StorageItem {
   cost: number;
   totalStock: number;
   reserve: string;
+  inventoried: boolean;
   isNew: boolean;
   isMissing: boolean;
   state: boolean;

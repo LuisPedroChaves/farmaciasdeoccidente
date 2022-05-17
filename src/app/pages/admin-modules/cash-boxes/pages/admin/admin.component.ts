@@ -1,12 +1,14 @@
 import { Component, OnDestroy, OnInit, ViewChild, AfterContentInit } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { MatDrawer } from '@angular/material/sidenav';
 import { Store } from '@ngrx/store';
 
 import { Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
-
 import { CashService } from 'src/app/core/services/httpServices/cash.service';
+import { ToastyService } from 'src/app/core/services/internal/toasty.service';
 import { AppState } from 'src/app/core/store/app.reducer';
+import { ConfirmationDialogComponent } from 'src/app/pages/shared-components/confirmation-dialog/confirmation-dialog.component';
 import { CashItem } from '../../../../../core/models/Cash';
 
 @Component({
@@ -25,6 +27,9 @@ export class AdminComponent implements OnInit, OnDestroy, AfterContentInit {
   typeNew: string;
   /* #endregion */
 
+  editCash!: CashItem;
+  titleCash!: string;
+
   loading = false;
   cashSubscription: Subscription;
   cashes: CashItem[];
@@ -37,6 +42,8 @@ export class AdminComponent implements OnInit, OnDestroy, AfterContentInit {
   constructor(
     private cashService: CashService,
     public store: Store<AppState>,
+    private toastyService: ToastyService,
+    private dialog: MatDialog
   ) { }
 
   ngOnInit(): void {
@@ -80,6 +87,35 @@ export class AdminComponent implements OnInit, OnDestroy, AfterContentInit {
   reload() {
     this.drawer.opened = false;
     this.cashService.loadData();
+  }
+
+  delete(cash: CashItem) {
+    /* #region  Validaciones */
+    if (!this.permissions.includes('delete')) {
+      this.toastyService.error('Acceso Denegado', 'Actualmente no cuenta con permisos para realizar para realizar esta acción');
+      return
+    }
+    /* #endregion */
+
+    const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
+      width: '350px',
+      data: { title: 'Eliminar Caja', message: '¿Confirma que desea eliminar la caja de  ' + cash._user.name + '?', description: true },
+      disableClose: true,
+      panelClass: ['farmacia-dialog', 'farmacia'],
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result !== undefined) {
+        this.loading = true;
+
+        this.cashService.delete(cash, result)
+          .subscribe(resp => {
+            this.toastyService.success('Caja eliminada exitosamente');
+            this.cashService.loadData();
+            this.loading = false;
+          })
+      }
+    });
   }
 
 }

@@ -23,7 +23,7 @@ export class CashService implements IDataService<CashItem[]> {
 
   loadData(): void {
     this.http
-      .get(this.apiConfigService.API_CASH)
+      .get(`${this.apiConfigService.API_CASH}`)
       .pipe(
         map((response: any) => {
 

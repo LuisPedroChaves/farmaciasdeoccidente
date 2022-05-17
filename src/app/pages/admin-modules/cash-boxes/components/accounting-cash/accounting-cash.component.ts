@@ -11,9 +11,6 @@ import { CashItem } from 'src/app/core/models/Cash';
 import { CashFlowItem } from 'src/app/core/models/CashFlow';
 import { AccountsPayableService } from 'src/app/core/services/httpServices/accounts-payable.service';
 import { CashFlowService } from 'src/app/core/services/httpServices/cash-flow.service';
-import { CashService } from 'src/app/core/services/httpServices/cash.service';
-import { ToastyService } from 'src/app/core/services/internal/toasty.service';
-import { ConfirmationDialogComponent } from 'src/app/pages/shared-components/confirmation-dialog/confirmation-dialog.component';
 
 @Component({
   selector: 'app-accounting-cash',
@@ -56,9 +53,6 @@ export class AccountingCashComponent implements OnInit, OnChanges, OnDestroy {
 
   constructor(
     private cashFlowService: CashFlowService,
-    private toastyService: ToastyService,
-    private cashService: CashService,
-    private dialog: MatDialog,
     private accountsPayableService: AccountsPayableService
   ) { }
 
@@ -112,36 +106,6 @@ export class AccountingCashComponent implements OnInit, OnChanges, OnDestroy {
         this.dataSource2 = new MatTableDataSource<CashFlowItem>(data);
         this.loading = false;
       })
-  }
-
-  delete() {
-    /* #region  Validaciones */
-    if (!this.permissions.includes('delete')) {
-      this.toastyService.error('Acceso Denegado', 'Actualmente no cuenta con permisos para realizar para realizar esta acción');
-      return
-    }
-    /* #endregion */
-
-    const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
-      width: '350px',
-      data: { title: 'Eliminar Caja', message: '¿Confirma que desea eliminar la caja de  ' + this.currentCash._user.name + '?', description: true },
-      disableClose: true,
-      panelClass: ['farmacia-dialog', 'farmacia'],
-    });
-
-    dialogRef.afterClosed().subscribe(result => {
-      if (result !== undefined) {
-        this.loading = true;
-
-        this.cashService.delete(this.currentCash, result)
-          .subscribe(resp => {
-            this.toastyService.success('Caja eliminada exitosamente');
-            this.cashService.loadData();
-            this.loading = false;
-            this.close.emit();
-          })
-      }
-    });
   }
 
   /* #region  SELECTION TABLE */

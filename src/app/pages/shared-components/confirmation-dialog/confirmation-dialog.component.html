@@ -10,6 +10,19 @@
         <textarea matInput [(ngModel)]="textArea" rows="4" placeholder="Describe los motivos..."></textarea>
     </mat-form-field>
 </div>
+<div *ngIf="data.number" fxLayout="row wrap" fxLayoutAlign="center center">
+  <mat-form-field appearance="outline" color="primary" class="width-all">
+    <mat-label>Cantidad Real de Productos</mat-label>
+    <input matInput [(ngModel)]="numberOne" type="number" placeholder="Ingrese la cantidad real de Productos...">
+  </mat-form-field>
+</div>
+<div *ngIf="data.reason" fxLayout="row wrap" fxLayoutAlign="center center">
+  <mat-form-field appearance="outline" color="primary" class="width-all">
+    <mat-label>Solución encontrada</mat-label>
+    <textarea matInput [(ngModel)]="reason" rows="4"
+      placeholder="Describa la solución acordada o encontrada..."></textarea>
+  </mat-form-field>
+</div>
 <mat-card-content *ngIf="data.isLogin">
     <mat-form-field class="width-all">
         <mat-label>Usuario</mat-label>

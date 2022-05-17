@@ -59,7 +59,7 @@ export class ConsolidatedComponent implements OnInit {
   }
 
   isStickyEnd(name: string): boolean {
-    return (name === 'PEDIDO GLOBAL' || name === 'PEDIDO ESTADISTICA GLOBAL' || name === 'INVENTARIO BODEGA' || name === 'TOTAL') ? true : false
+    return (name === 'INVENTARIO TOTAL' || name === 'PEDIDO GLOBAL' || name === 'PEDIDO ESTADISTICA GLOBAL' || name === 'INVENTARIO BODEGA' || name === 'TOTAL') ? true : false
   }
 
   getConsolidated(): void {
@@ -87,7 +87,7 @@ export class ConsolidatedComponent implements OnInit {
         let row: any = {};
         row.CODIGO = element._id.barcode
         row.PRODUCTO = element._id.description
-
+        let stockGlobal = 0;
         let supplyGlobal = 0;
         let supplyStatisticGlobal = 0;
         let stockBodega = 0;
@@ -100,6 +100,7 @@ export class ConsolidatedComponent implements OnInit {
           } else {
             // Agregando filas en la data
             row[item._cellar.name] = item.stock;
+            stockGlobal += item.stock;
             supplyGlobal += item.supply;
             if (item.supplyStatistic) {
               supplyStatisticGlobal += item.supplyStatistic;
@@ -147,6 +148,7 @@ export class ConsolidatedComponent implements OnInit {
             }
           }
         });
+        row['INVENTARIO TOTAL'] = stockGlobal;
         row['PEDIDO GLOBAL'] = supplyGlobal;
         row['PEDIDO ESTADISTICA GLOBAL'] = supplyStatisticGlobal;
         row['INVENTARIO BODEGA'] = stockBodega;
@@ -154,6 +156,8 @@ export class ConsolidatedComponent implements OnInit {
 
         return row;
       });
+      this.displayedColumns.push('INVENTARIO TOTAL');
+      this.columnsToDisplay.push('INVENTARIO TOTAL');
       this.displayedColumns.push('PEDIDO GLOBAL');
       this.columnsToDisplay.push('PEDIDO GLOBAL');
       this.displayedColumns.push('PEDIDO ESTADISTICA GLOBAL');
