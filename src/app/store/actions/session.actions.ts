@@ -1,6 +1,7 @@
 import { createAction, props } from '@ngrx/store';
-import { PermissionItem } from '../../models/Role';
-import { UserSession } from '../../models/Session';
+
+import { PermissionItem } from 'src/app/core/models/Role';
+import { UserSession } from 'src/app/core/models/Session';
 
 /* LOGIN ACTIONS ------------------------------------------------------------------*/
 export const login = createAction('[Singin Component] Login', props<{ u: string, p: string }>());

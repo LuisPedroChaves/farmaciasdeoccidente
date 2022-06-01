@@ -9,7 +9,7 @@ import { Subscription } from 'rxjs';
 import { debounceTime, filter } from 'rxjs/operators';
 import { Store } from '@ngrx/store';
 
-import { AppState } from 'src/app/core/store/app.reducer';
+import { AppState } from 'src/app/store/app.reducer';
 import { ConfirmationDialogComponent } from 'src/app/pages/shared-components/confirmation-dialog/confirmation-dialog.component';
 import { EventBusService } from '../../../../../core/services/internal/event-bus.service';
 import { ConfigService } from '../../../../../core/services/config/config.service';

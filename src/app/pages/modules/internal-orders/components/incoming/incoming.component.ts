@@ -6,7 +6,7 @@ import { filter } from 'rxjs/operators';
 import { CellarItem } from 'src/app/core/models/Cellar';
 import { InternalOrderService } from 'src/app/core/services/httpServices/internal-order.service';
 import { ToastyService } from 'src/app/core/services/internal/toasty.service';
-import { AppState } from 'src/app/core/store/app.reducer';
+import { AppState } from 'src/app/store/app.reducer';
 import { ConfirmationDialogComponent } from 'src/app/pages/shared-components/confirmation-dialog/confirmation-dialog.component';
 import { InternalOrderItem } from '../../../../../core/models/InternalOrder';
 import { NewInternalOorderComponent } from '../new-internal-oorder/new-internal-oorder.component';

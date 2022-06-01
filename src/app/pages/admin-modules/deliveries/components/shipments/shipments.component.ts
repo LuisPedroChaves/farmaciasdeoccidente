@@ -3,7 +3,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { Subscription, combineLatest } from 'rxjs';
-import { AppState } from 'src/app/core/store/app.reducer';
+import { AppState } from 'src/app/store/app.reducer';
 import { ToastyService } from 'src/app/core/services/internal/toasty.service';
 import { OrderService } from 'src/app/core/services/httpServices/order.service';
 import { InternalOrderService } from 'src/app/core/services/httpServices/internal-order.service';

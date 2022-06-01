@@ -14,7 +14,7 @@ import { InternalOrderService } from 'src/app/core/services/httpServices/interna
 import { RouteService } from 'src/app/core/services/httpServices/route.service';
 import { UserService } from 'src/app/core/services/httpServices/user.service';
 import { ToastyService } from 'src/app/core/services/internal/toasty.service';
-import { AppState } from 'src/app/core/store/app.reducer';
+import { AppState } from 'src/app/store/app.reducer';
 import { EditRouteComponent } from '../edit-route/edit-route.component';
 import { NewRouteComponent } from '../new-route/new-route.component';
 

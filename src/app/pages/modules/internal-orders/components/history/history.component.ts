@@ -7,7 +7,7 @@ import { debounceTime, filter } from 'rxjs/operators';
 import { Store } from '@ngrx/store';
 
 import { CellarItem } from 'src/app/core/models/Cellar';
-import { AppState } from 'src/app/core/store/app.reducer';
+import { AppState } from 'src/app/store/app.reducer';
 import { InternalOrderItem } from '../../../../../core/models/InternalOrder';
 import { InternalOrderService } from '../../../../../core/services/httpServices/internal-order.service';
 

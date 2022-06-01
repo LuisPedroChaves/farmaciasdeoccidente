@@ -8,7 +8,7 @@ import { Router } from '@angular/router';
 import { CustomerItem } from 'src/app/core/models/Customer';
 import { CustomerService } from 'src/app/core/services/httpServices/customer.service';
 import { Store } from '@ngrx/store';
-import { AppState } from 'src/app/core/store/app.reducer';
+import { AppState } from 'src/app/store/app.reducer';
 import { filter } from 'rxjs/operators';
 
 @Component({

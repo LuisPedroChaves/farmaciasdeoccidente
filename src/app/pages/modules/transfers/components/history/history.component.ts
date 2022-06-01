@@ -9,7 +9,7 @@ import { Store } from '@ngrx/store';
 import { CellarItem } from 'src/app/core/models/Cellar';
 import { InternalOrderItem } from 'src/app/core/models/InternalOrder';
 import { InternalOrderService } from 'src/app/core/services/httpServices/internal-order.service';
-import { AppState } from 'src/app/core/store/app.reducer';
+import { AppState } from 'src/app/store/app.reducer';
 
 @Component({
   selector: 'app-history',

@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { of, forkJoin } from 'rxjs';
 import { mergeMap, map, catchError, delay, take } from 'rxjs/operators';
-import { AuthService } from '../../auth/auth.service';
+import { AuthService } from 'src/app/core/auth/auth.service';
 import * as actions from '../actions';
 @Injectable()
 export class SessionEffects {

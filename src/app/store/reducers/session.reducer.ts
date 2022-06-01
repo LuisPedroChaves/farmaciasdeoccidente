@@ -1,7 +1,8 @@
 import { createReducer, on } from '@ngrx/store';
+
 import * as actions from '../actions';
-import { UserSession } from '../../models/Session';
-import { PermissionItem } from '../../models/Role';
+import { PermissionItem } from 'src/app/core/models/Role';
+import { UserSession } from 'src/app/core/models/Session';
 
 export interface SessionState {
     loading: boolean;

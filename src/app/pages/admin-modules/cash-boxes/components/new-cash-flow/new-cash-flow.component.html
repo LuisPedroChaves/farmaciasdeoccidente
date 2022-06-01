@@ -1,4 +1,4 @@
-<form [formGroup]="form" autocomplete="off">
+<form *ngIf="cash.type === 'INDEPENDIENTE'" [formGroup]="form" autocomplete="off">
     <div fxLayout="column">
         <mat-form-field fxFill appearance="outline" color="accent">
             <mat-label>Descripción</mat-label>
@@ -17,6 +17,43 @@
         <div fxLayout="row" fxLayoutAlign="space-between center">
             <button mat-button (click)="close.emit()">Cancelar</button>
             <button mat-raised-button (click)="save()" color="warn" [disabled]="loading || form.invalid">Guardar</button>
+        </div>
+        <mat-progress-bar *ngIf="loading" mode="indeterminate" color="warn"></mat-progress-bar>
+    </div>
+</form>
+<form *ngIf="cash.type === 'CONTABLE'" [formGroup]="formAccounting" autocomplete="off">
+    <div fxLayout="column">
+        <mat-form-field fxFill appearance="outline" color="accent">
+            <mat-label>Fecha</mat-label>
+            <input matInput [matDatepicker]="picker" formControlName="date" title="Fecha de la factura" placeholder="Ingrese una fecha">
+            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
+        </mat-form-field>
+        <mat-form-field fxFill appearance="outline" color="accent">
+            <mat-label>Serie</mat-label>
+            <input formControlName="serie" (input)="formAccounting.get('serie').setValue(formAccounting.get('serie').value.toUpperCase())" type="text" matInput placeholder="Ingrese la serie de la factura">
+        </mat-form-field>
+        <mat-form-field fxFill appearance="outline" color="accent">
+            <mat-label>Factura</mat-label>
+            <input #noBill formControlName="noBill" (input)="formAccounting.get('noBill').setValue(formAccounting.get('noBill').value.toUpperCase())" type="text" matInput placeholder="Ingrese el No. de factura">
+        </mat-form-field>
+        <mat-form-field fxFill appearance="outline" color="accent">
+            <mat-label>Descripción</mat-label>
+            <input formControlName="details" type="text" matInput placeholder="Descripción del movimiento">
+        </mat-form-field>
+        <mat-form-field fxFill *ngIf="typeNew === 'Ingreso'" appearance="outline" color="accent">
+            <mat-label>Monto</mat-label>
+            <span matPrefix>Q &nbsp;</span>
+            <input matInput formControlName="income" type="number" placeholder="0">
+        </mat-form-field>
+        <mat-form-field fxFill *ngIf="typeNew === 'Egreso'" appearance="outline" color="accent">
+            <mat-label>Monto</mat-label>
+            <span matPrefix>Q &nbsp;</span>
+            <input matInput formControlName="expense" type="number" placeholder="0">
+        </mat-form-field>
+        <div fxLayout="row" fxLayoutAlign="space-between center">
+            <button mat-button (click)="close.emit()">Cancelar</button>
+            <button mat-raised-button (click)="saveAccounting()" color="warn" [disabled]="loading || formAccounting.invalid">Guardar</button>
         </div>
         <mat-progress-bar *ngIf="loading" mode="indeterminate" color="warn"></mat-progress-bar>
     </div>

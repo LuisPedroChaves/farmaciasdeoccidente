@@ -32,7 +32,7 @@ import { StorageItem } from 'src/app/core/models/Storage';
 import { BrandService } from 'src/app/core/services/httpServices/brand.service';
 import { ProductService } from 'src/app/core/services/httpServices/product.service';
 import { ToastyService } from 'src/app/core/services/internal/toasty.service';
-import { AppState } from 'src/app/core/store/app.reducer';
+import { AppState } from 'src/app/store/app.reducer';
 import { ModalMovementsComponent } from '../modal-movements/modal-movements.component';
 
 @Component({

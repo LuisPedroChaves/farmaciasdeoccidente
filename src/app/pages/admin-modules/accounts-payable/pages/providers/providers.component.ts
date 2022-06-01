@@ -7,7 +7,7 @@ import { filter } from 'rxjs/operators';
 
 import { ProviderItem } from 'src/app/core/models/Provider';
 import { ProviderService } from 'src/app/core/services/httpServices/provider.service';
-import { AppState } from 'src/app/core/store/app.reducer';
+import { AppState } from 'src/app/store/app.reducer';
 import { AccountsPayableItem } from '../../../../../core/models/AccountsPayable';
 import { FilterPipe } from '../../../../../core/shared/pipes/filterPipes/filter.pipe';
 

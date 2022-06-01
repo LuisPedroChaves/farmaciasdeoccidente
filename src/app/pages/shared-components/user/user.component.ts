@@ -6,7 +6,7 @@ import { Store } from '@ngrx/store';
 import { Subscription } from 'rxjs/internal/Subscription';
 import { UserItem } from 'src/app/core/models/User';
 import { ToastyService } from 'src/app/core/services/internal/toasty.service';
-import { AppState } from 'src/app/core/store/app.reducer';
+import { AppState } from 'src/app/store/app.reducer';
 import { UserService } from '../../../core/services/httpServices/user.service';
 
 @Component({

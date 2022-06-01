@@ -7,7 +7,7 @@ import { ConfirmationDialogComponent } from 'src/app/pages/shared-components/con
 import { ToastyService } from '../../../../../core/services/internal/toasty.service';
 import { Subscription } from 'rxjs';
 import { Store } from '@ngrx/store';
-import { AppState } from 'src/app/core/store/app.reducer';
+import { AppState } from 'src/app/store/app.reducer';
 import { filter } from 'rxjs/operators';
 import { NewRequestComponent } from '../new-request/new-request.component';
 

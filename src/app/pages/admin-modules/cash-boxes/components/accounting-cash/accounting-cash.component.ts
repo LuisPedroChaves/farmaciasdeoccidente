@@ -1,23 +1,26 @@
 import { SelectionModel } from '@angular/cdk/collections';
-import { Component, EventEmitter, Input, OnInit, Output, SimpleChanges, OnChanges, OnDestroy } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, SimpleChanges, OnChanges } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
-import { MatDialog } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
+import { Store } from '@ngrx/store';
 
 import { Subscription } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
-import { AccountsPayableItem } from 'src/app/core/models/AccountsPayable';
 import { CashItem } from 'src/app/core/models/Cash';
 import { CashFlowItem } from 'src/app/core/models/CashFlow';
-import { AccountsPayableService } from 'src/app/core/services/httpServices/accounts-payable.service';
 import { CashFlowService } from 'src/app/core/services/httpServices/cash-flow.service';
+import { CashRequisitionService } from 'src/app/core/services/httpServices/cash-requisition.service';
+import { ToastyService } from 'src/app/core/services/internal/toasty.service';
+import { AppAccountingCash } from 'src/app/store/reducers';
+import * as actions from 'src/app/store/actions/accountingCash.actions';
+import { CashRequisitionItem } from '../../../../../core/models/CashRequisition';
 
 @Component({
   selector: 'app-accounting-cash',
   templateUrl: './accounting-cash.component.html',
   styleUrls: ['./accounting-cash.component.scss']
 })
-export class AccountingCashComponent implements OnInit, OnChanges, OnDestroy {
+export class AccountingCashComponent implements OnInit, OnChanges {
 
   @Input() currentCash: CashItem;
   @Input() isAdmin: boolean = false;
@@ -25,20 +28,23 @@ export class AccountingCashComponent implements OnInit, OnChanges, OnDestroy {
   @Output() close = new EventEmitter();
 
   cashFlowSubscription: Subscription;
-  displayedColumns: string[] = ['details', 'state', 'income', 'outflow', 'balance', 'actions'];
+  displayedColumns: string[] = ['document', 'details', 'state', 'income', 'outflow', 'balance', 'actions'];
   dataSource = new MatTableDataSource<CashFlowItem>([]);
 
-  accountsPayableSubscription: Subscription;
-  dataSource3 = new MatTableDataSource([]);
-  selection = new SelectionModel<AccountsPayableItem>(true, []);
+  totalPending = 0;
+  pendingSource = new MatTableDataSource<CashFlowItem>([]);
+  selection = new SelectionModel<CashFlowItem>(true, []);
   columns = [
     'select',
-    'state',
     'date',
-    'noBill',
-    '_provider',
-    'total',
-    'expirationCredit',
+    'document', 'details', 'state', 'income', 'outflow', 'balance', 'actions'
+  ];
+
+  totalRequisitions = 0;
+  requisitionsSource = new MatTableDataSource<CashFlowItem>([]);
+  requisitionsColumns = [
+    'date',
+    'document', 'details', 'state', 'income', 'outflow', 'balance', 'actions'
   ];
 
   /* #region  Historial */
@@ -47,13 +53,15 @@ export class AccountingCashComponent implements OnInit, OnChanges, OnDestroy {
     start: new FormControl(),
     end: new FormControl()
   });
-  displayedColumns2: string[] = ['date', 'details', 'state', 'income', 'outflow', 'balance'];
+  displayedColumns2: string[] = ['date', 'document', 'details', 'state', 'income', 'outflow', 'balance'];
   dataSource2 = new MatTableDataSource<CashFlowItem>([]);
   /* #endregion */
 
   constructor(
     private cashFlowService: CashFlowService,
-    private accountsPayableService: AccountsPayableService
+    private store: Store<AppAccountingCash>,
+    private toastyService: ToastyService,
+    private cashRequisitionService: CashRequisitionService
   ) { }
 
   ngOnInit(): void {
@@ -61,11 +69,15 @@ export class AccountingCashComponent implements OnInit, OnChanges, OnDestroy {
       this.dataSource = new MatTableDataSource<CashFlowItem>(data);
     });
 
-    this.accountsPayableSubscription = this.accountsPayableService.readData().subscribe((data) => {
-      this.dataSource3 = new MatTableDataSource<AccountsPayableItem>(data.filter(ap => ap.type === 'GASTOS'));
-      this.selection = new SelectionModel<AccountsPayableItem>(true, []);
-      this.loading = false
-    });
+    this.store.select('AccountingCash')
+      .subscribe(state => {
+        this.totalPending = state.pendings.length
+        this.pendingSource = new MatTableDataSource<CashFlowItem>(state.pendings);
+        this.selection = new SelectionModel<CashFlowItem>(true, []);
+
+        this.totalRequisitions = state.requisitions.length
+        this.requisitionsSource = new MatTableDataSource<CashFlowItem>(state.requisitions)
+      });
 
     this.range.valueChanges
       .pipe(
@@ -81,23 +93,33 @@ export class AccountingCashComponent implements OnInit, OnChanges, OnDestroy {
   ngOnChanges(changes: SimpleChanges) {
     if (changes.currentCash.currentValue) {
       this.cashFlowService.loadData(changes.currentCash.currentValue._id);
-      this.accountsPayableService.loadData();
+      this.store.dispatch(actions.READ_CASH_FLOWS({ idCash: changes.currentCash.currentValue._id, state: 'PENDIENTE' }))
+      this.store.dispatch(actions.READ_CASH_FLOWS({ idCash: changes.currentCash.currentValue._id, state: 'REQUISICION' }))
     }
   }
 
-  ngOnDestroy(): void {
-    this.accountsPayableSubscription?.unsubscribe();
-  }
+  createRequisition() {
+    if (this.selection.selected.length === 0) {
+      this.toastyService.error('No hay movimientos seleccionados')
+      return
+    }
+    console.log(this.selection.selected);
 
-  /* #region  Gets */
-  getWithholdings(account: AccountsPayableItem): boolean {
-    return (account._provider.iva && account.emptyWithholdingIVA) || (account._provider.isr && account.emptyWithholdingISR)
-  }
+    this.loading = true;
+    const NEW_CASH_REQUISITION: CashRequisitionItem = {
+      _cash: this.currentCash,
+      _cashFlows: this.selection.selected,
+      total: this.selection.selected.reduce((sum, item) => sum += item.expense, 0),
+      paid: false
+    }
 
-  getExpired(expirationCredit: Date): boolean {
-    return new Date(expirationCredit) < new Date()
+    this.cashRequisitionService.create(NEW_CASH_REQUISITION)
+      .subscribe(resp => {
+        this.toastyService.success('Requisición creada correctamente')
+        this.store.dispatch(actions.PENDINGS_TO_REQUSITIONS({ cashFlows: this.selection.selected }))
+        this.loading = false
+      })
   }
-  /* #endregion */
 
   history(startDate, endDate) {
     this.loading = true;
@@ -113,7 +135,7 @@ export class AccountingCashComponent implements OnInit, OnChanges, OnDestroy {
   /** Si el número de elementos seleccionados coincide con el número total de filas. */
   isAllSelected() {
     const numSelected = this.selection.selected.length;
-    const numRows = this.dataSource3.data.length;
+    const numRows = this.pendingSource.data.length;
     return numSelected === numRows;
   }
 
@@ -124,15 +146,7 @@ export class AccountingCashComponent implements OnInit, OnChanges, OnDestroy {
       return;
     }
 
-    this.selection.select(...this.dataSource3.data);
-  }
-
-  /** The label for the checkbox on the passed row */
-  checkboxLabel(row?: AccountsPayableItem): string {
-    if (!row) {
-      return `${this.isAllSelected() ? 'deselect' : 'select'} all`;
-    }
-    return `${this.selection.isSelected(row) ? 'deselect' : 'select'} row ${row.total + 1}`;
+    this.selection.select(...this.pendingSource.data);
   }
   /* #endregion */
 

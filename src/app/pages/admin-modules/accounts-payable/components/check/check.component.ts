@@ -41,15 +41,14 @@ export class CheckComponent implements OnInit {
       this.toastyService.error('Acceso Denegado', 'Actualmente no cuenta con permisos para realizar esta acción')
       return;
     }
-    const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
+    const dialogRef = this.dialog.open(EnterPaymentComponent, {
       width: '350px',
       data: {
-        title: 'Entregar cheque',
         message:
           '¿Confirma que desea entregar el cheque:  ' +
           check.no +
           '?',
-        description: false,
+          check
       },
       disableClose: true,
       panelClass: ['farmacia-dialog', 'farmacia'],
@@ -58,6 +57,9 @@ export class CheckComponent implements OnInit {
     dialogRef.afterClosed().subscribe((result) => {
       if (result !== undefined) {
         check.delivered = true;
+        check.receipt.no = result.noReceipt;
+        check.receipt.name = result.name;
+
         this.checkService.updateState(check)
           .subscribe(resp => {
             this.toastyService.success('Cheque entregado exitosamente')
@@ -89,43 +91,6 @@ export class CheckComponent implements OnInit {
     dialogRef.afterClosed().subscribe((result) => {
       if (result !== undefined) {
         check.state = state;
-
-        this.checkService.updateState(check)
-          .subscribe(resp => {
-            this.toastyService.success('Cheque actualizado exitosamente')
-            const { state, paymentDate, receipt, delivered } = resp.check;
-            this.check.state = state;
-            this.check.paymentDate = paymentDate;
-            this.check.receipt = receipt;
-            this.check.delivered = delivered;
-            this.checkService.loadData();
-          })
-      }
-    });
-  }
-
-  pay(check: CheckItem, state: string): void {
-    if (this.permissions && !this.permissions.includes('update')) {
-      this.toastyService.error('Acceso Denegado', 'Actualmente no cuenta con permisos para realizar esta acción')
-      return;
-    }
-    const dialogRef = this.dialog.open(EnterPaymentComponent, {
-      width: '350px',
-      data: {
-        message:
-          '¿Confirma que desea actualizar el cheque:  ' +
-          check.no +
-          '?',
-        check
-      },
-      disableClose: true,
-      panelClass: ['farmacia-dialog', 'farmacia'],
-    });
-
-    dialogRef.afterClosed().subscribe((result) => {
-      if (result !== undefined) {
-        check.state = state;
-        check.receipt.no = result;
 
         this.checkService.updateState(check)
           .subscribe(resp => {

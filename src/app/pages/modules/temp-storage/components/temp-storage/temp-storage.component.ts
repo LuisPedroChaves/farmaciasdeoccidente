@@ -21,7 +21,7 @@ import {
 } from 'rxjs/operators';
 
 import { ToastyService } from 'src/app/core/services/internal/toasty.service';
-import { AppState } from 'src/app/core/store/app.reducer';
+import { AppState } from 'src/app/store/app.reducer';
 import { BrandItem } from 'src/app/core/models/Brand';
 import { TempStorageService } from 'src/app/core/services/httpServices/temp-storage.service';
 import { TimeFormatPipe } from 'src/app/core/shared/pipes/timePipes/time-format.pipe';

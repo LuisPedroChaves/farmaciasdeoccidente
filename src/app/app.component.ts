@@ -2,8 +2,8 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import {MediaObserver} from '@angular/flex-layout';
 import { Store } from '@ngrx/store';
 import { Subscription} from 'rxjs';
-import { AppState } from './core/store/app.reducer';
-import * as actions from './core/store/actions';
+import { AppState } from './store/app.reducer';
+import * as actions from './store/actions';
 import { WebsocketService } from './core/services/httpServices/websocket.service';
 
 @Component({

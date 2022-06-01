@@ -9,7 +9,7 @@ import { NewCustomerRoutesComponent } from '../new-customer-routes/new-customer-
 import { EditCustomerRoutesComponent } from '../edit-customer-routes/edit-customer-routes.component';
 import { CustomerItem } from '../../../../../core/models/Customer';
 import { Store } from '@ngrx/store';
-import { AppState } from 'src/app/core/store/app.reducer';
+import { AppState } from 'src/app/store/app.reducer';
 import { CustomerService } from '../../../../../core/services/httpServices/customer.service';
 import { filter } from 'rxjs/operators';
 import { MatSort } from '@angular/material/sort';

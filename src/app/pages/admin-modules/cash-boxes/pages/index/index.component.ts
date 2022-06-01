@@ -6,7 +6,8 @@ import { Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
 
 import { PermissionItem } from 'src/app/core/models/Role';
-import { AppState } from 'src/app/core/store/app.reducer';
+import { READ_CASH } from 'src/app/store/actions/accountingCash.actions';
+import { AppAccountingCash } from 'src/app/store/reducers/accountingCash.reducer';
 
 @Component({
   selector: 'app-index',
@@ -20,16 +21,19 @@ export class IndexComponent implements OnInit, OnDestroy {
 
   constructor(
     public router: Router,
-    public store: Store<AppState>,
+    public store: Store<AppAccountingCash>,
   ) { }
 
   ngOnInit(): void {
+    this.store.dispatch(READ_CASH())
+
     this.sessionSubscription = this.store.select('session').pipe(filter(session => session !== null)).subscribe(session => {
       if (session.permissions !== null) {
         this.modules = session.permissions.filter(pr => pr.parent === 'cash');
 
         const MODULE_TYPES = {
           'cashAdmin': () => this.router.navigate(['/admin/cash']),
+          'cashMyAdmin': () => this.router.navigate(['/admin/cash/myAdmin']),
           'cashIndependentBox': () => this.router.navigate(['/admin/cash/independentBox']),
           'cashAccountingBox': () => this.router.navigate(['/admin/cash/accountingBox']),
         }

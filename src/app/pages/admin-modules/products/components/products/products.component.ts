@@ -17,7 +17,7 @@ import {
 } from 'rxjs/operators';
 import { Store } from '@ngrx/store';
 
-import { AppState } from 'src/app/core/store/app.reducer';
+import { AppState } from 'src/app/store/app.reducer';
 import { ProductService } from 'src/app/core/services/httpServices/product.service';
 import { ProductsDataSource } from 'src/app/core/services/cdks/product.datasource';
 import { ToastyService } from '../../../../../core/services/internal/toasty.service';

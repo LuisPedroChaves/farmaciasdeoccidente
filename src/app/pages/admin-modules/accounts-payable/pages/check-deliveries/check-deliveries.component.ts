@@ -7,7 +7,7 @@ import { filter } from 'rxjs/operators';
 import { CheckItem } from 'src/app/core/models/Check';
 import { CheckService } from 'src/app/core/services/httpServices/check.service';
 import { FilterPipe } from 'src/app/core/shared/pipes/filterPipes/filter.pipe';
-import { AppState } from 'src/app/core/store/app.reducer';
+import { AppState } from 'src/app/store/app.reducer';
 
 @Component({
   selector: 'app-check-deliveries',

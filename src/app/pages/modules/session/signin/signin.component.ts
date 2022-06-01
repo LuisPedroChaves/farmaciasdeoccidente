@@ -4,9 +4,9 @@ import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { Subscription } from 'rxjs';
 import { CellarItem } from 'src/app/core/models/Cellar';
-import { AppState } from 'src/app/core/store/app.reducer';
+import { AppState } from 'src/app/store/app.reducer';
 import { AuthService } from '../../../../core/auth/auth.service';
-import * as actions from '../../../../core/store/actions';
+import * as actions from '../../../../store/actions';
 
 @Component({
   selector: 'app-signin',

@@ -6,7 +6,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { CustomerItem } from '../../../../../core/models/Customer';
 import { MatSort } from '@angular/material/sort';
 import { Store } from '@ngrx/store';
-import { AppState } from 'src/app/core/store/app.reducer';
+import { AppState } from 'src/app/store/app.reducer';
 import { EventBusService } from 'src/app/core/services/internal/event-bus.service';
 import { ConfigService } from 'src/app/core/services/config/config.service';
 import { MatDialog } from '@angular/material/dialog';

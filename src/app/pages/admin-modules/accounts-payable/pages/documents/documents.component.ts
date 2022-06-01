@@ -1,7 +1,6 @@
 import { Component, OnInit, ViewChild, AfterContentInit, OnDestroy } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { MatDrawer } from '@angular/material/sidenav';
-import { MatTableDataSource } from '@angular/material/table';
 import { Store } from '@ngrx/store';
 
 import { Subscription } from 'rxjs';
@@ -9,8 +8,7 @@ import { debounceTime, filter } from 'rxjs/operators';
 
 import { AccountsPayableItem } from 'src/app/core/models/AccountsPayable';
 import { AccountsPayableService } from 'src/app/core/services/httpServices/accounts-payable.service';
-import { ProviderService } from 'src/app/core/services/httpServices/provider.service';
-import { AppState } from 'src/app/core/store/app.reducer';
+import { AppState } from 'src/app/store/app.reducer';
 
 @Component({
   selector: 'app-documents',

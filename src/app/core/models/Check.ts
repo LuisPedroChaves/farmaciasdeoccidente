@@ -22,5 +22,6 @@ export interface CheckItem {
 
 export interface ICheckReceipt {
     no: string,
+    name: string,
     file: string,
 }
