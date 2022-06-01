@@ -64,6 +64,13 @@ export class CashService implements IDataService<CashItem[]> {
     )
   }
 
+  getAdmin(): Observable<CashItem[]> {
+    return this.http.get(`${this.apiConfigService.API_CASH}/admin`)
+      .pipe(
+        map((resp: any) => resp.cash)
+      )
+  }
+
   create(cash: CashItem): Observable<any> {
     return this.http.post(this.apiConfigService.API_CASH, cash);
   }
@@ -75,7 +82,7 @@ export class CashService implements IDataService<CashItem[]> {
   delete(cash: CashItem, details: string): Observable<any> {
     return this.http.delete(this.apiConfigService.API_CASH + '/' + cash._id, {
       params: new HttpParams()
-      .set('details', details.toString())
+        .set('details', details.toString())
     });
   }
 }

@@ -1,5 +1,5 @@
 <header class="header" fxLayout="row wrap" fxLayoutAlign="center center">
-    <h2 class="product-font">Pagar cheque</h2>
+    <h2 class="product-font">Entregar cheque</h2>
 </header>
 <div class="message" fxLayout="row wrap" fxLayoutAlign="center center" *ngIf="data.message">
     {{ data.message }}
@@ -8,6 +8,10 @@
     <mat-form-field fxFill>
         <mat-label>No. recibo</mat-label>
         <input matInput [(ngModel)]="noReceipt" placeholder="Ingresar el número de recibo">
+    </mat-form-field>
+    <mat-form-field fxFill>
+        <mat-label>Nombre</mat-label>
+        <input matInput [(ngModel)]="name" placeholder="Ingresar un nombre">
     </mat-form-field>
 
     <mat-form-field fxFill *ngIf="data.check && !data.check.receipt.file">
@@ -21,5 +25,5 @@
 <div fxLayout="row wrap" class="options">
     <button mat-button color="primary" (click)="dialogRef.close()">Cancelar</button>
     <span fxFlex></span>
-    <button mat-stroked-button color="primary" (click)="dialogRef.close(noReceipt)">Aceptar</button>
+    <button mat-stroked-button color="primary" (click)="dialogRef.close({noReceipt: noReceipt, name: name})">Aceptar</button>
 </div>

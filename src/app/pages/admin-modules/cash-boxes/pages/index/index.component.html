@@ -9,6 +9,12 @@
                 </mat-chip-avatar>
                 Administración
             </mat-chip>
+            <mat-chip *ngIf="searchModule('cashMyAdmin')" [routerLink]="['/admin/cash/myAdmin']" [selected]="router.url === '/admin/cash/myAdmin'" color="primary" matTooltip="Administración de cajas">
+                <mat-chip-avatar>
+                    <mat-icon>admin_panel_settings</mat-icon>
+                </mat-chip-avatar>
+                Cajas asignadas
+            </mat-chip>
             <mat-chip *ngIf="searchModule('cashIndependentBox')" [routerLink]="['/admin/cash/independentBox']" [selected]="router.url === '/admin/cash/independentBox'" color="primary" matTooltip="Mi caja independiente">
                 <mat-chip-avatar>
                     <mat-icon>point_of_sale</mat-icon>

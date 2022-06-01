@@ -11,6 +11,7 @@ import { ToastyService } from 'src/app/core/services/internal/toasty.service';
 export class EnterPaymentComponent implements OnInit {
 
   noReceipt = '';
+  name = '';
 
   constructor(
     public dialogRef: MatDialogRef<EnterPaymentComponent>, @Inject(MAT_DIALOG_DATA) public data: any,

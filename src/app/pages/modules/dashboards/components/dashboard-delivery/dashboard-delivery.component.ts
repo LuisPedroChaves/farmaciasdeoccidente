@@ -7,7 +7,7 @@ import { filter } from 'rxjs/operators';
 import { RouteItem } from 'src/app/core/models/Route';
 import { UserItem } from 'src/app/core/models/User';
 import { ToastyService } from 'src/app/core/services/internal/toasty.service';
-import { AppState } from 'src/app/core/store/app.reducer';
+import { AppState } from 'src/app/store/app.reducer';
 import { RouteService } from '../../../../../core/services/httpServices/route.service';
 import { OrderItem } from '../../../../../core/models/Order';
 import { ConfirmationDialogComponent } from 'src/app/pages/shared-components/confirmation-dialog/confirmation-dialog.component';

@@ -93,5 +93,8 @@ export class ApiConfigService {
   // cashFlow
   public API_CASH_FLOW = this.API_URL + '/cashFlow';
 
+  // cashRequisition
+  public API_CASH_REQUISITION = this.API_URL + '/cashRequisition';
+
   /* #endregion */
 }

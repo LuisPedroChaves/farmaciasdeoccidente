@@ -19,8 +19,8 @@ import { CheckTokenGuard } from './core/auth/check-token.guard';
 import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
-import { appReducers } from './core/store/app.reducer';
-import { effectsArray } from './core/store/effects';
+import { appReducers } from './store/app.reducer';
+import { effectsArray } from './store/effects';
 
 // guards
 import { AuthGuard } from './core/auth/auth.guard';

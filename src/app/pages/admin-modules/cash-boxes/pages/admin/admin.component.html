@@ -57,7 +57,7 @@
                                         </div>
                                         <p *ngIf="cash.updated">Última edición: {{ cash.updated | date: 'dd/MM/yyyy HH:mm' }}</p>
                                         <p>Creada: {{ cash.created | date: 'dd/MM/yyyy HH:mm' }}</p>
-                                        <p>Administrador: {{ cash._admin.name }}</p>
+                                        <p>Admin: <b>{{ cash._admin.name }}</b></p>
                                     </mat-card-content>
                                     <mat-card-actions *ngIf="permissions && permissions.includes('update')">
                                         <button mat-button (click)="drawer2.opened = true; editCash = cash; titleCash='Editar caja'" color="accent">Editar</button>

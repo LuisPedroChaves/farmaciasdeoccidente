@@ -55,19 +55,32 @@ export class CashFlowService implements IDataService<CashFlowItem[]> {
     }
   }
 
+  readCash(idCash: string, state: string): Observable<CashFlowItem[]> {
+    return this.http.get(`${this.apiConfigService.API_CASH_FLOW}/${idCash}`, {
+      params: new HttpParams()
+        .set('state', state)
+    })
+      .pipe(
+        map((resp: any) => resp.cashFlows)
+      )
+  }
+
   getHistory(startDate, endDate, idCash: string): Observable<any> {
     return this.http.get(`${this.apiConfigService.API_CASH_FLOW}/history/${idCash}`, {
       params: new HttpParams()
-      .set('startDate', startDate.toString())
-      .set('endDate', endDate.toString())
+        .set('startDate', startDate.toString())
+        .set('endDate', endDate.toString())
     })
       .pipe(
         map((resp: any) => resp.cashFlow)
       );
   }
 
-  create(cashFlow: CashFlowItem): Observable<any> {
-    return this.http.post(this.apiConfigService.API_CASH_FLOW, cashFlow);
+  create(cashFlow: CashFlowItem): Observable<CashFlowItem> {
+    return this.http.post(this.apiConfigService.API_CASH_FLOW, cashFlow)
+      .pipe(
+        map((resp: any) => resp.cashFlow)
+      )
   }
 
   update(cashFlow: CashFlowItem): Observable<any> {

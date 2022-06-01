@@ -9,7 +9,7 @@ import { debounceTime, filter } from 'rxjs/operators';
 import { AccountsPayableItem } from 'src/app/core/models/AccountsPayable';
 import { CheckItem } from 'src/app/core/models/Check';
 import { CheckService } from 'src/app/core/services/httpServices/check.service';
-import { AppState } from 'src/app/core/store/app.reducer';
+import { AppState } from 'src/app/store/app.reducer';
 import { FilterPipe } from '../../../../../core/shared/pipes/filterPipes/filter.pipe';
 
 @Component({

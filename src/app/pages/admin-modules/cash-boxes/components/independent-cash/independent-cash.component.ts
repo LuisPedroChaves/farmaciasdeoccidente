@@ -72,7 +72,7 @@ export class IndependentCashComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   getTotalPending(): number {
-    return this.dataSource.data.filter(d => d.state === 'SOLICITADO').length
+    return this.dataSource.data.filter(d => d.state === 'SOLICITADO' && d.expense > 0).length
   }
 
   history(startDate, endDate) {
@@ -102,7 +102,7 @@ export class IndependentCashComponent implements OnInit, OnDestroy, OnChanges {
     dialogRef.afterClosed().subscribe(result => {
       if (result !== undefined) {
         this.loading = true;
-        this.dataSource.data.filter(d => d.state === 'SOLICITADO').map(async (data) => {
+        this.dataSource.data.filter(d => d.state === 'SOLICITADO' && d.expense > 0).map(async (data) => {
           data.state = 'APROBADO';
           await this.cashFlowService.update(data).subscribe();
         })

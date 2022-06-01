@@ -8,7 +8,7 @@ import { filter } from 'rxjs/operators';
 import { Store } from '@ngrx/store';
 
 import { CellarItem } from 'src/app/core/models/Cellar';
-import { AppState } from 'src/app/core/store/app.reducer';
+import { AppState } from 'src/app/store/app.reducer';
 import { ChildrenItems, MenuItem } from 'src/app/core/models/Menu';
 import { PermissionItem } from 'src/app/core/models/Role';
 import { InternalOrderItem } from 'src/app/core/models/InternalOrder';
@@ -17,7 +17,7 @@ import { ToastyService } from 'src/app/core/services/internal/toasty.service';
 import { NotificationItem } from 'src/app/core/models/Notification';
 import { environment } from 'src/environments/environment.prod';
 import { UpdateNotificationsComponent } from 'src/app/pages/shared-components/update-notifications/update-notifications.component';
-import * as actions from '../../../core/store/actions';
+import * as actions from '../../../store/actions';
 import { CellarService } from '../../../core/services/httpServices/cellar.service';
 import { MenuService } from '../../../core/services/httpServices/menu.service';
 import { RoleService } from '../../../core/services/httpServices/role.service';

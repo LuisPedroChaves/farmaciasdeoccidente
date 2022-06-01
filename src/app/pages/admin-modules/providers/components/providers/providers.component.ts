@@ -16,7 +16,7 @@ import { ProviderItem } from 'src/app/core/models/Provider';
 import { ConfigService } from 'src/app/core/services/config/config.service';
 import { ProviderService } from 'src/app/core/services/httpServices/provider.service';
 import { EventBusService } from 'src/app/core/services/internal/event-bus.service';
-import { AppState } from 'src/app/core/store/app.reducer';
+import { AppState } from 'src/app/store/app.reducer';
 import { EditProviderComponent } from '../edit-provider/edit-provider.component';
 import { NewProviderComponent } from '../new-provider/new-provider.component';
 

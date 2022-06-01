@@ -35,6 +35,7 @@
 
     { "name": "cash", "label": "Cajas", "parent": "ADMIN", "level": 1, "options": ["read", "update", "delete", "create"] },
     { "name": "cashAdmin", "label": "Administración", "parent": "cash", "level": 2, "options": ["read", "update", "delete", "create"] },
+    { "name": "cashMyAdmin", "label": "Cajas Asignadas", "parent": "cash", "level": 2, "options": ["read", "update", "delete", "create"] },
     { "name": "cashIndependentBox", "label": "Caja Independiente", "parent": "cash", "level": 2, "options": ["read", "update", "delete", "create"] },
     { "name": "cashAccountingBox", "label": "Caja Contable", "parent": "cash", "level": 2, "options": ["read", "update", "delete", "create"] },
 

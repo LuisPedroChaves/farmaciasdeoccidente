@@ -23,7 +23,7 @@ export class NewCheckComponent implements OnInit, OnChanges {
 
   form = new FormGroup({
     no: new FormControl('', Validators.required),
-    city: new FormControl('', Validators.required),
+    city: new FormControl('Huehuetenango', Validators.required),
     date: new FormControl('', Validators.required),
     name: new FormControl({
       value: '',
@@ -77,7 +77,6 @@ export class NewCheckComponent implements OnInit, OnChanges {
       .subscribe(resp => {
         this.toastyService.success('Cheque creado exitosamente')
         this.accountsPayableService.loadData();
-        this.checkService.print(resp.check)
         this.close.emit()
         this.form.reset({
           no: '',

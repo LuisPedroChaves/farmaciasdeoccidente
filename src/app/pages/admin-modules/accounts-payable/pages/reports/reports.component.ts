@@ -3,7 +3,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
-import { AppState } from 'src/app/core/store/app.reducer';
+import { AppState } from 'src/app/store/app.reducer';
 
 @Component({
   selector: 'app-reports',

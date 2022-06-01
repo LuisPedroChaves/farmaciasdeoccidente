@@ -10,7 +10,7 @@ import { Store } from '@ngrx/store';
 
 import { CellarItem } from 'src/app/core/models/Cellar';
 import { OrderItem } from 'src/app/core/models/Order';
-import { AppState } from 'src/app/core/store/app.reducer';
+import { AppState } from 'src/app/store/app.reducer';
 import { OrderService } from '../../../../../core/services/httpServices/order.service';
 import { ToastyService } from '../../../../../core/services/internal/toasty.service';
 import { DetailsQuotesComponent } from '../../../../shared/components/details-quotes/details-quotes.component';

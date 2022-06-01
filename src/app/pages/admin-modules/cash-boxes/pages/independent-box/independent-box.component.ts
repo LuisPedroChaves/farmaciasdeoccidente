@@ -5,7 +5,7 @@ import { Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
 import { CashItem } from 'src/app/core/models/Cash';
 import { CashService } from 'src/app/core/services/httpServices/cash.service';
-import { AppState } from 'src/app/core/store/app.reducer';
+import { AppState } from 'src/app/store/app.reducer';
 
 @Component({
   selector: 'app-independent-box',

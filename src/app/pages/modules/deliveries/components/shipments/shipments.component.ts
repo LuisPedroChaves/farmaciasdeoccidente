@@ -7,7 +7,7 @@ import { combineLatest } from 'rxjs';
 import { OrderItem } from 'src/app/core/models/Order';
 import { CellarItem } from 'src/app/core/models/Cellar';
 import { Store } from '@ngrx/store';
-import { AppState } from 'src/app/core/store/app.reducer';
+import { AppState } from 'src/app/store/app.reducer';
 import { OrderService } from 'src/app/core/services/httpServices/order.service';
 import { InternalOrderItem } from 'src/app/core/models/InternalOrder';
 import { InternalOrderService } from 'src/app/core/services/httpServices/internal-order.service';

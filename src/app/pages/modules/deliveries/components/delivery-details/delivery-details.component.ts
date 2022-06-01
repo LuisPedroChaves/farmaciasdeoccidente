@@ -8,7 +8,7 @@ import { debounceTime, filter } from 'rxjs/operators';
 import { Store } from '@ngrx/store';
 
 import { ToastyService } from 'src/app/core/services/internal/toasty.service';
-import { AppState } from 'src/app/core/store/app.reducer';
+import { AppState } from 'src/app/store/app.reducer';
 import { CellarItem } from 'src/app/core/models/Cellar';
 import { UserService } from 'src/app/core/services/httpServices/user.service';
 import { RouteService } from 'src/app/core/services/httpServices/route.service';

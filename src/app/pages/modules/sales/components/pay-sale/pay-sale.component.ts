@@ -3,7 +3,7 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Store } from '@ngrx/store';
 import { Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
-import { AppState } from 'src/app/core/store/app.reducer';
+import { AppState } from 'src/app/store/app.reducer';
 import { SaleBalanceItem } from '../../../../../core/models/Sale';
 import { SaleService } from '../../../../../core/services/httpServices/sale.service';
 import { UploadFileService } from '../../../../../core/services/httpServices/upload-file.service';

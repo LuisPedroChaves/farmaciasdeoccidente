@@ -12,7 +12,7 @@ import { CellarItem } from 'src/app/core/models/Cellar';
 import { SaleItem } from 'src/app/core/models/Sale';
 import { SaleService } from 'src/app/core/services/httpServices/sale.service';
 import { ToastyService } from 'src/app/core/services/internal/toasty.service';
-import { AppState } from 'src/app/core/store/app.reducer';
+import { AppState } from 'src/app/store/app.reducer';
 import { ConfirmationDialogComponent } from 'src/app/pages/shared-components/confirmation-dialog/confirmation-dialog.component';
 import { PaySaleComponent } from '../pay-sale/pay-sale.component';
 

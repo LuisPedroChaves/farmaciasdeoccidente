@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 import { Subscription } from 'rxjs';
 import { Store } from '@ngrx/store';
-import { AppState } from 'src/app/core/store/app.reducer';
+import { AppState } from 'src/app/store/app.reducer';
 import { ToastyService } from '../../../../../core/services/internal/toasty.service';
 import { OrderItem } from '../../../../../core/models/Order';
 import { CellarItem } from 'src/app/core/models/Cellar';
