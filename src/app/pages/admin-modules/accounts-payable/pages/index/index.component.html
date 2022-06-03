@@ -15,6 +15,12 @@
                 </mat-chip-avatar>
                 Documentos
             </mat-chip>
+            <mat-chip *ngIf="searchModule('accountsPyabaleBanks')" [routerLink]="['/admin/accountsPayable/banks']" [selected]="router.url === '/admin/accountsPayable/banks'" color="primary" matTooltip="Cuentas bancarias">
+                <mat-chip-avatar>
+                    <mat-icon>account_balance</mat-icon>
+                </mat-chip-avatar>
+                Bancos
+            </mat-chip>
             <mat-chip *ngIf="searchModule('accountsPyabaleChecks')" [routerLink]="['/admin/accountsPayable/cheques']" [selected]="router.url === '/admin/accountsPayable/cheques'" color="primary">
                 <mat-chip-avatar>
                     <mat-icon>local_atm</mat-icon>

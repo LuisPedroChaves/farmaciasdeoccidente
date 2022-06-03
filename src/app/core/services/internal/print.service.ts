@@ -34,7 +34,7 @@ export class PrintService {
     const printpage = {
       pageSize: 'LETTER',
       pageOrientation: 'portrait',
-      pageMargins: [127.559, 48.189, 0, 0],
+      pageMargins: [119.055, 51.0236, 0, 0],
       content: [],
       styles: this.style
     };
@@ -51,6 +51,19 @@ export class PrintService {
       pageMargins: [20, 20, 20, 35],
       content: [],
       styles: this.style
+    };
+    printpage.content = body;
+    setTimeout(t => {
+      pdfMake.createPdf(printpage).print();
+    }, 500);
+  }
+
+  printPortrait(body: any) {
+    const printpage = {
+      pageOrientation: 'portrait',
+      pageMargins: [ 40, 40, 40, 70 ],
+      content: [],
+      styles:  this.style
     };
     printpage.content = body;
     setTimeout(t => {

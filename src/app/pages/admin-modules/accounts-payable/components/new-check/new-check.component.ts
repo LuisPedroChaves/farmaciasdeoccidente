@@ -1,6 +1,12 @@
-import { Component, OnInit, Input, OnChanges, SimpleChanges, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, OnChanges, SimpleChanges, Output, EventEmitter, OnDestroy } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 
+import { Store } from '@ngrx/store';
+import { Subscription } from 'rxjs';
+import * as moment from 'moment';
+
+import { BankAccountItem } from 'src/app/core/models/Bank';
+import { BankStore } from 'src/app/store/reducers/bank.reducer';
 import { CheckService } from '../../../../../core/services/httpServices/check.service';
 import { AccountsPayableItem } from '../../../../../core/models/AccountsPayable';
 import { ToastyService } from '../../../../../core/services/internal/toasty.service';
@@ -12,7 +18,7 @@ import { AccountsPayableService } from '../../../../../core/services/httpService
   templateUrl: './new-check.component.html',
   styleUrls: ['./new-check.component.scss']
 })
-export class NewCheckComponent implements OnInit, OnChanges {
+export class NewCheckComponent implements OnInit, OnChanges, OnDestroy {
 
   @Input() name = '';
   @Input() amount = 0;
@@ -22,9 +28,10 @@ export class NewCheckComponent implements OnInit, OnChanges {
   loading = false;
 
   form = new FormGroup({
+    _bankAccount: new FormControl(null, Validators.required),
     no: new FormControl('', Validators.required),
     city: new FormControl('Huehuetenango', Validators.required),
-    date: new FormControl('', Validators.required),
+    date: new FormControl(moment(), Validators.required),
     name: new FormControl({
       value: '',
       disabled: true
@@ -38,13 +45,25 @@ export class NewCheckComponent implements OnInit, OnChanges {
     state: new FormControl('CREADO', Validators.required),
   });
 
+  bankStoreSubscription: Subscription;
+  bankAccounts: BankAccountItem[] = [];
+
   constructor(
+    private store: Store<BankStore>,
     private checkService: CheckService,
     private toastyService: ToastyService,
     private accountsPayableService: AccountsPayableService
   ) { }
 
   ngOnInit(): void {
+    this.bankStoreSubscription = this.store.select('Bank')
+      .subscribe(state => {
+        this.bankAccounts = state.bankAccounts
+      });
+  }
+
+  ngOnDestroy(): void {
+      this.bankStoreSubscription?.unsubscribe()
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -62,6 +81,7 @@ export class NewCheckComponent implements OnInit, OnChanges {
       return
     }
     const CHECK: CheckItem = {
+      _bankAccount: this.form.controls._bankAccount.value,
       no: this.form.controls.no.value,
       city: this.form.controls.city.value,
       date: this.form.controls.date.value,

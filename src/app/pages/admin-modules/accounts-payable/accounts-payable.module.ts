@@ -2,6 +2,8 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 
+import { StoreModule } from '@ngrx/store';
+import { EffectsModule } from '@ngrx/effects';
 import { CoreModule } from 'src/app/core/core.module';
 import { IndexComponent } from './pages/index/index.component';
 import { SharedComponentsModule } from '../../shared-components/shared-components.module';
@@ -28,6 +30,11 @@ import { TableAccountsPayableComponent } from './components/table-accounts-payab
 import { TimeFormatPipe } from 'src/app/core/shared/pipes/timePipes/time-format.pipe';
 import { ReportProviderComponent } from './components/report-provider/report-provider.component';
 import { ReportGlobalExpenseComponent } from './components/report-global-expense/report-global-expense.component';
+import { BanksComponent } from './pages/banks/banks.component';
+import { BankReducer } from 'src/app/store/reducers/bank.reducer';
+import { NewBankComponent } from './components/new-bank/new-bank.component';
+import { BankEffects } from 'src/app/store/effects/bank.effects';
+import { NewBankAccountComponent } from './components/new-bank-account/new-bank-account.component';
 
 @NgModule({
   declarations: [
@@ -50,11 +57,16 @@ import { ReportGlobalExpenseComponent } from './components/report-global-expense
     TableAccountsPayableComponent,
     ReportProviderComponent,
     ReportGlobalExpenseComponent,
+    BanksComponent,
+    NewBankComponent,
+    NewBankAccountComponent,
 
   ],
   imports: [
     CommonModule,
     RouterModule.forChild(AccountsPayableRoutes),
+    StoreModule.forFeature('Bank', BankReducer),
+    EffectsModule.forFeature([BankEffects]),
     SharedComponentsModule,
     InputsModule,
     ComponentsModule,

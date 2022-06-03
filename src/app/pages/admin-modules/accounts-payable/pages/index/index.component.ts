@@ -6,7 +6,8 @@ import { Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
 
 import { PermissionItem } from 'src/app/core/models/Role';
-import { AppState } from 'src/app/store/app.reducer';
+import { READ_BANK_ACCOUNTS } from 'src/app/store/actions';
+import { BankStore } from '../../../../../store/reducers/bank.reducer';
 
 @Component({
   selector: 'app-index',
@@ -20,7 +21,7 @@ export class IndexComponent implements OnInit, OnDestroy {
 
   constructor(
     public router: Router,
-    public store: Store<AppState>,
+    public store: Store<BankStore>,
   ) { }
 
   ngOnInit(): void {
@@ -31,6 +32,7 @@ export class IndexComponent implements OnInit, OnDestroy {
         const MODULE_TYPES = {
           'accountsPyabaleProviders': () => this.router.navigate(['/admin/accountsPayable']),
           'accountsPyabaleDocuments': () => this.router.navigate(['/admin/accountsPayable/documents']),
+          'accountsPyabaleBanks': () => this.router.navigate(['/admin/accountsPayable/banks']),
           'accountsPyabaleChecks': () => this.router.navigate(['/admin/accountsPayable/cheques']),
           'accountsPyabaleCheckDeliveries': () => this.router.navigate(['/admin/accountsPayable/checkDeliveries']),
           'accountsPyabaleReports': () => this.router.navigate(['/admin/accountsPayable/reports']),

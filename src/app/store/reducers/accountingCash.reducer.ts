@@ -11,7 +11,7 @@ export interface State {
     requisitions: CashFlowItem[]
 }
 
-export interface AppAccountingCash extends AppState {
+export interface AccountingCashStore extends AppState {
     AccountingCash: State
 }
 

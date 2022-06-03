@@ -1,5 +1,5 @@
 import { SelectionModel } from '@angular/cdk/collections';
-import { Component, EventEmitter, Input, OnInit, Output, SimpleChanges, OnChanges } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, SimpleChanges, OnChanges, OnDestroy } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { MatTableDataSource } from '@angular/material/table';
 import { Store } from '@ngrx/store';
@@ -11,22 +11,25 @@ import { CashFlowItem } from 'src/app/core/models/CashFlow';
 import { CashFlowService } from 'src/app/core/services/httpServices/cash-flow.service';
 import { CashRequisitionService } from 'src/app/core/services/httpServices/cash-requisition.service';
 import { ToastyService } from 'src/app/core/services/internal/toasty.service';
-import { AppAccountingCash } from 'src/app/store/reducers';
+import { AccountingCashStore } from 'src/app/store/reducers';
 import * as actions from 'src/app/store/actions/accountingCash.actions';
+import { PrintService } from 'src/app/core/services/internal/print.service';
 import { CashRequisitionItem } from '../../../../../core/models/CashRequisition';
+import { TimeFormatPipe } from 'src/app/core/shared/pipes/timePipes/time-format.pipe';
 
 @Component({
   selector: 'app-accounting-cash',
   templateUrl: './accounting-cash.component.html',
   styleUrls: ['./accounting-cash.component.scss']
 })
-export class AccountingCashComponent implements OnInit, OnChanges {
+export class AccountingCashComponent implements OnInit, OnChanges, OnDestroy {
 
   @Input() currentCash: CashItem;
   @Input() isAdmin: boolean = false;
   @Input() permissions: string[] = [];
   @Output() close = new EventEmitter();
 
+  accountingCashSubscription: Subscription;
   cashFlowSubscription: Subscription;
   displayedColumns: string[] = ['document', 'details', 'state', 'income', 'outflow', 'balance', 'actions'];
   dataSource = new MatTableDataSource<CashFlowItem>([]);
@@ -59,9 +62,11 @@ export class AccountingCashComponent implements OnInit, OnChanges {
 
   constructor(
     private cashFlowService: CashFlowService,
-    private store: Store<AppAccountingCash>,
+    private store: Store<AccountingCashStore>,
     private toastyService: ToastyService,
-    private cashRequisitionService: CashRequisitionService
+    private cashRequisitionService: CashRequisitionService,
+    private printService: PrintService,
+    private timeFormat: TimeFormatPipe,
   ) { }
 
   ngOnInit(): void {
@@ -69,7 +74,7 @@ export class AccountingCashComponent implements OnInit, OnChanges {
       this.dataSource = new MatTableDataSource<CashFlowItem>(data);
     });
 
-    this.store.select('AccountingCash')
+    this.accountingCashSubscription = this.store.select('AccountingCash')
       .subscribe(state => {
         this.totalPending = state.pendings.length
         this.pendingSource = new MatTableDataSource<CashFlowItem>(state.pendings);
@@ -98,6 +103,10 @@ export class AccountingCashComponent implements OnInit, OnChanges {
     }
   }
 
+  ngOnDestroy(): void {
+    this.accountingCashSubscription?.unsubscribe();
+  }
+
   createRequisition() {
     if (this.selection.selected.length === 0) {
       this.toastyService.error('No hay movimientos seleccionados')
@@ -116,6 +125,7 @@ export class AccountingCashComponent implements OnInit, OnChanges {
     this.cashRequisitionService.create(NEW_CASH_REQUISITION)
       .subscribe(resp => {
         this.toastyService.success('Requisición creada correctamente')
+        this.printReport(this.selection.selected)
         this.store.dispatch(actions.PENDINGS_TO_REQUSITIONS({ cashFlows: this.selection.selected }))
         this.loading = false
       })
@@ -128,6 +138,61 @@ export class AccountingCashComponent implements OnInit, OnChanges {
         this.dataSource2 = new MatTableDataSource<CashFlowItem>(data);
         this.loading = false;
       })
+  }
+
+  printReport(cashFlows: CashFlowItem[]) {
+    const body = [];
+    body.push({ text: 'GRUPO DE NEGOCIOS TEL S.A', style: ['header'] });
+    body.push({ text: 'Empresa', style: ['subheader'] });
+    body.push({ text: '\n' });
+
+    const ArrayToPrint: any[] = [];
+    const printColumns: any[] = [
+      { text: 'FECHA', style: 'cellHeader' },
+      { text: 'SERIE', style: 'cellHeader' },
+      { text: 'NUMERO', style: 'cellHeader' },
+      { text: 'DESCRIPCION', style: 'cellHeader' },
+      { text: 'TOTAL', style: 'cellHeader' },
+    ];
+    ArrayToPrint.push(printColumns);
+
+    const rowArray: any[] = [];
+    cashFlows.forEach((c) => {
+      const FORMAT_DATE = this.timeFormat.transform(
+        c.date.toString(),
+        'DD/MM/YYYY',
+        'es'
+      );
+      const ROW: string[] = [
+        FORMAT_DATE,
+        c.serie,
+        c.noBill,
+        c.details,
+        `Q ${c.expense.toFixed(2)}`,
+      ];
+      rowArray.push(ROW);
+    });
+
+    rowArray.forEach((row) => {
+      ArrayToPrint.push(row);
+    });
+
+    body.push({
+      style: 'cellMetrics',
+      table: {
+        widths: [
+          '*',
+          '*',
+          '*',
+          227,
+          '*',
+        ],
+        headerRows: 1,
+        body: ArrayToPrint,
+      },
+    });
+
+    this.printService.printPortrait(body);
   }
 
   /* #region  SELECTION TABLE */

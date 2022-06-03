@@ -96,5 +96,12 @@ export class ApiConfigService {
   // cashRequisition
   public API_CASH_REQUISITION = this.API_URL + '/cashRequisition';
 
+  // bank
+  public API_BANK = `${this.API_URL}/bank`
+  // bankAccount
+  public API_BANK_ACCOUNT = `${this.API_URL}/bankAccount`
+  // bankFlow
+  public API_BANK_FLOW = `${this.API_URL}/bankFlow`
+
   /* #endregion */
 }

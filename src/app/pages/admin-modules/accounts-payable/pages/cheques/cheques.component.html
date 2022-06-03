@@ -32,6 +32,16 @@
         <mat-progress-bar *ngIf="loading" mode="indeterminate" color="warn"></mat-progress-bar>
         <app-no-found *ngIf="permissions && !permissions.includes('read')" text="Acceso Denegado" subtitle="Actualmente no cuenta con permisos para acceder a este apartado"></app-no-found>
         <mat-tab-group mat-align-tabs="center" *ngIf="permissions && permissions.includes('read')">
+            <mat-tab [label]="'Sin fecha (' + checksCreated.length + ')'">
+                <ngx-simplebar class="content">
+                    <app-no-found *ngIf="!checksCreated || checksCreated.length === 0" text="No se encontraron cheques" subtitle="Actualmente no hay cheques con fecha pendiente"></app-no-found>
+                    <div fxLayout="row wrap" fxLayoutGap="15px grid" class="grid">
+                        <div fxFlex.gt-lg="20" fxFlex.gt-md="33" fxFlex.gt-sm="50" fxFlex.lt-md="100" *ngFor="let check of checksCreated; let i = index">
+                            <app-check (sendId)="getVoided($event)" [i]="i" [check]="check" [permissions]="permissions"></app-check>
+                        </div>
+                    </div>
+                </ngx-simplebar>
+            </mat-tab>
             <mat-tab [label]="'Del día (' + checksToday.length + ')'">
                 <ngx-simplebar class="content">
                     <app-no-found *ngIf="!checksToday || checksToday.length === 0" text="No se encontraron cheques" subtitle="Actualmente no hay cheques para el día de hoy"></app-no-found>
@@ -42,11 +52,11 @@
                     </div>
                 </ngx-simplebar>
             </mat-tab>
-            <mat-tab [label]="'Girados (' + checksCreated.length + ')'">
+            <mat-tab [label]="'Girados (' + checksUpdated.length + ')'">
                 <ngx-simplebar class="content">
-                    <app-no-found *ngIf="!checksCreated || checksCreated.length === 0" text="No se encontraron cheques" subtitle="Actualmente no hay cheques girados"></app-no-found>
+                    <app-no-found *ngIf="!checksUpdated || checksUpdated.length === 0" text="No se encontraron cheques" subtitle="Actualmente no hay cheques girados"></app-no-found>
                     <div fxLayout="row wrap" fxLayoutGap="15px grid" class="grid">
-                        <div fxFlex.gt-lg="20" fxFlex.gt-md="33" fxFlex.gt-sm="50" fxFlex.lt-md="100" *ngFor="let check of checksCreated; let i = index">
+                        <div fxFlex.gt-lg="20" fxFlex.gt-md="33" fxFlex.gt-sm="50" fxFlex.lt-md="100" *ngFor="let check of checksUpdated; let i = index">
                             <app-check (sendId)="getVoided($event)" [i]="i" [check]="check" [permissions]="permissions"></app-check>
                         </div>
                     </div>

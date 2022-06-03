@@ -3,8 +3,8 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 
 import { Observable, Subscription } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
+import * as moment from 'moment';
 import { CellarItem } from 'src/app/core/models/Cellar';
-
 import { CustomerItem } from 'src/app/core/models/Customer';
 import { UserItem } from 'src/app/core/models/User';
 import { CustomerService } from 'src/app/core/services/httpServices/customer.service';
@@ -32,7 +32,7 @@ export class NewSaleComponent implements OnInit, AfterContentInit, OnDestroy {
     _cellar: new FormControl(null,),
     _customer: new FormControl(null),
     _seller: new FormControl(null, [Validators.required]),
-    date: new FormControl(new Date(), [Validators.required]),
+    date: new FormControl(moment(), [Validators.required]),
     noBill: new FormControl(null, [Validators.required]),
     total: new FormControl('', [Validators.required]),
   });
