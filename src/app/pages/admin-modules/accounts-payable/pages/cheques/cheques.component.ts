@@ -55,10 +55,12 @@ export class ChequesComponent implements OnInit, AfterContentInit, OnDestroy {
   /* #endregion */
   loading = false;
   checkSubscription: Subscription;
-  checksToday: CheckItem[] = [];
-  checksTodayTemp: CheckItem[] = [];
   checksCreated: CheckItem[] = [];
   checksCreatedTemp: CheckItem[] = [];
+  checksToday: CheckItem[] = [];
+  checksTodayTemp: CheckItem[] = [];
+  checksUpdated: CheckItem[] = [];
+  checksUpdatedTemp: CheckItem[] = [];
   checksInter: CheckItem[] = [];
   checksInterTemp: CheckItem[] = [];
   checksWait: CheckItem[] = [];
@@ -97,6 +99,8 @@ permissions: string[] = [];
     this.checkSubscription = this.checkService.readData().subscribe((data) => {
       this.checksCreatedTemp = data.filter(d => d.state === "CREADO");
       this.checksCreated = this.checksCreatedTemp;
+      this.checksUpdatedTemp = data.filter(d => d.state === "ACTUALIZADO");
+      this.checksUpdated = this.checksUpdatedTemp;
       this.checksInterTemp = data.filter(d => d.state === "INTERBANCO");
       this.checksInter = this.checksInterTemp;
       this.checksWaitTemp = data.filter(d => d.state === "ESPERA");
@@ -136,6 +140,7 @@ permissions: string[] = [];
   applyFilter(text: string): void {
     this.checksToday = this.filter.transform(this.checksTodayTemp, text, ['no', 'date', 'name', 'amount', 'note']);
     this.checksCreated = this.filter.transform(this.checksCreatedTemp, text, ['no', 'date', 'name', 'amount', 'note']);
+    this.checksUpdated = this.filter.transform(this.checksUpdatedTemp, text, ['no', 'date', 'name', 'amount', 'note']);
     this.checksInter = this.filter.transform(this.checksInterTemp, text, ['no', 'date', 'name', 'amount', 'note']);
     this.checksWait = this.filter.transform(this.checksWaitTemp, text, ['no', 'date', 'name', 'amount', 'note']);
     this.checksAuth = this.filter.transform(this.checksAuthTemp, text, ['no', 'date', 'name', 'amount', 'note']);

@@ -5,7 +5,7 @@ import { Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
 import { CashItem } from 'src/app/core/models/Cash';
 import { READ_CASH } from 'src/app/store/actions';
-import { AppAccountingCash } from 'src/app/store/reducers/accountingCash.reducer';
+import { AccountingCashStore } from 'src/app/store/reducers/accountingCash.reducer';
 
 @Component({
   selector: 'app-accounting-box',
@@ -16,16 +16,17 @@ export class AccountingBoxComponent implements OnInit, OnDestroy {
 
   currentCash: CashItem;
 
+  accountingCashSubscription: Subscription;
   sessionSubscription: Subscription;
   permissions: string[] = [];
 
   constructor(
-    public store: Store<AppAccountingCash>,
+    public store: Store<AccountingCashStore>,
   ) { }
 
   ngOnInit(): void {
 
-    this.store.select('AccountingCash')
+    this.accountingCashSubscription = this.store.select('AccountingCash')
       .pipe(
         filter(accountingCash => accountingCash.cash !== null),
       )
@@ -44,6 +45,7 @@ export class AccountingBoxComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
+    this.accountingCashSubscription?.unsubscribe();
     this.sessionSubscription?.unsubscribe();
   }
 

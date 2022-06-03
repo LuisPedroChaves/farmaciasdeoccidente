@@ -20,6 +20,7 @@ import { IndependentCashComponent } from './components/independent-cash/independ
 import { AccountingCashComponent } from './components/accounting-cash/accounting-cash.component';
 import { NewCashFlowComponent } from './components/new-cash-flow/new-cash-flow.component';
 import { MyAdminComponent } from './pages/my-admin/my-admin.component';
+import { TimeFormatPipe } from 'src/app/core/shared/pipes/timePipes/time-format.pipe';
 
 @NgModule({
   declarations: [
@@ -41,6 +42,9 @@ import { MyAdminComponent } from './pages/my-admin/my-admin.component';
     SharedComponentsModule,
     ComponentsModule,
     InputsModule,
+  ],
+  providers: [
+    TimeFormatPipe
   ]
 })
 export class CashBoxesModule { }

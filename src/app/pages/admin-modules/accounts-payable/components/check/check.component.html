@@ -1,6 +1,7 @@
 <mat-card class="mat-elevation-z0" [ngClass]="{'mat-elevation-z4': i === indexHovered}" (mouseenter)="indexHovered = i" (mouseleave)="indexHovered = -1">
     <mat-card-header>
         <mat-icon matCardAvatar *ngIf="check.state === 'CREADO'">local_atm</mat-icon>
+        <mat-icon matCardAvatar *ngIf="check.state === 'ACTUALIZADO'">local_atm</mat-icon>
         <mat-icon matCardAvatar *ngIf="check.state === 'INTERBANCO'" color="accent">local_atm</mat-icon>
         <mat-icon matCardAvatar *ngIf="check.state === 'ESPERA'" color="primary">local_atm</mat-icon>
         <mat-icon matCardAvatar *ngIf="check.state === 'AUTORIZADO'" color="warn">local_atm</mat-icon>
@@ -11,6 +12,7 @@
         <span fxFlex></span>
         <mat-chip-list>
             <mat-chip *ngIf="check.state === 'CREADO'">Creado</mat-chip>
+            <mat-chip *ngIf="check.state === 'ACTUALIZADO'">Actualizado</mat-chip>
             <mat-chip *ngIf="check.state === 'INTERBANCO'" color="accent" selected>Interbanco</mat-chip>
             <mat-chip *ngIf="check.state === 'ESPERA'" color="primary" selected>Espera</mat-chip>
             <mat-chip *ngIf="check.state === 'AUTORIZADO'" color="warn" selected>Autorizado</mat-chip>
@@ -39,11 +41,18 @@
         <span> <span fxFlex></span>
         <b>Q{{ check.amount | number: '.2' }}</b>
         </span>
+        <mat-form-field *ngIf="!isDelivery && check.state === 'CREADO'" fxFill appearance="outline" color="accent">
+            <mat-label>Asignar fecha</mat-label>
+            <input matInput [matDatepicker]="picker" [formControl]="newDate" title="Nueva Fecha" placeholder="Ingrese una fecha">
+            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
+        </mat-form-field>
     </mat-card-content>
     <mat-card-actions>
         <button mat-button *ngIf="isDelivery" (click)="delivery(check)" color="accent">Entregar</button>
         <ng-container *ngIf="!isDelivery">
-            <button mat-button *ngIf="check.state === 'CREADO'" (click)="update(check, 'INTERBANCO', 'Ingresar')" color="accent">Interbanco</button>
+            <button mat-button *ngIf="check.state === 'CREADO'" (click)="update(check, 'ACTUALIZADO', 'Actualizar')" color="accent">Actualizar</button>
+            <button mat-button *ngIf="check.state === 'ACTUALIZADO'" (click)="update(check, 'INTERBANCO', 'Ingresar')" color="accent">Interbanco</button>
             <button mat-button *ngIf="check.state === 'INTERBANCO'" (click)="update(check, 'ESPERA', 'Aprobar')" color="primary">Aprobado</button>
             <button mat-button *ngIf="check.state === 'ESPERA'" (click)="update(check, 'AUTORIZADO', 'Autorizar')" color="warn">Autorizar</button>
             <button mat-button *ngIf="check.state === 'AUTORIZADO'" (click)="update(check, 'PAGADO', 'Pagar')" color="warn">PAGAR</button>
@@ -51,7 +60,7 @@
             <button mat-button *ngIf="check.state !== 'PAGADO' && check.state !== 'RECHAZADO'" (click)="void(check)">Anular</button>
         </ng-container>
         <span fxFlex></span>
-        <button mat-mini-fab *ngIf="check.state === 'CREADO' && !isDelivery" (click)="checkService.print(check)">
+        <button mat-mini-fab *ngIf="check.state === 'ACTUALIZADO' && !isDelivery" (click)="checkService.print(check)">
             <mat-icon>print</mat-icon>
           </button>
     </mat-card-actions>

@@ -7,7 +7,7 @@ import { filter } from 'rxjs/operators';
 
 import { PermissionItem } from 'src/app/core/models/Role';
 import { READ_CASH } from 'src/app/store/actions/accountingCash.actions';
-import { AppAccountingCash } from 'src/app/store/reducers/accountingCash.reducer';
+import { AccountingCashStore } from 'src/app/store/reducers/accountingCash.reducer';
 
 @Component({
   selector: 'app-index',
@@ -21,7 +21,7 @@ export class IndexComponent implements OnInit, OnDestroy {
 
   constructor(
     public router: Router,
-    public store: Store<AppAccountingCash>,
+    public store: Store<AccountingCashStore>,
   ) { }
 
   ngOnInit(): void {

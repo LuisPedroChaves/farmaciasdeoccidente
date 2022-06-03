@@ -1,4 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { FormControl } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 
 import { CheckItem } from 'src/app/core/models/Check';
@@ -27,6 +28,8 @@ export class CheckComponent implements OnInit {
 
   indexHovered = -1;
 
+  newDate = new FormControl();
+
   constructor(
     public checkService: CheckService,
     private toastyService: ToastyService,
@@ -34,6 +37,10 @@ export class CheckComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    this.newDate.valueChanges
+      .subscribe(date => {
+        this.check.date = date;
+      })
   }
 
   delivery(check: CheckItem): void {

@@ -1,0 +1,135 @@
+<mat-drawer-container>
+    <mat-drawer #drawer class="sidenav" mode="over">
+        <app-new-bank *ngIf="drawerComponent === 'NEW_BANK'"></app-new-bank>
+        <app-new-bank-account *ngIf="drawerComponent === 'NEW_BANK_ACCOUNT'"></app-new-bank-account>
+    </mat-drawer>
+    <ngx-simplebar class="my-layout" fxLayoutGap.lt-md="15px">
+        <header fxLayout="row wrap" fxLayoutAlign="space-between center">
+            <button mat-fab *ngIf="permissions && permissions.includes('create')" color="warn" [matMenuTriggerFor]="payablesMenu" matTooltip="Crear">
+        <mat-icon>add</mat-icon>
+      </button>
+            <mat-menu #payablesMenu="matMenu" xPosition="before">
+                <button mat-menu-item (click)="openDrawer('Crear nueva cuenta bancaria', 'NEW_BANK_ACCOUNT')">
+          <mat-icon>account_balance_wallet</mat-icon>
+          <span>Cuenta</span>
+        </button>
+                <button mat-menu-item (click)="openDrawer('Crear nuevo banco', 'NEW_BANK')">
+          <mat-icon>account_balance</mat-icon>
+          <span>Banco</span>
+        </button>
+            </mat-menu>
+            <div *ngIf="bankAccount" fxFlex.gt-sm="50%" fxFlex.lt-md="100%">
+                <mat-card>
+                    <mat-card-header fxLayout="row wrap">
+                        <img matCardAvatar [src]="bankAccount._bank.image | file: 'banks'">
+                        <mat-card-title>Q{{ bankAccount.balance | number: '.2' }}</mat-card-title>
+                        <mat-card-subtitle>{{bankAccount.type }}</mat-card-subtitle>
+                        <mat-form-field fxFlex appearance="outline" color="accent">
+                            <mat-select [(value)]="currentBankAccount" (selectionChange)="changeAccount()">
+                                <mat-option *ngFor="let account of bankAccounts" [value]="account._id">
+                                    {{ account.no }} - {{ account.name}}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </mat-card-header>
+                </mat-card>
+            </div>
+        </header>
+        <app-no-found *ngIf="permissions && !permissions.includes('read')" text="Acceso Denegado" subtitle="Actualmente no cuenta con permisos para acceder a este apartado"></app-no-found>
+        <app-no-found *ngIf="!bankAccount" text="Ninguna cuenta seleccionada" subtitle="Por favor seleccione o ingrese una cuenta bancaria"></app-no-found>
+        <ng-container *ngIf="permissions && permissions.includes('read') && bankAccount">
+            <mat-tab-group mat-align-tabs="center">
+                <mat-tab label="Movimientos">
+                    <ngx-simplebar class="content">
+                        <div fxLayout="row wrap" fxLayoutGap="10px" class="headerFlows">
+                            <div fxFlex>
+                                <mat-form-field appearance="outline">
+                                    <mat-label>Introduzca un rango de fechas</mat-label>
+                                    <mat-date-range-input [formGroup]="range" [rangePicker]="picker">
+                                        <input matStartDate formControlName="start" placeholder="Fecha de inicio">
+                                        <input matEndDate formControlName="end" placeholder="Fecha de finalización">
+                                    </mat-date-range-input>
+                                    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                                    <mat-date-range-picker #picker></mat-date-range-picker>
+                                    <mat-error *ngIf="range.get('start').hasError('matStartDateInvalid')">Fecha de inicio no válida
+                                    </mat-error>
+                                    <mat-error *ngIf="range.controls.end.hasError('matEndDateInvalid')">Fecha de finalización no válida
+                                    </mat-error>
+                                </mat-form-field>
+                            </div>
+                            <!-- <div fxFlex></div> -->
+                            <div fxFlex fxLayoutAlign="end center" fxLayoutGap="10px">
+                                <app-filter (send)="applyFilter($event)" placeholder="Ej. 34323423"></app-filter>
+                                <!-- <button mat-fab color="warn" (click)="downloadXlsx()" matTooltip="Descargar Excel">
+                                    <mat-icon>get_app</mat-icon>
+                                </button> -->
+                            </div>
+                        </div>
+                        <table mat-table [dataSource]="dataSource">
+
+                            <ng-container matColumnDef="date">
+                                <th mat-header-cell *matHeaderCellDef> Fecha </th>
+                                <td mat-cell *matCellDef="let element"> {{element.date | date: 'dd/MM/yyyy'}} </td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="document">
+                                <th mat-header-cell *matHeaderCellDef> Documento </th>
+                                <td mat-cell *matCellDef="let element">
+                                    {{element.document}}
+                                </td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="details">
+                                <th mat-header-cell *matHeaderCellDef> Descripción </th>
+                                <td mat-cell *matCellDef="let element">
+                                    {{element.details}}
+                                </td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="type">
+                                <th mat-header-cell *matHeaderCellDef> Tipo </th>
+                                <td mat-cell *matCellDef="let element">
+                                    {{ element.type }}
+                                </td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="credit">
+                                <th mat-header-cell *matHeaderCellDef> Crédito</th>
+                                <td mat-cell *matCellDef="let element">
+                                    {{element.credit | number: '.2' }}
+                                </td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="debit">
+                                <th mat-header-cell *matHeaderCellDef> Debito </th>
+                                <td mat-cell *matCellDef="let element">
+                                    {{element.debit | number: '.2' }}
+                                </td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="balance">
+                                <th mat-header-cell *matHeaderCellDef> Balance </th>
+                                <td mat-cell *matCellDef="let element">
+                                    {{element.balance | number: '.2' }}
+                                </td>
+                            </ng-container>
+
+                            <tr mat-header-row *matHeaderRowDef="columns;  sticky: true"></tr>
+                            <tr mat-row *matRowDef="let row; columns: columns;"></tr>
+                            <!-- Fila mostrada cuando no hay datos coincidentes. -->
+                            <tr class="mat-row" *matNoDataRow>
+                                <td class="mat-cell" colspan="14">No hay datos que coincidan con algún filtro o busqueda</td>
+                            </tr>
+                        </table>
+                    </ngx-simplebar>
+                    <mat-paginator [pageSizeOptions]="[10, 50, 100]" showFirstLastButtons>
+                    </mat-paginator>
+                </mat-tab>
+                <!-- <mat-tab label="Cheques">
+                    <ngx-simplebar class="content">
+                    </ngx-simplebar>
+                </mat-tab> -->
+            </mat-tab-group>
+        </ng-container>
+    </ngx-simplebar>
+</mat-drawer-container>

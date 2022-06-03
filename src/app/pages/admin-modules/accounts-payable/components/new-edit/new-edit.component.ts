@@ -424,22 +424,22 @@ export class NewEditComponent implements OnInit, AfterContentInit, OnDestroy, On
   }
 
   saveCheck(total: number, accountPayable: AccountsPayableItem): void {
-    const CHECK: CheckItem = {
-      no: this.formCheck.controls.no.value,
-      city: this.formCheck.controls.city.value,
-      date: this.formCheck.controls.date.value,
-      name: this.formCheck.controls.name.value,
-      amount: total,
-      accountsPayables: [{ ...accountPayable }],
-      note: this.formCheck.controls.note.value,
-      bank: this.formCheck.controls.bank.value,
-      state: this.formCheck.controls.state.value,
-    }
-    this.checkService.create(CHECK)
-      .subscribe(resp => {
-        this.checkService.print(resp.check)
-        this.saveSuccess();
-      });
+    // const CHECK: CheckItem = {
+    //   no: this.formCheck.controls.no.value,
+    //   city: this.formCheck.controls.city.value,
+    //   date: this.formCheck.controls.date.value,
+    //   name: this.formCheck.controls.name.value,
+    //   amount: total,
+    //   accountsPayables: [{ ...accountPayable }],
+    //   note: this.formCheck.controls.note.value,
+    //   bank: this.formCheck.controls.bank.value,
+    //   state: this.formCheck.controls.state.value,
+    // }
+    // this.checkService.create(CHECK)
+    //   .subscribe(resp => {
+    //     this.checkService.print(resp.check)
+    //     this.saveSuccess();
+    //   });
   }
 
   saveSuccess(): void {

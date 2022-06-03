@@ -6,7 +6,7 @@ import { CashItem } from 'src/app/core/models/Cash';
 import { CashFlowService } from 'src/app/core/services/httpServices/cash-flow.service';
 import { ToastyService } from 'src/app/core/services/internal/toasty.service';
 import { CREATE_CASH_FLOW } from 'src/app/store/actions/accountingCash.actions';
-import { AppAccountingCash } from 'src/app/store/reducers/accountingCash.reducer';
+import { AccountingCashStore } from 'src/app/store/reducers/accountingCash.reducer';
 
 @Component({
   selector: 'app-new-cash-flow',
@@ -43,7 +43,7 @@ export class NewCashFlowComponent implements OnInit {
   constructor(
     private cashFlowService: CashFlowService,
     private toastyService: ToastyService,
-    private store: Store<AppAccountingCash>,
+    private store: Store<AccountingCashStore>,
   ) { }
 
   ngOnInit(): void {
@@ -87,6 +87,7 @@ export class NewCashFlowComponent implements OnInit {
       details: '',
       income: 0,
       expense: 0,
+      state: 'PENDIENTE'
     })
   }
 

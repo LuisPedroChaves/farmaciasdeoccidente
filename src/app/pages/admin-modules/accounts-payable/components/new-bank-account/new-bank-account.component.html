@@ -1,0 +1,46 @@
+<div fxLayout="column" fxLayoutGap="20px">
+    <header fxLayout="row wrap" fxLayoutAlign="start center">
+        <h2 class="ma-0">{{title}}</h2>
+        <span fxFlex></span>
+        <button mat-icon-button (click)="close()">
+      <mat-icon>close</mat-icon>
+    </button>
+    </header>
+    <form (ngSubmit)="save()" [formGroup]="form" autocomplete="off">
+        <div fxLayout="column">
+            <mat-form-field appearance="outline" color="accent">
+                <mat-label>Selecione un banco</mat-label>
+                <mat-select formControlName="_bank">
+                    <mat-option *ngFor="let bank of banks" [value]="bank._id">
+                        {{ bank.name }}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+            <mat-form-field fxFill appearance="outline" color="accent">
+                <mat-label>No. de Cuenta</mat-label>
+                <input formControlName="no" type="text" matInput>
+            </mat-form-field>
+            <mat-form-field fxFill appearance="outline" color="accent">
+                <mat-label>Nombre</mat-label>
+                <input formControlName="name" type="text" matInput>
+            </mat-form-field>
+            <mat-form-field fxFill appearance="outline" color="accent">
+                <mat-label>Saldo Inicial</mat-label>
+                <span matPrefix>Q &nbsp;</span>
+                <input matInput (focus)="form.get('balance').setValue('')" formControlName="balance" type="number" placeholder="0">
+            </mat-form-field>
+            <section fxFill>
+                <mat-button-toggle-group formControlName="type">
+                    <mat-button-toggle value="Monetaria">Monetaria</mat-button-toggle>
+                    <mat-button-toggle value="De ahorro">De ahorro</mat-button-toggle>
+                    <mat-button-toggle value="Otro">Otro</mat-button-toggle>
+                </mat-button-toggle-group>
+            </section>
+            <br>
+            <div fxLayout="row" fxLayoutAlign="space-between center">
+                <button mat-button (click)="close()" type="button">Cancelar</button>
+                <button mat-raised-button type="submit" color="warn" [disabled]="form.invalid">Guardar</button>
+            </div>
+        </div>
+    </form>
+</div>

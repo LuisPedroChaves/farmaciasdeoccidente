@@ -1,9 +1,11 @@
 import { AccountsPayableItem } from './AccountsPayable';
+import { BankAccountItem } from './Bank';
 import { UserItem } from './User';
 
 export interface CheckItem {
     _id?: string,
     _user?: UserItem,
+    _bankAccount: BankAccountItem,
     no: string,
     city: string,
     date: Date,

@@ -1,6 +1,14 @@
 <form [formGroup]="form" autocomplete="off">
     <div fxLayout="column">
         <mat-form-field fxFill appearance="outline" color="accent">
+            <mat-label>Selecione una cuenta bancaria</mat-label>
+            <mat-select formControlName="_bankAccount">
+                <mat-option *ngFor="let bankAccount of bankAccounts" [value]="bankAccount._id">
+                    {{ bankAccount.no }} | {{ bankAccount.name }}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+        <mat-form-field fxFill appearance="outline" color="accent">
             <mat-label>No. Cheque</mat-label>
             <input formControlName="no" type="text" matInput>
         </mat-form-field>

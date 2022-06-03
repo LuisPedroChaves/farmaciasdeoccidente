@@ -1,0 +1,43 @@
+<div fxLayout="column" fxLayoutGap="20px">
+    <header fxLayout="row wrap" fxLayoutAlign="start center">
+        <h2 class="ma-0">{{title}}</h2>
+        <span fxFlex></span>
+        <button mat-icon-button (click)="close()">
+      <mat-icon>close</mat-icon>
+    </button>
+    </header>
+    <form (ngSubmit)="save()" [formGroup]="form" autocomplete="off" fxLayout="column" fxLayoutGap="15px">
+        <mat-form-field fxFill appearance="outline" color="accent">
+            <mat-label>
+                Imagen
+            </mat-label>
+            <ngx-mat-file-input #removableInput formControlName="image" placeholder="Ingrese una imagen">
+            </ngx-mat-file-input>
+            <mat-hint>Seleccione una imagen para cargar</mat-hint>
+            <button mat-icon-button matSuffix *ngIf="!removableInput.empty" (click)="removableInput.clear($event)">
+        <mat-icon>clear</mat-icon>
+      </button>
+        </mat-form-field>
+        <div fxLayout="row" fxLayoutGap="10px" fxLayoutAlign="start center">
+            <mat-form-field fxFlex appearance="outline" color="accent">
+                <mat-label>Nombre</mat-label>
+                <input formControlName="name" type="text" matInput placeholder="Ingrese un nombre">
+            </mat-form-field>
+            <div fxFlex>
+                <button mat-raised-button type="submit" color="warn" [disabled]="form.invalid">Guardar</button>
+            </div>
+        </div>
+    </form>
+    <mat-list>
+        <mat-list-item *ngFor="let bank of banks">
+            <div mat-line fxLayoutAlign="start center" fxLayoutGap="10px">
+                <img mat-card-avatar [src]="bank.image  | file: 'banks'" /> {{ bank.name }}
+                <span fxFlex></span>
+                <button mat-icon-button (click)="delete(bank)">
+          <mat-icon>close</mat-icon>
+        </button>
+            </div>
+            <mat-divider></mat-divider>
+        </mat-list-item>
+    </mat-list>
+</div>

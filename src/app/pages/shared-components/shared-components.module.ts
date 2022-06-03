@@ -60,6 +60,7 @@ import { NotificationsComponent } from './notifications/notifications.component'
 import { UpdateNotificationsComponent } from './update-notifications/update-notifications.component';
 import { getSpanishPaginatorIntl } from './spanish-paginator-intl';
 import { LoaderComponent } from './loader/loader.component';
+import { UserComponent } from './user/user.component';
 
 import {
   MatMomentDateModule,
@@ -67,7 +68,6 @@ import {
   MomentDateAdapter,
 } from '@angular/material-moment-adapter';
 import 'moment/locale/es';
-import { UserComponent } from './user/user.component';
 // Tambien hay que instalar MOMENT JS
 export const MY_DATE_FORMATS = {
   parse: {

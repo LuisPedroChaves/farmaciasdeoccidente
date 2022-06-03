@@ -29,6 +29,7 @@
     { "name": "accountsPayable", "label": "Cuentas por pagar", "parent": "ADMIN", "level": 1, "options": ["read", "update", "delete", "create"] },
     { "name": "accountsPyabaleProviders", "label": "Proveedores", "parent": "accountsPayable", "level": 2, "options": ["read", "update", "delete", "create"] },
     { "name": "accountsPyabaleDocuments", "label": "Documentos", "parent": "accountsPayable", "level": 2, "options": ["read", "update", "delete", "create"] },
+    { "name": "accountsPyabaleBanks", "label": "Bancos", "parent": "accountsPayable", "level": 2, "options": ["read", "update", "delete", "create"] },
     { "name": "accountsPyabaleChecks", "label": "Cheques", "parent": "accountsPayable", "level": 2, "options": ["read", "update", "delete", "create"] },
     { "name": "accountsPyabaleCheckDeliveries", "label": "Entrega de cheques", "parent": "accountsPayable", "level": 2, "options": ["read", "update"] },
     { "name": "accountsPyabaleReports", "label": "Reportes", "parent": "accountsPayable", "level": 2, "options": ["read"] },
