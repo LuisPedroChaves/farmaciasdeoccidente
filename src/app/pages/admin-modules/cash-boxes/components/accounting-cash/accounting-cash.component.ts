@@ -74,7 +74,7 @@ export class AccountingCashComponent implements OnInit, OnChanges, OnDestroy {
       this.dataSource = new MatTableDataSource<CashFlowItem>(data);
     });
 
-    this.accountingCashSubscription = this.store.select('AccountingCash')
+    this.accountingCashSubscription = this.store.select('accountingCash')
       .subscribe(state => {
         this.totalPending = state.pendings.length
         this.pendingSource = new MatTableDataSource<CashFlowItem>(state.pendings);

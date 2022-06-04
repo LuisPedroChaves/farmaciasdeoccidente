@@ -56,7 +56,7 @@ export class NewCheckComponent implements OnInit, OnChanges, OnDestroy {
   ) { }
 
   ngOnInit(): void {
-    this.bankStoreSubscription = this.store.select('Bank')
+    this.bankStoreSubscription = this.store.select('bank')
       .subscribe(state => {
         this.bankAccounts = state.bankAccounts
       });

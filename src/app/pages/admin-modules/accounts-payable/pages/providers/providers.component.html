@@ -29,7 +29,6 @@
         </mat-menu>
     </header>
     <ngx-simplebar class="content">
-        <mat-progress-bar *ngIf="loading" mode="indeterminate" color="warn"></mat-progress-bar>
         <app-no-found *ngIf="permissions && !permissions.includes('read')" text="Acceso Denegado" subtitle="Actualmente no cuenta con permisos para acceder a este apartado"></app-no-found>
         <ng-container *ngIf="permissions && permissions.includes('read')">
             <app-no-found *ngIf="!providersPage || providersPage.length === 0" text="No se encontraron proveedores" subtitle="Actualmente no contiene cuentas por pagar"></app-no-found>

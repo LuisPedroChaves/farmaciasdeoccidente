@@ -51,7 +51,7 @@ export class CheckService implements IDataService<CheckItem[]> {
     return this.checkSubject.asObservable();
   }
 
-  setData(): void {}
+  setData(): void { }
 
   invalidateData(): void {
     if (this.checkList === undefined) {
@@ -61,7 +61,10 @@ export class CheckService implements IDataService<CheckItem[]> {
   }
 
   getToday(): Observable<any> {
-    return this.http.get(this.apiConfigService.API_CHECK + '/today');
+    return this.http.get(this.apiConfigService.API_CHECK + '/today')
+      .pipe(
+        map((resp: any) => resp.checks)
+      )
   }
 
   getDeliveries(): Observable<any> {
@@ -71,8 +74,8 @@ export class CheckService implements IDataService<CheckItem[]> {
   getHistory(startDate, endDate): Observable<any> {
     return this.http.get(`${this.apiConfigService.API_CHECK}/history`, {
       params: new HttpParams()
-      .set('startDate', startDate.toString())
-      .set('endDate', endDate.toString())
+        .set('startDate', startDate.toString())
+        .set('endDate', endDate.toString())
     })
       .pipe(
         map((resp: any) => resp.checks)
@@ -84,8 +87,11 @@ export class CheckService implements IDataService<CheckItem[]> {
     return this.http.post(this.apiConfigService.API_CHECK, check);
   }
 
-  updateState(check: CheckItem): Observable<any> {
-    return this.http.put(`${this.apiConfigService.API_CHECK}/state/${check._id}`, check);
+  updateState(check: CheckItem): Observable<CheckItem> {
+    return this.http.put(`${this.apiConfigService.API_CHECK}/state/${check._id}`, check)
+      .pipe(
+        map((resp: any) => resp.check)
+      )
   }
 
   print(check: CheckItem) {
@@ -103,7 +109,7 @@ export class CheckService implements IDataService<CheckItem[]> {
             [{ text: '', style: 'text9', colSpan: 2 }],
             [{ text: '', style: 'text9', colSpan: 2 }],
             [{ text: check.name, style: 'text9', colSpan: 2 }],
-            [{ text: this.numberToWords.transform(check.amount), style: 'text9', colSpan:2  }],
+            [{ text: this.numberToWords.transform(check.amount), style: 'text9', colSpan: 2 }],
           ]
         }
       });

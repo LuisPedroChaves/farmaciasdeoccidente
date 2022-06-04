@@ -1,0 +1,40 @@
+<div fxLayout="column" fxLayoutGap="20px">
+    <header fxLayout="row wrap" fxLayoutAlign="start center">
+        <h2 class="ma-0">{{title}}</h2>
+        <span fxFlex></span>
+        <button mat-icon-button (click)="close()">
+      <mat-icon>close</mat-icon>
+    </button>
+    </header>
+    <form (ngSubmit)="save()" [formGroup]="form" autocomplete="off">
+        <div fxLayout="column">
+            <h2>Ingreso</h2>
+            <section fxFill>
+                <mat-button-toggle-group formControlName="type">
+                    <mat-button-toggle value="Deposito">Deposito</mat-button-toggle>
+                    <mat-button-toggle value="Cheque">Cheque</mat-button-toggle>
+                    <mat-button-toggle value="Transferencia">Transferencia</mat-button-toggle>
+                </mat-button-toggle-group>
+            </section>
+            <br>
+            <mat-form-field fxFill appearance="outline" color="accent">
+                <mat-label>Documento</mat-label>
+                <input formControlName="document" type="text" matInput>
+            </mat-form-field>
+            <mat-form-field fxFill appearance="outline" color="accent">
+                <mat-label>Descripción</mat-label>
+                <input formControlName="details" type="text" matInput>
+            </mat-form-field>
+            <mat-form-field appearance="outline" color="accent">
+                <mat-label>Monto</mat-label>
+                <span matPrefix>Q &nbsp;</span>
+                <input #Iamount matInput formControlName="credit" type="number" placeholder="0">
+            </mat-form-field>
+            <br>
+            <div fxLayout="row" fxLayoutAlign="space-between center">
+                <button mat-button (click)="close()" type="button">Cancelar</button>
+                <button mat-raised-button type="submit" color="warn" [disabled]="form.invalid">Guardar</button>
+            </div>
+        </div>
+    </form>
+</div>

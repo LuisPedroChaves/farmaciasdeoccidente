@@ -32,7 +32,10 @@ export class BankAccountService {
   }
 
   update(bankAccount: BankAccountItem): Observable<any> {
-    return this.http.put(this.apiConfigService.API_BANK_ACCOUNT + '/' + bankAccount._id, bankAccount);
+    return this.http.put(this.apiConfigService.API_BANK_ACCOUNT + '/' + bankAccount._id, bankAccount)
+    .pipe(
+      map((resp: any) => resp.bankAccount)
+    )
   }
 
   delete(bankAccount: BankAccountItem, details: string): Observable<any> {

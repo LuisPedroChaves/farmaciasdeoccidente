@@ -53,7 +53,7 @@ export class NewBankComponent implements OnInit, AfterContentInit, OnDestroy {
       }
     });
 
-    this.bankStoreSubscription = this.store.select('Bank')
+    this.bankStoreSubscription = this.store.select('drawer')
       .subscribe(state => {
         this.title = state.drawerTitle;
       });

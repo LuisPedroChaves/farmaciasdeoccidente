@@ -2,7 +2,6 @@ import { createAction, props } from '@ngrx/store';
 
 import { CashItem } from 'src/app/core/models/Cash';
 import { CashFlowItem } from 'src/app/core/models/CashFlow';
-import { CashRequisitionItem } from 'src/app/core/models/CashRequisition';
 
 export const READ_CASH = createAction(
 	'[CASH] Cargar Caja'

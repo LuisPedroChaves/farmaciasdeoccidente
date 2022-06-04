@@ -42,4 +42,17 @@ export class BankEffects {
             )
     )
 
+    updateBankAccount = createEffect(
+        () => this.actions$
+            .pipe(
+                ofType(actions.UPDATE_BANK_ACCOUNT),
+                mergeMap(
+                    ({ bankAccount }) => this.bankAccountService.update(bankAccount)
+                        .pipe(
+                            map(bankAccount => actions.SET_EDIT_BANK_ACCOUNT({ bankAccount }))
+                        )
+                )
+            )
+    )
+
 }

@@ -37,7 +37,7 @@ import { TimeFormatPipe } from 'src/app/core/shared/pipes/timePipes/time-format.
   imports: [
     CommonModule,
     RouterModule.forChild(CashBoxesRoutes),
-    StoreModule.forFeature('AccountingCash', AccountingCashReducer),
+    StoreModule.forFeature('accountingCash', AccountingCashReducer),
     EffectsModule.forFeature([AccountingCashEffects]),
     SharedComponentsModule,
     ComponentsModule,
