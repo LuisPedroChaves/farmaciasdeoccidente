@@ -1,11 +1,14 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
+import { Store } from '@ngrx/store';
 
 import { CheckItem } from 'src/app/core/models/Check';
 import { CheckService } from 'src/app/core/services/httpServices/check.service';
 import { ToastyService } from 'src/app/core/services/internal/toasty.service';
 import { ConfirmationDialogComponent } from 'src/app/pages/shared-components/confirmation-dialog/confirmation-dialog.component';
+import { READ_CHECKS_TODAY } from 'src/app/store/actions';
+import { CheckStore } from 'src/app/store/reducers';
 import { EnterPaymentComponent } from '../enter-payment/enter-payment.component';
 
 @Component({
@@ -31,6 +34,7 @@ export class CheckComponent implements OnInit {
   newDate = new FormControl();
 
   constructor(
+    private store: Store<CheckStore>,
     public checkService: CheckService,
     private toastyService: ToastyService,
     private dialog: MatDialog
@@ -39,7 +43,10 @@ export class CheckComponent implements OnInit {
   ngOnInit(): void {
     this.newDate.valueChanges
       .subscribe(date => {
-        this.check.date = date;
+        this.check = {
+          ...this.check,
+          date
+        }
       })
   }
 
@@ -55,7 +62,7 @@ export class CheckComponent implements OnInit {
           '¿Confirma que desea entregar el cheque:  ' +
           check.no +
           '?',
-          check
+        check
       },
       disableClose: true,
       panelClass: ['farmacia-dialog', 'farmacia'],
@@ -68,9 +75,10 @@ export class CheckComponent implements OnInit {
         check.receipt.name = result.name;
 
         this.checkService.updateState(check)
-          .subscribe(resp => {
+          .subscribe(check => {
             this.toastyService.success('Cheque entregado exitosamente')
             this.sendId.emit(check._id)
+            this.store.dispatch(READ_CHECKS_TODAY())
           })
       }
     });
@@ -97,17 +105,23 @@ export class CheckComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe((result) => {
       if (result !== undefined) {
-        check.state = state;
 
-        this.checkService.updateState(check)
-          .subscribe(resp => {
+        this.checkService.updateState({
+          ...check,
+          state
+        })
+          .subscribe(check => {
             this.toastyService.success('Cheque actualizado exitosamente')
-            const { state, paymentDate, receipt, delivered } = resp.check;
-            this.check.state = state;
-            this.check.paymentDate = paymentDate;
-            this.check.receipt = receipt;
-            this.check.delivered = delivered;
+            const { state, paymentDate, receipt, delivered } = check;
+            this.check = {
+              ...this.check,
+              state,
+              paymentDate,
+              receipt,
+              delivered
+            }
             this.checkService.loadData();
+            this.store.dispatch(READ_CHECKS_TODAY())
           })
       }
     });
@@ -134,12 +148,15 @@ export class CheckComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe((result) => {
       if (result !== undefined) {
-        check.voided = true;
-        this.checkService.updateState(check)
+        this.checkService.updateState({
+          ...check,
+          voided: true
+        })
           .subscribe(resp => {
             this.toastyService.success('Cheque anulado exitosamente')
             this.sendId.emit(check._id)
             this.checkService.loadData();
+            this.store.dispatch(READ_CHECKS_TODAY())
           })
       }
     });

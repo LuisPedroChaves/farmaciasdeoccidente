@@ -2,23 +2,34 @@
     <mat-drawer #drawer class="sidenav" mode="over">
         <app-new-bank *ngIf="drawerComponent === 'NEW_BANK'"></app-new-bank>
         <app-new-bank-account *ngIf="drawerComponent === 'NEW_BANK_ACCOUNT'"></app-new-bank-account>
+        <app-edit-bank-account *ngIf="drawerComponent === 'EDIT_BANK_ACCOUNT'"></app-edit-bank-account>
+        <app-new-bank-flow *ngIf="drawerComponent === 'NEW_BANK_FLOW'"></app-new-bank-flow>
     </mat-drawer>
     <ngx-simplebar class="my-layout" fxLayoutGap.lt-md="15px">
-        <header fxLayout="row wrap" fxLayoutAlign="space-between center">
-            <button mat-fab *ngIf="permissions && permissions.includes('create')" color="warn" [matMenuTriggerFor]="payablesMenu" matTooltip="Crear">
-        <mat-icon>add</mat-icon>
-      </button>
-            <mat-menu #payablesMenu="matMenu" xPosition="before">
-                <button mat-menu-item (click)="openDrawer('Crear nueva cuenta bancaria', 'NEW_BANK_ACCOUNT')">
-          <mat-icon>account_balance_wallet</mat-icon>
-          <span>Cuenta</span>
+        <header fxLayout="row wrap" fxLayoutAlign="space-between start">
+            <div fxLayoutGap="10px">
+                <button mat-fab *ngIf="permissions && permissions.includes('create')" color="warn" [matMenuTriggerFor]="payablesMenu" matTooltip="Crear">
+          <mat-icon>add</mat-icon>
         </button>
-                <button mat-menu-item (click)="openDrawer('Crear nuevo banco', 'NEW_BANK')">
-          <mat-icon>account_balance</mat-icon>
-          <span>Banco</span>
+                <mat-menu #payablesMenu="matMenu" xPosition="after">
+                    <button mat-menu-item (click)="openDrawer('Crear nuevo movimiento', 'NEW_BANK_FLOW')">
+            <mat-icon>currency_exchange</mat-icon>
+            <span>Movimiento</span>
+          </button>
+                    <button mat-menu-item (click)="openDrawer('Crear nueva cuenta bancaria', 'NEW_BANK_ACCOUNT')">
+            <mat-icon>account_balance_wallet</mat-icon>
+            <span>Cuenta bancaria</span>
+          </button>
+                    <button mat-menu-item (click)="openDrawer('Crear nuevo banco', 'NEW_BANK')">
+            <mat-icon>account_balance</mat-icon>
+            <span>Banco</span>
+          </button>
+                </mat-menu>
+                <button mat-mini-fab (click)="refreshBankAccount()" color="accent" matTooltip="Refrescar cuentas">
+          <mat-icon>refresh</mat-icon>
         </button>
-            </mat-menu>
-            <div *ngIf="bankAccount" fxFlex.gt-sm="50%" fxFlex.lt-md="100%">
+            </div>
+            <div *ngIf="permissions && permissions.includes('read') && bankAccount" fxFlex.gt-sm="50%" fxFlex.lt-md="100%">
                 <mat-card>
                     <mat-card-header fxLayout="row wrap">
                         <img matCardAvatar [src]="bankAccount._bank.image | file: 'banks'">
@@ -32,6 +43,14 @@
                             </mat-select>
                         </mat-form-field>
                     </mat-card-header>
+                    <mat-card-actions>
+                        <button mat-icon-button (click)="editBankAccount()" matTooltip="Editar cuenta bancaria">
+              <mat-icon>edit</mat-icon>
+            </button>
+                        <button mat-icon-button (click)="deleteBankAccount()" matTooltip="Eliminar cuenta bancaria">
+              <mat-icon>delete</mat-icon>
+            </button>
+                    </mat-card-actions>
                 </mat-card>
             </div>
         </header>

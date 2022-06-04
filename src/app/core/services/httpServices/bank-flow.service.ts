@@ -59,6 +59,6 @@ export class BankFlowService implements IDataService<BankFlowItem[]> {
   }
 
   create(bankFlow: BankFlowItem): Observable<any> {
-    return this.http.post(this.apiConfigService.API_BANK_FLOW, bankFlow);
+    return this.http.post(this.apiConfigService.API_BANK_FLOW, bankFlow)
   }
 }

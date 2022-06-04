@@ -15,6 +15,12 @@ import { ToastyService } from '../../../../../core/services/internal/toasty.serv
 import { ExpenseItem } from '../../../../../core/models/Expense';
 import { ExpenseService } from '../../../../../core/services/httpServices/expense.service';
 import { ProviderItem } from '../../../../../core/models/Provider';
+import { BankAccountItem, BankFlowItem } from 'src/app/core/models/Bank';
+import { DatePipe } from '@angular/common';
+import { SET_BANK_ACCOUNT_BALANCE } from 'src/app/store/actions';
+import { Store } from '@ngrx/store';
+import { BankStore } from 'src/app/store/reducers';
+import { BankFlowService } from 'src/app/core/services/httpServices/bank-flow.service';
 
 @Component({
   selector: 'app-new-edit',
@@ -65,6 +71,7 @@ export class NewEditComponent implements OnInit, AfterContentInit, OnDestroy, On
     amount: new FormControl(0, Validators.required)
   })
   formCheck = new FormGroup({
+    _bankAccount: new FormControl(null, Validators.required),
     no: new FormControl('', Validators.required),
     city: new FormControl('', Validators.required),
     date: new FormControl('', Validators.required),
@@ -95,12 +102,19 @@ export class NewEditComponent implements OnInit, AfterContentInit, OnDestroy, On
     }
   ];
 
+  bankStoreSubscription: Subscription;
+  bankAccounts: BankAccountItem[] = [];
+  bankAccount = new FormControl();
+
   constructor(
+    private store: Store<BankStore>,
     private toastyService: ToastyService,
     private expenseService: ExpenseService,
     private accountsPayableService: AccountsPayableService,
     private uploadFileService: UploadFileService,
-    private checkService: CheckService
+    private checkService: CheckService,
+    private bankFlowService: BankFlowService,
+    private datePipe: DatePipe,
   ) { }
 
   ngOnInit(): void {
@@ -117,6 +131,10 @@ export class NewEditComponent implements OnInit, AfterContentInit, OnDestroy, On
         }
       })
     );
+    this.bankStoreSubscription = this.store.select('bank')
+      .subscribe(state => {
+        this.bankAccounts = state.bankAccounts
+      });
   }
 
   ngAfterContentInit(): void {
@@ -346,7 +364,7 @@ export class NewEditComponent implements OnInit, AfterContentInit, OnDestroy, On
                   this.loading = false;
                   this.toastyService.error('Error al cargar el archivo');
                 });
-            }else {
+            } else {
               this.saveSuccess();
             }
           } else {
@@ -404,6 +422,31 @@ export class NewEditComponent implements OnInit, AfterContentInit, OnDestroy, On
               .then((resp: any) => {
                 if (!TO_CREDIT && this.paymentMethod === 'CHEQUE') {
                   this.saveCheck(TOTAL, resp.accountsPayable)
+                } else if (!TO_CREDIT) {
+                  const NEW_BANK_FLOW: BankFlowItem = {
+                    _bankAccount: this.bankAccount.value,
+                    _check: null,
+                    date: null,
+                    document: NEW_BALANCES[0].document,
+                    details: `Pago a proveedor por factura al contado con fecha: ${this.datePipe.transform(NEW_BALANCES[0].date, 'dd/MM/yyyy')}`,
+                    credit: 0,
+                    debit: NEW_BALANCES[0].amount,
+                    balance: 0,
+                    type: (NEW_BALANCES[0].credit === 'DEPOSITO') ? 'Deposito' : 'Transferencia'
+                  }
+
+                  this.loading = true;
+                  this.bankFlowService.create(NEW_BANK_FLOW)
+                    .subscribe(async (resp: any) => {
+
+
+                      this.store.dispatch(SET_BANK_ACCOUNT_BALANCE({
+                        idBankAccount: this.bankAccount.value._id,
+                        amount: this.bankAccount.value.balance - NEW_BALANCES[0].amount
+                      }))
+
+                      this.saveSuccess();
+                    })
                 } else {
                   this.saveSuccess();
                 }
@@ -415,6 +458,31 @@ export class NewEditComponent implements OnInit, AfterContentInit, OnDestroy, On
           } else {
             if (!TO_CREDIT && this.paymentMethod === 'CHEQUE') {
               this.saveCheck(TOTAL, resp.accountsPayable)
+            } else if (!TO_CREDIT) {
+              const NEW_BANK_FLOW: BankFlowItem = {
+                _bankAccount: this.bankAccount.value,
+                _check: null,
+                date: null,
+                document: NEW_BALANCES[0].document,
+                details: `Pago a proveedor por factura al contado con fecha: ${this.datePipe.transform(NEW_BALANCES[0].date, 'dd/MM/yyyy')}`,
+                credit: 0,
+                debit: NEW_BALANCES[0].amount,
+                balance: 0,
+                type: (NEW_BALANCES[0].credit === 'DEPOSITO') ? 'Deposito' : 'Transferencia'
+              }
+
+              this.loading = true;
+              this.bankFlowService.create(NEW_BANK_FLOW)
+                .subscribe(async (resp: any) => {
+
+
+                  this.store.dispatch(SET_BANK_ACCOUNT_BALANCE({
+                    idBankAccount: this.bankAccount.value._id,
+                    amount: this.bankAccount.value.balance - NEW_BALANCES[0].amount
+                  }))
+
+                  this.saveSuccess();
+                })
             } else {
               this.saveSuccess();
             }
@@ -424,22 +492,23 @@ export class NewEditComponent implements OnInit, AfterContentInit, OnDestroy, On
   }
 
   saveCheck(total: number, accountPayable: AccountsPayableItem): void {
-    // const CHECK: CheckItem = {
-    //   no: this.formCheck.controls.no.value,
-    //   city: this.formCheck.controls.city.value,
-    //   date: this.formCheck.controls.date.value,
-    //   name: this.formCheck.controls.name.value,
-    //   amount: total,
-    //   accountsPayables: [{ ...accountPayable }],
-    //   note: this.formCheck.controls.note.value,
-    //   bank: this.formCheck.controls.bank.value,
-    //   state: this.formCheck.controls.state.value,
-    // }
-    // this.checkService.create(CHECK)
-    //   .subscribe(resp => {
-    //     this.checkService.print(resp.check)
-    //     this.saveSuccess();
-    //   });
+    const CHECK: CheckItem = {
+      _bankAccount: this.formCheck.controls._bankAccount.value,
+      no: this.formCheck.controls.no.value,
+      city: this.formCheck.controls.city.value,
+      date: this.formCheck.controls.date.value,
+      name: this.formCheck.controls.name.value,
+      amount: total,
+      accountsPayables: [{ ...accountPayable }],
+      note: this.formCheck.controls.note.value,
+      bank: this.formCheck.controls.bank.value,
+      state: this.formCheck.controls.state.value,
+    }
+    this.checkService.create(CHECK)
+      .subscribe(resp => {
+        this.checkService.print(resp.check)
+        this.saveSuccess();
+      });
   }
 
   saveSuccess(): void {

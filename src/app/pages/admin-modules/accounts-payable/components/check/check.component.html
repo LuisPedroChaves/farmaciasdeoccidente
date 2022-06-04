@@ -8,7 +8,7 @@
         <mat-icon matCardAvatar *ngIf="check.state === 'PAGADO'" color="warn">local_atm</mat-icon>
         <mat-icon matCardAvatar *ngIf="check.state === 'RECHAZADO'">local_atm</mat-icon>
         <mat-card-title>{{ check.no }}</mat-card-title>
-        <mat-card-subtitle>{{ check.bank }}</mat-card-subtitle>
+        <mat-card-subtitle>{{ check._bankAccount.no }} - {{ check._bankAccount.name }}</mat-card-subtitle>
         <span fxFlex></span>
         <mat-chip-list>
             <mat-chip *ngIf="check.state === 'CREADO'">Creado</mat-chip>

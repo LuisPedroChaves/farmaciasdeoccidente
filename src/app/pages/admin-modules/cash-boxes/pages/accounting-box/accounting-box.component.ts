@@ -4,7 +4,6 @@ import { Store } from '@ngrx/store';
 import { Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
 import { CashItem } from 'src/app/core/models/Cash';
-import { READ_CASH } from 'src/app/store/actions';
 import { AccountingCashStore } from 'src/app/store/reducers/accountingCash.reducer';
 
 @Component({
@@ -26,7 +25,7 @@ export class AccountingBoxComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
 
-    this.accountingCashSubscription = this.store.select('AccountingCash')
+    this.accountingCashSubscription = this.store.select('accountingCash')
       .pipe(
         filter(accountingCash => accountingCash.cash !== null),
       )

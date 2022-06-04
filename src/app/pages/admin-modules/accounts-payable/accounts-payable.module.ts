@@ -4,6 +4,7 @@ import { RouterModule } from '@angular/router';
 
 import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
+
 import { CoreModule } from 'src/app/core/core.module';
 import { IndexComponent } from './pages/index/index.component';
 import { SharedComponentsModule } from '../../shared-components/shared-components.module';
@@ -35,6 +36,10 @@ import { BankReducer } from 'src/app/store/reducers/bank.reducer';
 import { NewBankComponent } from './components/new-bank/new-bank.component';
 import { BankEffects } from 'src/app/store/effects/bank.effects';
 import { NewBankAccountComponent } from './components/new-bank-account/new-bank-account.component';
+import { EditBankAccountComponent } from './components/edit-bank-account/edit-bank-account.component';
+import { NewBankFlowComponent } from './components/new-bank-flow/new-bank-flow.component';
+import { CheckReducer } from 'src/app/store/reducers/check.reducer';
+import { CheckEffects } from 'src/app/store/effects/check.effects';
 
 @NgModule({
   declarations: [
@@ -60,13 +65,16 @@ import { NewBankAccountComponent } from './components/new-bank-account/new-bank-
     BanksComponent,
     NewBankComponent,
     NewBankAccountComponent,
+    EditBankAccountComponent,
+    NewBankFlowComponent,
 
   ],
   imports: [
     CommonModule,
     RouterModule.forChild(AccountsPayableRoutes),
-    StoreModule.forFeature('Bank', BankReducer),
-    EffectsModule.forFeature([BankEffects]),
+    StoreModule.forFeature('check', CheckReducer),
+    StoreModule.forFeature('bank', BankReducer),
+    EffectsModule.forFeature([BankEffects, CheckEffects]),
     SharedComponentsModule,
     InputsModule,
     ComponentsModule,

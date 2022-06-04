@@ -44,6 +44,8 @@ export class IndexComponent implements OnInit, OnDestroy {
 
       }
     });
+
+    this.store.dispatch( READ_BANK_ACCOUNTS() )
   }
 
   ngOnDestroy(): void {

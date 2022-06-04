@@ -9,7 +9,8 @@ import { debounceTime, filter } from 'rxjs/operators';
 import { AccountsPayableItem } from 'src/app/core/models/AccountsPayable';
 import { CheckItem } from 'src/app/core/models/Check';
 import { CheckService } from 'src/app/core/services/httpServices/check.service';
-import { AppState } from 'src/app/store/app.reducer';
+import { READ_CHECKS_TODAY } from 'src/app/store/actions';
+import { CheckStore } from 'src/app/store/reducers';
 import { FilterPipe } from '../../../../../core/shared/pipes/filterPipes/filter.pipe';
 
 @Component({
@@ -55,6 +56,7 @@ export class ChequesComponent implements OnInit, AfterContentInit, OnDestroy {
   /* #endregion */
   loading = false;
   checkSubscription: Subscription;
+  checkStoreSubscription: Subscription;
   checksCreated: CheckItem[] = [];
   checksCreatedTemp: CheckItem[] = [];
   checksToday: CheckItem[] = [];
@@ -78,23 +80,23 @@ export class ChequesComponent implements OnInit, AfterContentInit, OnDestroy {
   /* #endregion */
 
   sessionSubscription: Subscription;
-permissions: string[] = [];
+  permissions: string[] = [];
 
 
   constructor(
     private checkService: CheckService,
     private filter: FilterPipe,
-    public store: Store<AppState>,
+    public store: Store<CheckStore>,
   ) { }
 
   ngOnInit(): void {
     this.loading = true;
-    this.checkService.getToday()
-      .subscribe(resp => {
-        this.checksTodayTemp = resp.checks;
-        this.checksToday = resp.checks;
-        this.loading = false;
-      });
+
+    this.checkStoreSubscription = this.store.select('check')
+      .subscribe(state => {
+        this.checksTodayTemp = [...state.checksToday]
+        this.checksToday = [...state.checksToday]
+      })
 
     this.checkSubscription = this.checkService.readData().subscribe((data) => {
       this.checksCreatedTemp = data.filter(d => d.state === "CREADO");
@@ -120,12 +122,14 @@ permissions: string[] = [];
         }
       });
 
-      this.sessionSubscription= this.store.select('session').pipe(filter( session => session !== null)).subscribe( session => {
-        if (session.permissions !== null) {
-          const MODULOS = session.permissions.filter(pr => pr.name === 'accountsPyabaleChecks');
-          this.permissions = MODULOS.length > 0 ? MODULOS[0].options : [];
-        }
+    this.sessionSubscription = this.store.select('session').pipe(filter(session => session !== null)).subscribe(session => {
+      if (session.permissions !== null) {
+        const MODULOS = session.permissions.filter(pr => pr.name === 'accountsPyabaleChecks');
+        this.permissions = MODULOS.length > 0 ? MODULOS[0].options : [];
+      }
     });
+
+    this.store.dispatch(READ_CHECKS_TODAY())
   }
 
   ngAfterContentInit(): void {
