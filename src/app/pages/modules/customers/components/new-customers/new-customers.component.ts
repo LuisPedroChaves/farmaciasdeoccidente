@@ -18,14 +18,14 @@ export class NewCustomersComponent implements OnInit, AfterContentInit, OnDestro
   loading = false;
 
   form = new FormGroup({
-    code: new FormControl('', ),
+    code: new FormControl('',),
     name: new FormControl(null, [Validators.required]),
-    nit: new FormControl(null,  [Validators.required]),
-    phone: new FormControl(null, ),
-    address: new FormControl(null, ),
-    town: new FormControl(null, ),
-    department: new FormControl('Huehuetenango', ),
-    company: new FormControl(null, ),
+    nit: new FormControl(null, [Validators.required]),
+    phone: new FormControl(null,),
+    address: new FormControl(null,),
+    town: new FormControl(null,),
+    department: new FormControl('Huehuetenango',),
+    company: new FormControl(null,),
     transport: new FormControl(null,),
     limitCredit: new FormControl(null, [Validators.required]),
     limitDaysCredit: new FormControl(null, [Validators.required]),
@@ -35,26 +35,19 @@ export class NewCustomersComponent implements OnInit, AfterContentInit, OnDestro
   usersSubscription: Subscription;
   sellers: UserItem[];
 
-    // Autocompletado
-    orderFind = false;
-    customersSubscription: Subscription;
-    customers: CustomerItem[];
-    options: CustomerItem[] = [];
-    filteredOptions: Observable<CustomerItem[]>;
+  customersSubscription: Subscription;
+  customers: CustomerItem[];
 
   constructor(public dialogRef: MatDialogRef<NewCustomersComponent>, @Inject(MAT_DIALOG_DATA) public data: any,
-  public customerService: CustomerService,
-  public toasty: ToastyService,
-  public userService: UserService
+    public customerService: CustomerService,
+    public toasty: ToastyService,
+    public userService: UserService
   ) { }
 
   ngOnInit(): void {
     this.customersSubscription = this.customerService.readData().subscribe(data => {
       this.customers = data.filter(customer => customer.code);
-      this.options = [...this.customers];
     });
-
-    this.filteredOptions = this.form.controls.code.valueChanges.pipe(startWith(''), map(value => this._filter(value)));
 
     this.usersSubscription = this.userService.readData().subscribe(data => {
       this.sellers = data.filter(user => user._role.type === 'SELLER');
@@ -88,8 +81,13 @@ export class NewCustomersComponent implements OnInit, AfterContentInit, OnDestro
 
   saveClient() {
     if (this.form.invalid) { return; }
+    const CUSTOMER = this.customers.find(c => c.code === this.form.controls['code'].value)
+    if (CUSTOMER) {
+      this.toasty.error('Código existente', 'Ya es utilizado para otro cliente')
+        return
+    }
     this.loading = true;
-    const client: CustomerItem = {...this.form.value};
+    const client: CustomerItem = { ...this.form.value };
     this.customerService.createCustomer(client).subscribe(data => {
       if (data.ok === true) {
         this.toasty.success('Cliente creado exitosamente');
@@ -104,48 +102,5 @@ export class NewCustomersComponent implements OnInit, AfterContentInit, OnDestro
       this.toasty.error('Error al crear el cliente');
     });
   }
-
-    // Autocompletado
-    findThis(value) {
-      if (value !== 'cf') {
-        this.orderFind = false;
-        const index = this.customers.findIndex(c => c.code === value);
-        if (index > -1) {
-          this.orderFind = true;
-          this.form.controls.nit.setValue(this.customers[index].nit);
-          this.form.controls.name.setValue(this.customers[index].name);
-          this.form.controls.phone.setValue(this.customers[index].phone);
-          this.form.controls.address.setValue(this.customers[index].address);
-          this.form.controls.town.setValue(this.customers[index].town);
-          this.form.controls.department.setValue(this.customers[index].department);
-          this.form.controls.company.setValue(this.customers[index].company);
-          this.form.controls.transport.setValue(this.customers[index].transport);
-          this.form.controls.limitCredit.setValue(this.customers[index].limitCredit);
-          this.form.controls.limitDaysCredit.setValue(this.customers[index].limitDaysCredit);
-          this.form.controls._seller.setValue(this.customers[index]._seller._id);
-        }
-      } else {
-        this.form.controls.nit.setValue('');
-        this.form.controls.name.setValue('');
-        this.form.controls.phone.setValue('');
-        this.form.controls.address.setValue('');
-        this.form.controls.town.setValue('');
-        this.form.controls.department.setValue('Huehuetenango');
-        this.form.controls.company.setValue('');
-        this.form.controls.transport.setValue('');
-        this.form.controls.limitCredit.setValue('');
-        this.form.controls.limitDaysCredit.setValue('');
-        this.form.controls._seller.setValue('');
-      }
-    }
-
-    private _filter(value: string): CustomerItem[] {
-      if (value) {
-        const filterValue = value.toLowerCase();
-        return this.options.filter(option => option.code.toLowerCase().includes(filterValue));
-      } else {
-        return [];
-      }
-    }
 
 }
