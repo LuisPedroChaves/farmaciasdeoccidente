@@ -5,8 +5,8 @@ import { Store } from '@ngrx/store';
 import { CashItem } from 'src/app/core/models/Cash';
 import { CashFlowService } from 'src/app/core/services/httpServices/cash-flow.service';
 import { ToastyService } from 'src/app/core/services/internal/toasty.service';
-import { CREATE_CASH_FLOW } from 'src/app/store/actions/accountingCash.actions';
-import { AccountingCashStore } from 'src/app/store/reducers/accountingCash.reducer';
+import { CREATE_CASH_FLOW } from 'src/app/store/actions/accounting-cash.actions';
+import { AccountingCashStore } from 'src/app/store/reducers/accounting-cash.reducer';
 
 @Component({
   selector: 'app-new-cash-flow',

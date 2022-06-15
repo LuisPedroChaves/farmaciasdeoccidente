@@ -31,6 +31,7 @@ export class IndexComponent implements OnInit, OnDestroy {
 
         const MODULE_TYPES = {
           'accountsPyabaleProviders': () => this.router.navigate(['/admin/accountsPayable']),
+          'accountsPyabaleCashRequisitions': () => this.router.navigate(['/admin/accountsPayable/cashRequisitions']),
           'accountsPyabaleDocuments': () => this.router.navigate(['/admin/accountsPayable/documents']),
           'accountsPyabaleBanks': () => this.router.navigate(['/admin/accountsPayable/banks']),
           'accountsPyabaleChecks': () => this.router.navigate(['/admin/accountsPayable/cheques']),

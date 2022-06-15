@@ -6,8 +6,8 @@ import { Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
 
 import { PermissionItem } from 'src/app/core/models/Role';
-import { READ_CASH } from 'src/app/store/actions/accountingCash.actions';
-import { AccountingCashStore } from 'src/app/store/reducers/accountingCash.reducer';
+import { READ_CASH } from 'src/app/store/actions/accounting-cash.actions';
+import { AccountingCashStore } from 'src/app/store/reducers/accounting-cash.reducer';
 
 @Component({
   selector: 'app-index',

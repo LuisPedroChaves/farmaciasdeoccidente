@@ -10,48 +10,29 @@ import { IDataService } from '../config/i-data-service';
 @Injectable({
   providedIn: 'root'
 })
-export class CashRequisitionService implements IDataService<CashRequisitionItem[]> {
-
-  public cashRequisitionList: CashRequisitionItem[];
-  cashRequisitionSubject = new Subject<CashRequisitionItem[]>();
+export class CashRequisitionService {
 
   constructor(
     public http: HttpClient,
     public apiConfigService: ApiConfigService
   ) { }
 
-  loadData(): void {
-    this.http
-      .get(`${this.apiConfigService.API_CASH_REQUISITION}/`)
+  readAll(): Observable<CashRequisitionItem[]> {
+    return this.http.get(this.apiConfigService.API_CASH_REQUISITION)
       .pipe(
-        map((response: any) => {
-
-          this.cashRequisitionList = response.accountsPayables;
-          this.cashRequisitionSubject.next(this.cashRequisitionList);
-        })
+        map((resp: any) => resp.cashRequisitions)
       )
-      .subscribe();
   }
 
-  getData(): void {
-    if (this.cashRequisitionList === undefined) {
-      this.loadData();
-    } else {
-      this.cashRequisitionSubject.next(this.cashRequisitionList);
-    }
-  }
-
-  readData(): Observable<CashRequisitionItem[]> {
-    return this.cashRequisitionSubject.asObservable();
-  }
-
-  setData(): void { }
-
-  invalidateData(): void {
-    if (this.cashRequisitionList === undefined) {
-    } else {
-      delete this.cashRequisitionList;
-    }
+  readHistory(startDate, endDate): Observable<CashRequisitionItem[]> {
+    return this.http.get(`${this.apiConfigService.API_CASH_REQUISITION}/history`, {
+      params: new HttpParams()
+      .set('startDate', startDate.toString())
+      .set('endDate', endDate.toString())
+    })
+      .pipe(
+        map((resp: any) => resp.cashRequisitions)
+      );
   }
 
   create(cashRequisition: CashRequisitionItem): Observable<any> {

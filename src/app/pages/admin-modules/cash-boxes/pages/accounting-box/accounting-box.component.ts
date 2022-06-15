@@ -4,7 +4,7 @@ import { Store } from '@ngrx/store';
 import { Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
 import { CashItem } from 'src/app/core/models/Cash';
-import { AccountingCashStore } from 'src/app/store/reducers/accountingCash.reducer';
+import { AccountingCashStore } from 'src/app/store/reducers/accounting-cash.reducer';
 
 @Component({
   selector: 'app-accounting-box',

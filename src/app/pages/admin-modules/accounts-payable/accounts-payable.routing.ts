@@ -7,6 +7,7 @@ import { DocumentsComponent } from './pages/documents/documents.component';
 import { CheckDeliveriesComponent } from './pages/check-deliveries/check-deliveries.component';
 import { ReportsComponent } from './pages/reports/reports.component';
 import { BanksComponent } from './pages/banks/banks.component';
+import { CashRequisitionsComponent } from './pages/cash-requisitions/cash-requisitions.component';
 
 export const AccountsPayableRoutes: Routes = [
   {
@@ -20,6 +21,10 @@ export const AccountsPayableRoutes: Routes = [
       {
         path: 'documents',
         component: DocumentsComponent
+      },
+      {
+        path: 'cashRequisitions',
+        component: CashRequisitionsComponent
       },
       {
         path: 'banks',

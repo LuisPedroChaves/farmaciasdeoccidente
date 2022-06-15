@@ -1,5 +1,6 @@
 import { AccountsPayableItem } from './AccountsPayable';
 import { BankAccountItem } from './Bank';
+import { CashRequisitionItem } from './CashRequisition';
 import { UserItem } from './User';
 
 export interface CheckItem {
@@ -14,6 +15,7 @@ export interface CheckItem {
     note: string,
     receipt?: ICheckReceipt,
     accountsPayables: AccountsPayableItem[],
+    cashRequisitions: CashRequisitionItem[],
     paymentDate?: Date,
     bank: string,
     state: string,
