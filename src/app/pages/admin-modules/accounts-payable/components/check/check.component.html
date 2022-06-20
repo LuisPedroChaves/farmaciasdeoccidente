@@ -31,7 +31,11 @@
         </p>
         <p><span fxFlex></span>{{ check._user.name }} - {{ check.created | date: 'dd/MM/yyyy HH:mm' }}</p>
         <hr>
-        <p><b>Documentos: </b><span *ngFor="let account of check.accountsPayables">{{account.noBill}}, </span></p>
+        <p><b>Documentos: </b></p>
+        <p *ngFor="let account of check.accountsPayables" fxLayoutAlign="space-between center">
+            <span>
+                <b>{{ (account.docType === 'ABONO' || account.docType === 'CREDITO' || account.docType === 'CREDITO_TEMP') ? 'N': 'F' }}</b>
+                {{account.noBill}} - {{ account.date | date: 'dd/MM/yyyy' }}</span><span>Q{{ account.total | number: '.2' }}</span></p>
         <p *ngIf="check.note.length > 0">{{ check.note.length }}</p>
         <p *ngIf="check.state === 'PAGADO'"><b>Fecha de pago: </b>{{ check.paymentDate | date: 'dd/MM/yyyy HH:mm' }}</p>
         <p *ngIf="check.delivered">
@@ -71,10 +75,12 @@
                 (click)="void(check)">Anular</button>
         </ng-container>
         <span fxFlex></span>
-        <button mat-mini-fab *ngIf="check.state === 'ACTUALIZADO' && !isDelivery" (click)="checkService.print(check)" matTooltip="Imprimir Cheque">
+        <button mat-mini-fab *ngIf="check.state === 'ACTUALIZADO' && !isDelivery" (click)="checkService.print(check)"
+            matTooltip="Imprimir Cheque">
             <mat-icon>print</mat-icon>
         </button>
-        <button mat-mini-fab *ngIf="check.state === 'CREADO' && !isDelivery" (click)="checkService.printVoucher(check)" matTooltip="Imprimir Voucher">
+        <button mat-mini-fab *ngIf="check.state === 'CREADO' && !isDelivery" (click)="checkService.printVoucher(check)"
+            matTooltip="Imprimir Voucher">
             <mat-icon>print</mat-icon>
         </button>
     </mat-card-actions>

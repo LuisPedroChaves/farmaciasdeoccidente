@@ -147,13 +147,13 @@ export class CheckService implements IDataService<CheckItem[]> {
 
     check.accountsPayables.map(account => {
       if (account.docType !== 'ABONO' && account.docType !== 'CREDITO' && account.docType !== 'CREDITO_TEMP') {
-        ArrayToPrint2.push([{ text: `${account.serie} ${account.noBill} (FACTURA)` }, { text: `+ ${account.total.toFixed(2)}` }])
+        ArrayToPrint2.push([{ text: `(FACTURA) ${account.serie} ${account.noBill} - ${moment(account.date).format('DD/MMMM/YYYY')}` }, { text: `+ ${account.total.toFixed(2)}` }])
       }
       if (account.docType === 'ABONO') {
-        ArrayToPrint2.push([{ text: `${account.serie} ${account.noBill} (NOTA DE ABONO)` }, { text: `- ${account.total.toFixed(2)}` }])
+        ArrayToPrint2.push([{ text: `(NOTA DE ABONO) ${account.serie} ${account.noBill} - ${moment(account.date).format('DD/MMMM/YYYY')}` }, { text: `- ${account.total.toFixed(2)}` }])
       }
       if (account.docType === 'CREDITO' || account.docType === 'CREDITO_TEMP') {
-        ArrayToPrint2.push([{ text: `${account.serie} ${account.noBill} (NOTA DE CRÉDITO)` }, { text: `- ${account.total.toFixed(2)}` }])
+        ArrayToPrint2.push([{ text: `(NOTA DE CRÉDITO) ${account.serie} ${account.noBill} - ${moment(account.date).format('DD/MMMM/YYYY')}` }, { text: `- ${account.total.toFixed(2)}` }])
       }
     })
 
