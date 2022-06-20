@@ -71,10 +71,10 @@
                 (click)="void(check)">Anular</button>
         </ng-container>
         <span fxFlex></span>
-        <button mat-mini-fab *ngIf="check.state === 'ACTUALIZADO' && !isDelivery" (click)="checkService.print(check)">
+        <button mat-mini-fab *ngIf="check.state === 'ACTUALIZADO' && !isDelivery" (click)="checkService.print(check)" matTooltip="Imprimir Cheque">
             <mat-icon>print</mat-icon>
         </button>
-        <button mat-mini-fab *ngIf="check.state === 'CREADO' && !isDelivery" (click)="checkService.printVoucher(check)">
+        <button mat-mini-fab *ngIf="check.state === 'CREADO' && !isDelivery" (click)="checkService.printVoucher(check)" matTooltip="Imprimir Voucher">
             <mat-icon>print</mat-icon>
         </button>
     </mat-card-actions>

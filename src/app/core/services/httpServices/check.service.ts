@@ -118,7 +118,6 @@ export class CheckService implements IDataService<CheckItem[]> {
   }
 
   printVoucher(check: CheckItem) {
-    console.log("🚀 ~ file: check.service.ts ~ line 121 ~ CheckService ~ printVoucher ~ check", check)
     const body = [];
 
     moment.locale('es');
@@ -154,21 +153,20 @@ export class CheckService implements IDataService<CheckItem[]> {
         ArrayToPrint2.push([{ text: `${account.serie} ${account.noBill} (NOTA DE ABONO)` }, { text: `- ${account.total.toFixed(2)}` }])
       }
       if (account.docType === 'CREDITO' || account.docType === 'CREDITO_TEMP') {
-        ArrayToPrint2.push([{ text: `${account.serie} ${account.noBill} (NOTA DE CREDITO)` }, { text: `- ${account.total.toFixed(2)}` }])
+        ArrayToPrint2.push([{ text: `${account.serie} ${account.noBill} (NOTA DE CRÉDITO)` }, { text: `- ${account.total.toFixed(2)}` }])
       }
     })
 
-    // check.cashRequisitions.map(cr => {
-    //   ArrayToPrint2.push([{ text: `${cr.} (FACTURA)` }, { text: `+ ${account.total.toFixed(2)}` }])
-    // })
+    check.cashRequisitions.map(cr => {
+      ArrayToPrint2.push([{ text: `(REQUISICIÓN)` }, { text: `+ ${cr.total.toFixed(2)}` }])
+    })
 
-    ArrayToPrint2.push([{ text: 'Total a pagar' }, { text: check.amount.toFixed(2) }])
+    ArrayToPrint2.push([{ text: 'Total a pagar', style: ['bold', 'graybg'] }, { text: check.amount.toFixed(2), style: ['bold', 'graybg'] }])
 
     body.push({
       style: 'cells',
       table: {
         widths: ['*', 'auto'],
-        // heights: ['auto', 50, 'auto'],
         headerRows: 0,
         body: ArrayToPrint2
       }
