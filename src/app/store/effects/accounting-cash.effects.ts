@@ -4,7 +4,7 @@ import { map, mergeMap } from 'rxjs/operators';
 
 import { CashService } from "src/app/core/services/httpServices/cash.service";
 import { CashFlowService } from "src/app/core/services/httpServices/cash-flow.service";
-import * as actions from '../actions/accountingCash.actions';
+import * as actions from '../actions/accounting-cash.actions';
 import { ToastyService } from "src/app/core/services/internal/toasty.service";
 
 @Injectable()

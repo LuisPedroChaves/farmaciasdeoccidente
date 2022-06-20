@@ -9,6 +9,12 @@
                 </mat-chip-avatar>
                 Proveedores
             </mat-chip>
+            <mat-chip *ngIf="searchModule('accountsPyabaleCashRequisitions')" [routerLink]="['/admin/accountsPayable/cashRequisitions']" [selected]="router.url === '/admin/accountsPayable/cashRequisitions'" color="primary" matTooltip="Requisiciones de cajas contables">
+                <mat-chip-avatar>
+                    <mat-icon>request_page</mat-icon>
+                </mat-chip-avatar>
+                Requisiciones
+            </mat-chip>
             <mat-chip *ngIf="searchModule('accountsPyabaleDocuments')" [routerLink]="['/admin/accountsPayable/documents']" [selected]="router.url === '/admin/accountsPayable/documents'" color="primary" matTooltip="Todos los documentos">
                 <mat-chip-avatar>
                     <mat-icon>receipt</mat-icon>

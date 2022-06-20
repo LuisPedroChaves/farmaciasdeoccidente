@@ -1,0 +1,253 @@
+<mat-drawer-container class="my-layout">
+    <mat-drawer #drawer class="sidenav" position="end" mode="over">
+        <header fxLayout="row wrap" fxLayoutAlign="start center">
+            <h2 class="ma-0">{{title}}</h2>
+            <span fxFlex></span>
+            <button mat-icon-button (click)="reset()">
+                <mat-icon>close</mat-icon>
+            </button>
+        </header>
+        <app-new-edit *ngIf="drawerComponent === 'DOCUMENTO'" [accountsPayable]="accountsPayable" (close)="reload()">
+        </app-new-edit>
+        <app-table-cash-flows *ngIf="drawerComponent === 'GASTOS'"></app-table-cash-flows>
+    </mat-drawer>
+    <mat-drawer-content>
+        <mat-drawer-container>
+            <mat-drawer #drawer2 mode="over">
+                <header fxLayout="row wrap" fxLayoutAlign="start center">
+                    <h2 class="ma-0">Nuevo pago a caja</h2>
+                    <span fxFlex></span>
+                    <button mat-icon-button (click)="drawer2.opened = false">
+                        <mat-icon>close</mat-icon>
+                    </button>
+                </header>
+                <ngx-simplebar class="check-layout">
+                    <app-new-check [amount]="this.getTotalSelection().toFixed(2)"
+                        [cashRequisitions]="selection.selected" (close)="closePay()"></app-new-check>
+                </ngx-simplebar>
+            </mat-drawer>
+            <mat-drawer-content>
+                <header>
+                    <!-- <app-filter (send)="applyFilter($event)"></app-filter> -->
+                    <span fxFlex></span>
+                    <button mat-fab *ngIf="permissions && permissions.includes('create')" color="warn"
+                        [matMenuTriggerFor]="payablesMenu" matTooltip="Nuevo documento">
+                        <mat-icon>add</mat-icon>
+                    </button>
+                    <mat-menu #payablesMenu="matMenu" xPosition="before">
+                        <button mat-menu-item (click)="newDocument('PRODUCTOS')">
+                            <mat-icon>medication</mat-icon>
+                            <span>Productos</span>
+                        </button>
+                        <button mat-menu-item (click)="newDocument('GASTOS')">
+                            <mat-icon>payments</mat-icon>
+                            <span>Gastos</span>
+                        </button>
+                    </mat-menu>
+                </header>
+                <ngx-simplebar class="content">
+                    <app-no-found *ngIf="permissions && !permissions.includes('read')" text="Acceso Denegado"
+                        subtitle="Actualmente no cuenta con permisos para acceder a este apartado"></app-no-found>
+                    <ng-container *ngIf="permissions && permissions.includes('read')">
+                        <mat-tab-group mat-align-tabs="center">
+                            <mat-tab [label]="labelRequisitions()">
+                                <div fxLayout="row wrap" class="headerTable">
+                                    <button mat-raised-button (click)="newPay()" color="accent">Ingresar Pago</button>
+                                </div>
+                                <table mat-table [dataSource]="requisitionsSource">
+                                    <ng-container matColumnDef="select">
+                                        <th mat-header-cell *matHeaderCellDef>
+                                            <mat-checkbox (change)="$event ? masterToggle() : null"
+                                                [checked]="selection.hasValue() && isAllSelected()"
+                                                [indeterminate]="selection.hasValue() && !isAllSelected()"
+                                                [aria-label]="checkboxLabel()">
+                                            </mat-checkbox>
+                                        </th>
+                                        <td mat-cell *matCellDef="let row">
+                                            <mat-checkbox (click)="$event.stopPropagation()"
+                                                (change)="$event ? selection.toggle(row) : null"
+                                                [checked]="selection.isSelected(row)" [aria-label]="checkboxLabel(row)">
+                                            </mat-checkbox>
+                                        </td>
+                                    </ng-container>
+
+                                    <ng-container matColumnDef="_cash">
+                                        <th mat-header-cell *matHeaderCellDef>Caja</th>
+                                        <td mat-cell *matCellDef="let element" fxLayoutGap="10px">
+                                            <mat-icon
+                                                [matTooltip]="'Saldo Actual: Q' + element._cash.balance.toFixed(2)">
+                                                point_of_sale</mat-icon>
+                                            <span [matTooltip]="'Saldo Actual: Q' + element._cash.balance.toFixed(2)">{{
+                                                element._cash._user.name }}</span>
+                                        </td>
+                                    </ng-container>
+
+                                    <ng-container matColumnDef="created">
+                                        <th mat-header-cell *matHeaderCellDef> Fecha de creación </th>
+                                        <td mat-cell *matCellDef="let element"> {{element.created | date: 'dd/MM/yyyy'}}
+                                        </td>
+                                    </ng-container>
+
+                                    <ng-container matColumnDef="total">
+                                        <th mat-header-cell *matHeaderCellDef>Total (Q)</th>
+                                        <td mat-cell *matCellDef="let element">
+                                            {{ element.total | number: '.2' }}
+                                        </td>
+                                    </ng-container>
+
+                                    <ng-container matColumnDef="actions">
+                                        <th mat-header-cell *matHeaderCellDef>Movimientos</th>
+                                        <td mat-cell *matCellDef="let element">
+                                            <button mat-icon-button (click)="viewCashFlows(element)" color="accent">
+                                                <mat-icon>visibility</mat-icon>
+                                            </button>
+                                        </td>
+                                    </ng-container>
+
+                                    <tr mat-header-row *matHeaderRowDef="columns;  sticky: true"></tr>
+                                    <tr mat-row *matRowDef="let row; columns: columns;"></tr>
+                                    <!-- Fila mostrada cuando no hay datos coincidentes. -->
+                                    <tr class="mat-row" *matNoDataRow>
+                                        <td class="mat-cell" colspan="14">No hay datos que coincidan con algún filtro o
+                                            busqueda</td>
+                                    </tr>
+                                </table>
+                            </mat-tab>
+                            <mat-tab [label]="labelProcess()">
+                                <table mat-table [dataSource]="processSource">
+
+                                    <ng-container matColumnDef="_check">
+                                        <th mat-header-cell *matHeaderCellDef>Cheque</th>
+                                        <td mat-cell *matCellDef="let element" fxLayoutGap="10px">
+                                            {{ element._check.no}}
+                                        </td>
+                                    </ng-container>
+
+                                    <ng-container matColumnDef="_cash">
+                                        <th mat-header-cell *matHeaderCellDef>Caja</th>
+                                        <td mat-cell *matCellDef="let element" fxLayoutGap="10px">
+                                            <mat-icon
+                                                [matTooltip]="'Saldo Actual: Q' + element._cash.balance.toFixed(2)">
+                                                point_of_sale</mat-icon>
+                                            <span [matTooltip]="'Saldo Actual: Q' + element._cash.balance.toFixed(2)">{{
+                                                element._cash._user.name }}</span>
+                                        </td>
+                                    </ng-container>
+
+                                    <ng-container matColumnDef="updated">
+                                        <th mat-header-cell *matHeaderCellDef> Fechas </th>
+                                        <td mat-cell *matCellDef="let element">
+                                            <span *ngIf="element.created">Creada: {{element.created | date:
+                                                'dd/MM/yyyy'}}</span>
+                                            <br>
+                                            <span *ngIf="element.updated">Actualizada: {{ element.updated | date:
+                                                'dd/MM/yyyy'}}</span>
+                                        </td>
+                                    </ng-container>
+
+                                    <ng-container matColumnDef="total">
+                                        <th mat-header-cell *matHeaderCellDef>Total (Q)</th>
+                                        <td mat-cell *matCellDef="let element">
+                                            {{ element.total | number: '.2' }}
+                                        </td>
+                                    </ng-container>
+
+                                    <ng-container matColumnDef="actions">
+                                        <th mat-header-cell *matHeaderCellDef>Movimientos</th>
+                                        <td mat-cell *matCellDef="let element">
+                                            <button mat-icon-button (click)="viewCashFlows(element)" color="accent">
+                                                <mat-icon>visibility</mat-icon>
+                                            </button>
+                                        </td>
+                                    </ng-container>
+
+                                    <tr mat-header-row *matHeaderRowDef="columns2;  sticky: true"></tr>
+                                    <tr mat-row *matRowDef="let row; columns: columns2;"></tr>
+                                    <!-- Fila mostrada cuando no hay datos coincidentes. -->
+                                    <tr class="mat-row" *matNoDataRow>
+                                        <td class="mat-cell" colspan="14">No hay datos que coincidan con algún filtro o
+                                            busqueda</td>
+                                    </tr>
+                                </table>
+                            </mat-tab>
+                            <mat-tab label="Historial">
+                                <div fxLayout="row wrap" class="headerTable">
+                                    <mat-form-field appearance="outline">
+                                        <mat-label>Introduzca un rango de fechas</mat-label>
+                                        <mat-date-range-input [formGroup]="range" [rangePicker]="picker">
+                                            <input matStartDate formControlName="start" placeholder="Fecha de inicio">
+                                            <input matEndDate formControlName="end" placeholder="Fecha de finalización">
+                                        </mat-date-range-input>
+                                        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                                        <mat-date-range-picker #picker></mat-date-range-picker>
+                                        <mat-error *ngIf="range.get('start').hasError('matStartDateInvalid')">Fecha de
+                                            inicio no válida
+                                        </mat-error>
+                                        <mat-error *ngIf="range.controls.end.hasError('matEndDateInvalid')">Fecha de
+                                            finalización no válida
+                                        </mat-error>
+                                    </mat-form-field>
+                                </div>
+                                <table mat-table [dataSource]="historySource">
+
+                                    <ng-container matColumnDef="_check">
+                                        <th mat-header-cell *matHeaderCellDef>Cheque</th>
+                                        <td mat-cell *matCellDef="let element" fxLayoutGap="10px">
+                                            {{ element._check.no}}
+                                        </td>
+                                    </ng-container>
+
+                                    <ng-container matColumnDef="_cash">
+                                        <th mat-header-cell *matHeaderCellDef>Caja</th>
+                                        <td mat-cell *matCellDef="let element" fxLayoutGap="10px">
+                                            <mat-icon
+                                                [matTooltip]="'Saldo Actual: Q' + element._cash.balance.toFixed(2)">
+                                                point_of_sale</mat-icon>
+                                            <span [matTooltip]="'Saldo Actual: Q' + element._cash.balance.toFixed(2)">{{
+                                                element._cash._user.name }}</span>
+                                        </td>
+                                    </ng-container>
+
+                                    <ng-container matColumnDef="updated">
+                                        <th mat-header-cell *matHeaderCellDef> Fechas </th>
+                                        <td mat-cell *matCellDef="let element">
+                                            <span *ngIf="element.created">Creada: {{element.created | date:
+                                                'dd/MM/yyyy'}}</span>
+                                            <br>
+                                            <span *ngIf="element.updated">Actualizada: {{ element.updated | date:
+                                                'dd/MM/yyyy'}}</span>
+                                        </td>
+                                    </ng-container>
+
+                                    <ng-container matColumnDef="total">
+                                        <th mat-header-cell *matHeaderCellDef>Total (Q)</th>
+                                        <td mat-cell *matCellDef="let element">
+                                            {{ element.total | number: '.2' }}
+                                        </td>
+                                    </ng-container>
+
+                                    <ng-container matColumnDef="actions">
+                                        <th mat-header-cell *matHeaderCellDef>Movimientos</th>
+                                        <td mat-cell *matCellDef="let element">
+                                            <button mat-icon-button (click)="viewCashFlows(element)" color="accent">
+                                                <mat-icon>visibility</mat-icon>
+                                            </button>
+                                        </td>
+                                    </ng-container>
+
+                                    <tr mat-header-row *matHeaderRowDef="columns2;  sticky: true"></tr>
+                                    <tr mat-row *matRowDef="let row; columns: columns2;"></tr>
+                                    <!-- Fila mostrada cuando no hay datos coincidentes. -->
+                                    <tr class="mat-row" *matNoDataRow>
+                                        <td class="mat-cell" colspan="14">No hay datos que coincidan con algún filtro o
+                                            busqueda</td>
+                                    </tr>
+                                </table>
+                            </mat-tab>
+                        </mat-tab-group>
+                    </ng-container>
+                </ngx-simplebar>
+            </mat-drawer-content>
+        </mat-drawer-container>
+    </mat-drawer-content>
+</mat-drawer-container>

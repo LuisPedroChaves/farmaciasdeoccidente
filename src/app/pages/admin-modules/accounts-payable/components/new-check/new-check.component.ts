@@ -12,6 +12,7 @@ import { AccountsPayableItem } from '../../../../../core/models/AccountsPayable'
 import { ToastyService } from '../../../../../core/services/internal/toasty.service';
 import { CheckItem } from '../../../../../core/models/Check';
 import { AccountsPayableService } from '../../../../../core/services/httpServices/accounts-payable.service';
+import { CashRequisitionItem } from '../../../../../core/models/CashRequisition';
 
 @Component({
   selector: 'app-new-check',
@@ -23,6 +24,7 @@ export class NewCheckComponent implements OnInit, OnChanges, OnDestroy {
   @Input() name = '';
   @Input() amount = 0;
   @Input() accountsPayables: AccountsPayableItem[] = [];
+  @Input() cashRequisitions: CashRequisitionItem[] = []
   @Output() close = new EventEmitter;
 
   loading = false;
@@ -88,6 +90,7 @@ export class NewCheckComponent implements OnInit, OnChanges, OnDestroy {
       name: this.name,
       amount: this.amount,
       accountsPayables: this.accountsPayables,
+      cashRequisitions: this.cashRequisitions,
       note: this.form.controls.note.value,
       bank: this.form.controls.bank.value,
       state: this.form.controls.state.value,

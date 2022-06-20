@@ -32,14 +32,16 @@ import { TimeFormatPipe } from 'src/app/core/shared/pipes/timePipes/time-format.
 import { ReportProviderComponent } from './components/report-provider/report-provider.component';
 import { ReportGlobalExpenseComponent } from './components/report-global-expense/report-global-expense.component';
 import { BanksComponent } from './pages/banks/banks.component';
-import { BankReducer } from 'src/app/store/reducers/bank.reducer';
 import { NewBankComponent } from './components/new-bank/new-bank.component';
 import { BankEffects } from 'src/app/store/effects/bank.effects';
 import { NewBankAccountComponent } from './components/new-bank-account/new-bank-account.component';
 import { EditBankAccountComponent } from './components/edit-bank-account/edit-bank-account.component';
 import { NewBankFlowComponent } from './components/new-bank-flow/new-bank-flow.component';
-import { CheckReducer } from 'src/app/store/reducers/check.reducer';
 import { CheckEffects } from 'src/app/store/effects/check.effects';
+import { AccountsPayableReducer, CheckReducer, BankReducer } from 'src/app/store/reducers';
+import { AccountsPayableEffects } from 'src/app/store/effects/accounts-payable.effects';
+import { CashRequisitionsComponent } from './pages/cash-requisitions/cash-requisitions.component';
+import { TableCashFlowsComponent } from './components/table-cash-flows/table-cash-flows.component';
 
 @NgModule({
   declarations: [
@@ -67,6 +69,8 @@ import { CheckEffects } from 'src/app/store/effects/check.effects';
     NewBankAccountComponent,
     EditBankAccountComponent,
     NewBankFlowComponent,
+    CashRequisitionsComponent,
+    TableCashFlowsComponent,
 
   ],
   imports: [
@@ -74,7 +78,8 @@ import { CheckEffects } from 'src/app/store/effects/check.effects';
     RouterModule.forChild(AccountsPayableRoutes),
     StoreModule.forFeature('check', CheckReducer),
     StoreModule.forFeature('bank', BankReducer),
-    EffectsModule.forFeature([BankEffects, CheckEffects]),
+    StoreModule.forFeature('accountsPayable', AccountsPayableReducer),
+    EffectsModule.forFeature([BankEffects, CheckEffects, AccountsPayableEffects]),
     SharedComponentsModule,
     InputsModule,
     ComponentsModule,

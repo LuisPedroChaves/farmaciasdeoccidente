@@ -500,6 +500,7 @@ export class NewEditComponent implements OnInit, AfterContentInit, OnDestroy, On
       name: this.formCheck.controls.name.value,
       amount: total,
       accountsPayables: [{ ...accountPayable }],
+      cashRequisitions: [],
       note: this.formCheck.controls.note.value,
       bank: this.formCheck.controls.bank.value,
       state: this.formCheck.controls.state.value,

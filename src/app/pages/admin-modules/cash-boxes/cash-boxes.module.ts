@@ -5,7 +5,7 @@ import { RouterModule } from '@angular/router';
 import { StoreModule } from '@ngrx/store';
 import { AccountingCashReducer } from 'src/app/store/reducers';
 import { EffectsModule } from '@ngrx/effects';
-import { AccountingCashEffects } from 'src/app/store/effects/accountingCash.effects';
+import { AccountingCashEffects } from 'src/app/store/effects/accounting-cash.effects';
 
 import { IndexComponent } from './pages/index/index.component';
 import { SharedComponentsModule } from '../../shared-components/shared-components.module';
