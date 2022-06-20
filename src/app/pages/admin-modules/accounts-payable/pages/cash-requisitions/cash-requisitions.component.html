@@ -23,7 +23,8 @@
                 </header>
                 <ngx-simplebar class="check-layout">
                     <app-new-check [amount]="this.getTotalSelection().toFixed(2)"
-                        [cashRequisitions]="selection.selected" (close)="closePay()"></app-new-check>
+                        [name]="selection.selected[0]?._cash._user.name" [cashRequisitions]="selection.selected"
+                        (close)="closePay()"></app-new-check>
                 </ngx-simplebar>
             </mat-drawer>
             <mat-drawer-content>

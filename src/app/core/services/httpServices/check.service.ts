@@ -116,4 +116,77 @@ export class CheckService implements IDataService<CheckItem[]> {
 
     this.printService.printCheck(body);
   }
+
+  printVoucher(check: CheckItem) {
+    const body = [];
+
+    moment.locale('es');
+    body.push({ text: check._bankAccount.no + ' | ' + check._bankAccount.name + '\n', style: 'subheader' });
+
+    const ArrayToPrint: any[] = [
+      [{ text: 'Cheque No.', style: ['bold', 'graybg'] }, { text: check.no }, { text: 'Lugar y Fecha', style: ['bold', 'graybg'] }, { text: check.city + ', ' + moment(check.date).format('DD [de] MMMM [de] YYYY'), colSpan: 2 }, {}],
+      [{ text: 'Paguese a:', style: ['bold', 'graybg'] }, { text: check.name, colSpan: 4 }, {}, {}, {}],
+      [{ text: 'La suma de:', style: ['bold', 'graybg'] }, { text: this.numberToWords.transform(check.amount), colSpan: 3 }, {}, {}, { text: 'Q. ' + check.amount.toFixed(2) }],
+      [{ text: '', colSpan: 4 }, {}, {}, {}, { text: 'Firma Autorizada: ', style: ['bold'] }],
+    ];
+    body.push({
+      style: 'cells',
+      table: {
+        widths: ['auto', '*', 'auto', '*', '*'],
+        headerRows: 0,
+        heights: ['auto', 'auto', 'auto', 30],
+        body: ArrayToPrint
+      },
+      // layout: 'noBorders'
+    });
+    body.push({ text: '\n', style: 'subheader' });
+
+    const ArrayToPrint2: any[] = [
+      [{ text: 'Documentos', style: ['bold', 'graybg'] }, { text: 'Valor (Q.)', style: ['bold', 'graybg'] }],
+    ];
+
+    check.accountsPayables.map(account => {
+      if (account.docType !== 'ABONO' && account.docType !== 'CREDITO' && account.docType !== 'CREDITO_TEMP') {
+        ArrayToPrint2.push([{ text: `${account.serie} ${account.noBill} (FACTURA)` }, { text: `+ ${account.total.toFixed(2)}` }])
+      }
+      if (account.docType === 'ABONO') {
+        ArrayToPrint2.push([{ text: `${account.serie} ${account.noBill} (NOTA DE ABONO)` }, { text: `- ${account.total.toFixed(2)}` }])
+      }
+      if (account.docType === 'CREDITO' || account.docType === 'CREDITO_TEMP') {
+        ArrayToPrint2.push([{ text: `${account.serie} ${account.noBill} (NOTA DE CRÉDITO)` }, { text: `- ${account.total.toFixed(2)}` }])
+      }
+    })
+
+    check.cashRequisitions.map(cr => {
+      ArrayToPrint2.push([{ text: `(REQUISICIÓN)` }, { text: `+ ${cr.total.toFixed(2)}` }])
+    })
+
+    ArrayToPrint2.push([{ text: 'Total a pagar', style: ['bold', 'graybg'] }, { text: check.amount.toFixed(2), style: ['bold', 'graybg'] }])
+
+    body.push({
+      style: 'cells',
+      table: {
+        widths: ['*', 'auto'],
+        headerRows: 0,
+        body: ArrayToPrint2
+      }
+    });
+
+
+    // const ArrayToPrint3: any[] = [
+    //   [{ text: 'Hecho Por', style: ['bold', 'graybg'] }, { text: 'Autorizado Por', style: ['bold', 'graybg'] }, { text: 'Recibí Conforme', style: ['bold', 'graybg'] }],
+    //   [{ text: 'JCLL' }, { text: 'JMM' }, {}],
+    // ];
+    // body.push({
+    //   style: 'cells',
+    //   table: {
+    //     widths: ['*', '*', '*'],
+    //     heights: ['auto', 30],
+    //     headerRows: 0,
+    //     body: ArrayToPrint3
+    //   }
+    // });
+
+    this.printService.printPortrait(body);
+  }
 }
