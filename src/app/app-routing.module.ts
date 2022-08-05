@@ -202,12 +202,17 @@ const routes: Routes = [
           ),
         canActivate: [CheckTokenGuard],
       },
-      // {
-      //   // tslint:disable-next-line: max-line-length
-      //   path: 'employees', pathMatch:
-      // 'full', loadChildren: () => import('./pages/modules/employees/employees.module').then(m => m.EmployeesModule),
-      //   canActivate: [CheckTokenGuard]
-      // },
+      {
+        // tslint:disable-next-line: max-line-length
+        path: 'employees', pathMatch:
+      'full', loadChildren: () => import('./pages/admin-modules/employees/employees.module').then(m => m.EmployeesModule),
+        canActivate: [CheckTokenGuard]
+      },
+      {
+        path: 'payroll', pathMatch:
+      'full', loadChildren: () => import('./pages/admin-modules/payroll/payroll.module').then(m => m.PayrollModule),
+        canActivate: [CheckTokenGuard]
+      },
       {
         path: 'receivables',
         pathMatch: 'full',

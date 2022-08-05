@@ -1,36 +1,15 @@
-.header {
-    padding: 5px;
-}
+$blue: #045195;
+.stepper {  width: 100%; }
 
-.clientspace {
-    height: 350px;
-    width: 100%;
-}
+.space { height: calc(100vh - 285px); }
+.footer { padding: 15px; }
 
-.grayicon {
-    color: #0a1958;
-}
+.avatar-space { position: relative; width: 100%; max-width: 100px;  }
+.avater-image { border-radius: 100%; width: 100%; max-width: 100px; }
+.change-button { background-color: $blue; color: white !important; position: absolute; bottom: 0px; right: 0px; }
 
-.width-all {
-    width: 100%;
-    font-size: 13px;
-}
-
-.inputpadding {
-    padding-left: 3px;
-    padding-right: 3px;
-}
-
-.radio {
-    margin-right: 10px;
-    font-size: 13px;
-}
-
-.h2 {
-    color: #0a1958;
-}
-
-.info-row {
-    margin-bottom: 5px;
-    margin-top: 3px;
-}
+.all { width: 100%; }
+.formsection { padding: 0px 5px; }
+.addedjob { padding: 15px; margin: 10px; }
+.jobtitle { font-size: 16px; font-weight: 600; }
+.relative { margin: 10px 0px; padding: 15px; }

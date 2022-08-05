@@ -1,5 +1,7 @@
-import { Component, Inject, OnInit } from '@angular/core';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { Component, Inject, Input, OnInit } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
+import { NewEmployeeJobComponent } from '../new-employee-job/new-employee-job.component';
+
 
 @Component({
   selector: 'app-new-employee',
@@ -7,36 +9,58 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
   styleUrls: ['./new-employee.component.scss']
 })
 export class NewEmployeeComponent implements OnInit {
-  newEmployee: any = {
-    _id: '',
 
-    name: '',
-    gender: '',
+  @Input() smallScreen: boolean;
 
-    dpi: '',
-    birthDate: '',
+  departments: any[] = [
+    'Alta Verapaz',
+    'Baja Verapaz',
+    'Chimaltenago',
+    'Chiquimula',
+    'Guatemala',
+    'El Progreso',
+    'Escuintla',
+    'Huehuetenango',
+    'Izabal',
+    'Jalapa',
+    'Jutiapa',
+    'Petén',
+    'Quetzaltenango',
+    'Quiché',
+    'Retalhuleu',
+    'Sacatepequez',
+    'San Marcos',
+    'Santa Rosa',
+    'Sololá',
+    'Suchitepequez',
+    'Totonicapán',
+    'Zacapa'
+  ];
 
-    address: '',
-    phone: '',
+  @Input() jobs: any[] = [];
 
-    _job: null,
-    salary: 0,
-  };
-  private configSucces: any = {
-    panelClass: ['style-succes'],
-    duration: 2000,
-    verticalPosition: 'top',
-  };
-
-  private configError: any = {
-    panelClass: ['style-error'],
-    duration: 2000,
-    verticalPosition: 'top',
-  };
-  constructor(public dialogRef: MatDialogRef<NewEmployeeComponent>,
-              @Inject(MAT_DIALOG_DATA) public data: any) { }
+  constructor(public dialog: MatDialog) { }
 
   ngOnInit(): void {
+  }
+
+
+
+  saveEmployee() {
+
+  }
+
+  addJob() {
+    const dialogRef = this.dialog.open(NewEmployeeJobComponent, {
+      width: this.smallScreen ? '100%' : '450px',
+      panelClass: ['farmacia-dialog', 'farmacia'],
+      data: { jobs: this.jobs }
+    });
+
+
+    dialogRef.afterClosed().subscribe(data => {
+
+    });
   }
 
 }

@@ -1,0 +1,17 @@
+<header class="header" fxLayout="row wrap" fxLayoutAlign="start center">
+    <h2 class="product-font ma-0">{{ data.title }}</h2>
+    <span fxFlex></span>
+    <button mat-icon-button (click)="dialogRef.close(false)">
+        <mat-icon>close</mat-icon>
+    </button>
+</header>
+<div class="space" data-simplebar>
+    <div *ngIf="data.msg" class="msg">
+        {{ data.msg }}
+    </div>
+</div>
+<div class="footer" fxLayout="row wrap">
+    <button mat-button (click)="dialogRef.close(false)">Cancelar</button>
+     <span fxFlex></span>
+    <button mat-flat-button color="primary" (click)="dialogRef.close(true)">Aceptar</button>
+</div>

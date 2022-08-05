@@ -1,62 +1,30 @@
-<div class="farmacia">
-
-    <header fxLayout="row wrap" fxLayoutAlign="start center" class="header">
-        <h2 style="margin: 0;" class="h2"> Nuevo Puesto</h2>
-        <span fxFlex></span>
-        <button mat-icon-button>
-            <mat-icon>close</mat-icon>
-        </button>
-    </header>
-    <mat-divider></mat-divider>
-    <div class="clientspace" data-simplebar>
-        <div fxLayout="row wrap" fxLayoutAlign="start center" style="margin-top: 8px;">
-            <div fxFlex="50px" fxLayoutAlign="center center" fxHide.xs></div>
-            <div fxFlex fxLayout="row wrap">
-                <mat-form-field appearance="outline" color="primary" class="width-all">
-                    <mat-label>Nombre del Puesto</mat-label>
-                    <input type="text" matInput placeholder="Ingrese el nombre del empleado">
-                </mat-form-field>
-            </div>
-            <div fxFlex="50px" fxLayoutAlign="center center" fxHide.xs></div>
+<header class="header" fxLayout="row wrap" fxLayoutAlign="start center">
+    <h2 class="product-font ma-0">{{ this.data.role === 'edit' ? 'Editar Puesto' : 'Nuevo Puesto' }}</h2>
+    <span fxFlex></span>
+    <button mat-icon-button (click)="dialogRef.close()">
+        <mat-icon>close</mat-icon>
+    </button>
+</header>
+<div class="space" data-simplebar>
+    <form [formGroup]="form">
+        <div fxLayout="row wrap">
+            <mat-form-field class="input-all" color="primary" appearance="outline">
+                <mat-label>Nombre del Puesto</mat-label>
+                <input matInput formControlName="name">
+            </mat-form-field>
         </div>
-        <div fxLayout="row wrap" fxLayoutAlign="start center" style="margin-top: 8px;">
-            <div fxFlex="50px" fxLayoutAlign="center center" fxHide.xs></div>
-            <div fxFlex fxLayout="row wrap">
-                <mat-form-field appearance="outline" color="primary" class="width-all">
-                    <mat-label>Tipo de salario</mat-label>
-                    <mat-select>
-                        <mat-option value="HORAS">Por Hora</mat-option>
-                        <mat-option value="MES">Mensual</mat-option>
-                        <mat-option value="QUINCENA">Por Quincena</mat-option>
-                        <mat-option value="DIA">Por Día</mat-option>
-                        <mat-option value="SEMANA">Semanal</mat-option>
-                        <mat-option value="TRABAJO">Por Trabajo</mat-option>
-                    </mat-select>
-                </mat-form-field>
-            </div>
-            <div fxFlex="50px" fxLayoutAlign="center center" fxHide.xs></div>
+        <div fxLayout="row wrap">
+            <mat-form-field class="input-all" color="primary" appearance="outline">
+                <mat-label>Departamento</mat-label>
+                <mat-select formControlName="department">
+                    <mat-option *ngFor="let d of departments" [value]="d._id">{{ d.name }}</mat-option>
+                </mat-select>
+            </mat-form-field>
         </div>
-        <div fxLayout="row wrap" fxLayoutAlign="start center" style="margin-top: 8px;">
-            <div fxFlex="50px" fxLayoutAlign="center center" fxHide.xs></div>
-            <div fxFlex fxLayout="row wrap">
-                <mat-form-field appearance="outline" color="primary" class="width-all">
-                    <mat-label>Salario Base</mat-label>
-                    <span matPrefix><b>Q. </b></span>
-                    <input type="text" matInput placeholder="Ingrese el nombre del empleado">
-                </mat-form-field>
-            </div>
-            <div fxFlex="50px" fxLayoutAlign="center center" fxHide.xs></div>
-        </div>
-
-    </div>
-    <mat-divider></mat-divider>
-    <div fxLayout="row wrap" class="header">
-        <button mat-button class="info-row">
-            CANCELAR
-        </button>
-        <span fxFlex></span>
-        <button mat-button color="primary">
-            GUARDAR 
-        </button>
-    </div>
+    </form>
+</div>
+<div class="footer" fxLayout="row wrap">
+    <button mat-button (click)="dialogRef.close()">Cancelar</button>
+     <span fxFlex></span>
+    <button mat-flat-button color="primary" (click)="saveJob()">Guardar</button>
 </div>

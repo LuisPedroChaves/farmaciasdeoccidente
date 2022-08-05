@@ -55,6 +55,7 @@ export class AdminLayoutComponent implements OnInit, OnDestroy {
     // tslint:disable-next-line: deprecation
     this.mediaMatcher.addListener(mql => zone.run(() => {
       this.mediaMatcher = matchMedia(`(max-width: ${SMALL_WIDTH_BREAKPOINT}px)`);
+      this.store.dispatch(actions.setSmallScreen({ small: this.mediaMatcher.matches }));
     }));
     if (this.mediaMatcher.matches) {
       this.collapse = false;
@@ -123,13 +124,13 @@ export class AdminLayoutComponent implements OnInit, OnDestroy {
     parents.forEach(p => {
       const childrens = permissions.filter(mp => mp.parent === p.name);
       const parentEquivalent: MenuItem = menu.filter(m => m.state === p.name)[0];
-      if (childrens.length > 0) {
-        parentEquivalent.children = [];
-        childrens.forEach(c => {
-          const childmenu: ChildrenItems = menu.filter(mc => mc.state === c.name)[0];
-          parentEquivalent.children.push(childmenu);
-        });
-      }
+      // if (childrens.length > 0) {
+      //   parentEquivalent.children = [];
+      //   childrens.forEach(c => {
+      //     const childmenu: ChildrenItems = menu.filter(mc => mc.state === c.name)[0];
+      //     parentEquivalent.children.push(childmenu);
+      //   });
+      // }
       if (bandera === false) {
         if (parentEquivalent.state !== '/admin') {
           this.router.navigate(['admin/' + parentEquivalent.state]);
@@ -139,6 +140,33 @@ export class AdminLayoutComponent implements OnInit, OnDestroy {
       }
       this.menuItems.push(parentEquivalent);
     });
+    this.menuItems.push({
+      state: 'payroll',
+      name: 'Planilla',
+      type: 'sub',
+      icon: 'badge',
+      iconType: 'icon',
+      order: 3,
+      children: [
+        {
+          state: 'payroll',
+          name:"Planilla General",
+          type:'link',
+          icon: 'local_atm',
+          iconType: 'icon',
+          order: 1
+        },
+        {
+          state: 'employees',
+          name:"Empleados",
+          type:'link',
+          icon: 'engineering',
+          iconType: 'icon',
+          order: 1
+        }
+      ]
+    });
+
   }
 
 

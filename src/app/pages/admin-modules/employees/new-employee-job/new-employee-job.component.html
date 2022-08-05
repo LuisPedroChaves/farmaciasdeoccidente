@@ -1,0 +1,77 @@
+<header class="header" fxLayout="row wrap" fxLayoutAlign="start center">
+    <h2 class="product-font ma-0">Agregar Puesto</h2>
+    <span fxFlex></span>
+    <button mat-icon-button (click)="dialogRef.close()">
+        <mat-icon>close</mat-icon>
+    </button>
+</header>
+<div class="space" data-simplebar>
+
+    <div fxLayout="row wrap" >
+        <div fxFlex="100" class="section">
+            <mat-form-field color="primary" appearance="outline" class="all">
+                <mat-label>Puesto</mat-label>
+                <mat-select>
+                    <mat-option *ngFor="let j of jobs">{{ j }}</mat-option>
+                </mat-select>
+            </mat-form-field>
+        </div>
+    </div>
+
+
+
+    <div fxLayout="row wrap" >
+        <div fxFlex="50" class="section">
+            <mat-form-field color="primary" appearance="outline" class="all">
+                <mat-label>Salario Por Hora</mat-label>
+                <input matInput type="text">
+            </mat-form-field>
+        </div>
+        <div fxFlex="50" class="section">
+            <mat-form-field color="primary" appearance="outline" class="all">
+                <mat-label>Horas mensuales</mat-label>
+                <input matInput type="text">
+            </mat-form-field>
+        </div>
+    </div>
+
+
+
+    <div fxLayout="row wrap" >
+        <div fxFlex="50" class="section">
+            <mat-form-field color="primary" appearance="outline" class="all">
+                <mat-label>Tarifa de Hora Extra</mat-label>
+                <input matInput type="text">
+            </mat-form-field>
+        </div>
+        <div fxFlex="50" class="section">
+            <mat-form-field color="primary" appearance="outline" class="all">
+                <mat-label>Bono Extra</mat-label>
+                <input matInput type="text">
+            </mat-form-field>
+        </div>
+    </div>
+
+
+
+    <div fxLayout="row wrap" >
+        <div fxFlex="50" class="section">
+            <mat-slide-toggle>Bono de Ley</mat-slide-toggle>
+        </div>
+        <div fxFlex="50" class="section">
+            <mat-form-field class="all" appearance="outline">
+                <mat-label>Fecha de Inicio</mat-label>
+                <input matInput [matDatepicker]="picker">
+                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                <mat-datepicker #picker></mat-datepicker>
+            </mat-form-field>
+        </div>
+    </div>
+
+
+</div>
+<div class="footer" fxLayout="row wrap">
+    <button mat-button (click)="dialogRef.close()">Cancelar</button>
+     <span fxFlex></span>
+    <button mat-flat-button color="primary" (click)="addJob()">Agregar Puesto</button>
+</div>

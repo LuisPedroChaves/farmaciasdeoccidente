@@ -48,6 +48,11 @@ export class ApiConfigService {
   public API_UPLOAD = this.API_URL + '/upload';
   public API_READ = this.API_URL + '/readFIle';
 
+  // Employees
+  public API_JOBS = this.API_URL + '/jobs';
+  public API_DEPARTMENT = this.API_URL + '/department';
+  public API_EMPLOYEES = this.API_URL + '/employees';
+
   // Product
   public API_PRODUCT = this.API_URL + '/product';
 
