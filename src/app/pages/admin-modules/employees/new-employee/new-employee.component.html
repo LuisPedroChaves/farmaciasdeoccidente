@@ -224,44 +224,47 @@
     <mat-step>
         <ng-template matStepLabel>Información Familiar</ng-template>
         <div class="space" data-simplebar>
-            <div fxFlex="60">
-                <div fxLayout="row wrap">
-                    <div fxFlex="100">
-                        <h2>Información de los familiares</h2>
-                    </div>
-                    <div fxFlex="100">
-                        <mat-form-field color="primary" class="all" appearance="outline">
-                            <mat-label>Nombre</mat-label>
-                            <input matInput placeholder="Ingrese el nombre del familiar">
-                        </mat-form-field>
-                    </div>
-                    <div fxFlex="100">
-                        <mat-form-field color="primary" class="all" appearance="outline">
-                            <mat-label>Relación</mat-label>
-                            <input matInput placeholder="Ingrese el tipo de relación familiar">
-                        </mat-form-field>
-                    </div>
-                    <div fxFlex="100">
-                        <mat-form-field class="all" appearance="outline">
-                            <mat-label>Fecha de Nacimiento</mat-label>
-                            <input matInput [matDatepicker]="picker2">
-                            <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
-                            <mat-datepicker #picker2></mat-datepicker>
-                        </mat-form-field>
-                    </div>
-                    <div fxFlex="100" fxLayout="row wrap">
-                        <span fxFlex></span>
-                        <button color="primary" mat-flat-button>Agregar</button>
+            <div fxLayout="row wrap">
+
+                <div fxFlex="60">
+                    <div fxLayout="row wrap">
+                        <div fxFlex="100">
+                            <h2>Información de los familiares</h2>
+                        </div>
+                        <div fxFlex="100">
+                            <mat-form-field color="primary" class="all" appearance="outline">
+                                <mat-label>Nombre</mat-label>
+                                <input matInput placeholder="Ingrese el nombre del familiar">
+                            </mat-form-field>
+                        </div>
+                        <div fxFlex="100">
+                            <mat-form-field color="primary" class="all" appearance="outline">
+                                <mat-label>Relación</mat-label>
+                                <input matInput placeholder="Ingrese el tipo de relación familiar">
+                            </mat-form-field>
+                        </div>
+                        <div fxFlex="100">
+                            <mat-form-field class="all" appearance="outline">
+                                <mat-label>Fecha de Nacimiento</mat-label>
+                                <input matInput [matDatepicker]="picker2">
+                                <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+                                <mat-datepicker #picker2></mat-datepicker>
+                            </mat-form-field>
+                        </div>
+                        <div fxFlex="100" fxLayout="row wrap">
+                            <span fxFlex></span>
+                            <button color="primary" mat-flat-button>Agregar</button>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div fxFlex="40">
-
-
-                <mat-card *ngFor="let r of [1,2,3]" class="relative" fxLayout="column wrap" >
-                    <div class="jobtitle">Nombre del Familiar</div>
-                    <div class="text-muted">Relación familiar</div>
-                </mat-card>
+                <div fxFlex="40" class="relativeslist">
+    
+    
+                    <mat-card *ngFor="let r of [1,2,3]" class="relative" fxLayout="column wrap" >
+                        <div class="jobtitle">Nombre del Familiar</div>
+                        <div class="text-muted">Relación familiar</div>
+                    </mat-card>
+                </div>
             </div>
         </div>
         <div class="footer" fxLayout="row wrap">
