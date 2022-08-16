@@ -1,0 +1,79 @@
+<div fxLayout="row wrap" class="payrollheader" fxLayoutAlign="start center">
+
+    <mat-form-field *ngIf="cellars !== undefined" appearance="outline" floatLabel="always" class="findinput">
+        <mat-label>Sucursales</mat-label>
+        <mat-select multiple [(ngModel)]="selectedCellars">
+            <mat-option *ngFor="let c of cellars" [value]="c._id">{{ c.name }}</mat-option>
+        </mat-select>
+    </mat-form-field>
+
+    <div fxFlex></div>
+    <button mat-flat-button (click)="generatePayroll()" color="primary">
+        Generar Planilla
+    </button> &nbsp; &nbsp;
+    <button mat-button (click)="generateIGSS()" color="primary">
+        Planilla IGSS
+    </button> &nbsp; &nbsp;
+    <button mat-button (click)="generatePayrollEmployee()" color="primary">
+        Planilla Empleado
+    </button> &nbsp; &nbsp;
+
+
+    <button mat-icon-button (click)="printPayroll()"><mat-icon>print</mat-icon></button>
+</div>
+
+<div class="bigtable" fxLayout="row wrap">
+    <!-- <thead>
+        <tr>
+            <th>No.</th>
+            <th>Empleado</th>
+            <th>Días</th>
+            <th>Ordinarias</th>
+            <th>Extra</th>
+            <th>Ordinario</th>
+            <th>Extra</th>
+            <th>Otro</th>
+            <th>Salario Total</th>
+        </tr>
+    </thead> -->
+    <table class="scroll">
+        <thead>
+            <tr>
+                <th></th>
+                <th></th>
+                <th colspan="2">Horas trabajadas</th>
+
+                <th colspan="4">Salarios</th>
+
+
+            </tr>
+            <tr>
+                <th>No.</th>
+                <th>Empleado</th>
+                <th>Días</th>
+                <th>Ordinarias</th>
+                <th>Extra</th>
+                <th>Ordinario</th>
+                <th>Extra</th>
+                <th>Otro</th>
+                <th>Salario Total</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let c of [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1]; let i = index">
+                <td>{{i}}</td>
+                <td fxLayoutAlign="start center">
+                    <img src="assets/images/avatars/00M.jpg" class="employeeimage" alt="">
+                    Nombre del empleado
+                </td>
+                <td>20</td>
+                <td>24</td>
+                <td>2</td>
+                <td>20</td>
+                <td>1</td>
+                <td>0</td>
+                <td>Q. 1,500.00</td>
+            </tr>
+        </tbody>
+    </table>
+</div>

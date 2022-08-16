@@ -1,0 +1,43 @@
+<header fxLayout="row wrap" class="header" fxLayoutAlign="start center">
+    <h4 fxLayoutAlign="start center" class="module-title ma-0 product-font">
+        <mat-icon class="iconHeader">record_voice_over</mat-icon> &nbsp;&nbsp; <span class="product-font">Transacciones de empleados</span>
+    </h4>
+    <span fxFlex></span>
+</header>
+<div fxLayout="row wrap">
+    <mat-tab-group class="tabgroup">
+        <mat-tab label="Faltas">
+            <div class="tabcontent" data-simplebar>
+                <button (click)="newFault()" mat-fab color="primary" class="fab mat-elevation-z10">
+                    <mat-icon>add</mat-icon>
+                    <span class="extended-fab-button__text">Falta</span>
+                </button>
+                <mat-card *ngFor="let r of [1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0]" fxLayout="row wrap" fxLayoutAlign="start center" class="mat-elevation-z2 request" >
+                    <div fxFlex fxLayoutAlign="start center">
+                        <img src="assets/images/avatars/00M.jpg" class="employeeimage" alt="">
+                        Nombre del empleado
+                    </div>
+                    <div fxFlex="15">
+                        10/10/2022 11:50
+                    </div>
+                    <div fxFlex="15">
+                        Q. 1520.00
+                    </div>
+                    <div fxFlex="nogrow">
+                        <mat-chip-list>
+                            <mat-chip selected color="accent">
+                                APLICADO
+                            </mat-chip>
+                        </mat-chip-list>
+                    </div>
+                </mat-card>
+            </div>
+        </mat-tab>
+        <mat-tab label="Permisos">
+
+        </mat-tab>
+        <mat-tab label="Suspensiones">
+
+        </mat-tab>
+    </mat-tab-group>
+</div>

@@ -1,5 +1,13 @@
 .header { padding: 15px; }
 .employees-list { height: calc(100%); }
+.list { height: calc(100% - 78px); }
+
+
+.tabgroup { width: 100%; }
+.tabcontent { height: calc(100vh - 183px); padding: 10px; position: relative; }
+.employeeimage { width: 30px; height: 30px; margin-right: 15px; border-radius: 30px; }
+.request { margin-bottom: 10px; }
+
 .fab {
     position: fixed;
     right: 30px;
@@ -17,13 +25,3 @@
         text-transform: uppercase;
     }
 }
-
-.list { height: calc(100% - 78px); }
-.loader { height: calc(100vh - 130px); width: 100%; }
-.payroll { padding: 5px; }
-.iconpay { height: 60px; mat-icon { font-size: 44px;  }}
-.paycard { padding: 20px; }
-
-.sidenavpayroll { width: 100%; }
-.barheader { padding: 10px; }
-.newtitle { font-weight: 500; font-size: 24px; }

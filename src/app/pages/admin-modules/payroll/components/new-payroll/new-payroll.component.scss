@@ -1,0 +1,41 @@
+.payrollheader { padding: 10px; }
+.tableheader { padding: 10px; border-bottom: 1px solid rgba($color: #000000, $alpha: 0.1); }
+.bigtable { width: 100%; display: block; position: relative;
+    overflow-x: auto;
+    white-space: nowrap;  }
+
+
+
+table.scroll {
+    width: 100%;
+    /* border-collapse: collapse; */
+    border-spacing: 0;
+
+}
+
+// table.scroll tbody,
+// table.scroll thead { display: block; }
+
+thead { border-bottom: 1px solid rgba($color: #000000, $alpha: 0.1); }
+
+table.scroll tbody {
+    height: calc(100vh - 270px);
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+
+
+tbody td, thead th {
+    /* width: 20%; */ /* Optional */
+    padding: 10px;
+}
+
+
+
+.employeeimage {
+    height: 32px;
+    width: 32px;
+    border-radius: 30px;
+    margin-right: 15px;
+}

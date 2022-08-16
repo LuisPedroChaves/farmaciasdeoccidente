@@ -214,6 +214,11 @@ const routes: Routes = [
         canActivate: [CheckTokenGuard]
       },
       {
+        path: 'employee-transactions', pathMatch:
+      'full', loadChildren: () => import('./pages/admin-modules/employee-transactions/employee-transactions.module').then(m => m.EmployeeTransactionsModule),
+        canActivate: [CheckTokenGuard]
+      },
+      {
         path: 'receivables',
         pathMatch: 'full',
         loadChildren: () =>

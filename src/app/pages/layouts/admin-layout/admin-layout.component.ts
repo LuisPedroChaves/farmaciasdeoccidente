@@ -163,6 +163,14 @@ export class AdminLayoutComponent implements OnInit, OnDestroy {
           icon: 'engineering',
           iconType: 'icon',
           order: 1
+        },
+        {
+          state: 'employee-transactions',
+          name:"Transacciones",
+          type:'link',
+          icon: 'record_voice_over',
+          iconType: 'icon',
+          order: 1
         }
       ]
     });

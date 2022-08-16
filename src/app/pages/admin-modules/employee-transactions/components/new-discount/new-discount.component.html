@@ -1,0 +1,66 @@
+<header class="header" fxLayout="row wrap" fxLayoutAlign="start center">
+    <h2 class="product-font ma-0">{{ data.title }}</h2>
+    <span fxFlex></span>
+    <button mat-icon-button (click)="dialogRef.close()">
+        <mat-icon>close</mat-icon>
+    </button>
+</header>
+<div class="space" data-simplebar>
+
+    <div fxLayout="row wrap">
+        <div fxFlex="50" class="inputspace">
+            <mat-form-field class="all" appearance="outline">
+                <mat-label>Fecha</mat-label>
+                <input matInput [matDatepicker]="picker">
+                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                <mat-datepicker #picker></mat-datepicker>
+            </mat-form-field>
+        </div>
+        <div fxFlex="50" class="inputspace">
+            <mat-form-field class="all" color="primary" appearance="outline">
+                <mat-label>Empleado</mat-label>
+                <mat-select>
+                    <mat-option *ngFor="let e of [1,2,3]">Nombre del empleado</mat-option>
+                </mat-select>
+            </mat-form-field>
+        </div>
+    </div>
+
+    <div fxLayout="row wrap">
+        <div fxFlex="100"  class="inputspace">
+            <mat-form-field class="all" color="primary" appearance="outline">
+                <mat-label>Detalles</mat-label>
+                <textarea matInput></textarea>
+            </mat-form-field>
+        </div>
+    </div>
+
+
+    <div fxLayout="row wrap">
+        <div fxFlex="100" class="togglespace">
+            <mat-slide-toggle>Aplicar descuento</mat-slide-toggle>
+        </div>
+    </div>
+
+
+    <div fxLayout="row wrap">
+        <div fxFlex="50" class="inputspace">
+            <mat-form-field  class="all" color="primary" appearance="outline">
+                <mat-label>Horas a descontar</mat-label>
+                <input matInput>
+            </mat-form-field>
+        </div>
+        <div fxFlex="50" class="inputspace">
+            <mat-form-field class="all" color="primary" appearance="outline">
+                <mat-label>Salario a descontar</mat-label>
+                <input matInput>
+            </mat-form-field>
+        </div>
+    </div>
+
+</div>
+<div class="footer" fxLayout="row wrap">
+    <button mat-button (click)="dialogRef.close()">Cancelar</button>
+     <span fxFlex></span>
+    <button mat-flat-button color="primary" (click)="add()">Agregar</button>
+</div>
