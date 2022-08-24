@@ -16,7 +16,9 @@
         <div fxLayout="row wrap">
             <mat-form-field class="input-all" color="primary" appearance="outline">
                 <mat-label>Departamento</mat-label>
-                <mat-select formControlName="department">
+                <mat-select formControlName="_jobDepartment">
+                    <div *ngIf="departments.length > 0" class="newdepartment" (click)="addDepartment()" fxLayoutAlign="start center"><mat-icon>add</mat-icon> &nbsp; Nuevo Departamento</div>
+                    <mat-option *ngIf="departments.length === 0" (click)="addDepartment()" fxLayoutAlign="start center"><mat-icon>add</mat-icon> &nbsp; Nuevo Departamento</mat-option>
                     <mat-option *ngFor="let d of departments" [value]="d._id">{{ d.name }}</mat-option>
                 </mat-select>
             </mat-form-field>
@@ -26,5 +28,6 @@
 <div class="footer" fxLayout="row wrap">
     <button mat-button (click)="dialogRef.close()">Cancelar</button>
      <span fxFlex></span>
-    <button mat-flat-button color="primary" (click)="saveJob()">Guardar</button>
+    <button *ngIf="this.data.role === 'add'" mat-flat-button color="primary" (click)="saveJob()">Guardar</button>
+    <button *ngIf="this.data.role === 'edit'" mat-flat-button color="primary" (click)="saveJobEdit()">Guardar</button>
 </div>

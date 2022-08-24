@@ -1,6 +1,6 @@
-<mat-horizontal-stepper linear="true" #stepper  class="stepper">
+<mat-horizontal-stepper #stepper  class="stepper">
     <!-- PASO 1 ////////////////////////// -->
-    <mat-step [stepControl]="form1">
+    <mat-step>
         <ng-template matStepLabel>Información General</ng-template>
         <form [formGroup]="form1" class="space" data-simplebar>
             <br><br><br><br>
@@ -144,7 +144,7 @@
 
 
     <!-- PASO 2 ////////////////////////// -->
-    <mat-step [stepControl]="form2">
+    <mat-step>
         <ng-template matStepLabel>Información Laboral</ng-template>
         <form [formGroup]="form2" class="space" data-simplebar>
             <br><br><br><br>
@@ -234,7 +234,7 @@
 
 
 
-    <!-- PASO 3 //////////////////////////
+    <!-- PASO 3 ////////////////////////// -->
     <mat-step>
         <ng-template matStepLabel>Puestos de Trabajo</ng-template>
         <div class="space" data-simplebar>
@@ -254,6 +254,11 @@
                         <div class="text-muted">{{ ej.startDate | date : 'dd/MM/yyyy' }}</div>
                     </div>
                     <div fxFlex="nogrow">Q. {{ej.initialSalary | number : '.2'}}</div>
+                    <button mat-icon-button [matMenuTriggerFor]="menu"><mat-icon>more_vert</mat-icon></button>
+                    <mat-menu #menu="matMenu">
+                        <button mat-menu-item (click)="editJob(ej)"><mat-icon class="material-icons-outlined">create</mat-icon>Editar Puesto</button>
+                        <button mat-menu-item (click)="deleteJob(ej)"><mat-icon class="material-icons-outlined">delete</mat-icon>Eliminar Puesto</button>
+                    </mat-menu>
                 </mat-card>
             </div>
         </div>
@@ -262,7 +267,7 @@
             <span fxFlex></span>
             <button mat-button matStepperNext>Siguiente</button>
         </div>
-    </mat-step> -->
+    </mat-step>
 
 
 
@@ -326,6 +331,7 @@
         <div class="footer" fxLayout="row wrap">
             <button mat-button matStepperPrevious>Atrás</button>
             <span fxFlex></span>
+            <button mat-stroked-button color="warn" (click)="deleteEmployee()">Eliminar Empleado</button> &nbsp;&nbsp;
             <button mat-flat-button color="primary" (click)="saveEmployee()">Guardar Empleado</button>
         </div>
     </mat-step>

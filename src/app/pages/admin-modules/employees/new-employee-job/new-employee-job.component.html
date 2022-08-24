@@ -5,14 +5,14 @@
         <mat-icon>close</mat-icon>
     </button>
 </header>
-<div class="space" data-simplebar>
+<form [formGroup]="form" class="space" data-simplebar>
 
     <div fxLayout="row wrap" >
         <div fxFlex="100" class="section">
             <mat-form-field color="primary" appearance="outline" class="all">
                 <mat-label>Puesto</mat-label>
-                <mat-select>
-                    <mat-option *ngFor="let j of jobs">{{ j }}</mat-option>
+                <mat-select formControlName="_job">
+                    <mat-option *ngFor="let j of jobs" [value]="j._id">{{ j.name }}</mat-option>
                 </mat-select>
             </mat-form-field>
         </div>
@@ -21,16 +21,24 @@
 
 
     <div fxLayout="row wrap" >
+        <div fxFlex="100" class="section">
+            <mat-form-field color="primary" appearance="outline" class="all">
+                <mat-label>Salario Inicial</mat-label>
+                <input matInput type="text" formControlName="initialSalary">
+            </mat-form-field>
+        </div>
+    </div>
+    <div fxLayout="row wrap" >
         <div fxFlex="50" class="section">
             <mat-form-field color="primary" appearance="outline" class="all">
                 <mat-label>Salario Por Hora</mat-label>
-                <input matInput type="text">
+                <input matInput type="text" formControlName="salaryPerHour">
             </mat-form-field>
         </div>
         <div fxFlex="50" class="section">
             <mat-form-field color="primary" appearance="outline" class="all">
                 <mat-label>Horas mensuales</mat-label>
-                <input matInput type="text">
+                <input matInput type="text" formControlName="monthlyHours">
             </mat-form-field>
         </div>
     </div>
@@ -41,27 +49,27 @@
         <div fxFlex="50" class="section">
             <mat-form-field color="primary" appearance="outline" class="all">
                 <mat-label>Tarifa de Hora Extra</mat-label>
-                <input matInput type="text">
+                <input matInput type="text" formControlName="salaryExtraHours">
             </mat-form-field>
         </div>
         <div fxFlex="50" class="section">
             <mat-form-field color="primary" appearance="outline" class="all">
                 <mat-label>Bono Extra</mat-label>
-                <input matInput type="text">
+                <input matInput type="text" formControlName="bonus">
             </mat-form-field>
         </div>
     </div>
 
 
 
-    <div fxLayout="row wrap" >
+    <div fxLayout="row wrap"  fxLayoutAlign="start center">
         <div fxFlex="50" class="section">
-            <mat-slide-toggle>Bono de Ley</mat-slide-toggle>
+            <mat-slide-toggle formControlName="lawBonus">Bono de Ley</mat-slide-toggle>
         </div>
         <div fxFlex="50" class="section">
             <mat-form-field class="all" appearance="outline">
                 <mat-label>Fecha de Inicio</mat-label>
-                <input matInput [matDatepicker]="picker">
+                <input matInput [matDatepicker]="picker" formControlName="startDate">
                 <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                 <mat-datepicker #picker></mat-datepicker>
             </mat-form-field>
@@ -69,7 +77,44 @@
     </div>
 
 
-</div>
+    <div fxLayout="row wrap" >
+        <div fxFlex="50" class="section">
+            <mat-form-field color="primary" appearance="outline" class="all">
+                <mat-label>Tipo de contrato</mat-label>
+                <input matInput type="text" formControlName="contractType">
+            </mat-form-field>
+        </div>
+        <div fxFlex="50" class="section">
+            <mat-form-field  class="all" color="primary" appearance="outline">
+                <mat-label>Contrato</mat-label>
+                <ngx-mat-file-input formControlName="contract" placeholder="Seleccione el archivo" ></ngx-mat-file-input>
+                <mat-icon matSuffix>folder</mat-icon>
+                <mat-hint *ngIf="form.controls.contract.value !== null">Este puesto ya tiene un contrato adjunto</mat-hint>
+            </mat-form-field>
+        
+        </div>
+    </div>
+
+    <div fxLayout="row wrap" >
+        <div fxFlex="50" class="section">
+            <mat-form-field color="primary" appearance="outline" class="all">
+                <mat-label>Tipo de pago</mat-label>
+                <mat-select formControlName="paymentType">
+                    <mat-option value="cheque">Cheque</mat-option>
+                    <mat-option value="cuenta">Cuenta</mat-option>
+                    <mat-option value="efectivo">Efectivo</mat-option>
+                </mat-select>
+            </mat-form-field>
+        </div>
+        <div fxFlex="50" class="section">
+            <mat-form-field color="primary" appearance="outline" class="all">
+                <mat-label>Lugar de trabajo</mat-label>
+                <input matInput type="text" formControlName="workPlace">
+            </mat-form-field>
+        </div>
+    </div>
+
+</form>
 <div class="footer" fxLayout="row wrap">
     <button mat-button (click)="dialogRef.close()">Cancelar</button>
      <span fxFlex></span>

@@ -1,0 +1,16 @@
+$blue: #045195;
+.stepper {  width: 100%; }
+
+.space { height: calc(100vh - 285px); }
+.footer { padding: 15px; }
+
+.avatar-space { position: relative; width: 100%; max-width: 100px;  }
+.avater-image { border-radius: 100%; width: 100%; max-width: 100px; }
+.change-button { background-color: $blue; color: white !important; position: absolute; bottom: 0px; right: 0px; }
+
+.all { width: 100%; }
+.formsection { padding: 0px 5px; }
+.addedjob { padding: 15px; margin: 10px; }
+.jobtitle { font-size: 16px; font-weight: 600; }
+.relative { margin-bottom: 10px; padding: 15px; }
+.relativeslist { padding: 10px; padding-top: 30px; }

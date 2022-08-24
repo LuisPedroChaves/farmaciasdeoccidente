@@ -41,3 +41,6 @@
 .input-all {
     width: 100%;
 }
+
+.newdepartment { padding: 8px 12px; border-bottom: 1px solid rgba($color: #000000, $alpha: 0.1); cursor: pointer; }
+.newdepartment:hover { background-color: rgba($color: #000000, $alpha: 0.075); }

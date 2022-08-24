@@ -1,0 +1,52 @@
+<header class="header" fxLayout="row wrap" fxLayoutAlign="start center">
+    <h2 class="ma-0">Cargar imagen</h2>
+    <span fxFlex></span>
+    <button mat-icon-button [disabled]="uploading" (click)="dialogRef.close()"><mat-icon>close</mat-icon></button>
+</header>
+<div class="space">
+    <input #fileInput type="file" (change)="fileChangeEvent($event)" class="display-none"/>
+    <div *ngIf="failed === true" class="alert" fxLayout="row wrap">
+        Error en el formato de la imagen. Debe proporcionar un formato válido de imagen.
+    </div>
+    <div *ngIf="imageChangedEvent === ''" fxLayoutAlign="center center" fxLayout="column wrap" class="buttonsection">
+        <span class="instructions">Seleccione una imagen para cargar</span>
+        <button mat-flat-button color="primary" (click)="fileInput.click()">
+            <mat-icon class="material-icons-outlined">insert_photo</mat-icon> Cargar Imagen
+        </button>
+
+    </div>
+    <div class="cropsection" fxLayout="column wrap">
+        <span class="instructions" *ngIf="loaded !== false">Ajuste la imagen</span>
+        <div class="spinnerloader" fxLayoutAlign="center center" *ngIf="croppedImage === '' && imageChangedEvent !== ''">
+            <mat-progress-spinner mode="indeterminate" diameter="40" color="primary"></mat-progress-spinner>
+        </div>
+        <div class="uploadsection" *ngIf="croppedImage === '' && imageChangedEvent !== '' && loaded === false"></div>
+        <image-cropper class="max-height"
+            [imageChangedEvent]="imageChangedEvent"
+            [maintainAspectRatio]="true"
+            [aspectRatio]="4 / 4"
+            format="png"
+            [transform]="transform"
+            (imageCropped)="imageCropped($event)"
+            (imageLoaded)="imageLoaded()"
+            (cropperReady)="cropperReady()"
+            [alignImage]="'center'"
+            (loadImageFailed)="loadImageFailed()"
+            [roundCropper]="true"
+        ></image-cropper>
+        <div fxLayout="row wrap" fxLayoutAlign="center center" *ngIf="loaded !== false">
+            <button *ngIf="croppedImage !== ''" class="material-icons-outlined" (click)="zoomOut()" mat-icon-button><mat-icon>zoom_out</mat-icon></button>
+            <img *ngIf="croppedImage !== ''" class="litleimage" [src]="croppedImage" alt="cropped_image"/>
+            <button *ngIf="croppedImage !== ''" class="material-icons-outlined" (click)="zoomIn()" mat-icon-button><mat-icon>zoom_in</mat-icon></button>
+        </div>
+    </div>
+
+</div>
+<div class="footer" fxLayout="row wrap">
+    <button mat-button [disabled]="uploading" (click)="dialogRef.close()">Cancelar</button>
+    <span fxFlex fxLayoutAlign="center center" fxLayout="column wrap">
+        <mat-progress-spinner mode="indeterminate" diameter="20" color="primary" *ngIf="uploading"></mat-progress-spinner>
+    </span>
+    <button mat-button color="primary" [disabled]="uploading" (click)="acceptimage()">{{uploading === true ? 'Subiendo...':'Aceptar'}}  </button>
+    
+</div>

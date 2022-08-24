@@ -9,10 +9,14 @@ import { NewJobComponent } from './new-job/new-job.component';
 import { CoreModule } from 'src/app/core/core.module';
 import {MatStepperModule} from '@angular/material/stepper';
 import { NewEmployeeJobComponent } from './new-employee-job/new-employee-job.component';
+import { NewDepartmentComponent } from './new-department/new-department.component';
+import { DepartmentListComponent } from './department-list/department-list.component';
+import { UploadAvatarComponent } from './upload-avatar/upload-avatar.component';
+import { EditEmployeeComponent } from './edit-employee/edit-employee.component';
 
 
 @NgModule({
-  declarations: [EmployeesComponent, NewEmployeeComponent, NewJobComponent, NewEmployeeJobComponent],
+  declarations: [EmployeesComponent, NewEmployeeComponent, NewJobComponent, NewEmployeeJobComponent, NewDepartmentComponent, DepartmentListComponent, UploadAvatarComponent, EditEmployeeComponent],
   imports: [
     CommonModule,
     RouterModule.forChild(EmployeesRoutes),

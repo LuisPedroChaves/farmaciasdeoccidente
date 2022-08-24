@@ -32,6 +32,7 @@
     "@types/socket.io-client": "^1.4.36",
     "moment": "^2.29.4",
     "moment-timezone": "^0.5.33",
+    "ngx-image-cropper": "^5.0.1",
     "ngx-material-file-input": "^2.1.1",
     "ngx-socket-io": "^3.2.0",
     "ngx-toasta": "^1.0.3",

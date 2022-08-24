@@ -52,6 +52,7 @@ import { SimplebarAngularModule } from 'simplebar-angular';
 
 /* FILE ----------------------*/
 import { MaterialFileInputModule } from 'ngx-material-file-input';
+import { ImageCropperModule } from 'ngx-image-cropper';
 
 /* COMPONENTS ----------------------*/
 import { NewCellarComponent } from './new-cellar/new-cellar.component';
@@ -106,6 +107,7 @@ export const MY_DATE_FORMATS = {
     
     // files
     MaterialFileInputModule,
+    ImageCropperModule,
     
     // material
     MatStepperModule,
@@ -153,6 +155,7 @@ export const MY_DATE_FORMATS = {
 
     // files
     MaterialFileInputModule,
+    ImageCropperModule,
 
     // material
     MatBadgeModule,

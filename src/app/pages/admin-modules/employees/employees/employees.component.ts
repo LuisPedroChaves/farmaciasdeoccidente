@@ -3,12 +3,19 @@ import { MatDialog } from '@angular/material/dialog';
 import { Store } from '@ngrx/store';
 import { Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
+import { BankItem } from 'src/app/core/models/Bank';
 import { CellarItem } from 'src/app/core/models/Cellar';
+import { EmployeeItem } from 'src/app/core/models/Employee';
+import { JobItem } from 'src/app/core/models/Jobs';
+import { BankService } from 'src/app/core/services/httpServices/bank.service';
 import { CellarService } from 'src/app/core/services/httpServices/cellar.service';
+import { EmployeeService } from 'src/app/core/services/httpServices/employee.service';
 import { JobsService } from 'src/app/core/services/httpServices/jobs.service';
+import { ToastyService } from 'src/app/core/services/internal/toasty.service';
 import { ConfirmationDialogComponent } from 'src/app/pages/shared-components/confirmation-dialog/confirmation-dialog.component';
 import { ConfirmationComponent } from 'src/app/pages/shared-components/confirmation/confirmation.component';
 import { AppState } from 'src/app/store/app.reducer';
+import { DepartmentListComponent } from '../department-list/department-list.component';
 import { NewJobComponent } from '../new-job/new-job.component';
 
 
@@ -19,55 +26,80 @@ import { NewJobComponent } from '../new-job/new-job.component';
 })
 export class EmployeesComponent implements OnInit {
   searchtext: string;
-  employees: any[] = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20];
+  employees: EmployeeItem[] = [];
   selectedCellars: any[] = [];
 
   cellarsSubscription: Subscription;
   cellars: CellarItem[];
 
+  banksubscription: Subscription;
+  banks: BankItem[];
+
   sideopen: boolean = false;
   panel: string = 'jobs';
 
-  jobs: any[] = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15];
-  departments: [] = [];
+  jobs: JobItem[] = [];
+  departments: {_id: string, name:string}[] = [];
   smallScreen: boolean;
   configsubscription: Subscription;
+  selectedEmployee: EmployeeItem;
 
-  constructor(public dialog: MatDialog, public cellarService: CellarService, public store: Store<AppState>, public jobsService: JobsService) { }
+  constructor(public dialog: MatDialog, public cellarService: CellarService, public store: Store<AppState>, public jobsService: JobsService, public toasty: ToastyService, public employeeService: EmployeeService, public bankService: BankService) { }
 
   ngOnInit(): void {
     this.cellarsSubscription = this.cellarService.readData().subscribe(data => {
       this.cellars = data;
       this.cellars.forEach(c => { this.selectedCellars.push(c._id); });
     });
+    this.banksubscription = this.bankService.readData().subscribe(data => {
+      this.banks = data;
+    });
 
     this.configsubscription = this.store.select('config').pipe(filter(config => config !== null)).subscribe(config => {
         this.smallScreen = config.smallScreen;
     });
 
+    this.employeeService.readData().subscribe(data => {
+      this.employees = data;
+    });
 
     this.jobsService.readData().subscribe(data => {
       this.jobs = data;
     });
     
     this.jobsService.loadDepartments().subscribe(data => {
-      this.departments = data;
+      this.departments = data.jobDepartments;
     });
   }
 
   ngAfterContentInit() {
     this.cellarService.loadData();
     this.jobsService.getJobs();
+    this.employeeService.getData();
+    this.bankService.getData();
   }
 
 
-  selectEmployee(e) {
 
+
+
+  /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  // OPERATIONAL FUNCTIONS ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  closebar() {
+    this.sideopen = false;
+    this.panel = undefined;
+    this.selectedEmployee = undefined;
   }
 
 
-  loadEmployees() {}
+  
 
+
+
+  /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  // JOBS FUNCTIONS //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
   openJobs() {
     this.sideopen = true;
@@ -75,11 +107,32 @@ export class EmployeesComponent implements OnInit {
   }
 
 
+  openDepartments() {
+    const dialogRef = this.dialog.open(DepartmentListComponent, {
+      width: this.smallScreen ? '100%' : '450px',
+      data: {  departments: this.departments, smallScreen: this.smallScreen },
+      panelClass: ['farmacia-dialog', 'farmacia']
+    });
+
+    dialogRef.afterClosed().subscribe(data => {
+      if (data === true) {
+        this.jobsService.loadDepartments().subscribe(data => {
+          this.departments = data.jobDepartments;
+        });
+      }
+    });
+  }
+
+
+  getDepartment(id: string) {
+    return this.departments.find(d => d._id === id).name || '';
+  }
+
 
   addJob() {
     const dialog = this.dialog.open(NewJobComponent, {
       width: this.smallScreen ? '100%' : '450px',
-      data: { role: 'add', departments: this.departments },
+      data: { role: 'add', departments: this.departments, smallScreen: this.smallScreen },
       panelClass: ['farmacia-dialog', 'farmacia']
     });
 
@@ -93,7 +146,7 @@ export class EmployeesComponent implements OnInit {
   editJob(e) {
     const dialog = this.dialog.open(NewJobComponent, {
       width: this.smallScreen ? '100%' : '450px',
-      data: { role: 'edit', job: e, departments: this.departments },
+      data: { role: 'edit', job: e, departments: this.departments, smallScreen: this.smallScreen },
       panelClass: ['farmacia-dialog', 'farmacia']
     });
 
@@ -104,7 +157,7 @@ export class EmployeesComponent implements OnInit {
     });
   }
 
-  deleteJob(e) {
+  deleteJob(job: JobItem) {
     const dialog = this.dialog.open(ConfirmationComponent, {
       width: this.smallScreen ? '100%' : '350px',
       data: { title: 'Eliminar Puesto', msg: '¿Confirma que desea eliminar el puesto de trabajo?' },
@@ -113,7 +166,13 @@ export class EmployeesComponent implements OnInit {
 
     dialog.afterClosed().subscribe(data => {
       if (data !== undefined) {
-        // this.jobService.loadData();
+        if (data === true) {
+
+          this.jobsService.deleteJob(job._id).subscribe(data => {
+            this.toasty.success('Puesto eliminado exitósamente');
+            this.jobsService.loadJobs();
+          });
+        }
       }
     });
   }
@@ -125,9 +184,20 @@ export class EmployeesComponent implements OnInit {
 
 
 
+  /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  // EMPLOYEES FUNCTIONS /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
   newEmployee() {
     this.sideopen = true;
-    this.panel = 'Empleados';
+    this.panel = 'Nuevo Empleado';
+  }
+
+
+  selectEmployee(e: EmployeeItem) {
+    this.selectedEmployee = {...e};
+    this.sideopen = true;
+    this.panel = 'Editar Empleado';
   }
 
 

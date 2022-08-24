@@ -14,6 +14,9 @@
             <button mat-stroked-button color="primary" (click)="openJobs()">
                 <mat-icon>work</mat-icon> Puestos
             </button> &nbsp;&nbsp;
+            <button mat-stroked-button color="primary" (click)="openDepartments()">
+                <mat-icon>group</mat-icon> Departamentos
+            </button> &nbsp;&nbsp;
             <mat-form-field *ngIf="cellars !== undefined" appearance="outline" floatLabel="always" class="findinput">
                 <mat-label>Sucursales</mat-label>
                 <mat-select multiple [(ngModel)]="selectedCellars" (ngModelChange)="loadEmployees()">
@@ -33,11 +36,11 @@
                     <div *ngFor="let e of (employees | filter: searchtext : ['name', 'dpi'])" fxFlex.gt-lg="20" fxFlex.gt-md="25" fxFlex.gt-sm="33" fxFlex.gt-xs="50" fxFlex="100" class="usercard user">
                         <mat-card matRipple class="cursor-pointer user-card mat-elevation-z2" (click)="selectEmployee(e)" fxLayout="row wrap" fxLayoutAlign="start center">
                             <div fxFlex="60px">
-                                <img [src]="'assets/images/avatars/00M.jpg'" alt="" class="avataruser">
+                                <img [src]="e.photo === null ? 'assets/images/avatars/00M.jpg' : e.photo" alt="" class="avataruser">
                             </div>
                             <div fxFlex fxLayout="column wrap" class="ellipsis-text">
-                                <h4 class="ma-0 product-font">Nombre del empleado</h4>
-                                <span class="text-muted">278801245678988</span>
+                                <h4 class="ma-0 product-font">{{e.name}} {{e.lastName}}</h4>
+                                <span class="text-muted">{{e.document}}</span>
                             </div>
                         </mat-card>
                     </div>
@@ -72,8 +75,8 @@
                 <div *ngIf="jobs.length > 0" fxLayout="column wrap">
                     <mat-card *ngFor="let j of jobs" fxLayout="row wrap" class="jobcard mat-elevation-z2">
                         <div fxFlex>
-                            <div>Nombre del puesto</div>
-                            <div class="text-muted">Departamento</div>
+                            <div>{{j.name}}</div>
+                            <div class="text-muted">{{ getDepartment(j._jobDepartment) }}</div>
 
                         </div>
                         <button mat-icon-button [matMenuTriggerFor]="menu">
@@ -92,7 +95,7 @@
             </div>
         </div>
 
-        <div *ngIf="panel === 'Empleados'">
+        <div *ngIf="panel !== 'Puestos'">
             <header fxLayout="row wrap" class="jobs-header" fxLayoutAlign="start center">
                 <button mat-icon-button (click)="sideopen = false">
                     <mat-icon>close</mat-icon>
@@ -100,7 +103,8 @@
                 <h4 class="ma-0 title">{{panel}}</h4>
             </header>
             <div *ngIf="sideopen === true" fxLayout="row wrap" class="new-employee">
-                <app-new-employee [jobs]="jobs" [smallScreen]="smallScreen" class="new-employee"></app-new-employee>
+                <app-new-employee *ngIf="panel === 'Nuevo Empleado'" (closebar)="closebar($event)" [jobs]="jobs" [cellars]="cellars" [banks]="banks" [smallScreen]="smallScreen" class="new-employee"></app-new-employee>
+                <app-edit-employee *ngIf="panel === 'Editar Empleado'" [employee]="selectedEmployee" (closebar)="closebar($event)" [jobs]="jobs" [cellars]="cellars" [banks]="banks" [smallScreen]="smallScreen" class="new-employee"></app-edit-employee>
             </div>
         </div>
     </mat-sidenav>
