@@ -6,12 +6,14 @@ import { EmployeeTransactionsComponent } from './components/employee-transaction
 import { SharedComponentsModule } from '../../shared-components/shared-components.module';
 import { CoreModule } from 'src/app/core/core.module';
 import { NewDiscountComponent } from './components/new-discount/new-discount.component';
+import { NewRisingComponent } from './components/new-rising/new-rising.component';
 
 
 @NgModule({
   declarations: [
     EmployeeTransactionsComponent,
-    NewDiscountComponent
+    NewDiscountComponent,
+    NewRisingComponent
   ],
   imports: [
     CommonModule,

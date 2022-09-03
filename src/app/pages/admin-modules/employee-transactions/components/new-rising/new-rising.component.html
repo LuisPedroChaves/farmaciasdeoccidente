@@ -39,13 +39,13 @@
     <div fxLayout="row wrap">
         <div fxFlex="50" class="inputspace">
             <mat-form-field  class="all" color="primary" appearance="outline">
-                <mat-label>Horas a descontar</mat-label>
+                <mat-label>Horas a aumentar</mat-label>
                 <input matInput formControlName="hours">
             </mat-form-field>
         </div>
         <div fxFlex="50" class="inputspace">
             <mat-form-field class="all" color="primary" appearance="outline">
-                <mat-label>Salario a descontar</mat-label>
+                <mat-label>Salario a aumentar</mat-label>
                 <input matInput formControlName="amount">
             </mat-form-field>
         </div>
@@ -53,11 +53,18 @@
 
 
     <div fxLayout="row wrap">
-        <div fxFlex="50" class="togglespace">
-            <mat-slide-toggle formControlName="hasDiscount">Aplicar descuento</mat-slide-toggle>
+        <div fxFlex="100" class="inputspace">
+            <mat-form-field  class="all" color="primary" appearance="outline">
+                <mat-label>Detalles</mat-label>
+                <textarea matInput formControlName="details"></textarea>
+            </mat-form-field>
         </div>
-        <div fxFlex="50" class="togglespace">
-            <mat-slide-toggle formControlName="approved">Aprobado</mat-slide-toggle>
+    </div>
+
+
+    <div fxLayout="row wrap">
+        <div fxFlex="100" class="togglespace">
+            <mat-slide-toggle formControlName="aproved">Aprobado</mat-slide-toggle>
         </div>
     </div>
 
