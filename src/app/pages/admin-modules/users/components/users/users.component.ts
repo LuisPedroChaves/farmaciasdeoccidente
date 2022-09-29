@@ -7,6 +7,10 @@ import { ConfigService } from '../../../../../core/services/config/config.servic
 import { RoleService } from '../../../../../core/services/httpServices/role.service';
 import { UserItem } from 'src/app/core/models/User';
 import { RoleItem } from 'src/app/core/models/Role';
+import { EmployeeService } from 'src/app/core/services/httpServices/employee.service';
+import { EmployeeItem } from 'src/app/core/models/Employee';
+import { CellarService } from 'src/app/core/services/httpServices/cellar.service';
+import { CellarItem } from 'src/app/core/models/Cellar';
 
 @Component({
   selector: 'app-users',
@@ -25,12 +29,16 @@ export class UsersComponent implements OnInit, OnDestroy, AfterContentInit {
 
   rolesSubscription: Subscription;
   roles: RoleItem[];
+  employees: EmployeeItem[] = [];
+  cellars: string[] = [];
   // HOOK FUNCTIONS //////////////////////////////////////////////////////////////////////////////////////////
   // tslint:disable-next-line: max-line-length
   constructor(
     public eventBus: EventBusService,
     public config: ConfigService,
     public roleService: RoleService,
+    public employeeService: EmployeeService,
+    public cellarsService: CellarService
     ) {
 
   }
@@ -41,10 +49,22 @@ export class UsersComponent implements OnInit, OnDestroy, AfterContentInit {
     this.rolesSubscription = this.roleService.readData().subscribe(data => {
       this.roles = data;
     });
+
+    this.employeeService.readData().subscribe(data => {
+      this.employees = data;
+    });
+
+    this.cellarsService.readData().subscribe(data => {
+      const cellars: CellarItem[] = data;
+      this.cellars = cellars.map(x => x._id);
+      this.employeeService.getData(this.cellars);
+    });
   }
 
   ngAfterContentInit() {
     this.roleService.getData();
+    this.cellarsService.loadData();
+
   }
 
   ngOnDestroy() {

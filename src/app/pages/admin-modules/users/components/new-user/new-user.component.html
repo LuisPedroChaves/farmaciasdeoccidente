@@ -84,6 +84,15 @@
             <mat-hint>Seleccione una sucursal para asignar al usuario (Sí el rol es de ADMINISTRADOR O REPARTIDOR no es necesario seleccionar una sucursal).</mat-hint>
           </mat-form-field>
         </div>
+        <div   class="input-section">
+          <mat-form-field appearance="outline" class="input-all" color="primary">
+            <mat-label>Empleado Asignado</mat-label>
+            <mat-select placeholder="Seleccione el empleado al que pertenece este usuario" class="text-md" formControlName="_employee">
+              <mat-option *ngFor="let e of employees" [value]="e._id">{{e.name}} {{e.lastName}}</mat-option>
+            </mat-select>
+            <mat-hint>Si el ROL es EMPLEADO es necesario asignar este campo.</mat-hint>
+          </mat-form-field>
+        </div>
         <br><br>
         <div class="input-section">
           <button mat-stroked-button *ngIf="!loading"

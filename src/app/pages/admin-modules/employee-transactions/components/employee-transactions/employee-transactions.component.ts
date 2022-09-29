@@ -3,10 +3,12 @@ import { MatDialog } from '@angular/material/dialog';
 import { Store } from '@ngrx/store';
 import { Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
+import { CellarItem } from 'src/app/core/models/Cellar';
 import { DiscountItem } from 'src/app/core/models/Discounts';
 import { EmployeeItem } from 'src/app/core/models/Employee';
 import { EmployeeJobItem } from 'src/app/core/models/EmployeeJob';
 import { RisingItem } from 'src/app/core/models/Risings';
+import { CellarService } from 'src/app/core/services/httpServices/cellar.service';
 import { DiscountsService } from 'src/app/core/services/httpServices/discounts.service';
 import { EmployeeService } from 'src/app/core/services/httpServices/employee.service';
 import { RisingsService } from 'src/app/core/services/httpServices/risings.service';
@@ -52,7 +54,7 @@ export class EmployeeTransactionsComponent implements OnInit, AfterContentInit {
   /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   // HOOK FUNCTIONS //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-  constructor(public dialog: MatDialog, public store: Store<AppState>, public discountsService: DiscountsService, public risingsService: RisingsService, public employeService: EmployeeService) { }
+  constructor(public dialog: MatDialog, public cellarService: CellarService, public store: Store<AppState>, public discountsService: DiscountsService, public risingsService: RisingsService, public employeService: EmployeeService) { }
 
   ngOnInit(): void {
     this.configsubscription = this.store.select('config').pipe(filter(config => config !== null)).subscribe(config => {
@@ -72,13 +74,18 @@ export class EmployeeTransactionsComponent implements OnInit, AfterContentInit {
     this.employeService.readData().subscribe(data => {
       this.employees = data;
     });
+
+    this.cellarService.readData().subscribe(data => {
+      const cellars: string[] = data.map(x => x._id);
+      this.employeService.getData(cellars);
+    });
   }
 
 
   ngAfterContentInit(): void {
     this.discountsService.getData();
     this.risingsService.getData();
-    this.employeService.getData();
+    this.cellarService.getData();
   }
 
 

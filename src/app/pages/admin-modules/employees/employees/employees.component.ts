@@ -47,9 +47,16 @@ export class EmployeesComponent implements OnInit {
   constructor(public dialog: MatDialog, public cellarService: CellarService, public store: Store<AppState>, public jobsService: JobsService, public toasty: ToastyService, public employeeService: EmployeeService, public bankService: BankService) { }
 
   ngOnInit(): void {
+
+    this.employeeService.readData().subscribe(data => {
+      this.employees = data;
+    });
+
+    
     this.cellarsSubscription = this.cellarService.readData().subscribe(data => {
       this.cellars = data;
       this.cellars.forEach(c => { this.selectedCellars.push(c._id); });
+      this.employeeService.getData(this.selectedCellars);
     });
     this.banksubscription = this.bankService.readData().subscribe(data => {
       this.banks = data;
@@ -59,9 +66,7 @@ export class EmployeesComponent implements OnInit {
         this.smallScreen = config.smallScreen;
     });
 
-    this.employeeService.readData().subscribe(data => {
-      this.employees = data;
-    });
+   
 
     this.jobsService.readData().subscribe(data => {
       this.jobs = data;
@@ -75,7 +80,7 @@ export class EmployeesComponent implements OnInit {
   ngAfterContentInit() {
     this.cellarService.loadData();
     this.jobsService.getJobs();
-    this.employeeService.getData();
+    
     this.bankService.getData();
   }
 

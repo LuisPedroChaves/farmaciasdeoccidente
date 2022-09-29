@@ -13,12 +13,14 @@ export class EmployeeService {
 
   public employeeList: EmployeeItem[];
   employeeSubject = new Subject<EmployeeItem[]>();
+  cellars: string[] = [];
 
   constructor(public http:HttpClient, public apiConfigService: ApiConfigService) { }
 
 
-  loadData() {
-    this.http.get(this.apiConfigService.API_EMPLOYEES).pipe(map((response: any) => {
+  loadData(cellars?: string[]) {
+    if (cellars) { this.cellars = cellars; }
+    this.http.get(`${this.apiConfigService.API_EMPLOYEES}?cellars=${JSON.stringify(this.cellars)}`).pipe(map((response: any) => {
       this.employeeList = response.employees;
       this.employeeSubject.next(this.employeeList);
     })).subscribe();
@@ -28,9 +30,10 @@ export class EmployeeService {
     return this.employeeSubject.asObservable();
   }
 
-  getData() {
+  getData(cellars: string[]) {
     if ( this.employeeList === undefined ) {
-      this.loadData();
+      this.cellars = cellars;
+      this.loadData(cellars);
     } else {
       this.employeeSubject.next( this.employeeList );
     }

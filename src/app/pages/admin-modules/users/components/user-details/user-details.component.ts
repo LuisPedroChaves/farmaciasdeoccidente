@@ -12,6 +12,7 @@ import { ConfirmationDialogComponent } from 'src/app/pages/shared-components/con
 import { RoleItem } from '../../../../../core/models/Role';
 import { CellarItem } from 'src/app/core/models/Cellar';
 import { UserItem } from 'src/app/core/models/User';
+import { EmployeeItem } from 'src/app/core/models/Employee';
 
 @Component({
   selector: 'app-user-details',
@@ -23,6 +24,7 @@ export class UserDetailsComponent implements OnInit, AfterContentInit, OnInit {
   @Input() smallScreen: boolean;
   @Input() currentUser: UserItem;
   @Input() roles: RoleItem[];
+  @Input() employees: EmployeeItem[] = [];
 
   visible = false;
   loading = false;
