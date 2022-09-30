@@ -63,6 +63,7 @@ export class NewUserComponent implements OnInit, AfterContentInit, OnDestroy {
     this.cellarsSubscription = this.cellarService.readData().subscribe(data => {
       this.cellars = data;
     });
+
   }
 
   ngAfterContentInit() {
@@ -82,18 +83,24 @@ export class NewUserComponent implements OnInit, AfterContentInit, OnDestroy {
 
   createUser() {
     if (this.form.invalid) { return; }
-    console.log(this.form.value);
+    const role = this.roles.findIndex(r => r._id === this.form.controls._role.value);
+    if (role > -1) {
+      if (this.roles[role].type === 'EMPLOYEE' && this.form.controls._employee.value === null) {
+        this.toasty.error('Para el rol de tipo Empleado debe asignar un empleado de la lista');
+        return;
+      }
+    }
     this.loading = true;
     const newUser: UserItem = this.form.value;
     newUser._id = null;
     newUser.imageIndex = this.cu;
-    // this.userService.createUser(newUser).subscribe(data => {
-    //   this.toasty.success('Usuario creado exitosamente');
-    //   this.emitEvent(this.config.EVENT_USERS_CHANGE_COMPONENT, 'userlist');
-    //   this.loading = false;
-    // }, error => {
-    //   this.loading = false;
-    //   this.toasty.error('Error', 'Hubo un problema al guardar el usuario, intente de nuevo más tarde.');
-    // });
+    this.userService.createUser(newUser).subscribe(data => {
+      this.toasty.success('Usuario creado exitosamente');
+      this.emitEvent(this.config.EVENT_USERS_CHANGE_COMPONENT, 'userlist');
+      this.loading = false;
+    }, error => {
+      this.loading = false;
+      this.toasty.error('Error', 'Hubo un problema al guardar el usuario, intente de nuevo más tarde.');
+    });
   }
 }

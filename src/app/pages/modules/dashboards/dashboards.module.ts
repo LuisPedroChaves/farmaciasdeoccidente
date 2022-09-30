@@ -9,11 +9,12 @@ import { DashboardPharmaComponent } from './components/dashboard-pharma/dashboar
 import { DashboardDeliveryComponent } from './components/dashboard-delivery/dashboard-delivery.component';
 import { DashboardSellerComponent } from './components/dashboard-seller/dashboard-seller.component';
 import { CoreModule } from '../../../core/core.module';
+import { DashboardEmployeeComponent } from './components/dashboard-employee/dashboard-employee.component';
 
 
 
 @NgModule({
-  declarations: [DashboardFactoryComponent, DashboardPharmaComponent, DashboardDeliveryComponent, DashboardSellerComponent],
+  declarations: [DashboardFactoryComponent, DashboardPharmaComponent, DashboardDeliveryComponent, DashboardSellerComponent, DashboardEmployeeComponent],
   imports: [
     CommonModule,
     RouterModule.forChild(DashboardsRoutes),

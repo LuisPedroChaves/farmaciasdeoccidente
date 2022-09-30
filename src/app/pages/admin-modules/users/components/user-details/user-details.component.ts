@@ -51,6 +51,7 @@ export class UserDetailsComponent implements OnInit, AfterContentInit, OnInit {
     email: new FormControl(''),
     role: new FormControl(null, [Validators.required]),
     cellar: new FormControl(null),
+    _employee: new FormControl(null),
   });
 
   // HOOK FUNCTIONS //////////////////////////////////////////////////////////////////////////////
@@ -75,6 +76,7 @@ export class UserDetailsComponent implements OnInit, AfterContentInit, OnInit {
       email: new FormControl(this.currentUser.email),
       role: new FormControl(this.currentUser._role ? this.currentUser._role._id : null, [Validators.required]),
       cellar: new FormControl(this.currentUser._cellar ? this.currentUser._cellar._id : null),
+      _employee: new FormControl(this.currentUser._employee ? (this.currentUser._employee as any)._id : null),
     });
   }
 
@@ -95,12 +97,22 @@ export class UserDetailsComponent implements OnInit, AfterContentInit, OnInit {
 
   updateUser() {
     if (this.form.invalid) { return; }
+    const role = this.roles.findIndex(r => r._id === this.form.controls.role.value);
+    if (role > -1) {
+      if (this.roles[role].type === 'EMPLOYEE' && this.form.controls._employee.value === null) {
+        this.toasty.error('Para el rol de tipo Empleado debe asignar un empleado de la lista');
+        return;
+      }
+    }
     this.loading = true;
     const newUser: UserItem = this.form.value;
     newUser._id = this.currentUser._id;
     newUser.imageIndex = this.cu;
     newUser._role = this.form.controls.role.value;
     newUser._cellar = this.form.controls.cellar.value;
+    newUser._employee = this.form.controls._employee.value;
+
+    
     this.userService.updateUser(newUser).subscribe(data => {
       this.toasty.success('Usuario editado exitosamente');
       this.emitEvent(this.config.EVENT_USERS_CHANGE_COMPONENT, 'userlist');

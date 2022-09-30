@@ -12,7 +12,7 @@ export interface UserItem {
 	username: string,
 	password?: string,
 	imageIndex: number,
-    _employee?: EmployeeItem | string;
+    _employee?: EmployeeItem|string;
 	email: string,
     activeRoutes?: RouteItem[],
     internalOrders?: InternalOrderItem[]

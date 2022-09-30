@@ -26,6 +26,7 @@ export class DashboardGuard implements CanActivate {
                 'DELIVERY': () => this.router.navigate(['/delivery']),
                 'SELLER': () =>   this.router.navigate(['/seller']),
                 'ADMIN': () =>   this.router.navigate(['/admin']),
+                'EMPLOYEE': () =>   this.router.navigate(['/employee']),
             }
             SWITCH[TYPE]();
             return false;
