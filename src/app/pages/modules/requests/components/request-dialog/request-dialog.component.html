@@ -19,7 +19,7 @@
             <mat-form-field class="all" color="primary" appearance="outline">
                 <mat-label>Puesto</mat-label>
                 <mat-select formControlName="_employeeJob">
-                    <mat-option *ngFor="let e of employeJobs" [value]="e._id">{{e._job.name}}</mat-option>
+                    <mat-option *ngFor="let e of employeeJobs" [value]="e._id">{{e._job.name}}</mat-option>
                 </mat-select>
             </mat-form-field>
         </div>
