@@ -52,4 +52,9 @@ export class DiscountsService {
   }
 
 
+  getDiscountsByEmployee(id: string): Observable<any> {
+    return this.http.get(`${this.apiConfigService.API_DISCOUNTS}/${id}`);
+  }
+
+
 }

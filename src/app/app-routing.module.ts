@@ -133,6 +133,10 @@ const routes: Routes = [
         path: 'purchases', loadChildren: () => import('./pages/modules/purchases/purchases.module').then(m => m.PurchasesModule),
         canActivate: [CheckTokenGuard]
       },
+      {
+        path: 'requests', loadChildren: () => import('./pages/modules/requests/requests.module').then(m => m.RequestsModule),
+        canActivate: [CheckTokenGuard]
+      },
     ],
   },
   {

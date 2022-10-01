@@ -76,4 +76,10 @@ export class EmployeeService {
   deleteEmployeeJobs(job: EmployeeJobItem) {
     return this.http.delete(`${this.apiConfigService.API_EMPLOYEES_JOBS}/${job._id}`); 
   }
+
+
+
+  getEmployeeJobsByUser(): Observable<any> {
+    return this.http.get(this.apiConfigService.API_EMPLOYEE_USER); 
+  }
 }

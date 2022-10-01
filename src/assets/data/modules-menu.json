@@ -269,5 +269,13 @@
         "icon": "people",
         "iconType": "icon",
         "order": 15
+    },
+    {
+        "state": "requests",
+        "name": "Solicitudes",
+        "type": "link",
+        "icon": "contact_support",
+        "iconType": "icon",
+        "order": 15
     }
 ]

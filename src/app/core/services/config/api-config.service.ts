@@ -52,6 +52,7 @@ export class ApiConfigService {
   public API_JOBS = this.API_URL + '/job';
   public API_DEPARTMENT = this.API_URL + '/jobDepartment';
   public API_EMPLOYEES = this.API_URL + '/employee';
+  public API_EMPLOYEE_USER = this.API_URL + '/employee/user';
   public API_EMPLOYEES_JOBS = this.API_URL + '/employeeJob';
   public API_COUNTRY = 'assets/data/guatemala.json';
   public API_DISCOUNTS = this.API_URL + '/discount';

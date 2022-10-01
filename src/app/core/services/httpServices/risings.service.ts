@@ -49,4 +49,10 @@ export class RisingsService {
   delete(rising: RisingItem): Observable<any> {
     return this.http.delete(`${this.apiConfigService.API_RISINGS}/${rising._id}`);
   }
+
+
+
+  getRisingByEmployee(id: string): Observable<any> {
+    return this.http.get(`${this.apiConfigService.API_RISINGS}/${id}`);
+  }
 }

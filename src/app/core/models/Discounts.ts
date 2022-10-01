@@ -11,3 +11,18 @@ export interface DiscountItem {
     hasDiscount: boolean;
     applied: boolean;
 }
+
+
+export interface TransactionItem {
+    _id?: string;
+    _employeeJob: string | EmployeeJobItem;
+    date: string;
+    type: string;
+    details: string;
+    hours: number | string;
+    amount: number | string;
+    applied: string;
+    approved: boolean;
+    hasDiscount: boolean;
+    transactionType: 'permission' | 'rising';
+}

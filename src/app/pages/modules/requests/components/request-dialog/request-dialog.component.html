@@ -1,0 +1,49 @@
+<header class="header" fxLayout="row wrap" fxLayoutAlign="start center">
+    <h2 class="product-font ma-0">Nueva Solicitud</h2>
+    <span fxFlex></span>
+    <button mat-icon-button (click)="dialogRef.close()">
+        <mat-icon>close</mat-icon>
+    </button>
+</header>
+<form [formGroup]="form" class="space" data-simplebar>
+    <div fxLayout="row wrap">
+        <div fxFlex="50" class="inputspace">
+            <mat-form-field class="all" appearance="outline">
+                <mat-label>Fecha</mat-label>
+                <input formControlName="date" matInput [matDatepicker]="picker">
+                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                <mat-datepicker #picker></mat-datepicker>
+            </mat-form-field>
+        </div>
+        <div fxFlex="50" class="inputspace">
+            <mat-form-field class="all" color="primary" appearance="outline">
+                <mat-label>Puesto</mat-label>
+                <mat-select formControlName="_employeeJob">
+                    <mat-option *ngFor="let e of employeJobs" [value]="e._id">{{e._job.name}}</mat-option>
+                </mat-select>
+            </mat-form-field>
+        </div>
+    </div>
+
+
+    <div fxLayout="row wrap">
+        <div fxFlex="50" class="inputspace">
+            <mat-form-field  class="all" color="primary" appearance="outline">
+                <mat-label>Horas</mat-label>
+                <input matInput formControlName="hours">
+            </mat-form-field>
+        </div>
+        <div fxFlex="50" class="inputspace">
+            <mat-form-field class="all" color="primary" appearance="outline">
+                <mat-label>Salario</mat-label>
+                <input matInput formControlName="amount">
+            </mat-form-field>
+        </div>
+    </div>
+</form>
+<div class="footer" fxLayout="row wrap">
+    <button mat-button (click)="dialogRef.close()">Cancelar</button>
+     <span fxFlex></span>
+    <button mat-flat-button color="primary" *ngIf="data.role === 'create'" (click)="save()"></button>
+    <button mat-flat-button color="primary" *ngIf="data.role === 'edit'" (click)="saveEdit()"></button>
+</div>
