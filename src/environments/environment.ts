@@ -10,7 +10,7 @@ export const environment = {
 
   /* API Services Config */
   // root: 'http://localhost:3000',
-  root: 'https://backendfarmacias-test.azurewebsites.net/',
+  root: 'https://backendfarmacias.azurewebsites.net/',
 
   /* Version Config */
   version: '1.0',

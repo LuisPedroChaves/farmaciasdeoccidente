@@ -261,5 +261,13 @@
         "icon": "people",
         "iconType": "icon",
         "order": 15
+    },
+    {
+        "state": "tickets",
+        "name": "Tickets",
+        "type": "link",
+        "icon": "print",
+        "iconType": "icon",
+        "order": 16
     }
 ]
