@@ -28,7 +28,35 @@ export class PrintService {
     cells: { fontSize: 8 }
   };
 
+  styleTicket = {
+    normalContent: {
+      fontSize: 5,
+      color: 'black',
+    },
+    blackContent: {
+      fontSize: 5,
+      color: 'black',
+      bold: true,
+    },
+  };
+
   constructor() { }
+
+  printTicket(body: any): void {
+    const printpage = {
+      pageSize: {
+        width: 297.63,
+        height: 'auto'
+      },
+      pageMargins: [5.66, 5.66, 5.66, 5.66],
+      content: [],
+      styles: this.styleTicket
+    };
+    printpage.content = body;
+    setTimeout(t => {
+      pdfMake.createPdf(printpage).print();
+    }, 500);
+  }
 
   printCheck(body: any) {
     const printpage = {
@@ -61,9 +89,9 @@ export class PrintService {
   printPortrait(body: any) {
     const printpage = {
       pageOrientation: 'portrait',
-      pageMargins: [ 40, 40, 40, 70 ],
+      pageMargins: [40, 40, 40, 70],
       content: [],
-      styles:  this.style
+      styles: this.style
     };
     printpage.content = body;
     setTimeout(t => {
