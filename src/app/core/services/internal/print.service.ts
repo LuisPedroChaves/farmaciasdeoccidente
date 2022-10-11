@@ -52,9 +52,9 @@ export class PrintService {
       content: [],
       styles: this.styleTicket
     };
-    printpage.content = body;
+    printpage.content = [...body];
     setTimeout(t => {
-      pdfMake.createPdf(printpage).print();
+      pdfMake.createPdf(printpage).open();
     }, 500);
   }
 

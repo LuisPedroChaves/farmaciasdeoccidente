@@ -114,7 +114,7 @@ export class IndexComponent implements OnInit {
         }
     }
 
-    async printQR(): Promise<void> {
+    async printQR(parent): Promise<void> {
         if (this.prints <= 0) {
             return;
         } else {
@@ -123,49 +123,20 @@ export class IndexComponent implements OnInit {
             const finalqnty = multi3 / 3;
 
             // Esta funcion devuelve el QR en base64
-            const b64 = await this.getBase64ImageFromURL(this.qrCodeDownloadLink.changingThisBreaksApplicationSecurity);
-
+            const parentElement = parent.qrcElement.nativeElement.querySelector('canvas');
+            const generatedImage = parentElement.toDataURL('image/png');
             const ticket: ITicket = {
                 providerCode: this.selectedProvider.nit,
                 productCode: this.codeProduct,
                 productName: this.nameProduct,
                 lote: this.lote,
                 expiredDate: this.expiredDate,
-                qr64: b64
+                qr64: generatedImage
             };
-            this.ticketService.print(ticket);
+            this.ticketService.print(ticket, finalqnty);
+
 
         }
-    }
-
-    getBase64ImageFromURL(url: SafeUrl): any {
-        console.log(url);
-        return new Promise((resolve, reject) => {
-            const img = new Image();
-            img.setAttribute('crossOrigin', 'anonymous');
-
-            img.onload = () => {
-                const canvas = document.createElement('canvas');
-                canvas.width = img.width;
-                canvas.height = img.height;
-
-                const ctx = canvas.getContext('2d');
-                if (ctx) {
-
-                    ctx.drawImage(img, 0, 0);
-
-                    const dataURL = canvas.toDataURL('image/png');
-
-                    resolve(dataURL);
-                }
-            };
-
-            img.onerror = error => {
-                reject(error);
-            };
-
-            img.src = url.toString();
-        });
     }
 
 }
