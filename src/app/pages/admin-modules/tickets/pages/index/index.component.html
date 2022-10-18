@@ -75,7 +75,7 @@
                             Etiqueta</button>
                     </div>
                 </form>
-                <div *ngIf="displayQR" class="qr-order">
+                <div *ngIf="displayQR" class="qr-order" fxLayout="">
                     <div fxFlex="20%">
                         <qrcode #parent [width]="wsize" [qrdata]="codeProduct"
                             [errorCorrectionLevel]="'high'">
@@ -83,19 +83,12 @@
                     </div>
                     <div fxFlex="80%" class="detail">
                         <h3>Codigo de Producto: {{codeProduct}}</h3>
-                        <h3>codigo de Proveedor: {{selectedProvider.nit}}</h3>
+                        <h3 *ngIf="selectedProvider">codigo de Proveedor: {{selectedProvider.code}}</h3>
                         <h3>Lote: {{lote}}</h3>
                         <h3>Vence: {{expiredDate | date: 'dd/MM/yyyy'}}</h3>
                     </div>
                     <div fxFlex="100%">
                         <h2>{{nameProduct}}</h2>
-                    </div>
-                    <div fxFlex="80%" class="align-btn">
-                        <mat-form-field appearance="outline" color="primary" >
-                            <mat-label>Cantidad de Impresiones</mat-label>
-                            <input [(ngModel)]="prints" type="number" matInput
-                                placeholder="Ingrese la cantidad de etiquetas a Imprimir">
-                        </mat-form-field>
                     </div>
                     <div fxFlex="20%" class="align-btn">
                         <button id="print" mat-raised-button color="primary" type="submit" (click)="printQR(parent)">Imprimir

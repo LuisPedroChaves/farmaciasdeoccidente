@@ -29,12 +29,17 @@ export class PrintService {
   };
 
   styleTicket = {
-    normalContent: {
+    name: {
       fontSize: 5,
       color: 'black',
     },
+    normalContent: {
+      fontSize: 6,
+      color: 'black',
+      bold: true,
+    },
     blackContent: {
-      fontSize: 5,
+      fontSize: 6,
       color: 'black',
       bold: true,
     },
@@ -45,14 +50,14 @@ export class PrintService {
   printTicket(body: any): void {
     const printpage = {
       pageSize: {
-        width: 297.63,
+        width: 288,
         height: 'auto'
       },
-      pageMargins: [5.66, 5.66, 5.66, 5.66],
+      pageMargins: [0, 0, 5.76, 0],
       content: [],
       styles: this.styleTicket
     };
-    printpage.content = [...body];
+    printpage.content = body;
     setTimeout(t => {
       pdfMake.createPdf(printpage).open();
     }, 500);
