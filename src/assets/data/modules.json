@@ -48,5 +48,6 @@
     { "name": "adminProducts", "label": "Catálogo de productos", "parent": "ADMIN", "level": 1, "options": ["read", "update", "delete", "create"] },
     { "name": "brands", "label": "Laboratorios", "parent": "ADMIN", "level": 1, "options": ["read", "update", "delete", "create"] },
     { "name": "providers", "label": "Proveedores", "parent": "ADMIN", "level": 1, "options": ["read", "update", "delete", "create"] },
+    { "name": "tickets", "label": "Tickets", "parent": "ADMIN", "level": 1, "options": ["read", "update", "delete", "create"] },
     { "name": "users", "label": "Usuarios", "parent": "ADMIN", "level": 1, "options": ["read", "update", "delete", "create"] }
 ]

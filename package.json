@@ -30,6 +30,7 @@
     "@ngx-loading-bar/http-client": "^5.1.2",
     "@ngx-loading-bar/router": "^5.1.2",
     "@types/socket.io-client": "^1.4.36",
+    "angularx-qrcode": "^11.0.0",
     "moment": "^2.29.1",
     "moment-timezone": "^0.5.33",
     "ngx-material-file-input": "^2.1.1",

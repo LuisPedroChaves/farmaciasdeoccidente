@@ -1,0 +1,101 @@
+<div class="module-container">
+    <div class="new-header" fxLayout="row wrap" fxLayoutAlign="start center">
+
+        <h2 color="accent" class="ma-0 info-row T">Impresión de Tickets</h2>
+    </div>
+    <div class="container-form">
+        <div class="job-card mat-elevation-z2" fxLayout="row wrap" fxLayoutAlign="start center">
+            <div fxFlex="100" fxLayout="row wrap" class="cover"
+                style="background-image: url('assets/images/covers/Psychology.jpg');">
+                <span fxFlex></span>
+            </div>
+            <br>
+            <div fxFlex="100" fxLayout="column wrap">
+                <mat-divider inset=“true”></mat-divider>
+                <div>
+                    <h3 color="accent" class="ma-0 info-row T1"> Información del Ticket</h3>
+                </div>
+                <form [formGroup]="productForm" class="align-form" (ngModelChange)='displayQR = false'>
+                    <div fxFlex="50%" class="inputpadding">
+                        <mat-form-field appearance="outline" color="warn" class="width-all">
+                            <mat-label>Código del producto</mat-label>
+                            <span matPrefix *ngIf="!productForm.get('searchCode').invalid" class="inputPresentation">{{
+                                productForm.get('searchCode').value.barcode }} &nbsp;</span>
+                            <input #searchCode matInput [matAutocomplete]="autoCode" formControlName="searchCode"
+                                placeholder="Ej. 1995" aria-label="State">
+                            <mat-error *ngIf="this.productForm.get('searchCode').invalid">
+                                Seleccione un producto de la lista.
+                            </mat-error>
+                            <mat-autocomplete #autoCode="matAutocomplete" [displayWith]="getShowDescription"
+                                (optionSelected)="searchStock($event.option.value)">
+                                <mat-option *ngIf="isLoading">
+                                    <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+                                </mat-option>
+                                <ng-container *ngIf="!isLoading">
+                                    <mat-option *ngFor="let product of filteredProducts" [value]="product">
+                                        <div fxFlex="row wrap">
+                                            <span><b>{{product.barcode}}</b> | {{product.description}} | {{
+                                                product._brand.name }}</span>
+                                            <div fxFlex></div>
+                                        </div>
+                                    </mat-option>
+                                </ng-container>
+                            </mat-autocomplete>
+                            <button *ngIf="productForm.get('searchCode').value" matSuffix mat-icon-button
+                                aria-label="Clear" (click)="productForm.get('searchCode').setValue('')">
+                                <mat-icon>close</mat-icon>
+                            </button>
+                            <mat-hint>Ingrese el código del producto</mat-hint>
+                        </mat-form-field>
+                    </div>
+                    <div fxFlex="50%" class="inputpadding">
+                        <app-provider (send)="getProvider($event)">
+                        </app-provider>
+                    </div>
+                    <div fxFlex="50%" class="inputpadding">
+                        <mat-form-field appearance="outline" color="primary" class="width-all">
+                            <mat-label>Codigo de Lote</mat-label>
+                            <input formControlName="lote" type="text" matInput placeholder="Agrega el número de lote"
+                                (ngModelChange)='displayQR = false'>
+                        </mat-form-field>
+                    </div>
+                    <div fxFlex="50%" class="inputpadding">
+                        <mat-form-field fxFill appearance="outline" color="accent" class="width-all">
+                            <mat-label>Fecha de vencimiento</mat-label>
+                            <input matInput [matDatepicker]="picker2" formControlName="expiredDate"
+                                title="Fecha de vencimiento" placeholder="Ingrese una fecha"
+                                (ngModelChange)='displayQR = false'>
+                            <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+                            <mat-datepicker #picker2></mat-datepicker>
+                        </mat-form-field>
+                    </div>
+                    <br>
+                    <div class="align-btn">
+                        <button mat-raised-button color="primary" type="submit" (click)="showQR()">Generar
+                            Etiqueta</button>
+                    </div>
+                </form>
+                <div *ngIf="displayQR" class="qr-order" fxLayout="">
+                    <div fxFlex="20%">
+                        <qrcode #parent [width]="wsize" [qrdata]="codeProduct"
+                            [errorCorrectionLevel]="'high'">
+                        </qrcode>
+                    </div>
+                    <div fxFlex="80%" class="detail">
+                        <h3>Codigo de Producto: {{codeProduct}}</h3>
+                        <h3 *ngIf="selectedProvider">codigo de Proveedor: {{selectedProvider.code}}</h3>
+                        <h3>Lote: {{lote}}</h3>
+                        <h3>Vence: {{expiredDate | date: 'dd/MM/yyyy'}}</h3>
+                    </div>
+                    <div fxFlex="100%">
+                        <h2>{{nameProduct}}</h2>
+                    </div>
+                    <div fxFlex="20%" class="align-btn">
+                        <button id="print" mat-raised-button color="primary" type="submit" (click)="printQR(parent)">Imprimir
+                            Etiquetas</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
