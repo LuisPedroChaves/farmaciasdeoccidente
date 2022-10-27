@@ -1,5 +1,5 @@
 <header class="header" fxLayout="row wrap" fxLayoutAlign="start center">
-    <h2 class="product-font ma-0">Nueva Solicitud</h2>
+    <h2 class="product-font ma-0">{{data.title}}</h2>
     <span fxFlex></span>
     <button mat-icon-button (click)="dialogRef.close()">
         <mat-icon>close</mat-icon>
@@ -26,7 +26,7 @@
     </div>
 
 
-    <div fxLayout="row wrap">
+    <div fxLayout="row wrap" *ngIf="!discountsTypes.includes(data.type)">
         <div fxFlex="50" class="inputspace">
             <mat-form-field  class="all" color="primary" appearance="outline">
                 <mat-label>Horas</mat-label>
@@ -40,10 +40,18 @@
             </mat-form-field>
         </div>
     </div>
+    <div fxLayout="row wrap" *ngIf="this.data.type !== 'horasExtra'">
+        <div fxFlex="100" class="inputspace">
+            <mat-form-field  class="all" color="primary" appearance="outline">
+                <mat-label>Razón</mat-label>
+                <textarea formControlName="details" matInput></textarea>
+            </mat-form-field>
+        </div>
+    </div>
 </form>
 <div class="footer" fxLayout="row wrap">
     <button mat-button (click)="dialogRef.close()">Cancelar</button>
      <span fxFlex></span>
-    <button mat-flat-button color="primary" *ngIf="data.role === 'create'" (click)="save()"></button>
-    <button mat-flat-button color="primary" *ngIf="data.role === 'edit'" (click)="saveEdit()"></button>
+    <button mat-flat-button color="primary" *ngIf="data.role === 'create'" (click)="save()">Solicitar</button>
+    <button mat-flat-button color="primary" *ngIf="data.role === 'edit'" (click)="saveEdit()">Guardar</button>
 </div>

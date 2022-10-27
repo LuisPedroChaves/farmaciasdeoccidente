@@ -35,6 +35,7 @@ export class EmployeeTransactionsComponent implements OnInit, AfterContentInit {
   IGSSsuspentions: DiscountItem[] = [];
   lows: DiscountItem[] = [];
   temporalSuspention: DiscountItem[] = [];
+  citaIGSS: DiscountItem[] = [];
   alertsCalls: DiscountItem[] = [];
   
   
@@ -109,6 +110,7 @@ export class EmployeeTransactionsComponent implements OnInit, AfterContentInit {
     this.IGSSsuspentions = this.discounts.filter(d => d.type === 'suspensiónIGSS');
     this.lows = this.discounts.filter(d => d.type === 'bajas');
     this.temporalSuspention = this.discounts.filter(d => d.type === 'suspencionTemporal');
+    this.citaIGSS = this.discounts.filter(d => d.type === 'citaIGSS');
     this.alertsCalls = this.discounts.filter(d => d.type === 'llamadas');
   }
 
@@ -143,6 +145,9 @@ export class EmployeeTransactionsComponent implements OnInit, AfterContentInit {
   newIGSS() {
     this.openDiscountDialog('Nueva suspención del IGSS', 'suspensiónIGSS', 'new', 'Suspención del IGSS registrada exitósamente');
   }
+  newCitaIGSS() {
+    this.openDiscountDialog('Nueva cita del IGSS', 'citaIGSS', 'new', 'Cita del IGSS registrada exitósamente');
+  }
 
   newLow() {
     this.openDiscountDialog('Nueva baja', 'bajas', 'new', 'Baja registrada exitósamente');
@@ -174,6 +179,10 @@ export class EmployeeTransactionsComponent implements OnInit, AfterContentInit {
 
   editIGSS(d: DiscountItem) {
     this.openDiscountDialog('Editar suspención del IGSS', 'suspensiónIGSS', 'edit', 'Suspención del IGSS modificada exitósamente', d);
+  }
+
+  editCitaIgss(d: DiscountItem) {
+    this.openDiscountDialog('Editar cita del IGSS', 'citaIGSS', 'edit', 'Cita del IGSS modificada exitósamente', d);
   }
 
   editLow(d: DiscountItem) {

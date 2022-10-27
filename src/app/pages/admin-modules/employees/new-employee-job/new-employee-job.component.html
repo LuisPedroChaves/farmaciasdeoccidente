@@ -64,14 +64,31 @@
 
     <div fxLayout="row wrap"  fxLayoutAlign="start center">
         <div fxFlex="50" class="section">
-            <mat-slide-toggle formControlName="lawBonus">Bono de Ley</mat-slide-toggle>
-        </div>
-        <div fxFlex="50" class="section">
             <mat-form-field class="all" appearance="outline">
-                <mat-label>Fecha de Inicio</mat-label>
+                <mat-label>Fecha de Inicio de labores</mat-label>
                 <input matInput [matDatepicker]="picker" formControlName="startDate">
                 <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                 <mat-datepicker #picker></mat-datepicker>
+            </mat-form-field>
+        </div>
+        <div fxFlex="50" class="section">
+            <mat-form-field class="all" appearance="outline">
+                <mat-label>Fecha de Final de labores</mat-label>
+                <input matInput [matDatepicker]="picker2" formControlName="endDate">
+                <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+                <mat-datepicker #picker2></mat-datepicker>
+            </mat-form-field>
+        </div>
+    </div>
+
+    <div fxLayout="row wrap"  fxLayoutAlign="start center">
+        <div fxFlex="50" class="section">
+            <mat-slide-toggle formControlName="lawBonus">Bono de Ley</mat-slide-toggle>
+        </div>
+        <div fxFlex="50" class="section">
+            <mat-form-field color="primary" appearance="outline" class="all">
+                <mat-label>Jornada</mat-label>
+                <input matInput type="text" formControlName="workingDay">
             </mat-form-field>
         </div>
     </div>

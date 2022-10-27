@@ -20,11 +20,12 @@ export class NewDiscountComponent implements OnInit {
     _employeeJob: new FormControl({value: null, disabled: true}, Validators.required),
     date: new FormControl(new Date(), Validators.required),
     type: new FormControl(null, Validators.required),
-    hours: new FormControl(null, Validators.required),
-    amount: new FormControl(null, Validators.required),
+    hours: new FormControl(null),
+    amount: new FormControl(null),
     approved: new FormControl(false, Validators.required),
     hasDiscount: new FormControl(false, Validators.required),
     applied: new FormControl(false, Validators.required),
+    details: new FormControl(null),
   });
 
   employee: string;
@@ -46,11 +47,12 @@ export class NewDiscountComponent implements OnInit {
           date: new FormControl(this.data.discount.date, Validators.required),
           _employeeJob: new FormControl(this.data.discount._employeeJob._id, Validators.required),
           type: new FormControl(this.data.discount.type, Validators.required),
-          hours: new FormControl(this.data.discount.hours, Validators.required),
-          amount: new FormControl(this.data.discount.amount, Validators.required),
+          hours: new FormControl(this.data.discount.hours),
+          amount: new FormControl(this.data.discount.amount),
           approved: new FormControl(this.data.discount.approved, Validators.required),
           hasDiscount: new FormControl(this.data.discount.hasDiscount, Validators.required),
           applied: new FormControl(this.data.discount.applied, Validators.required),
+          details: new FormControl(this.data.discount.details),
         });
       })
     }

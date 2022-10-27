@@ -242,6 +242,10 @@ table {
   text-align: center;
   justify-content: center;
 }
+.mat-cell.left {
+  text-align: left !important;
+  justify-content: center;
+}
 
 mat-chip {
   // max-width: 200px;

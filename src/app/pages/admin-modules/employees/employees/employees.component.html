@@ -36,7 +36,7 @@
                     <div *ngFor="let e of (employees | filter: searchtext : ['name', 'dpi'])" fxFlex.gt-lg="20" fxFlex.gt-md="25" fxFlex.gt-sm="33" fxFlex.gt-xs="50" fxFlex="100" class="usercard user">
                         <mat-card matRipple class="cursor-pointer user-card mat-elevation-z2" (click)="selectEmployee(e)" fxLayout="row wrap" fxLayoutAlign="start center">
                             <div fxFlex="60px">
-                                <img [src]="e.photo === null ? 'assets/images/avatars/00M.jpg' : e.photo" alt="" class="avataruser">
+                                <img [src]="e.photo === null ? 'assets/images/avatars/00M.jpg' : (e.photo | file : 'employees' )" alt="" class="avataruser">
                             </div>
                             <div fxFlex fxLayout="column wrap" class="ellipsis-text">
                                 <h4 class="ma-0 product-font">{{e.name}} {{e.lastName}}</h4>

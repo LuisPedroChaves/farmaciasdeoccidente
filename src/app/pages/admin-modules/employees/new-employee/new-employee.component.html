@@ -105,10 +105,16 @@
 
 
                         <div fxLayout="row wrap">
-                            <div fxFlex="100" class="formsection">
+                            <div fxFlex="50" class="formsection">
                                 <mat-form-field class="all" color="primary" appearance="outline">
                                     <mat-label>Dirección</mat-label>
                                     <input matInput formControlName="address">
+                                </mat-form-field>
+                            </div>
+                            <div fxFlex="50" class="formsection">
+                                <mat-form-field class="all" color="primary" appearance="outline">
+                                    <mat-label>Nacionalidad</mat-label>
+                                    <input matInput formControlName="nationality">
                                 </mat-form-field>
                             </div>
                         </div>
@@ -126,6 +132,54 @@
                                     <mat-label>Municipios</mat-label>
                                     <mat-select formControlName="city">
                                         <mat-option *ngFor="let m of muns" [value]="m">{{m}}</mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                            </div>
+                        </div>
+
+                        <div fxLayout="row wrap" *ngIf="this.departments !== undefined">
+                            <div fxFlex="50" class="formsection">
+                                <mat-form-field class="all" color="primary" appearance="outline">
+                                    <mat-label>Pueblo de Origen </mat-label>
+                                    <mat-select formControlName="village">
+                                        <mat-option value="Maya">Maya</mat-option>
+                                        <mat-option value="Garifuna">Garifuna</mat-option>
+                                        <mat-option value="Xinca">Xinca</mat-option>
+                                        <mat-option value="Ladino">Ladino</mat-option>
+                                        <mat-option value="Otro">Otro</mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                            </div>
+                            <div fxFlex="50" class="formsection">
+                                <mat-form-field class="all" color="primary" appearance="outline">
+                                    <mat-label>Comunidad Linguistica</mat-label>
+                                    <mat-select formControlName="linguisticCommunity">
+                                        <mat-option value="Español">Español</mat-option>
+                                        <mat-option value="Achi">Achi</mat-option>
+                                        <mat-option value="Akateko">Akateko</mat-option>
+                                        <mat-option value="Awakateko">Awakateko</mat-option>
+                                        <mat-option value="Chalchiteko">Chalchiteko</mat-option>
+                                        <mat-option value="Ch'orti'">Ch'orti'</mat-option>
+                                        <mat-option value="Chuj">Chuj</mat-option>
+                                        <mat-option value="Garífuna">Garífuna</mat-option>
+                                        <mat-option value="Itza">Itza</mat-option>
+                                        <mat-option value="Ixil">Ixil</mat-option>
+                                        <mat-option value="Kaqchikel">Kaqchikel</mat-option>
+                                        <mat-option value="K'iche'">K'iche'</mat-option>
+                                        <mat-option value="Mam">Mam</mat-option>
+                                        <mat-option value="Mopan">Mopan</mat-option>
+                                        <mat-option value="Popti">Popti</mat-option>
+                                        <mat-option value="Poqomam">Poqomam</mat-option>
+                                        <mat-option value="Poqomchi'">Poqomchi'</mat-option>
+                                        <mat-option value="Q'anjobal'">Q'anjobal'</mat-option>
+                                        <mat-option value="Q'eqchi">Q'eqchi</mat-option>
+                                        <mat-option value="Sacapulteko">Sacapulteko</mat-option>
+                                        <mat-option value="Sipakapense">Sipakapense</mat-option>
+                                        <mat-option value="Tektiteko">Tektiteko</mat-option>
+                                        <mat-option value="Tz'utujil">Tz'utujil</mat-option>
+                                        <mat-option value="Uspanteko">Uspanteko</mat-option>
+                                        <mat-option value="Xinka">Xinka</mat-option>
+                                        <mat-option value="Otro">Otro</mat-option>
                                     </mat-select>
                                 </mat-form-field>
                             </div>
@@ -185,6 +239,17 @@
                         <mat-slide-toggle formControlName="benefits">Beneficios</mat-slide-toggle>
                     </div>
                     <div fxFlex="50" class="formsection">
+                        <mat-form-field class="all" color="primary" appearance="outline">
+                            <mat-label>Número de afiliación al IGSS</mat-label>
+                            <input matInput formControlName="igssNumber">
+                        </mat-form-field>
+                    </div>
+                   
+
+                </div>
+
+                <div fxLayout="row wrap">
+                    <div fxFlex="100" class="formsection">
                         <mat-form-field *ngIf="cellars !== undefined" class="all" color="primary" appearance="outline">
                             <mat-label>Sucursal</mat-label>
                             <mat-select formControlName="_cellar">
@@ -192,14 +257,29 @@
                             </mat-select>
                         </mat-form-field>
                     </div>
-
                 </div>
+               
 
                 <div fxLayout="row wrap">
                     <div fxFlex="100" class="formsection">
                         <mat-form-field class="all" color="primary" appearance="outline">
                             <mat-label>Detalles</mat-label>
                             <textarea matInput formControlName="details"></textarea>
+                        </mat-form-field>
+                    </div>
+                </div>
+
+                <div fxLayout="row wrap">
+                    <div fxFlex="50" class="formsection">
+                        <mat-form-field class="all" color="primary" appearance="outline">
+                            <mat-label>Discapacidad</mat-label>
+                            <input matInput formControlName="disability">
+                        </mat-form-field>
+                    </div>
+                    <div fxFlex="50" class="formsection">
+                        <mat-form-field class="all" color="primary" appearance="outline">
+                            <mat-label>Permiso Extranjero</mat-label>
+                            <input matInput formControlName="foreignPermit">
                         </mat-form-field>
                     </div>
                 </div>

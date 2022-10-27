@@ -2,7 +2,7 @@
 .employees-list { height: calc(100%); }
 .list { height: calc(100% - 78px); }
 
-.tabcontent { height: calc(100vh - 183px); padding: 10px; position: relative; }
+.tabcontent { height: calc(100vh - 183px); padding: 10px; position: relative; width: 100%; }
 
 .fab {
     position: fixed;

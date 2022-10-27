@@ -16,4 +16,9 @@ export interface EmployeeJobItem {
     contract:string;
     paymentType:string;
     workPlace:string;
+    
+    
+    endDate:string;
+    workingDay: string;
+    
 }

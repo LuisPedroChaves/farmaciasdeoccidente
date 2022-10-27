@@ -23,7 +23,7 @@ export class NewRisingComponent implements OnInit {
     details: new FormControl(null, Validators.required),
     hours: new FormControl(null, Validators.required),
     amount: new FormControl(null, Validators.required),
-    aproved: new FormControl(false, Validators.required),
+    approved: new FormControl(false, Validators.required),
     applied: new FormControl(false, Validators.required),
   });
 
@@ -48,7 +48,7 @@ export class NewRisingComponent implements OnInit {
             details: new FormControl(this.data.rising.details, Validators.required),
             hours: new FormControl(this.data.rising.hours, Validators.required),
             amount: new FormControl(this.data.rising.amount, Validators.required),
-            aproved: new FormControl(this.data.rising.aproved, Validators.required),
+            approved: new FormControl(this.data.rising.approved, Validators.required),
             applied: new FormControl(this.data.rising.applied, Validators.required),
         });
       })

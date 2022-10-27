@@ -1,13 +1,14 @@
 import { Component, EventEmitter, Inject, Input, OnInit, Output } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
+import { FileInput } from 'ngx-material-file-input';
 import { BankItem } from 'src/app/core/models/Bank';
 import { CellarItem } from 'src/app/core/models/Cellar';
 import { EmployeeItem, FamilyItem } from 'src/app/core/models/Employee';
 import { EmployeeJobItem } from 'src/app/core/models/EmployeeJob';
 import { EmployeeService } from 'src/app/core/services/httpServices/employee.service';
+import { UploadFileService } from 'src/app/core/services/httpServices/upload-file.service';
 import { ToastyService } from 'src/app/core/services/internal/toasty.service';
-import { NewEmployeeJobComponent } from '../new-employee-job/new-employee-job.component';
 import { UploadAvatarComponent } from '../upload-avatar/upload-avatar.component';
 
 
@@ -45,7 +46,11 @@ export class NewEmployeeComponent implements OnInit {
     email: new FormControl(null),
     address: new FormControl(null, Validators.required),
     department: new FormControl(null, Validators.required),
-    city: new FormControl(null, Validators.required)
+    city: new FormControl(null, Validators.required),
+    nationality: new FormControl(null, Validators.required),
+    village: new FormControl(null),
+    linguisticCommunity: new FormControl(null),
+    
   });
 
   // STEP 2
@@ -61,6 +66,10 @@ export class NewEmployeeComponent implements OnInit {
     details: new FormControl(null, Validators.required),
     vacationDate: new FormControl(null),
     lastVacationDate: new FormControl(null),
+    disability: new FormControl(null),
+    foreignPermit: new FormControl(null),
+    igssNumber: new FormControl(null),
+    
   });
 
 
@@ -75,7 +84,7 @@ export class NewEmployeeComponent implements OnInit {
 
   family: FamilyItem[] = [];
 
-  constructor(public dialog: MatDialog, public employeeService: EmployeeService, public toasty: ToastyService) { }
+  constructor(public dialog: MatDialog, public employeeService: EmployeeService, public toasty: ToastyService, public uploadFileService: UploadFileService) { }
 
   ngOnInit(): void {
     this.employeeService.getCountry().subscribe(data => {this.departments = data; });
@@ -114,7 +123,8 @@ export class NewEmployeeComponent implements OnInit {
     dialog.afterClosed().subscribe(data => {
       if (data !== undefined) {
         this.imagePreview = data.preview;
-        this.form1.controls.photo.setValue(data.file);
+        const FILE: FileInput = new FileInput([data.file], ', ');
+        this.form1.controls.photo.setValue(FILE);
       }
     });
   }
@@ -123,27 +133,41 @@ export class NewEmployeeComponent implements OnInit {
   saveEmployee() {
     if (this.form1.invalid || this.form2.invalid) { return; }
 
-    const employee: EmployeeItem = { ...this.form1.value, ...this.form2.value, family: this.family }
+    
+    const FILE: FileInput = this.form1.controls.photo.value;
+    if (FILE) {
+      this.form1.controls.photo.setValue('archivo.temp');
+    } else {
+      this.form1.controls.photo.setValue(null);
+    }
+    const employee: EmployeeItem = { ...this.form1.value, ...this.form2.value, family: this.family };
     this.employeeService.create(employee).subscribe(data => {
+      if (FILE) {
+        if (FILE.files) {
+          this.uploadFileService.uploadFile(FILE.files[0], 'employees', data.employee._id).then((resp: any) => {
+            this.toasty.success('Empleado creado exitósamente');
+            this.employeeService.loadData();
+            this.closebar.emit(true);
+            }).catch(err => {
+              this.toasty.error('Falló subida de imagen');
+            });
+        } else {
+          this.toasty.success('Empleado creado exitósamente');
+          this.employeeService.loadData();
+          this.closebar.emit(true);
+        }
+      } else {
+        this.toasty.success('Empleado creado exitósamente');
+        this.employeeService.loadData();
+        this.closebar.emit(true);
+      }
 
-      this.toasty.success('Empleado creado exitósamente');
-      this.employeeService.loadData();
-      this.closebar.emit(true);
+
+      
+      
 
     });
   }
 
-  // addJob() {
-  //   const dialogRef = this.dialog.open(NewEmployeeJobComponent, {
-  //     width: this.smallScreen ? '100%' : '450px',
-  //     panelClass: ['farmacia-dialog', 'farmacia'],
-  //     data: { jobs: this.jobs }
-  //   });
-
-
-  //   dialogRef.afterClosed().subscribe(data => {
-
-  //   });
-  // }
 
 }

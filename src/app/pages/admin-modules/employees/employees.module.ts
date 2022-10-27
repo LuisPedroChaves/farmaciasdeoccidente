@@ -13,6 +13,7 @@ import { NewDepartmentComponent } from './new-department/new-department.componen
 import { DepartmentListComponent } from './department-list/department-list.component';
 import { UploadAvatarComponent } from './upload-avatar/upload-avatar.component';
 import { EditEmployeeComponent } from './edit-employee/edit-employee.component';
+import { FilePipe } from 'src/app/core/shared/pipes/filePipes/file.pipe';
 
 
 @NgModule({
@@ -23,6 +24,7 @@ import { EditEmployeeComponent } from './edit-employee/edit-employee.component';
     SharedComponentsModule,
     CoreModule,
     MatStepperModule
-  ]
+  ],
+  providers: [FilePipe]
 })
 export class EmployeesModule { }

@@ -1,12 +1,15 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
+import { FileInput } from 'ngx-material-file-input';
 import { BankItem } from 'src/app/core/models/Bank';
 import { CellarItem } from 'src/app/core/models/Cellar';
 import { EmployeeItem, FamilyItem } from 'src/app/core/models/Employee';
 import { EmployeeJobItem } from 'src/app/core/models/EmployeeJob';
 import { EmployeeService } from 'src/app/core/services/httpServices/employee.service';
+import { UploadFileService } from 'src/app/core/services/httpServices/upload-file.service';
 import { ToastyService } from 'src/app/core/services/internal/toasty.service';
+import { FilePipe } from 'src/app/core/shared/pipes/filePipes/file.pipe';
 import { ConfirmationDialogComponent } from 'src/app/pages/shared-components/confirmation-dialog/confirmation-dialog.component';
 import { ConfirmationComponent } from 'src/app/pages/shared-components/confirmation/confirmation.component';
 import { NewEmployeeJobComponent } from '../new-employee-job/new-employee-job.component';
@@ -48,7 +51,10 @@ export class EditEmployeeComponent implements OnInit {
     email: new FormControl(null),
     address: new FormControl(null, Validators.required),
     department: new FormControl(null, Validators.required),
-    city: new FormControl(null, Validators.required)
+    city: new FormControl(null, Validators.required),
+    nationality: new FormControl(null, Validators.required),
+    village: new FormControl(null),
+    linguisticCommunity: new FormControl(null),
   });
 
   // STEP 2
@@ -64,6 +70,9 @@ export class EditEmployeeComponent implements OnInit {
     details: new FormControl(null, Validators.required),
     vacationDate: new FormControl(null),
     lastVacationDate: new FormControl(null),
+    disability: new FormControl(null),
+    foreignPermit: new FormControl(null),
+    igssNumber: new FormControl(null),
   });
 
 
@@ -79,10 +88,11 @@ export class EditEmployeeComponent implements OnInit {
   family: FamilyItem[] = [];
   employeeJobs: EmployeeJobItem[] = [];
 
-  constructor(public dialog: MatDialog, public employeeService: EmployeeService, public toasty: ToastyService) { }
+  constructor(public dialog: MatDialog, public employeeService: EmployeeService, public filePipe: FilePipe, public toasty: ToastyService, public uploadFileService: UploadFileService) { }
 
   ngOnInit(): void {
     this.employeeService.getCountry().subscribe(data => {this.departments = data; });
+    this.imagePreview = this.filePipe.transform(this.employee.photo, 'employees');
     this.form1 = new FormGroup({
       photo: new FormControl(this.employee.photo),
       name: new FormControl(this.employee.name, Validators.required),
@@ -97,7 +107,10 @@ export class EditEmployeeComponent implements OnInit {
       email: new FormControl(this.employee.email),
       address: new FormControl(this.employee.address, Validators.required),
       department: new FormControl(this.employee.department, Validators.required),
-      city: new FormControl(this.employee.city, Validators.required)
+      city: new FormControl(this.employee.city, Validators.required),
+      nationality: new FormControl(this.employee.nationality || null, Validators.required),
+      village: new FormControl(this.employee.village || null),
+      linguisticCommunity: new FormControl(this.employee.linguisticCommunity || null),
     });
     setTimeout(() => {
       this.getMun();
@@ -116,12 +129,17 @@ export class EditEmployeeComponent implements OnInit {
       details: new FormControl(this.employee.details, Validators.required),
       vacationDate: new FormControl(this.employee.vacationDate),
       lastVacationDate: new FormControl(this.employee.lastVacationDate),
+      igssNumber: new FormControl(this.employee.igssNumber),
+      disability: new FormControl(this.employee.disability),
+      foreignPermit: new FormControl(this.employee.foreignPermit),
     });
 
 
     this.family = this.employee.family;
 
     this.loadEmployeeJobs();
+
+    
   }
 
 
@@ -164,7 +182,8 @@ export class EditEmployeeComponent implements OnInit {
     dialog.afterClosed().subscribe(data => {
       if (data !== undefined) {
         this.imagePreview = data.preview;
-        this.form1.controls.photo.setValue(data.file);
+        const FILE: FileInput = new FileInput([data.file], ', ');
+        this.form1.controls.photo.setValue(FILE);
       }
     });
   }
@@ -173,11 +192,37 @@ export class EditEmployeeComponent implements OnInit {
   saveEmployee() {
     if (this.form1.invalid || this.form2.invalid) { return; }
 
+
+
+    
+    const FILE: FileInput = this.form1.controls.photo.value;
+    if (FILE) {
+      this.form1.controls.photo.setValue('archivo.temp');
+    } else {
+      this.form1.controls.photo.setValue(null);
+    }
     const employee: EmployeeItem = { ...this.form1.value, ...this.form2.value, family: this.family, _id: this.employee._id };
     this.employeeService.update(employee).subscribe(data => {
-      this.toasty.success('Empleado modificado exitósamente');
-      this.employeeService.loadData();
-      this.closebar.emit(true);
+      if (FILE) {
+        if (FILE.files) {
+          this.uploadFileService.uploadFile(FILE.files[0], 'employees', data.employee._id).then((resp: any) => {
+            this.toasty.success('Empleado modificado exitósamente');
+            this.employeeService.loadData();
+            this.closebar.emit(true);
+            }).catch(err => {
+              this.toasty.error('Falló subida de imagen');
+            });
+        } else {
+          this.toasty.success('Empleado modificado exitósamente');
+          this.employeeService.loadData();
+          this.closebar.emit(true);
+        }
+      } else {
+        this.toasty.success('Empleado modificado exitósamente');
+        this.employeeService.loadData();
+        this.closebar.emit(true);
+      }
+     
 
     });
   }

@@ -65,11 +65,11 @@ export class EmployeeService {
     return this.http.get(`${this.apiConfigService.API_EMPLOYEES_JOBS}/${id}`); 
   }
 
-  createEmployeeJobs(job: EmployeeJobItem) {
+  createEmployeeJobs(job: EmployeeJobItem): Observable<any> {
     return this.http.post(`${this.apiConfigService.API_EMPLOYEES_JOBS}`, job); 
   }
 
-  updateEmployeeJobs(job: EmployeeJobItem) {
+  updateEmployeeJobs(job: EmployeeJobItem): Observable<any> {
     return this.http.put(`${this.apiConfigService.API_EMPLOYEES_JOBS}/${job._id}`, job); 
   }
 

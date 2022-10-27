@@ -8,6 +8,6 @@ export interface RisingItem {
     details: string;
     hours: number | string;
     amount: number | string;
-    aproved: boolean;
+    approved: boolean;
     applied: string;
 }

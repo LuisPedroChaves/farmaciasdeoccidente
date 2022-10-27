@@ -10,6 +10,7 @@ export interface DiscountItem {
     approved: boolean;
     hasDiscount: boolean;
     applied: boolean;
+    details?: string;
 }
 
 

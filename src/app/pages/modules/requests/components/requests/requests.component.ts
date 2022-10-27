@@ -29,7 +29,7 @@ export class RequestsComponent implements OnInit {
   smallScreen: boolean;
 
 
-  displayedColumns: string[] = [ 'date', 'transactionType', 'hours', 'amount', 'approved'  ];
+  displayedColumns: string[] = [ 'date', 'transactionType', 'approved', 'details'  ];
   dataSource = new MatTableDataSource([]);
 
   employeeJobs: EmployeeJobItem[] = [];
@@ -44,6 +44,10 @@ export class RequestsComponent implements OnInit {
     this.employeService.getEmployeeJobsByUser().subscribe(data => {
       this.employee = data.employee;
       this.getRisingDiscounts();
+
+      this.employeService.getEmployeeJobs(this.employee._id).subscribe(data2 => {
+        this.employeeJobs = data2.employeeJobs;
+      });
     });
 
   }
@@ -54,18 +58,17 @@ export class RequestsComponent implements OnInit {
 
   getRisingDiscounts() {
     this.transactions = [];
-    combineLatest([ this.risingsService.getRisingByEmployee(this.employee._id), this.discountsService.getDiscountsByEmployee(this.employee._id), this.employeService.getEmployeeJobs(this.employee._id)]).subscribe(data => {
+    combineLatest([ this.risingsService.getRisingByEmployee(this.employee._id), this.discountsService.getDiscountsByEmployee(this.employee._id)]).subscribe(data => {
       this.risings = data[0].risings;
       this.discounts = data[1].discounts;
 
 
-      this.risings.forEach((r) => this.transactions.push({...(r as any), transactionType: 'rising', approved: r.aproved}));
+      this.risings.forEach((r) => this.transactions.push({...(r as any), transactionType: 'rising', approved: r.approved}));
       this.discounts.forEach((r) => this.transactions.push({...(r as any), transactionType: 'permission', approved: r.approved}));
 
-
+      console.log(this.discounts);
       this.dataSource = new MatTableDataSource<TransactionItem>(this.transactions);
 
-      this.employeeJobs = data[2].employeeJobs;
 
       this.loading = false;
     });
@@ -75,9 +78,16 @@ export class RequestsComponent implements OnInit {
 
 
   newRequest(type: string) {
+    let title = 'Nueva Solicitud';
+    switch(type ) {
+      case 'citaIGSS': title = 'Nueva Cita del IGSS'; break;
+      case 'permiso': title = 'Nuevo Permiso'; break;
+      case 'diadescanso': title = 'Solicitud de cambio de día de descanso'; break;
+      case 'horasExtra': title = 'Nuevo Ingreso de horas extras'; break;
+    }
     const dialog = this.dialog.open(RequestDialogComponent, {
       width: this.smallScreen ? '100%' : '500px',
-      data: { employeeJobs : this.employeeJobs, role: 'create', type: type},
+      data: { employeeJobs : this.employeeJobs, role: 'create', type: type, title: title},
       panelClass: ['farmacia-dialog', 'farmacia'],
     });
 
