@@ -7,7 +7,7 @@ const routes: Routes = [{
   path: '',
   component: PayrollComponent,
 }, {
-  path: '',
+  path: 'new',
   component: NewPayrollComponent
 }];
 

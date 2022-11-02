@@ -213,8 +213,7 @@ const routes: Routes = [
         canActivate: [CheckTokenGuard]
       },
       {
-        path: 'payroll', pathMatch:
-      'full', loadChildren: () => import('./pages/admin-modules/payroll/payroll.module').then(m => m.PayrollModule),
+        path: 'payroll', loadChildren: () => import('./pages/admin-modules/payroll/payroll.module').then(m => m.PayrollModule),
         canActivate: [CheckTokenGuard]
       },
       {

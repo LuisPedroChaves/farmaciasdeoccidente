@@ -21,16 +21,16 @@ export class NewEmployeeJobComponent implements OnInit {
     _job: new FormControl(null, Validators.required),
     salaryPerHour: new FormControl(null, Validators.required),
     monthlyHours: new FormControl(null, Validators.required),
-    initialSalary: new FormControl(null, Validators.required),
-    salaryExtraHours: new FormControl(null, Validators.required),
-    lawBonus: new FormControl(false, Validators.required),
-    bonus: new FormControl(null, Validators.required),
+    initialSalary: new FormControl(null),
+    salaryExtraHours: new FormControl(null),
+    lawBonus: new FormControl(false),
+    bonus: new FormControl(null),
     startDate: new FormControl(null, Validators.required),
-    endDate: new FormControl(null, Validators.required),
+    endDate: new FormControl(null),
     
-    contractType: new FormControl(null, Validators.required),
-    contract: new FormControl(null),
-    paymentType: new FormControl(null, Validators.required),
+    contractType: new FormControl(null),
+    agreement: new FormControl(null),
+    paymentType: new FormControl(null),
     workPlace: new FormControl(null),
     workingDay: new FormControl(null),
   });
@@ -50,20 +50,20 @@ export class NewEmployeeJobComponent implements OnInit {
         initialSalary: new FormControl(this.data.employeejob.initialSalary, Validators.required),
         salaryPerHour: new FormControl(this.data.employeejob.salaryPerHour, Validators.required),
         monthlyHours: new FormControl(this.data.employeejob.monthlyHours, Validators.required),
-        salaryExtraHours: new FormControl(this.data.employeejob.salaryExtraHours, Validators.required),
-        lawBonus: new FormControl(this.data.employeejob.lawBonus, Validators.required),
-        bonus: new FormControl(this.data.employeejob.bonus, Validators.required),
+        salaryExtraHours: new FormControl(this.data.employeejob.salaryExtraHours),
+        lawBonus: new FormControl(this.data.employeejob.lawBonus),
+        bonus: new FormControl(this.data.employeejob.bonus),
         startDate: new FormControl(this.data.employeejob.startDate, Validators.required),
-        endDate: new FormControl(this.data.employeejob.endDate || null, Validators.required),
-        contractType: new FormControl(this.data.employeejob.contractType, Validators.required),
-        contract: new FormControl(this.data.employeejob.contract),
-        paymentType: new FormControl(this.data.employeejob.paymentType, Validators.required),
+        endDate: new FormControl(this.data.employeejob.endDate || null),
+        contractType: new FormControl(this.data.employeejob.contractType),
+        agreement: new FormControl(this.data.employeejob.agreement),
+        paymentType: new FormControl(this.data.employeejob.paymentType),
         workPlace: new FormControl(this.data.employeejob.workPlace),
         workingDay: new FormControl(this.data.employeejob.workingDay || null),
       });
     }
 
-    this.form.controls.contract.valueChanges.subscribe(data => { this.changed = true;});
+    this.form.controls.agreement.valueChanges.subscribe(data => { this.changed = true;});
   }
 
 
@@ -76,11 +76,11 @@ export class NewEmployeeJobComponent implements OnInit {
     let FILE: FileInput;
     if (this.changed === true) {
 
-      FILE = this.form.controls.contract.value;
+      FILE = this.form.controls.agreement.value;
       if (FILE) {
-        this.form.controls.contract.setValue('archivo.temp');
+        this.form.controls.agreement.setValue('archivo.temp');
       } else {
-        this.form.controls.contract.setValue(null);
+        this.form.controls.agreement.setValue(null);
       }
     }
 
@@ -89,44 +89,44 @@ export class NewEmployeeJobComponent implements OnInit {
       employeejob = {...this.form.value};
       this.employeeService.createEmployeeJobs(employeejob).subscribe(data => {
         if (this.changed === true) {
-
           if (FILE) {
             if (FILE.files) {
+              
+
               this.uploadFileService.uploadFile(FILE.files[0], 'employeeJobs', data.employeeJob._id).then((resp: any) => {
                 this.toasty.success('Puesto agregado exitósamente');
                 this.dialogRef.close(true);
               }).catch(err => {
                   this.toasty.error('Falló subida de imagen');
-                });
+              });
+
             }
           }
-        } else {
-          this.toasty.success('Puesto agregado exitósamente');
-          this.dialogRef.close(true);
         }
-          
       });
     } else {
       employeejob = {...this.form.value, _id: this.data.employee._id};
       this.employeeService.updateEmployeeJobs(employeejob).subscribe(data => {
         if (this.changed === true) {
-
           if (FILE) {
             if (FILE.files) {
+              
+
               this.uploadFileService.uploadFile(FILE.files[0], 'employeeJobs', data.employeeJob._id).then((resp: any) => {
-                this.toasty.success('Puesto modificado exitósamente');
+                this.toasty.success('Puesto agregado exitósamente');
                 this.dialogRef.close(true);
               }).catch(err => {
                   this.toasty.error('Falló subida de imagen');
-                });
+              });
+
             }
           }
-        } else {
-          this.toasty.success('Puesto modificado exitósamente');
-          this.dialogRef.close(true);
         }
       });
     }
+
+
+    console.log(employeejob);
   }
 
 

@@ -1,4 +1,5 @@
 import { AfterContentInit, Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
@@ -22,7 +23,7 @@ export class PayrollComponent implements OnInit, AfterContentInit {
   cellars: CellarItem[];
 
   smallScreen: boolean;
-  constructor(public store: Store<AppState>, public cellarService: CellarService, public payrollService: PayrollService) { }
+  constructor(public store: Store<AppState>, public cellarService: CellarService, public payrollService: PayrollService, public router: Router) { }
 
   ngOnInit(): void {
     this.configsubscription = this.store.select('config').pipe(filter(config => config !== null)).subscribe(config => {
@@ -49,7 +50,7 @@ export class PayrollComponent implements OnInit, AfterContentInit {
   filter() {}
 
   newPayroll() {
-    this.sideopen = true;
+    this.router.navigate(['admin', 'payroll','new']);
   }
 
 }

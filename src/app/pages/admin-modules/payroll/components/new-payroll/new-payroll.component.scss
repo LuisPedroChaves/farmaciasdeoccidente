@@ -1,41 +1,87 @@
-.payrollheader { padding: 10px; }
+.payrollheader { padding: 20px 20px 20px 10px; border-bottom: 1px solid rgba($color: #000000, $alpha: 0.1);}
+.big-button { padding: 5px 15px !important; font-size: 16px; font-weight: 600; }
+.print-button { background-color: rgba($color: #000000, $alpha: 0.05); }
 .tableheader { padding: 10px; border-bottom: 1px solid rgba($color: #000000, $alpha: 0.1); }
-.bigtable { width: 100%; display: block; position: relative;
+
+
+.payroll-space {
+    white-space: nowrap;
+    max-width: 100%;
     overflow-x: auto;
-    white-space: nowrap;  }
-
-
-
-table.scroll {
-    width: 100%;
-    /* border-collapse: collapse; */
-    border-spacing: 0;
-
-}
-
-// table.scroll tbody,
-// table.scroll thead { display: block; }
-
-thead { border-bottom: 1px solid rgba($color: #000000, $alpha: 0.1); }
-
-table.scroll tbody {
-    height: calc(100vh - 270px);
     overflow-y: auto;
-    overflow-x: hidden;
 }
 
-
-
-tbody td, thead th {
-    /* width: 20%; */ /* Optional */
-    padding: 10px;
+table {
+    overflow: hidden;
 }
+table.employees-table {
+    border-spacing: 0;
+    width: 100% !important;
+    display: table;
+    border-collapse: separate;
+    box-sizing: border-box;
+    text-indent: initial;
+    border-color: gray;
+    thead {
+        display: table-header-group;
+        vertical-align: middle;
+        tr { display: table-row; }
+        tr.header-row {
+            height: 56px;
+            display: table-row;
+            vertical-align: inherit;
+            td.cell-h:first-of-type { padding-left: 12px; }
+            td.cell-h.list { padding-left: 12px; }
+            td.cell-h { padding: 0; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #0000001f; }
+            td.cell-h.min { min-width: 150px; }
+            .cell-h { font-size: 12px; font-weight: 500; width: auto; color: #0000008a; }
+        }
+    }
 
-
-
-.employeeimage {
-    height: 32px;
-    width: 32px;
-    border-radius: 30px;
-    margin-right: 15px;
+    tbody {
+        display: table-header-group;
+        vertical-align: middle;
+        tr { display: table-row; }
+        tr:hover { .text-muted.remove { color: rgba($color: #000000, $alpha: 0.05) !important; } }
+        tr.body-row {
+            height: 56px;
+            display: table-row;
+            vertical-align: inherit;
+            td.cell.list:first-of-type { padding-left: 12px; }
+            td.cell.list { padding-left: 12px; }
+            td.cell { padding: 0; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #0000001f; }
+            td.cell.min { min-width: 150px; }
+            .cell { font-size: 14px; }
+        }
+    }
 }
+.canExpand { border-left: 2px solid rgba($color: #000000, $alpha: 0.1); transition: 0.5s; }
+td, th {
+    position: relative;
+}
+.expand-bonus, .expand-igss, .expand-discounts { display: none; box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;  }
+td.canExpand.bonus:hover, td.expanded.bonus {
+    .expand-bonus { display: block; flex-direction: column; position: absolute; left: -15px; top: 10px; background-color: white; vertical-align: middle; justify-content: center; height: 26px; width: 26px; }
+}
+td.canExpand.igss:hover, td.expanded.igss {
+    .expand-igss { display: block; flex-direction: column; position: absolute; left: -15px; top: 10px; background-color: white; vertical-align: middle; justify-content: center; height: 26px; width: 26px; }
+}
+td.canExpand.discounts:hover, td.expanded.discounts {
+    .expand-discounts { display: block; flex-direction: column; position: absolute; left: -15px; top: 10px; background-color: white; vertical-align: middle; justify-content: center; height: 26px; width: 26px; }
+}
+td.expanded {
+    background-color: rgba($color: #045195, $alpha: 0.05);
+}
+td.canExpand:hover::after { 
+    background-color: rgba($color: #045195, $alpha: 0.05);
+    content: '\00a0';  
+    height: 10000px;    
+    left: 0;
+    position: absolute; 
+    top: -5000px;
+    width: 100%;
+    z-index: -1;        
+}
+.avatar { width: 30px; height: 30px; border-radius: 35px;}
+.name { height: 56px; }
+.hide-cell { background-color: rgba($color: #000000, $alpha: 0.05); }

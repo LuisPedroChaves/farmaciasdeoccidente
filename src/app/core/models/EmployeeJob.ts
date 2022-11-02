@@ -13,7 +13,7 @@ export interface EmployeeJobItem {
     bonus:string;
     startDate:string;
     contractType:string;
-    contract:string;
+    agreement:string;
     paymentType:string;
     workPlace:string;
     

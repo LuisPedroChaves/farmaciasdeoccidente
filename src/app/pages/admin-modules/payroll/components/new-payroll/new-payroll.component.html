@@ -1,79 +1,97 @@
-<div fxLayout="row wrap" class="payrollheader" fxLayoutAlign="start center">
+<div fxLayout="column wrap" style="height: 100%;">
 
-    <mat-form-field *ngIf="cellars !== undefined" appearance="outline" floatLabel="always" class="findinput">
-        <mat-label>Sucursales</mat-label>
-        <mat-select multiple [(ngModel)]="selectedCellars">
-            <mat-option *ngFor="let c of cellars" [value]="c._id">{{ c.name }}</mat-option>
-        </mat-select>
-    </mat-form-field>
-
-    <div fxFlex></div>
-    <button mat-flat-button (click)="generatePayroll()" color="primary">
-        Generar Planilla
-    </button> &nbsp; &nbsp;
-    <button mat-button (click)="generateIGSS()" color="primary">
-        Planilla IGSS
-    </button> &nbsp; &nbsp;
-    <button mat-button (click)="generatePayrollEmployee()" color="primary">
-        Planilla Empleado
-    </button> &nbsp; &nbsp;
-
-
-    <button mat-icon-button (click)="printPayroll()"><mat-icon>print</mat-icon></button>
-</div>
-
-<div class="bigtable" fxLayout="row wrap">
-    <!-- <thead>
-        <tr>
-            <th>No.</th>
-            <th>Empleado</th>
-            <th>Días</th>
-            <th>Ordinarias</th>
-            <th>Extra</th>
-            <th>Ordinario</th>
-            <th>Extra</th>
-            <th>Otro</th>
-            <th>Salario Total</th>
-        </tr>
-    </thead> -->
-    <table class="scroll">
-        <thead>
-            <tr>
-                <th></th>
-                <th></th>
-                <th colspan="2">Horas trabajadas</th>
-
-                <th colspan="4">Salarios</th>
+    <div fxLayout="row wrap" class="payrollheader" fxLayoutAlign="start center">
+        <button mat-icon-button (click)="back()">
+            <mat-icon>arrow_back</mat-icon>
+        </button> &nbsp;&nbsp;
+        <h3 class="ma-0"><b>Nueva Planilla</b></h3>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <mat-form-field *ngIf="cellars !== undefined" appearance="outline" floatLabel="always" class="findinput">
+            <mat-label>Sucursales</mat-label>
+            <mat-select multiple [(ngModel)]="selectedCellars">
+                <mat-option *ngFor="let c of cellars" [value]="c._id">{{ c.name }}</mat-option>
+            </mat-select>
+        </mat-form-field>
+        <span fxFlex></span>
+        <button mat-button class="print-button" [matMenuTriggerFor]="menu">
+            <mat-icon>print</mat-icon>
+            Impresión &nbsp; ⯆
+        </button>
+        <mat-menu #menu="matMenu">
+            <button mat-menu-item><mat-icon class="material-icons-outlined">date_range</mat-icon> Hoja de Pago Mensual</button>
+            <button mat-menu-item><mat-icon class="material-icons-outlined">contact_page</mat-icon> Recibos de Pago</button>
+            <button mat-menu-item [matMenuTriggerFor]="menu2"><mat-icon class="material-icons-outlined">print</mat-icon> Otras impresiones</button>
+        </mat-menu>
+        <mat-menu #menu2="matMenu">
+            <button mat-menu-item>Planilla de Bonificaciones</button>
+            <button mat-menu-item>Planilla de IGSS</button>
+        </mat-menu>
+        &nbsp;&nbsp;
+        <button mat-flat-button class="big-button" color="primary">GENERAR PLANILLA</button>
+    </div>
+    
+    <div fxFlex class="payroll-space" >
+        
 
 
-            </tr>
-            <tr>
-                <th>No.</th>
-                <th>Empleado</th>
-                <th>Días</th>
-                <th>Ordinarias</th>
-                <th>Extra</th>
-                <th>Ordinario</th>
-                <th>Extra</th>
-                <th>Otro</th>
-                <th>Salario Total</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr *ngFor="let c of [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1]; let i = index">
-                <td>{{i}}</td>
-                <td fxLayoutAlign="start center">
-                    <img src="assets/images/avatars/00M.jpg" class="employeeimage" alt="">
-                    Nombre del empleado
-                </td>
-                <td>20</td>
-                <td>24</td>
-                <td>2</td>
-                <td>20</td>
-                <td>1</td>
-                <td>0</td>
-                <td>Q. 1,500.00</td>
-            </tr>
-        </tbody>
-    </table>
+        <table  class="employees-table"  role="table">
+            <thead  role="rowgroup">
+                <tr role="row" class="header-row">
+                    <td class="cell-h">Código</td>
+                    <td class="cell-h min">Nombre</td>
+                    <td class="cell-h min">Puesto</td>
+                    <td class="cell-h min">Sub Total</td>
+                    <td class="cell-h min hide-cell list" *ngIf="bonusExpand">Incentivo</td>
+                    <td class="cell-h min hide-cell" *ngIf="bonusExpand">Por Puesto</td>
+                    <td class="cell-h min hide-cell" *ngIf="bonusExpand">Otros</td>
+                    <td class="cell-h min list bonus" [ngClass]="{'canExpand': !bonusExpand, 'expanded': bonusExpand}">
+                        <button mat-icon-button class="expand-bonus" (click)="bonusExpand = !bonusExpand"><mat-icon>{{ !bonusExpand ? 'chevron_right' : 'chevron_left'}}</mat-icon></button>
+                        Bonificaciones
+                    </td>
+                    <td class="cell-h min hide-cell list" *ngIf="igssExpand">Nit</td>
+                    <td class="cell-h min hide-cell" *ngIf="igssExpand">Afiliación</td>
+                    <td class="cell-h min hide-cell" *ngIf="igssExpand">Sub Total</td>
+                    <td class="cell-h min hide-cell" *ngIf="igssExpand">Igss (4.83%)</td>
+                    <td class="cell-h min list igss" [ngClass]="{'canExpand': !igssExpand, 'expanded': igssExpand}">
+                        <button mat-icon-button class="expand-igss" (click)="igssExpand = !igssExpand"><mat-icon>{{ !igssExpand ? 'chevron_right' : 'chevron_left'}}</mat-icon></button>
+                        IGSS
+                    </td>
+                    <td class="cell-h min hide-cell list" *ngIf="discountsExpand">Cobros por producto</td>
+                    <td class="cell-h min hide-cell" *ngIf="discountsExpand">Prestamos</td>
+                    <td class="cell-h min hide-cell" *ngIf="discountsExpand">Suspenciones/Faltas</td>
+                    <td class="cell-h min list discounts" [ngClass]="{'canExpand': !discountsExpand, 'expanded': discountsExpand}">
+                        <button mat-icon-button class="expand-discounts" (click)="discountsExpand = !discountsExpand"><mat-icon>{{ !discountsExpand ? 'chevron_right' : 'chevron_left'}}</mat-icon></button>
+                        Descuentos
+                    </td>
+                    <td class="cell-h min list">Total</td>
+                </tr>
+            </thead>
+            <tbody role="rowgroup">
+                <tr role="row" class="body-row" *ngFor="let p of [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20]; let i = index">
+                    <td class="cell list">0501</td>
+                    <td class="cell min name" fxLayoutAlign="start center">
+                        <img src="assets/images/avatars/00M.jpg" class="avatar" alt=""> &nbsp; &nbsp;
+                        Sergio Francisco Méndez Garzona
+                    </td>
+                    <td class="cell min">Programador</td>
+                    <td class="cell min">Q. 12,000.00</td>
+                    <td class="cell min list hide-cell" *ngIf="bonusExpand">Q. 250.00</td>
+                    <td class="cell min hide-cell" *ngIf="bonusExpand">Q. 0.00</td>
+                    <td class="cell min hide-cell" *ngIf="bonusExpand">Q. 0.00</td>
+                    <td class="cell min list bonus" [ngClass]="{'canExpand': !bonusExpand, 'expanded': bonusExpand}">Q. 250.00</td>
+                    <td class="cell min hide-cell list" *ngIf="igssExpand">90639103</td>
+                    <td class="cell min hide-cell" *ngIf="igssExpand">11158171</td>
+                    <td class="cell min hide-cell" *ngIf="igssExpand">Q. 0.00</td>
+                    <td class="cell min hide-cell" *ngIf="igssExpand">Q. 579.00</td>
+                    <td class="cell min list igss" [ngClass]="{'canExpand': !igssExpand, 'expanded': igssExpand}">Q. 579.00</td>
+                    <td class="cell min hide-cell list" *ngIf="discountsExpand">Q. 0.00</td>
+                    <td class="cell min hide-cell" *ngIf="discountsExpand">Q. 50.00</td>
+                    <td class="cell min hide-cell" *ngIf="discountsExpand">Q. 50.00</td>
+                    <td class="cell min list discounts" [ngClass]="{'canExpand': !discountsExpand, 'expanded': discountsExpand}">Q. 100.00</td>
+                    <td class="cell min list"><b>Q. 11,571.00</b></td>
+                </tr>
+            </tbody>
+        </table>
+
+    </div>
 </div>

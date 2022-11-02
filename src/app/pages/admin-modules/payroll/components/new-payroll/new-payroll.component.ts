@@ -1,5 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { CellarItem } from 'src/app/core/models/Cellar';
+import { CellarService } from 'src/app/core/services/httpServices/cellar.service';
 
 @Component({
   selector: 'app-new-payroll',
@@ -8,9 +10,13 @@ import { CellarItem } from 'src/app/core/models/Cellar';
 })
 export class NewPayrollComponent implements OnInit {
   @Input() smallScreen: boolean;
-  @Input() cellars: CellarItem[] = [];
 
   selectedCellars: any[] = [];
+  cellars: CellarItem[];
+
+  bonusExpand: boolean = false;
+  igssExpand: boolean = false;
+  discountsExpand: boolean = false;
 
 
 
@@ -21,10 +27,26 @@ export class NewPayrollComponent implements OnInit {
   /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   // HOOK FUNCTIONS //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-  constructor() { }
+  constructor(public router: Router, public cellarsService: CellarService) { }
 
   ngOnInit(): void {
-    this.cellars.forEach(c => { this.selectedCellars.push(c._id); });
+    this.cellarsService.readData().subscribe(data => {
+      this.cellars = data;
+      this.cellars.forEach(c => { this.selectedCellars.push(c._id); });
+    });
+  }
+
+
+  ngAfterContentInit() {
+    this.cellarsService.loadData();
+  }
+
+
+
+
+
+  back() {
+    this.router.navigate(['admin', 'payroll']);
   }
 
 

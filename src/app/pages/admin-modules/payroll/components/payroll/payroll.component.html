@@ -43,15 +43,15 @@
     </mat-sidenav-content>
     <mat-sidenav [opened]="sideopen" position="end" disableClose="true" #sidemenu class="sidenavpayroll" [mode]="'over'">
         <div class="barheader" fxLayout="row wrap" fxLayoutAlign="start center">
-            <button mat-icon-button (click)="sideopen = false"><mat-icon>close</mat-icon></button> &nbsp;
+            <button mat-icon-button (click)="newPayroll()"><mat-icon>close</mat-icon></button> &nbsp;
             <span class="newtitle">Nueva Planilla</span>
 
 
         </div>
 
-        <div id="payrollcomponent" *ngIf="sideopen === true">
+        <!-- <div id="payrollcomponent" *ngIf="sideopen === true">
             <app-new-payroll [smallScreen]="smallScreen" [cellars]="cellars"></app-new-payroll>
-        </div>
+        </div> -->
     </mat-sidenav>
 </mat-sidenav-container>
 
