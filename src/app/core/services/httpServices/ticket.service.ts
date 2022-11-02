@@ -29,11 +29,11 @@ export class TicketService {
             body: [
               [
                 {
-                  rowSpan: 3,
+                  rowSpan: 5,
                   border: [false, false, false, false],
                   image: ticket.qr64,
-                  width: 18,
-                  height: 18,
+                  width: 28,
+                  height: 28,
                   alignment: 'center'
                 },
                 {
@@ -62,19 +62,19 @@ export class TicketService {
                 },
               ],
               [
+                '',
                 {
-                  colSpan: 2,
                   border: [false, false, false, false],
-                  text: `${ticket.productName.substring(0, 17) }...`,
+                  text: `${ticket.productName.substring(0, 10) }...`,
                   style: 'name',
                   margin: [0, -3, 7],
                 },
               ],
               [
+                '',
                 {
-                  colSpan: 2,
                   border: [false, false, false, false],
-                  text: `VENCE: ${moment(ticket.expiredDate).format('DD/MM/YYYY')}`,
+                  text: `V. ${moment(ticket.expiredDate).format('DD/MM/YYYY')}`,
                   style: 'normalContent',
                   margin: [0, -3],
                 },
@@ -95,11 +95,11 @@ export class TicketService {
             body: [
               [
                 {
-                  rowSpan: 3,
+                  rowSpan: 5,
                   border: [false, false, false, false],
                   image: ticket.qr64,
-                  width: 18,
-                  height: 18,
+                  width: 28,
+                  height: 28,
                   alignment: 'center'
                 },
                 {
@@ -128,19 +128,19 @@ export class TicketService {
                 },
               ],
               [
+                '',
                 {
-                  colSpan: 2,
                   border: [false, false, false, false],
-                  text: `${ticket.productName.substring(0, 17) }...`,
+                  text: `${ticket.productName.substring(0, 10) }...`,
                   style: 'name',
                   margin: [0, -3, 7],
                 },
               ],
               [
+                '',
                 {
-                  colSpan: 2,
                   border: [false, false, false, false],
-                  text: `VENCE: ${moment(ticket.expiredDate).format('DD/MM/YYYY')}`,
+                  text: `V. ${moment(ticket.expiredDate).format('DD/MM/YYYY')}`,
                   style: 'normalContent',
                   margin: [0, -3],
                 },
@@ -161,11 +161,11 @@ export class TicketService {
             body: [
               [
                 {
-                  rowSpan: 3,
+                  rowSpan: 5,
                   border: [false, false, false, false],
                   image: ticket.qr64,
-                  width: 18,
-                  height: 18,
+                  width: 28,
+                  height: 28,
                   alignment: 'center'
                 },
                 {
@@ -194,19 +194,19 @@ export class TicketService {
                 },
               ],
               [
+                '',
                 {
-                  colSpan: 2,
                   border: [false, false, false, false],
-                  text: `${ticket.productName.substring(0, 17) }...`,
+                  text: `${ticket.productName.substring(0, 10) }...`,
                   style: 'name',
                   margin: [0, -3, 7],
                 },
               ],
               [
+                '',
                 {
-                  colSpan: 2,
                   border: [false, false, false, false],
-                  text: `VENCE: ${moment(ticket.expiredDate).format('DD/MM/YYYY')}`,
+                  text: `V. ${moment(ticket.expiredDate).format('DD/MM/YYYY')}`,
                   style: 'normalContent',
                   margin: [0, -3],
                 },

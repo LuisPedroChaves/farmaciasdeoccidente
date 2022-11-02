@@ -8,6 +8,9 @@ import { ProviderItem } from '../../../../../core/models/Provider';
 import { SafeUrl } from '@angular/platform-browser';
 import { TicketService } from '../../../../../core/services/httpServices/ticket.service';
 import { ITicket } from '../../../../../core/models/ticket';
+import { ConfirmationDialogComponent } from 'src/app/pages/shared-components/confirmation-dialog/confirmation-dialog.component';
+import { MatDialog } from '@angular/material/dialog';
+import { ToastyService } from 'src/app/core/services/internal/toasty.service';
 
 @Component({
   selector: 'app-index',
@@ -46,10 +49,14 @@ export class IndexComponent implements OnInit {
     }
   };
 
+  currentFile: any;
+
   constructor(
     public productService: ProductService,
     public tempStorageService: TempStorageService,
-    private ticketService: TicketService
+    private ticketService: TicketService,
+    private dialog: MatDialog,
+    private toastyService: ToastyService
   ) { }
 
   ngOnInit(): void {
@@ -90,6 +97,19 @@ export class IndexComponent implements OnInit {
       const { barcode, description } = product;
       this.nameProduct = description;
       this.codeProduct = barcode;
+
+      if (product.ticket) {
+        console.log(product.ticket);
+
+        this.selectedProvider = { ...this.selectedProvider, code: product.ticket.providerCode },
+        this.lote = product.ticket.loteCode
+        this.expiredDate = product.ticket.date
+
+        this.displayQR = true;
+
+      } else {
+        this.displayQR = false
+      }
     }
   }
 
@@ -127,6 +147,40 @@ export class IndexComponent implements OnInit {
     };
 
     this.ticketService.print(ticket, 1);
+  }
+
+  loadStorage(): void {
+    const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
+      width: '350px',
+      data: {
+        title: 'Cargar TICKETS',
+        message:
+          '¿Confirma que desea ingresar el archivo de tickets?'
+      },
+      disableClose: true,
+      panelClass: ['farmacia-dialog', 'farmacia'],
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result !== undefined) {
+        this.loading = true;
+        if (this.currentFile) {
+          this.productService.uploadFileTickets(this.currentFile.files[0])
+            .then((resp: any) => {
+              this.loading = false;
+              this.toastyService.success('Archivo subido, el archivo se actualizará en segundo plano');
+            })
+            .catch(err => {
+              this.loading = false;
+              this.toastyService.error('Error al cargar el archivo');
+            });
+        } else {
+          this.loading = false;
+          this.toastyService.error('Debe seleccionar un archivo');
+          return;
+        }
+      }
+    });
   }
 
 }
