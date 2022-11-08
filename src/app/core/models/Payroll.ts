@@ -6,26 +6,28 @@ export interface PayrollItem {
     description: string;
     date: string;
     total: number | string;
-    state: string;
-    details: PayrollDetailItem[];
+    state: string; // borrador, pagada, generada
+    details?: PayrollDetailItem[];
 }
 
 
 export interface PayrollDetailItem {
     _employeeJob: string | EmployeeJobItem;
-    hoursWorked: number,
-    offenses: number,
-    withholdings: number,
-    suspension: number,
-    tempSuspension: number,
-    permit: number,
-    callForAttention: number,
-    igss: number,
-    isr: number,
-    overtime: number,
-    commissions: number,
-    bonus: number,
-    bonusOfLaw: number,
-    receipt: string,
-    total: number
+
+    // bonifications
+    incentiveBonus: number; // 250 por defecto *****
+    jobBonus: number; // *****  Horas extras, Comisiones, Bonos
+    otherBonus: number; // *****
+
+    // IGSS
+    igss: number; // 4.83% sobre el total del puesto
+
+    // discounts
+    productCharges: number; // ****** 
+    credits: number; // *****
+    foults: number; // ***** citaIGSS, foults, permissions, IGSSsuspentions, temporalSuspention
+
+
+
+    total: number;
 }

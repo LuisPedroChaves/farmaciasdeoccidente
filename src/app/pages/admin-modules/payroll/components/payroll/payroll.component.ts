@@ -34,7 +34,7 @@ export class PayrollComponent implements OnInit, AfterContentInit {
       this.cellars = data;
     });
 
-    this.payrollService.readData().subscribe(data => { this.payrolls = data });
+    this.payrollService.readData().subscribe(data => { this.payrolls = data;  });
   }
 
   ngAfterContentInit() {
@@ -51,6 +51,12 @@ export class PayrollComponent implements OnInit, AfterContentInit {
 
   newPayroll() {
     this.router.navigate(['admin', 'payroll','new']);
+  }
+  
+  
+  openPayroll(p: PayrollItem) {
+    this.router.navigate(['admin', 'payroll', p._id]);
+
   }
 
 }

@@ -1,5 +1,5 @@
-import { Component, Input, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 import { CellarItem } from 'src/app/core/models/Cellar';
 import { PayrollDetailItem, PayrollItem } from 'src/app/core/models/Payroll';
 import { CellarService } from 'src/app/core/services/httpServices/cellar.service';
@@ -8,27 +8,31 @@ import { PrintService } from 'src/app/core/services/internal/print.service';
 import { ToastyService } from 'src/app/core/services/internal/toasty.service';
 import { PayrollPrintService } from '../../libs/payroll-print.service';
 import { Subscription } from 'rxjs';
+import { MatDialog } from '@angular/material/dialog';
+import { ConfirmationDialogComponent } from 'src/app/pages/shared-components/confirmation-dialog/confirmation-dialog.component';
+import { ConfirmationComponent } from 'src/app/pages/shared-components/confirmation/confirmation.component';
 @Component({
-  selector: 'app-new-payroll',
-  templateUrl: './new-payroll.component.html',
-  styleUrls: ['./new-payroll.component.scss']
+  selector: 'app-edit-payroll',
+  templateUrl: './edit-payroll.component.html',
+  styleUrls: ['./edit-payroll.component.scss']
 })
-export class NewPayrollComponent implements OnInit {
-  @Input() smallScreen: boolean;
+export class EditPayrollComponent implements OnInit, OnDestroy {
+
+  smallScreen: boolean;
 
   selectedCellars: any[] = [];
-  cellars: CellarItem[];
 
   bonusExpand: boolean = false;
   igssExpand: boolean = false;
   discountsExpand: boolean = false;
 
 
+  payroll: PayrollItem;
   payrollEmployees: PayrollDetailItem[] = [];
   payrollEmployeesCopy: PayrollDetailItem[] = [];
   payrollName: string = 'Nueva Planilla';
- 
-  
+  payrollState: string;
+  activatedSubscription: Subscription;
 
 
 
@@ -37,38 +41,55 @@ export class NewPayrollComponent implements OnInit {
   /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   // HOOK FUNCTIONS //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-  constructor(public router: Router, public cellarsService: CellarService, public printPayrollService: PayrollPrintService, public printService: PrintService, public payrollService: PayrollService, public toasty: ToastyService) { }
+  constructor(public router: Router, public cellarsService: CellarService, public dialog: MatDialog, public printPayrollService: PayrollPrintService, public printService: PrintService, public activatedRoute: ActivatedRoute, public payrollService: PayrollService, public toasty: ToastyService) { }
 
   ngOnInit(): void {
-    this.cellarsService.readData().subscribe(data => {
-      this.cellars = data;
-      this.cellars.forEach(c => { 
-        this.selectedCellars.push(c._id);
+    this.activatedSubscription = this.activatedRoute.params.subscribe((params) => {
+      this.payrollService.gePayroll(params.id).subscribe(data => {
+        console.log('PAYROLL', data.payroll);
+        this.payroll = data.payroll;
+        this.payrollEmployees = this.payroll.details.map(d => ({...d}));
+        this.payrollName = this.payroll.description;
       });
-      this.loadData();
     });
+   
 
+  }
+
+  ngOnDestroy(): void {
+    this.activatedSubscription?.unsubscribe();
   }
 
 
   ngAfterContentInit() {
-    this.cellarsService.loadData();
   }
 
 
 
-  loadData() {
-    this.payrollService.startPayroll(this.selectedCellars).subscribe(data => {
-      this.payrollEmployees = data.details;
-      this.payrollEmployeesCopy = data.details;
-    });
-  }
+  
 
 
   back() {
     this.router.navigate(['admin', 'payroll']);
   }
 
+
+
+  deletePayroll() {
+    const dialogRef = this.dialog.open(ConfirmationComponent, {
+      width: '350px',
+      data : { title: 'Eliminar Planilla', msg: '¿Confirma que desea eliminar esta planilla?' }
+    });
+     dialogRef.afterClosed().subscribe(DATA =>{
+      if (DATA ===true) {
+        this.payrollService.delete(this.payroll._id).subscribe(datas => {
+          this.toasty.success('Planilla eliminada');
+          this.payrollService.loadData();
+          this.back();
+        })
+      }
+     });
+  }
 
 
 
@@ -89,24 +110,31 @@ export class NewPayrollComponent implements OnInit {
     }, 0);
   }
   generatePayroll() {
+    if (this.payroll.state !== 'created') { 
+
+      this.toasty.error('No se pueden guardar cambios', 'Esta planilla no se puede actualizar debido a que ya fue pagada');
+      return;
+    }
     if (this.payrollName === '' || this.payrollName === undefined || this.payrollName === null) {
       this.toasty.error('Debe agregar un nombre a la planilla');
       return;
     }
 
     const payroll: PayrollItem = {
+      _id: this.payroll._id,
       description: this.payrollName,
       date: (new Date()).toISOString(),
       total: this.getTotal(),
       state: 'created',
       details: [...this.payrollEmployees],
     };
-    this.payrollService.createPayroll(payroll).subscribe(data => {
-      this.toasty.success('Planilla generada exitósamente');
-      this.payrollService.loadData();
-      this.back();
+    this.payrollService.updatePayroll(payroll).subscribe(data => {
+        this.toasty.success('Planilla guardarda exitósamente');
+        this.payrollService.loadData();
+        this.back();
     });
   }
+    
 
 
 
@@ -119,7 +147,7 @@ export class NewPayrollComponent implements OnInit {
     }
     const payroll: PayrollItem = {
       description: this.payrollName,
-      date: (new Date()).toISOString(),
+      date: this.payroll.date,
       total: this.getTotal(),
       state: 'created',
       details: [...this.payrollEmployees],
@@ -172,4 +200,8 @@ export class NewPayrollComponent implements OnInit {
     const body = await this.printPayrollService.printIGSS(payroll);
     this.printService.printLandscape(body);
   }
+    
+    
+   
+
 }

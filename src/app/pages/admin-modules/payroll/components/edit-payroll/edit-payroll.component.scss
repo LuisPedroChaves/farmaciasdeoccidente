@@ -1,5 +1,5 @@
 .payrollheader { padding: 20px 20px 20px 10px; border-bottom: 1px solid rgba($color: #000000, $alpha: 0.1);}
-.big-button { padding: 5px 15px !important; font-size: 16px; font-weight: 600; margin-bottom: 10px; }
+.big-button { padding: 8px 15px !important; font-size: 16px; font-weight: 600; margin-bottom: 10px; }
 .print-button { background-color: rgba($color: #000000, $alpha: 0.05); width: 100%; }
 .tableheader { padding: 10px; border-bottom: 1px solid rgba($color: #000000, $alpha: 0.1); }
 .input-padding { padding: 0px 5px; }
@@ -56,7 +56,7 @@ table.employees-table {
     }
 }
 .cell-input {
-    height: 52px;
+    height: 54px;
     border: 1px solid rgba($color: #000000, $alpha: 0.1);
     border-radius: none;
     font-size: 14px;

@@ -35,4 +35,26 @@ export class PayrollService {
   readData(): Observable<any> {
     return this.payrollSubject.asObservable();
   }
+
+
+
+  startPayroll(cellars: string[]): Observable<any> {
+    return this.http.get(`${this.apiConfigService.API_PAYROLL_NEW}?cellars=${cellars}`);
+  }
+
+  createPayroll(p: PayrollItem): Observable<any> {
+    return this.http.post(this.apiConfigService.API_PAYROLL, p);
+  }
+
+  updatePayroll(p: PayrollItem): Observable<any> {
+    return this.http.put(`${this.apiConfigService.API_PAYROLL}/${p._id}`, p);
+  }
+
+  gePayroll(id: string): Observable<any> {
+    return this.http.get(`${this.apiConfigService.API_PAYROLL}/${id}`);
+  }
+
+  delete(id: string): Observable<any> {
+    return this.http.delete(`${this.apiConfigService.API_PAYROLL}/${id}`);
+  }
 }

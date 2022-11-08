@@ -4,13 +4,15 @@ import { CommonModule } from '@angular/common';
 import { PayrollRoutingModule } from './payroll-routing.module';
 import { PayrollComponent } from './components/payroll/payroll.component';
 import { SharedComponentsModule } from '../../shared-components/shared-components.module';
-import { CoreModule } from '@angular/flex-layout';
 import { NewPayrollComponent } from './components/new-payroll/new-payroll.component';
+import { CoreModule } from 'src/app/core/core.module';
+import { EditPayrollComponent } from './components/edit-payroll/edit-payroll.component';
 
 @NgModule({
   declarations: [
     PayrollComponent,
-    NewPayrollComponent
+    NewPayrollComponent,
+    EditPayrollComponent
   ],
   imports: [
     CommonModule,

@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { CommonModule, DecimalPipe } from '@angular/common';
 import { FilterPipe } from './filterPipes/filter.pipe';
 import { MoneyPipe } from './formatPipes/money.pipe';
 import { RoundDigitPipe } from './formatPipes/round-digit.pipe';
@@ -27,5 +27,6 @@ import { NumberToWordsPipe } from './formatPipes/number-to-words.pipe';
     // file pipes
     FilePipe
   ],
+  providers: [DecimalPipe]
 })
 export class PipesModule { }

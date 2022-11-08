@@ -60,6 +60,7 @@ export class ApiConfigService {
 
   //payroll
   public API_PAYROLL = this.API_URL + '/payroll';
+  public API_PAYROLL_NEW = this.API_URL + '/payroll/details';
 
   // Product
   public API_PRODUCT = this.API_URL + '/product';
