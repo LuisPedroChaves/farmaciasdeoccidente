@@ -84,7 +84,7 @@ export class NewPayrollComponent implements OnInit {
   ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   getTotal(): number {
     return this.payrollEmployees.reduce((partial_sum, p) =>  {
-      const etotal = (((p._employeeJob as any).initialSalary) + (p.incentiveBonus + p.jobBonus + p.otherBonus) - (p.igss) - (p.productCharges + p.credits + p.foults))
+      const etotal = (((p._employeeJob as any).initialSalary) + (p.extraHours + p.incentiveBonus + p.jobBonus + p.otherBonus) - (p.igss) - (p.productCharges + p.credits + p.foults))
       return partial_sum + etotal;
     }, 0);
   }

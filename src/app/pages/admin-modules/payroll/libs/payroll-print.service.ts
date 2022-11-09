@@ -41,10 +41,10 @@ export class PayrollPrintService {
         (e._employeeJob as any)._employee.name + ' ' + (e._employeeJob as any)._employee.lastName,
         (e._employeeJob as any)._job.name || '',
         `Q. ${ this._decimalPipe.transform((e._employeeJob as any).initialSalary, '.2') }`,
-        `Q. ${ this._decimalPipe.transform((e.incentiveBonus + e.jobBonus + e.otherBonus ), '.2') }`,
+        `Q. ${ this._decimalPipe.transform((e.extraHours + e.incentiveBonus + e.jobBonus + e.otherBonus ), '.2') }`,
         `Q. ${ this._decimalPipe.transform((e.igss), '.2') }`,
         `Q. ${ this._decimalPipe.transform((e.productCharges + e.credits + e.foults), '.2') }`,
-        `Q. ${ this._decimalPipe.transform((((e._employeeJob as any).initialSalary) + (e.incentiveBonus + e.jobBonus + e.otherBonus) - (e.igss) - (e.productCharges + e.credits + e.foults)), '.2') }`,
+        `Q. ${ this._decimalPipe.transform((((e._employeeJob as any).initialSalary) + (e.extraHours + e.incentiveBonus + e.jobBonus + e.otherBonus) - (e.igss) - (e.productCharges + e.credits + e.foults)), '.2') }`,
       ];
       rowArray.push(row);
     });
@@ -94,7 +94,7 @@ export class PayrollPrintService {
 
 
   makeReceipt(p: PayrollDetailItem, image, payroll: PayrollItem) {
-    const raisings = (p._employeeJob as any).initialSalary + (p.incentiveBonus + p.jobBonus + p.otherBonus );
+    const raisings = (p._employeeJob as any).initialSalary + (p.extraHours + p.incentiveBonus + p.jobBonus + p.otherBonus );
     const discounts = (p.productCharges + p.credits + p.foults) + p.igss;
     return {
       style: 'cells',
@@ -136,7 +136,7 @@ export class PayrollPrintService {
 
           [{text: 'Sueldo Base:' , style: 'bold'},          `Q. ${ this._decimalPipe.transform((p._employeeJob as any).initialSalary, '.2') }`,           {text: 'IGSS:' , style: 'bold'},        `Q. ${ this._decimalPipe.transform((p.igss), '.2') }`],
           [{text: 'Asuetos y 7mo día:' , style: 'bold'},    `Q. ${ this._decimalPipe.transform(0, '.2') }`,                                               {text: 'Descuentos:' , style: 'bold'},  `Q. ${ this._decimalPipe.transform((p.productCharges + p.credits + p.foults), '.2') }`],
-          [{text: 'Horas Extras:' , style: 'bold'},         `Q. ${ this._decimalPipe.transform(0, '.2') }`,                                               '',  ''],
+          [{text: 'Horas Extras:' , style: 'bold'},         `Q. ${ this._decimalPipe.transform(p.extraHours, '.2') }`,                                               '',  ''],
           [{text: 'Bonificaciones:' , style: 'bold'},       `Q. ${ this._decimalPipe.transform((p.incentiveBonus + p.jobBonus + p.otherBonus ), '.2') }`,                                         '',  ''],
           [{text: 'Total:' , style: 'bold'},                `Q. ${ this._decimalPipe.transform(raisings, '.2') }`,                                        {text: 'Total:' , style: 'bold'},       `Q. ${ this._decimalPipe.transform(discounts, '.2') }`],
           ['', '', {text: 'Total a recibir:' , style: 'bold'},       `Q. ${ this._decimalPipe.transform(raisings - discounts, '.2') }`],

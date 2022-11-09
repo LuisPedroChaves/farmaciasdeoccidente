@@ -46,6 +46,7 @@
                     <td class="cell-h min">Puesto</td>
                     <td class="cell-h min">Sub Total</td>
                     <td class="cell-h min hide-cell list" *ngIf="bonusExpand">Incentivo</td>
+                    <td class="cell-h min hide-cell list" *ngIf="bonusExpand">Horas Extras</td>
                     <td class="cell-h min hide-cell" *ngIf="bonusExpand">Por Puesto</td>
                     <td class="cell-h min hide-cell" *ngIf="bonusExpand">Otros</td>
                     <td class="cell-h min list bonus" [ngClass]="{'canExpand': !bonusExpand, 'expanded': bonusExpand}">
@@ -84,13 +85,16 @@
                         Q. <input type="number" class="cell-input" [(ngModel)]="p.incentiveBonus">
                     </td>
                     <td class="cell min hide-cell list" *ngIf="bonusExpand">
+                        Q. <input type="number" class="cell-input" [(ngModel)]="p.extraHours">
+                    </td>
+                    <td class="cell min hide-cell list" *ngIf="bonusExpand">
                         Q. <input type="number" class="cell-input" [(ngModel)]="p.jobBonus">
                     </td>
                     <td class="cell min hide-cell list" *ngIf="bonusExpand">
                         Q. <input type="number" class="cell-input" [(ngModel)]="p.otherBonus">
                     </td>
                     <td class="cell min list bonus" [ngClass]="{'canExpand': !bonusExpand, 'expanded': bonusExpand}">
-                        Q. {{ (p.incentiveBonus + p.jobBonus + p.otherBonus ) | number : '.2'}}
+                        Q. {{ (p.extraHours + p.incentiveBonus + p.jobBonus + p.otherBonus ) | number : '.2'}}
                     </td>
                     <td class="cell min hide-cell list" *ngIf="igssExpand">{{ p._employeeJob._employee.igssNumber }}</td>
                     <td class="cell min hide-cell" *ngIf="igssExpand">{{ p._employeeJob._employee.nit }}</td>
@@ -107,7 +111,7 @@
                         Q. <input type="number" class="cell-input" [(ngModel)]="p.foults">
                     </td>
                     <td class="cell min list discounts" [ngClass]="{'canExpand': !discountsExpand, 'expanded': discountsExpand}">Q. {{ (p.productCharges + p.credits + p.foults) | number : '.2' }}</td>
-                    <td class="cell min list"><b>Q. {{ ((p._employeeJob.initialSalary) + (p.incentiveBonus + p.jobBonus + p.otherBonus) - (p.igss) - (p.productCharges + p.credits + p.foults)) | number : '.2' }}</b></td>
+                    <td class="cell min list"><b>Q. {{ ((p._employeeJob.initialSalary) + (p.extraHours + p.incentiveBonus + p.jobBonus + p.otherBonus) - (p.igss) - (p.productCharges + p.credits + p.foults)) | number : '.2' }}</b></td>
 
                     <td class="cell list">
                         <button mat-icon-button (click)="printReceipt(p)"><mat-icon class="material-icons-outlined">print</mat-icon></button>
