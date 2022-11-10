@@ -308,6 +308,39 @@
                 </mat-card>
             </div>
         </mat-tab>
+        <mat-tab label="Asueto y 7mo día">
+            <div class="tabcontent" data-simplebar>
+                <button (click)="newHoliday()" mat-fab color="primary" class="fab mat-elevation-z10">
+                    <mat-icon>add</mat-icon>
+                    <span class="extended-fab-button__text">Asueto y 7mo Día</span>
+                </button>
+                <div *ngIf="holidays.length === 0"  class="tabcontent" fxLayout="column wrap" fxLayoutAlign="center center">
+                    No hay días extras registradas
+                </div>
+                <mat-card *ngFor="let f of holidays" fxLayout="row wrap" fxLayoutAlign="start center" class="mat-elevation-z2 request" (click)="editExtraHour(f)">
+                    <div fxFlex fxLayoutAlign="start center">
+                        <img [src]="f._employeeJob._employee && f._employeeJob._employee.photo ? (f._employeeJob._employee.photo | file : 'employees') : 'assets/images/avatars/00M.jpg'" class="employeeimage" alt="">
+                       {{ f._employeeJob._employee ? f._employeeJob._employee.name : '' }}
+                    </div>
+                    <div fxFlex="15">
+                        {{f.date | date : 'dd/MM/yyyy hh:mm'}}
+                    </div>
+                    <div fxFlex="15">
+                        Q. {{f.amount | number : '.2'}}
+                    </div>
+                    <div fxFlex="nogrow">
+                        <mat-chip-list>
+                            <mat-chip selected [color]="f.applied ? 'accent' : ''">
+                                {{f.applied ? 'APLICADO' : 'NO APLICADO'}}
+                            </mat-chip>
+                            <mat-chip selected [color]="f.approved ? 'warn' : 'accent'">
+                                {{f.approved ? 'APROBADO' : 'NO APROBADO'}}
+                            </mat-chip>
+                        </mat-chip-list>
+                    </div>
+                </mat-card>
+            </div>
+        </mat-tab>
         <mat-tab label="Comisiones">
             <div class="tabcontent" data-simplebar>
                 <button (click)="newComission()" mat-fab color="primary" class="fab mat-elevation-z10">

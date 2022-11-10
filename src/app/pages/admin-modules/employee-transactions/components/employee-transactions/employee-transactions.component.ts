@@ -41,6 +41,7 @@ export class EmployeeTransactionsComponent implements OnInit, AfterContentInit {
   
   // RISINGS ///////////
   extraHours: RisingItem[] = [];
+  holidays: RisingItem[] = [];
   comissions: RisingItem[] = [];
   bonus: RisingItem[] = [];
   rising: RisingItem[] = [];
@@ -116,6 +117,7 @@ export class EmployeeTransactionsComponent implements OnInit, AfterContentInit {
 
   parseRisings() {
     this.extraHours = this.risings.filter(d => d.type === 'horasExtra');
+    this.holidays = this.risings.filter(d => d.type === 'asueto');
     this.comissions = this.risings.filter(d => d.type === 'comisión');
     this.bonus = this.risings.filter(d => d.type === 'bono');
     this.rising = this.risings.filter(d => d.type === 'aumentoSalario');
@@ -237,6 +239,10 @@ export class EmployeeTransactionsComponent implements OnInit, AfterContentInit {
     this.openRisingDialog('Nueva Hora Extra', 'horasExtra', 'new', 'Hora extra registrada exitósamente');
   }
 
+  newHoliday() {
+    this.openRisingDialog('Nueva día de asueto', 'asueto', 'new', 'Día registrado exitósamente');
+  }
+
   newComission() {
     this.openRisingDialog('Nueva Comsisión', 'comisión', 'new', 'Comisión registrada exitósamente');
   }
@@ -255,19 +261,23 @@ export class EmployeeTransactionsComponent implements OnInit, AfterContentInit {
   // EDIT RISING FUNCTIONS ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   editExtraHour(r: RisingItem) {
-    this.openRisingDialog('Nueva Hora Extra', 'horasExtra', 'edit', 'Hora extra modificada exitósamente', r);
+    this.openRisingDialog('Editar Hora Extra', 'horasExtra', 'edit', 'Hora extra modificada exitósamente', r);
+  }
+
+  editHoliday(r: RisingItem) {
+    this.openRisingDialog('Editar asueto', 'asueto', 'edit', 'Hora extra modificada exitósamente', r);
   }
 
   editComission(r: RisingItem) {
-    this.openRisingDialog('Nueva Comsisión', 'comisión', 'edit', 'Comisión modificada exitósamente', r);
+    this.openRisingDialog('Editar Comsisión', 'comisión', 'edit', 'Comisión modificada exitósamente', r);
   }
 
   editBonus(r: RisingItem) {
-    this.openRisingDialog('Nuevo Bono', 'bono', 'edit', 'Bono modificado exitósamente', r);
+    this.openRisingDialog('Editar Bono', 'bono', 'edit', 'Bono modificado exitósamente', r);
   }
 
   editRisning(r: RisingItem) {
-    this.openRisingDialog('Nuevo aumento de salario', 'aumentoSalario', 'edit', 'Aumento modificado exitósamente', r);
+    this.openRisingDialog('Editar aumento de salario', 'aumentoSalario', 'edit', 'Aumento modificado exitósamente', r);
   }
 
 

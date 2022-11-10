@@ -84,6 +84,7 @@ export class RequestsComponent implements OnInit {
       case 'permiso': title = 'Nuevo Permiso'; break;
       case 'diadescanso': title = 'Solicitud de cambio de día de descanso'; break;
       case 'horasExtra': title = 'Nuevo Ingreso de horas extras'; break;
+      case 'asueto': title = 'Nuevo Asueto'; break;
     }
     const dialog = this.dialog.open(RequestDialogComponent, {
       width: this.smallScreen ? '100%' : '500px',

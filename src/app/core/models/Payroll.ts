@@ -19,6 +19,7 @@ export interface PayrollDetailItem {
     jobBonus: number; // *****  Horas extras, Comisiones, Bonos
     otherBonus: number; // *****
     extraHours: number // *****
+    holiday: number; // ******
 
     // IGSS
     igss: number; // 4.83% sobre el total del puesto

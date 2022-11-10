@@ -14,7 +14,7 @@ import { RisingsService } from 'src/app/core/services/httpServices/risings.servi
 })
 export class RequestDialogComponent implements OnInit {
   employeeJobs: EmployeeJobItem[] = [];
-  risingsTypes = ['horasExtra'];
+  risingsTypes = ['horasExtra', 'asueto'];
   discountsTypes = ['permiso', 'diadescanso', 'citaIGSS'];
   form = new FormGroup({
     _employeeJob: new FormControl({value: null}, Validators.required),
