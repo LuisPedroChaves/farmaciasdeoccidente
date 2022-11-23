@@ -14,3 +14,27 @@ $blue: #045195;
 .jobtitle { font-size: 16px; font-weight: 600; }
 .relative { margin-bottom: 10px; padding: 15px; }
 .relativeslist { padding: 10px; padding-top: 30px; }
+.cv-space {
+    padding: 15px 5px;
+    margin-top: 20px;
+    border: 1px dashed rgba($color: #000000, $alpha: 0.5);
+    border-radius: 10px;
+    background-color: rgba($color: #000000, $alpha: 0.05);
+    width: 100%;
+    mat-icon { font-size: 26px; margin-bottom: 10px ; }
+    button { background-color: rgba(0, 0, 0, 0.1); }
+}
+.cv-space.uploaded {
+    border: 1px solid rgba($color: #000000, $alpha: 0.5);
+}
+.display-none { display: none; }
+.uploadspace { padding: 10px; }
+.loadding {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-color: rgba($color: #000000, $alpha: 0.25);
+
+}

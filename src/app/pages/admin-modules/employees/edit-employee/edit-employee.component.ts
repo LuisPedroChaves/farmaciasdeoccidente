@@ -4,7 +4,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { FileInput } from 'ngx-material-file-input';
 import { BankItem } from 'src/app/core/models/Bank';
 import { CellarItem } from 'src/app/core/models/Cellar';
-import { EmployeeItem, FamilyItem } from 'src/app/core/models/Employee';
+import { EmployeeItem, FamilyItem, VacationItem } from 'src/app/core/models/Employee';
 import { EmployeeJobItem } from 'src/app/core/models/EmployeeJob';
 import { EmployeeService } from 'src/app/core/services/httpServices/employee.service';
 import { UploadFileService } from 'src/app/core/services/httpServices/upload-file.service';
@@ -36,9 +36,15 @@ export class EditEmployeeComponent implements OnInit {
 
   // STEP 1
   imagePreview: string;
+  loading: boolean = false;
+  cv: any;
+  vacations: VacationItem[] = [];
+  changed: boolean = false;
+  emergencyContact:  {name: string, phone: string, _id?: string } = { name: null, phone: null };
 
   form1 = new FormGroup({
     photo: new FormControl(null),
+    cv: new FormControl(null),
     name: new FormControl(null, Validators.required),
     lastName: new FormControl(null, Validators.required),
     birth: new FormControl(null, Validators.required),
@@ -67,12 +73,15 @@ export class EditEmployeeComponent implements OnInit {
     igss: new FormControl(false, Validators.required),
     benefits: new FormControl(false, Validators.required),
     _cellar: new FormControl(null, Validators.required),
+    _cellarIGSS: new FormControl(null, Validators.required),
     details: new FormControl(null, Validators.required),
-    vacationDate: new FormControl(null),
-    lastVacationDate: new FormControl(null),
     disability: new FormControl(null),
     foreignPermit: new FormControl(null),
     igssNumber: new FormControl(null),
+    contractLaw: new FormControl(null),
+    internalContract: new FormControl(null),
+    confidentialityContract: new FormControl(null),
+    newContract: new FormControl(null),
   });
 
 
@@ -82,6 +91,7 @@ export class EditEmployeeComponent implements OnInit {
     name: new FormControl(null, Validators.required),
     birth: new FormControl(null, Validators.required),
     type: new FormControl(null, Validators.required),
+    phone: new FormControl(null, Validators.required),
   });
 
 
@@ -95,6 +105,7 @@ export class EditEmployeeComponent implements OnInit {
     this.imagePreview = this.filePipe.transform(this.employee.photo, 'employees');
     this.form1 = new FormGroup({
       photo: new FormControl(this.employee.photo),
+      cv: new FormControl(this.employee.cv),
       name: new FormControl(this.employee.name, Validators.required),
       lastName: new FormControl(this.employee.lastName, Validators.required),
       birth: new FormControl(this.employee.birth, Validators.required),
@@ -112,12 +123,15 @@ export class EditEmployeeComponent implements OnInit {
       village: new FormControl(this.employee.village || null),
       linguisticCommunity: new FormControl(this.employee.linguisticCommunity || null),
     });
+    this.cv = this.employee.cv;
     setTimeout(() => {
       this.getMun();
     }, 100);
   
     // STEP 2
   
+
+
     this.form2 = new FormGroup({
       profession: new FormControl(this.employee.profession, Validators.required),
       academicLavel: new FormControl(this.employee.academicLavel, Validators.required),
@@ -126,14 +140,20 @@ export class EditEmployeeComponent implements OnInit {
       igss: new FormControl(this.employee.igss, Validators.required),
       benefits: new FormControl(this.employee.benefits, Validators.required),
       _cellar: new FormControl(this.employee._cellar, Validators.required),
+      _cellarIGSS: new FormControl(this.employee._cellarIGSS, Validators.required),
       details: new FormControl(this.employee.details, Validators.required),
-      vacationDate: new FormControl(this.employee.vacationDate),
-      lastVacationDate: new FormControl(this.employee.lastVacationDate),
-      igssNumber: new FormControl(this.employee.igssNumber),
       disability: new FormControl(this.employee.disability),
       foreignPermit: new FormControl(this.employee.foreignPermit),
+      igssNumber: new FormControl(this.employee.igssNumber),
+      contractLaw: new FormControl(this.employee.contractLaw),
+      internalContract: new FormControl(this.employee.internalContract),
+      confidentialityContract: new FormControl(this.employee.confidentialityContract),
+      newContract: new FormControl(this.employee.newContract),
     });
 
+    this.emergencyContact = this.employee.emergencyContact === null ? { name: null, phone: null } : this.employee.emergencyContact;
+
+    this.vacations = this.employee.vacations;
 
     this.family = this.employee.family;
 
@@ -152,6 +172,44 @@ export class EditEmployeeComponent implements OnInit {
   ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   getMun() {
     this.muns = this.departments.find(d => d.name === this.form1.controls.department.value).mun;
+  }
+
+  cvChangeEvent(ev: any) {
+    const FILE: FileInput = new FileInput([ev.target.files[0]], ', ');
+    this.cv = ev.target.files[0];
+    this.changed = true;
+    this.form1.controls.cv.setValue(FILE);
+  }
+
+  removeCV() {
+    this.cv = undefined;
+    this.changed = false;
+    this.form1.controls.cv.setValue(null);
+  }
+
+  downloadCV() {
+    if (typeof(this.cv) === 'object') {
+
+      const fr = new FileReader();
+      const file = this.cv;
+      fr.readAsArrayBuffer(file);
+      fr.onload = function() {
+        const blob = new Blob([fr.result])
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement("a")
+        a.href = url 
+        a.download = file.name;
+        a.click();
+      }
+    }
+
+    
+  }
+
+  downloadContract(collection: string, value: string) {
+    const url = this.filePipe.transform(value, collection);
+    console.log(url);
+    window.open(url, '_download');
   }
 
 
@@ -189,43 +247,88 @@ export class EditEmployeeComponent implements OnInit {
   }
 
 
+  newFileField(value: any, collection?): any {
+    if (value === null) { return null; }
+    if (value === undefined) { return null; }
+    if (typeof(value) === 'string') {
+      return value;
+    }
+    if (typeof(value) === 'object') {
+      const FILE: FileInput = value;
+      if (FILE) {
+        return 'archivo.temp';
+      } else {
+        return null;
+      }
+    }
+
+  }
+
+
   saveEmployee() {
     if (this.form1.invalid || this.form2.invalid) { return; }
 
-
+    const FILE: FileInput = this.form1.controls.photo.value;
+    this.form1.controls.photo.setValue(this.newFileField(this.form1.controls.photo.value, 'employees'));
+    
+    const FILECV: FileInput = this.form1.controls.cv.value;
+    this.form1.controls.cv.setValue(this.newFileField(this.form1.controls.cv.value, 'cv'));
+    
+    
+    const FILECONTRACT1: FileInput = this.form2.controls.contractLaw.value;
+    this.form2.controls.contractLaw.setValue(this.newFileField(this.form2.controls.contractLaw.value, 'contractLaw'));
+    const FILECONTRACT2: FileInput = this.form2.controls.internalContract.value;
+    this.form2.controls.internalContract.setValue(this.newFileField(this.form2.controls.internalContract.value, 'internalContract'));
+    const FILECONTRACT3: FileInput = this.form2.controls.confidentialityContract.value;
+    this.form2.controls.confidentialityContract.setValue(this.newFileField(this.form2.controls.confidentialityContract.value, 'confidentialityContract'));
+    const FILECONTRACT4: FileInput = this.form2.controls.newContract.value;
+    this.form2.controls.newContract.setValue(this.newFileField(this.form2.controls.newContract.value, 'newContract'));
 
     
-    const FILE: FileInput = this.form1.controls.photo.value;
-    if (FILE) {
-      this.form1.controls.photo.setValue('archivo.temp');
-    } else {
-      this.form1.controls.photo.setValue(null);
-    }
-    const employee: EmployeeItem = { ...this.form1.value, ...this.form2.value, family: this.family, _id: this.employee._id };
+
+    const employee: EmployeeItem = { ...this.form1.value, ...this.form2.value, family: this.family, _id: this.employee._id, vacations: this.vacations, emergencyContact: this.emergencyContact };
     this.employeeService.update(employee).subscribe(data => {
+      const promises = [];
       if (FILE) {
         if (FILE.files) {
-          this.uploadFileService.uploadFile(FILE.files[0], 'employees', data.employee._id).then((resp: any) => {
-            this.toasty.success('Empleado modificado exitósamente');
-            this.employeeService.loadData();
-            this.closebar.emit(true);
-            }).catch(err => {
-              this.toasty.error('Falló subida de imagen');
-            });
-        } else {
-          this.toasty.success('Empleado modificado exitósamente');
-          this.employeeService.loadData();
-          this.closebar.emit(true);
+          promises.push(this.upload(FILE, data.employee._id, 'employees'));
         }
-      } else {
+      }
+      if (FILECV) {
+        if (FILECV.files) {
+          promises.push(this.upload(FILECV, data.employee._id, 'cv'));
+        }
+      }
+      
+      
+      if (FILECONTRACT1) { if (FILECONTRACT1.files) { promises.push(this.upload(FILECONTRACT1, data.employee._id, 'contractLaw'));  } }
+      if (FILECONTRACT2) { if (FILECONTRACT2.files) { promises.push(this.upload(FILECONTRACT2, data.employee._id, 'internalContract'));  } }
+      if (FILECONTRACT3) { if (FILECONTRACT3.files) { promises.push(this.upload(FILECONTRACT3, data.employee._id, 'confidentialityContract'));  } }
+      if (FILECONTRACT4) { if (FILECONTRACT4.files) { promises.push(this.upload(FILECONTRACT4, data.employee._id, 'newContract'));  } }
+
+      Promise.all(promises).then(data => {
+
         this.toasty.success('Empleado modificado exitósamente');
         this.employeeService.loadData();
+        this.loading = false;
         this.closebar.emit(true);
-      }
+      }).catch(err => {
+        this.loading = false;
+        this.employeeService.loadData();
+        this.closebar.emit(true);
+        this.toasty.error('Error subiendo archivos');
+      });
      
 
-    });
+    },err => { this.loading = false; });
   }
+
+
+
+  upload(FILE, id, collection): Promise<any> {
+    return this.uploadFileService.uploadFile(FILE.files[0], collection, id);
+  }
+
 
   deleteEmployee() {
     const dialog = this.dialog.open(ConfirmationComponent, {

@@ -27,6 +27,11 @@ export class FilePipe implements PipeTransform {
       'checkReceipts': `${url}/checkReceipts/${archivo}`,
       'banks': `${url}/banks/${archivo}`,
       'employees': `${url}/employees/${archivo}`,
+      'cv': `${url}/cv/${archivo}`,
+      'contractLaw': `${url}/contractLaw/${archivo}`,
+      'internalContract': `${url}/internalContract/${archivo}`,
+      'confidentialityContract': `${url}/confidentialityContract/${archivo}`,
+      'newContract': `${url}/newContract/${archivo}`,
     };
 
     return SWITCH_TYPES[type]

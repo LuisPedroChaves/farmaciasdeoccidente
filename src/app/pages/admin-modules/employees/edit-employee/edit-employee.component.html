@@ -12,6 +12,19 @@
                             <button (click)="uploadAvatar()" mat-icon-button class="change-button mat-elevation-z2"><mat-icon>create</mat-icon></button>
                         </div>
 
+                        <button (click)="newFileField(this.form1.controls.photo.value)">click</button>
+
+                        <div class="cv-space" [ngClass]="{'uploaded': form1.controls.cv.value !== null}" fxLayout="column wrap" fxLayoutAlign="center center">
+                            <div fxLayout="row wrap">
+                                <span>Curriculum</span>
+                                <mat-icon *ngIf="form1.controls.cv.value !== null" (click)="removeCV()">close</mat-icon>
+                            </div>
+                            <mat-icon class="material-icons-outlined">contact_page</mat-icon>
+                            <input #fileInput type="file" (change)="cvChangeEvent($event)" class="display-none"/>
+                            <button mat-button (click)="form1.controls.cv.value !== null ? downloadCV() : fileInput.click()">
+                                <mat-icon>{{form1.controls.cv.value !== null ? 'get_app':'upload'}}</mat-icon>{{ form1.controls.cv.value === null ? 'Cargar' : 'Descargar' }}
+                            </button>
+                        </div>
                         
                     </div>
                     <div fxFlex>
@@ -202,109 +215,154 @@
     <!-- PASO 2 ////////////////////////// -->
     <mat-step>
         <ng-template matStepLabel>Información Laboral</ng-template>
-        <form [formGroup]="form2" class="space" data-simplebar>
-            <br><br><br><br>
-            <div class="container-form">
-                <div fxLayout="row wrap">
-                    <div fxFlex="50" class="formsection">
-                        <mat-form-field class="all" color="primary" appearance="outline">
-                            <mat-label>Profesión</mat-label>
-                            <input matInput formControlName="profession">
-                        </mat-form-field>
+        <div class="space" data-simplebar>
+            <div fxLayout="row wrap" >
+                <form [formGroup]="form2" fxFlex.gt-sm="70" fxFlex="100">
+                    <br><br><br><br>
+                    <div >
+                        <div fxLayout="row wrap">
+                            <div fxFlex="50" class="formsection">
+                                <mat-form-field class="all" color="primary" appearance="outline">
+                                    <mat-label>Profesión</mat-label>
+                                    <input matInput formControlName="profession">
+                                </mat-form-field>
+                            </div>
+                            <div fxFlex="50" class="formsection">
+                                <mat-form-field class="all" color="primary" appearance="outline">
+                                    <mat-label>Nivel Académico</mat-label>
+                                    <input matInput formControlName="academicLavel">
+                                </mat-form-field>
+                            </div>
+                        </div>
+                        <div fxLayout="row wrap">
+                            <div fxFlex="50" class="formsection">
+                                <mat-form-field *ngIf="banks !== undefined" class="all" color="primary" appearance="outline">
+                                    <mat-label>Banco</mat-label>
+                                    <mat-select formControlName="_bank">
+                                        <mat-option *ngFor="let b of banks" [value]="b._id">{{b.name }}</mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                            </div>
+                            <div fxFlex="50" class="formsection">
+                                <mat-form-field class="all" color="primary" appearance="outline">
+                                    <mat-label>Cuenta de banco</mat-label>
+                                    <input matInput formControlName="bankAccount">
+                                </mat-form-field>
+                            </div>
+                        </div>
+                        <div fxLayout="row wrap">
+                            <div fxFlex="50" class="formsection">
+                                <mat-slide-toggle formControlName="igss">IGSS</mat-slide-toggle> &nbsp; &nbsp;
+                                <mat-slide-toggle formControlName="benefits">Beneficios</mat-slide-toggle>
+                            </div>
+                            <div fxFlex="50" class="formsection">
+                                <mat-form-field class="all" color="primary" appearance="outline">
+                                    <mat-label>Número de afiliación al IGSS</mat-label>
+                                    <input matInput formControlName="igssNumber">
+                                </mat-form-field>
+                            </div>
+                           
+        
+                        </div>
+        
+                        <div fxLayout="row wrap">
+                            <div fxFlex="50" class="formsection">
+                                <mat-form-field *ngIf="cellars !== undefined" class="all" color="primary" appearance="outline">
+                                    <mat-label>Sucursal</mat-label>
+                                    <mat-select formControlName="_cellar">
+                                        <mat-option *ngFor="let c of cellars" [value]="c._id">{{c.name }}</mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                            </div>
+                            <div fxFlex="50" class="formsection">
+                                <mat-form-field class="all" color="primary" appearance="outline">
+                                    <mat-label>Sucursal IGSS</mat-label>
+                                    <mat-select formControlName="_cellarIGSS">
+                                        <mat-option *ngFor="let c of cellars" [value]="c._id">{{c.name }}</mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                            </div>
+                        </div>
+        
+                        <div fxLayout="row wrap">
+                            <div fxFlex="100" class="formsection">
+                                <mat-form-field class="all" color="primary" appearance="outline">
+                                    <mat-label>Detalles</mat-label>
+                                    <textarea matInput formControlName="details"></textarea>
+                                </mat-form-field>
+                            </div>
+                        </div>
+        
+                        <div fxLayout="row wrap">
+                            <div fxFlex="50" class="formsection">
+                                <mat-form-field class="all" color="primary" appearance="outline">
+                                    <mat-label>Discapacidad</mat-label>
+                                    <input matInput formControlName="disability">
+                                </mat-form-field>
+                            </div>
+                            <div fxFlex="50" class="formsection">
+                                <mat-form-field class="all" color="primary" appearance="outline">
+                                    <mat-label>Permiso Extranjero</mat-label>
+                                    <input matInput formControlName="foreignPermit">
+                                </mat-form-field>
+                            </div>
+                        </div>
+        
+                        
                     </div>
-                    <div fxFlex="50" class="formsection">
-                        <mat-form-field class="all" color="primary" appearance="outline">
-                            <mat-label>Nivel Académico</mat-label>
-                            <input matInput formControlName="academicLavel">
-                        </mat-form-field>
+                    <div fxLayout="row wrap">
+                        <div fxFlex="25" class="uploadspace">
+                            <mat-form-field  class="all" color="primary" appearance="outline">
+                                <mat-label>Contrato de Ley</mat-label>
+                                <ngx-mat-file-input formControlName="contractLaw" placeholder="Seleccione el archivo" ></ngx-mat-file-input>
+                                <mat-icon matSuffix>folder</mat-icon>
+                                <mat-hint *ngIf="form2.controls.contractLaw.value !== null">
+                                    Este empleado ya tiene un contrato adjunto &nbsp;
+                                    <a class="download" *ngIf="form2.controls.contractLaw.value !== null" (click)="downloadContract('contractLaw', form2.controls.contractLaw.value)">Descargar</a></mat-hint>
+                            </mat-form-field>
+                            
+                        </div>
+                        <div fxFlex="25" class="uploadspace">
+                            <mat-form-field  class="all" color="primary" appearance="outline">
+                                <mat-label>Contrato Interno</mat-label>
+                                <ngx-mat-file-input formControlName="internalContract" placeholder="Seleccione el archivo" ></ngx-mat-file-input>
+                                <mat-icon matSuffix>folder</mat-icon>
+                                <mat-hint *ngIf="form2.controls.internalContract.value !== null">
+                                    Este empleado ya tiene un contrato adjunto &nbsp;
+                                    <a class="download" *ngIf="form2.controls.internalContract.value !== null" (click)="downloadContract('internalContract', form2.controls.internalContract.value)">Descargar</a>
+                                </mat-hint>
+                            </mat-form-field>
+                            
+                        </div>
+                        <div fxFlex="25" class="uploadspace">
+                            <mat-form-field  class="all" color="primary" appearance="outline">
+                                <mat-label>Contrato de Confidencialidad</mat-label>
+                                <ngx-mat-file-input formControlName="confidentialityContract" placeholder="Seleccione el archivo" ></ngx-mat-file-input>
+                                <mat-icon matSuffix>folder</mat-icon>
+                                <mat-hint *ngIf="form2.controls.confidentialityContract.value !== null">
+                                    Este empleado ya tiene un contrato adjunto &nbsp;
+                                    <a class="download" *ngIf="form2.controls.confidentialityContract.value !== null" (click)="downloadContract('confidentialityContract', form2.controls.confidentialityContract.value)">Descargar</a>
+                                </mat-hint>
+                            </mat-form-field>
+                        </div>
+                        <div fxFlex="25" class="uploadspace">
+                            <mat-form-field  class="all" color="primary" appearance="outline">
+                                <mat-label>Contrato de ascenso</mat-label>
+                                <ngx-mat-file-input formControlName="newContract" placeholder="Seleccione el archivo" ></ngx-mat-file-input>
+                                <mat-icon matSuffix>folder</mat-icon>
+                                <mat-hint *ngIf="form2.controls.newContract.value !== null">
+                                    Este empleado ya tiene un contrato adjunto &nbsp;
+                                    <a class="download" *ngIf="form2.controls.newContract.value !== null" (click)="downloadContract('newContract', form2.controls.newContract.value)">Descargar</a>
+                                </mat-hint>
+                            </mat-form-field>
+                        </div>
                     </div>
-                </div>
-                <div fxLayout="row wrap">
-                    <div fxFlex="50" class="formsection">
-                        <mat-form-field *ngIf="banks !== undefined" class="all" color="primary" appearance="outline">
-                            <mat-label>Banco</mat-label>
-                            <mat-select formControlName="_bank">
-                                <mat-option *ngFor="let b of banks" [value]="b._id">{{b.name }}</mat-option>
-                            </mat-select>
-                        </mat-form-field>
-                    </div>
-                    <div fxFlex="50" class="formsection">
-                        <mat-form-field class="all" color="primary" appearance="outline">
-                            <mat-label>Cuenta de banco</mat-label>
-                            <input matInput formControlName="bankAccount">
-                        </mat-form-field>
-                    </div>
-                </div>
-                <div fxLayout="row wrap">
-                    <div fxFlex="50" class="formsection">
-                        <mat-slide-toggle formControlName="igss">IGSS</mat-slide-toggle> &nbsp; &nbsp;
-                        <mat-slide-toggle formControlName="benefits">Beneficios</mat-slide-toggle>
-                    </div>
-                    <div fxFlex="50" class="formsection">
-                        <mat-form-field class="all" color="primary" appearance="outline">
-                            <mat-label>Número de afiliación al IGSS</mat-label>
-                            <input matInput formControlName="igssNumber">
-                        </mat-form-field>
-                    </div>
-                   
-
-                </div>
-
-                <div fxLayout="row wrap">
-                    <div fxFlex="100" class="formsection">
-                        <mat-form-field *ngIf="cellars !== undefined" class="all" color="primary" appearance="outline">
-                            <mat-label>Sucursal</mat-label>
-                            <mat-select formControlName="_cellar">
-                                <mat-option *ngFor="let c of cellars" [value]="c._id">{{c.name }}</mat-option>
-                            </mat-select>
-                        </mat-form-field>
-                    </div>
-                </div>
-
-                <div fxLayout="row wrap">
-                    <div fxFlex="100" class="formsection">
-                        <mat-form-field class="all" color="primary" appearance="outline">
-                            <mat-label>Detalles</mat-label>
-                            <textarea matInput formControlName="details"></textarea>
-                        </mat-form-field>
-                    </div>
-                </div>
-
-                <div fxLayout="row wrap">
-                    <div fxFlex="50" class="formsection">
-                        <mat-form-field class="all" color="primary" appearance="outline">
-                            <mat-label>Discapacidad</mat-label>
-                            <input matInput formControlName="disability">
-                        </mat-form-field>
-                    </div>
-                    <div fxFlex="50" class="formsection">
-                        <mat-form-field class="all" color="primary" appearance="outline">
-                            <mat-label>Permiso Extranjero</mat-label>
-                            <input matInput formControlName="foreignPermit">
-                        </mat-form-field>
-                    </div>
-                </div>
-
-                <div fxLayout="row wrap">
-                    <div fxFlex="50" class="formsection">
-                        <mat-form-field class="all" appearance="outline">
-                            <mat-label>Fecha de Vacaciones</mat-label>
-                            <input matInput [matDatepicker]="picker2" formControlName="vacationDate">
-                            <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
-                            <mat-datepicker #picker2></mat-datepicker>
-                        </mat-form-field>
-                    </div>
-                    <div fxFlex="50" class="formsection">
-                        <mat-form-field class="all" appearance="outline">
-                            <mat-label>Últimas vacaciones</mat-label>
-                            <input matInput [matDatepicker]="picker3" formControlName="lastVacationDate">
-                            <mat-datepicker-toggle matSuffix [for]="picker3"></mat-datepicker-toggle>
-                            <mat-datepicker #picker3></mat-datepicker>
-                        </mat-form-field>
-                    </div>
+                </form>
+                <div fxFlex.gt-sm fxFlex="100">
+                    <h2>Vacaciones</h2>
                 </div>
             </div>
-        </form>
+        </div>
         <div class="footer" fxLayout="row wrap">
             <button mat-button matStepperPrevious>Atrás</button>
             <span fxFlex></span>
@@ -381,7 +439,7 @@
                                 </mat-select>
                             </mat-form-field>
                         </div>
-                        <div fxFlex="100">
+                        <div fxFlex="50">
                             <mat-form-field class="all" appearance="outline">
                                 <mat-label>Fecha de Nacimiento</mat-label>
                                 <input matInput [matDatepicker]="picker4" formControlName="birth">
@@ -389,11 +447,37 @@
                                 <mat-datepicker #picker4></mat-datepicker>
                             </mat-form-field>
                         </div>
+                        <div fxFlex="50">
+                            <mat-form-field class="all" appearance="outline">
+                                <mat-label>Número de teléfono</mat-label>
+                                <input matInput formControlName="phone">
+                            </mat-form-field>
+                        </div>
                         <div fxFlex="100" fxLayout="row wrap">
                             <span fxFlex></span>
                             <button color="primary" (click)="addFamiliar()" mat-flat-button>Agregar</button>
                         </div>
                     </form>
+
+
+                    <br><br><br>
+                    <div>
+                        <h3>Contacto de emergencia</h3>
+                        <div fxLayout="row wrap">
+                            <div fxFlex>
+                                <mat-form-field class="all" color="primary" appearance="outline">
+                                    <mat-label>Nombre del Contacto</mat-label>
+                                    <input matInput [(ngModel)]="emergencyContact.name">
+                                </mat-form-field>
+                            </div>
+                            <div fxFlex>
+                                <mat-form-field class="all" color="primary" appearance="outline">
+                                    <mat-label>Teléfono</mat-label>
+                                    <input matInput [(ngModel)]="emergencyContact.phone">
+                                </mat-form-field>
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 <div fxFlex="40" class="relativeslist">
     
@@ -420,3 +504,7 @@
 
 
 </mat-horizontal-stepper>
+
+<div class="loadding" *ngIf="loading" fxLayout="column wrap" fxLayoutAlign="center center">
+    <mat-progress-spinner mode="indeterminate" diameter="40" color="primary"></mat-progress-spinner>
+</div>

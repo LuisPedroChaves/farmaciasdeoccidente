@@ -4,7 +4,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { FileInput } from 'ngx-material-file-input';
 import { BankItem } from 'src/app/core/models/Bank';
 import { CellarItem } from 'src/app/core/models/Cellar';
-import { EmployeeItem, FamilyItem } from 'src/app/core/models/Employee';
+import { EmployeeItem, FamilyItem, VacationItem } from 'src/app/core/models/Employee';
 import { EmployeeJobItem } from 'src/app/core/models/EmployeeJob';
 import { EmployeeService } from 'src/app/core/services/httpServices/employee.service';
 import { UploadFileService } from 'src/app/core/services/httpServices/upload-file.service';
@@ -31,9 +31,14 @@ export class NewEmployeeComponent implements OnInit {
 
   // STEP 1
   imagePreview: string;
-
+  cv: any;
+  vacations: VacationItem[] = [];
+  changed: boolean = false;
+  emergencyContact:  {name: string, phone: string } = { name: null, phone: null };
+  loading: boolean = false;
   form1 = new FormGroup({
     photo: new FormControl(null),
+    cv: new FormControl(null),
     name: new FormControl(null, Validators.required),
     lastName: new FormControl(null, Validators.required),
     birth: new FormControl(null, Validators.required),
@@ -63,13 +68,15 @@ export class NewEmployeeComponent implements OnInit {
     igss: new FormControl(false, Validators.required),
     benefits: new FormControl(false, Validators.required),
     _cellar: new FormControl(null, Validators.required),
+    _cellarIGSS: new FormControl(null, Validators.required),
     details: new FormControl(null, Validators.required),
-    vacationDate: new FormControl(null),
-    lastVacationDate: new FormControl(null),
     disability: new FormControl(null),
     foreignPermit: new FormControl(null),
     igssNumber: new FormControl(null),
-    
+    contractLaw: new FormControl(null),
+    internalContract: new FormControl(null),
+    confidentialityContract: new FormControl(null),
+    newContract: new FormControl(null),
   });
 
 
@@ -79,6 +86,7 @@ export class NewEmployeeComponent implements OnInit {
     name: new FormControl(null, Validators.required),
     birth: new FormControl(null, Validators.required),
     type: new FormControl(null, Validators.required),
+    phone: new FormControl(null, Validators.required),
   });
 
 
@@ -100,6 +108,35 @@ export class NewEmployeeComponent implements OnInit {
   ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   getMun() {
     this.muns = this.departments.find(d => d.name === this.form1.controls.department.value).mun;
+  }
+
+  cvChangeEvent(ev: any) {
+    const FILE: FileInput = new FileInput([ev.target.files[0]], ', ');
+    this.cv = ev.target.files[0];
+    this.changed = true;
+    this.form1.controls.cv.setValue(FILE);
+  }
+
+  removeCV() {
+    this.cv = undefined;
+    this.changed = false;
+    this.form1.controls.cv.setValue(null);
+  }
+
+  downloadCV() {
+    const fr = new FileReader();
+    const file = this.cv;
+    fr.readAsArrayBuffer(file);
+    fr.onload = function() {
+      const blob = new Blob([fr.result])
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a")
+      a.href = url 
+      a.download = file.name;
+      a.click()
+    }
+
+    
   }
 
   addFamiliar() {
@@ -132,42 +169,76 @@ export class NewEmployeeComponent implements OnInit {
 
   saveEmployee() {
     if (this.form1.invalid || this.form2.invalid) { return; }
-
+    this.loading = true;
     
     const FILE: FileInput = this.form1.controls.photo.value;
+    const FILECV: FileInput = this.form1.controls.cv.value;
+
+
+    const FILECONTRACT1: FileInput = this.form2.controls.contractLaw.value;
+    const FILECONTRACT2: FileInput = this.form2.controls.internalContract.value;
+    const FILECONTRACT3: FileInput = this.form2.controls.confidentialityContract.value;
+    const FILECONTRACT4: FileInput = this.form2.controls.newContract.value;
     if (FILE) {
       this.form1.controls.photo.setValue('archivo.temp');
     } else {
       this.form1.controls.photo.setValue(null);
     }
-    const employee: EmployeeItem = { ...this.form1.value, ...this.form2.value, family: this.family };
+    if (FILECV) {
+      this.form1.controls.cv.setValue('archivo.temp');
+    } else {
+      this.form1.controls.cv.setValue(null);
+    }
+    
+    this.form2.controls.contractLaw.setValue(FILECONTRACT1 ? 'archivo.temp' : null);
+    this.form2.controls.internalContract.setValue(FILECONTRACT2 ? 'archivo.temp' : null);
+    this.form2.controls.confidentialityContract.setValue(FILECONTRACT3 ? 'archivo.temp' : null);
+    this.form2.controls.newContract.setValue(FILECONTRACT4 ? 'archivo.temp' : null);
+
+
+
+    const employee: EmployeeItem = { ...this.form1.value, ...this.form2.value, family: this.family, vacations: this.vacations, emergencyContact: this.emergencyContact };
     this.employeeService.create(employee).subscribe(data => {
+      const promises = [];
       if (FILE) {
         if (FILE.files) {
-          this.uploadFileService.uploadFile(FILE.files[0], 'employees', data.employee._id).then((resp: any) => {
-            this.toasty.success('Empleado creado exitósamente');
-            this.employeeService.loadData();
-            this.closebar.emit(true);
-            }).catch(err => {
-              this.toasty.error('Falló subida de imagen');
-            });
-        } else {
-          this.toasty.success('Empleado creado exitósamente');
-          this.employeeService.loadData();
-          this.closebar.emit(true);
+          promises.push(this.upload(FILE, data.employee._id, 'employees'));
         }
-      } else {
+      }
+      if (FILECV) {
+        if (FILECV.files) {
+          promises.push(this.upload(FILECV, data.employee._id, 'cv'));
+        }
+      }
+      
+      
+      if (FILECONTRACT1) { if (FILECONTRACT1.files) { promises.push(this.upload(FILECONTRACT1, data.employee._id, 'contractLaw'));  } }
+      if (FILECONTRACT2) { if (FILECONTRACT2.files) { promises.push(this.upload(FILECONTRACT2, data.employee._id, 'internalContract'));  } }
+      if (FILECONTRACT3) { if (FILECONTRACT3.files) { promises.push(this.upload(FILECONTRACT3, data.employee._id, 'confidentialityContract'));  } }
+      if (FILECONTRACT4) { if (FILECONTRACT4.files) { promises.push(this.upload(FILECONTRACT4, data.employee._id, 'newContract'));  } }
+
+      Promise.all(promises).then(data => {
+
         this.toasty.success('Empleado creado exitósamente');
         this.employeeService.loadData();
+        this.loading = false;
         this.closebar.emit(true);
-      }
+      }).catch(err => {
+        this.loading = false;
+        this.employeeService.loadData();
+        this.closebar.emit(true);
+        this.toasty.error('Error subiendo archivos');
+      });
 
-
-      
-      
-
-    });
+    }, err => { this.loading = false; });
   }
 
+
+
+
+
+  upload(FILE, id, collection): Promise<any> {
+    return this.uploadFileService.uploadFile(FILE.files[0], collection, id);
+  }
 
 }

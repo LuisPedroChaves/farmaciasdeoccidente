@@ -7,6 +7,7 @@ export interface EmployeeItem {
 
     // GENERAL INFO
     photo: string; 
+    cv: string;
     name: string;  ///////
     lastName: string; ///////
     birth: string | Date; 
@@ -43,14 +44,29 @@ export interface EmployeeItem {
     igss: boolean; 
     benefits: boolean; 
     _cellar: string | CellarItem; 
+    _cellarIGSS: string | CellarItem; 
+    emergencyContact?: {name: string, phone: string },
     details: string; 
+    contractLaw: string;
+    internalContract: string;
+    confidentialityContract: string;
+    newContract: string;
 
-    vacationDate: string; 
-    lastVacationDate: string; 
+    // vacationDate: string; 
+    // lastVacationDate: string; 
+    vacations: VacationItem[];
 
 
     family: FamilyItem[]; 
     fired: string; 
+}
+
+export interface VacationItem {
+    year: number;
+    start: Date;
+    end: Date;
+    constancy: string;
+    details: string;
 }
 
 
