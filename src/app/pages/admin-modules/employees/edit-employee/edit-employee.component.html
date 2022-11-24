@@ -12,8 +12,6 @@
                             <button (click)="uploadAvatar()" mat-icon-button class="change-button mat-elevation-z2"><mat-icon>create</mat-icon></button>
                         </div>
 
-                        <button (click)="newFileField(this.form1.controls.photo.value)">click</button>
-
                         <div class="cv-space" [ngClass]="{'uploaded': form1.controls.cv.value !== null}" fxLayout="column wrap" fxLayoutAlign="center center">
                             <div fxLayout="row wrap">
                                 <span>Curriculum</span>
@@ -217,8 +215,8 @@
         <ng-template matStepLabel>Información Laboral</ng-template>
         <div class="space" data-simplebar>
             <div fxLayout="row wrap" >
-                <form [formGroup]="form2" fxFlex.gt-sm="70" fxFlex="100">
-                    <br><br><br><br>
+                <form [formGroup]="form2" fxFlex.gt-sm="65" fxFlex="100">
+                    <br><br>
                     <div >
                         <div fxLayout="row wrap">
                             <div fxFlex="50" class="formsection">
@@ -358,8 +356,66 @@
                         </div>
                     </div>
                 </form>
-                <div fxFlex.gt-sm fxFlex="100">
-                    <h2>Vacaciones</h2>
+                <div fxFlex.gt-sm="33" fxFlex="100" style="padding: 0px 10px;">
+                    <br><br>
+                    <div fxLayout="row wrap">
+
+                        <h2>Vacaciones</h2>
+                    </div>
+                    <div fxLayout="row wrap">
+                        <div fxFlex>
+                            <form [formGroup]="formVacations" fxLayout="column wrap">
+                                <div fxLayout="row wrap">
+                                    <div fxFlex="100" style="padding: 0 5px;">
+                                        <mat-form-field class="all" appearance="outline">
+                                            <mat-label>Rango de fechas</mat-label>
+                                            <mat-date-range-input [rangePicker]="pickerRange">
+                                              <input matStartDate formControlName="start" placeholder="Start date">
+                                              <input matEndDate formControlName="end" placeholder="End date">
+                                            </mat-date-range-input>
+                                            <mat-datepicker-toggle matSuffix [for]="pickerRange"></mat-datepicker-toggle>
+                                            <mat-date-range-picker #pickerRange></mat-date-range-picker>
+                                          
+                                            
+                                        </mat-form-field>
+                                    </div>
+                                   
+                                </div>
+
+                                <div fxLayout="row wrap">
+                                    <div fxFlex="50" style="padding: 0 5px;">
+                                        <mat-form-field color="primary" class="all" appearance="outline">
+                                            <mat-label>Detalles</mat-label>
+                                            <textarea matInput formControlName="details"></textarea>
+                                        </mat-form-field>
+                                    </div>
+                                    <div fxFlex="50" style="padding: 0 5px;">
+                                        <mat-form-field  class="all" color="primary" appearance="outline">
+                                            <mat-label>Constancia</mat-label>
+                                            <ngx-mat-file-input formControlName="constancy" placeholder="Seleccione el archivo" ></ngx-mat-file-input>
+                                            <mat-icon matSuffix>folder</mat-icon>
+                                        </mat-form-field>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                        <div>
+
+                            <button mat-flat-button color="primary" (click)="addVacations()">Agregar</button>
+                        </div>
+                    </div>
+
+                    <div fxLayout="row wrap">
+                        <mat-list class="all">
+                            <mat-list-item *ngFor="let v of vacations">
+                                <div mat-line>{{v.start | date : 'dd/MM/yyyy'}} - {{ v.end | date : 'dd/MM/yyyy' }}</div>
+                                <div mat-line> {{v.details}} </div>
+                                <button mat-icon-button (click)="removeVacations(v)">
+                                    <mat-icon mat-list-icon>delete</mat-icon>
+                                </button>
+                              </mat-list-item>
+                        </mat-list>
+                    </div>
                 </div>
             </div>
         </div>

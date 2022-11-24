@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { EmployeeItem } from '../../models/Employee';
+import { EmployeeItem, VacationItem } from '../../models/Employee';
 import { EmployeeJobItem } from '../../models/EmployeeJob';
 import { ApiConfigService } from '../config/api-config.service';
 
@@ -81,5 +81,23 @@ export class EmployeeService {
 
   getEmployeeJobsByUser(): Observable<any> {
     return this.http.get(this.apiConfigService.API_EMPLOYEE_USER); 
+  }
+
+
+
+
+  loadVacations(id: string): Observable<any> {
+    return this.http.get(`${this.apiConfigService.API_VACATIONS}/${id}`); 
+  }
+  deleteVacation(id: string): Observable<any> {
+    return this.http.delete(`${this.apiConfigService.API_VACATIONS}/${id}`); 
+  }
+
+
+
+
+
+  saveVacation(v: VacationItem): Observable<any> {
+    return this.http.post(this.apiConfigService.API_VACATIONS, v); 
   }
 }

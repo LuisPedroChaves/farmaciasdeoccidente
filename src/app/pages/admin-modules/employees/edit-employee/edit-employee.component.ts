@@ -1,3 +1,4 @@
+import { HttpClient } from '@angular/common/http';
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
@@ -95,10 +96,18 @@ export class EditEmployeeComponent implements OnInit {
   });
 
 
+  formVacations = new FormGroup({
+    start: new FormControl(null, Validators.required),
+    end: new FormControl(null, Validators.required),
+    constancy: new FormControl(null),
+    details: new FormControl(null),
+  });
+
+
   family: FamilyItem[] = [];
   employeeJobs: EmployeeJobItem[] = [];
 
-  constructor(public dialog: MatDialog, public employeeService: EmployeeService, public filePipe: FilePipe, public toasty: ToastyService, public uploadFileService: UploadFileService) { }
+  constructor(public dialog: MatDialog, public employeeService: EmployeeService, public http: HttpClient, public filePipe: FilePipe, public toasty: ToastyService, public uploadFileService: UploadFileService) { }
 
   ngOnInit(): void {
     this.employeeService.getCountry().subscribe(data => {this.departments = data; });
@@ -158,7 +167,7 @@ export class EditEmployeeComponent implements OnInit {
     this.family = this.employee.family;
 
     this.loadEmployeeJobs();
-
+    this.loadVacations();
     
   }
 
@@ -201,6 +210,10 @@ export class EditEmployeeComponent implements OnInit {
         a.download = file.name;
         a.click();
       }
+    }
+
+    if (typeof(this.cv) === 'string') {
+      this.downloadContract('cv', this.form1.controls.cv.value);
     }
 
     
@@ -271,9 +284,11 @@ export class EditEmployeeComponent implements OnInit {
     const FILE: FileInput = this.form1.controls.photo.value;
     this.form1.controls.photo.setValue(this.newFileField(this.form1.controls.photo.value, 'employees'));
     
-    const FILECV: FileInput = this.form1.controls.cv.value;
+    let FILECV: FileInput = this.form1.controls.cv.value;
     this.form1.controls.cv.setValue(this.newFileField(this.form1.controls.cv.value, 'cv'));
-    
+    if (this.form1.controls.cv.value === null) {
+      FILECV = null;
+    }
     
     const FILECONTRACT1: FileInput = this.form2.controls.contractLaw.value;
     this.form2.controls.contractLaw.setValue(this.newFileField(this.form2.controls.contractLaw.value, 'contractLaw'));
@@ -286,7 +301,7 @@ export class EditEmployeeComponent implements OnInit {
 
     
 
-    const employee: EmployeeItem = { ...this.form1.value, ...this.form2.value, family: this.family, _id: this.employee._id, vacations: this.vacations, emergencyContact: this.emergencyContact };
+    const employee: EmployeeItem = { ...this.form1.value, ...this.form2.value, family: this.family, _id: this.employee._id, emergencyContact: this.emergencyContact };
     this.employeeService.update(employee).subscribe(data => {
       const promises = [];
       if (FILE) {
@@ -409,6 +424,53 @@ export class EditEmployeeComponent implements OnInit {
           this.toasty.success('Puesto eliminado exitósamente');
         });
       }
+    });
+  }
+
+
+
+  addVacations() {
+    if (this.formVacations.invalid) { return; }
+    const FILE: FileInput = this.formVacations.controls.constancy.value;
+    if (FILE) {
+      this.formVacations.controls.constancy.setValue('archivo.temp');
+    } else {
+      this.formVacations.controls.constancy.setValue(null);
+    }
+    const vacations: VacationItem = {...this.formVacations.value, _employee: this.employee._id};
+    this.employeeService.saveVacation(vacations).subscribe(data => {
+      const promises = [];
+      if (FILE) {
+        if (FILE.files) {
+          promises.push(this.upload(FILE, data.vacation._id, 'vacation'));
+        }
+      }
+      Promise.all(promises).then(data => {
+
+        this.loadVacations();
+        this.toasty.success('Vacaciones registradas');
+        this.formVacations.reset();
+      }).catch(err => {
+        this.toasty.error('No se pudo subir el archivo');
+        this.formVacations.reset();
+        this.loadVacations();
+      });
+      
+    });
+
+  }
+
+
+  loadVacations() {
+    this.employeeService.loadVacations(this.employee._id).subscribe(data => {
+      this.vacations = data.vacations;
+    });
+  }
+
+
+  removeVacations(vac: VacationItem) {
+    this.employeeService.deleteVacation(vac._id).subscribe(data => {
+      this.loadVacations();
     });
   }
 

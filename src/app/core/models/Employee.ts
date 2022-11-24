@@ -62,7 +62,8 @@ export interface EmployeeItem {
 }
 
 export interface VacationItem {
-    year: number;
+    _id?: string;
+    _employee: string;
     start: Date;
     end: Date;
     constancy: string;
