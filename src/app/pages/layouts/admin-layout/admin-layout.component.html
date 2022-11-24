@@ -57,29 +57,17 @@
                         </mat-list-item>
 
 
-
-
                         <div *ngIf="m.children" id="{{m.state}}" class="submenu" [ngClass]="{'expanded' : m.open}">
-                            <mat-list-item *ngFor="let c of m.children" [routerLink]="[c.state ]" style="padding-left: 15px;" class="menu-items">
-                                <svg *ngIf="c.iconType === 'svg'" style="width:24px;height:24px" mat-list-icon viewBox="0 0 24 24">
-                                    <path fill="currentColor" [attr.d]="c.icon" />
-                                </svg>
-                                <mat-icon *ngIf="c.iconType === 'icon'" class="material-icons-outlined" color="accent" mat-list-icon>{{ c.icon }}
-                                </mat-icon>
-                                <h4 mat-line>{{ c.name }}</h4>
-                            </mat-list-item>
-                        </div>
-                        <!-- <div *ngIf="m.children" id="{{m.state}}" class="submenu" [ngClass]="{'expanded' : m.open}">
                             <mat-list-item *ngFor="let c of m.children" [routerLink]="c.state" style="padding-left: 15px;" class="menu-items">
                                 <svg *ngIf="c.iconType === 'svg'" style="width:24px;height:24px" mat-list-icon viewBox="0 0 24 24">
                                     <path fill="#404040" [attr.d]="c.icon" />
                                 </svg>
-                                <mat-icon *ngIf="c.iconType === 'icon'" class="material-icons-outlined" color="accent" *ngIf="c.icon" mat-list-icon>{{ c.icon }}
+                                <mat-icon *ngIf="c.icon && c.iconType === 'icon'" class="material-icons-outlined" color="accent" mat-list-icon>{{ c.icon }}
                                 </mat-icon>
                                 <h4 mat-line>{{ c.name }}</h4>
                                 <span fxFlex></span>
                             </mat-list-item>
-                        </div> -->
+                        </div>
                     </div>
                 </mat-nav-list>
             </ngx-simplebar>

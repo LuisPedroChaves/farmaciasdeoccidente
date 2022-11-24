@@ -314,16 +314,44 @@
     "options": ["read", "update", "delete", "create"]
   },
   {
-    "name": "requests",
-    "label": "Permisos",
-    "parent": "EMPLOYEE",
+    "name": "PAYROLLS",
+    "label": "Planilla",
+    "parent": "ADMIN",
     "level": 1,
+    "options": ["read", "update", "delete", "create"]
+  },
+  {
+    "name": "payroll",
+    "label": "Planilla General",
+    "parent": "PAYROLLS",
+    "level": 2,
+    "options": ["read", "update", "delete", "create"]
+  },
+  {
+    "name": "employees",
+    "label": "Empleados",
+    "parent": "PAYROLLS",
+    "level": 2,
+    "options": ["read", "update", "delete", "create"]
+  },
+  {
+    "name": "employee-transactions",
+    "label": "Transacciones",
+    "parent": "PAYROLLS",
+    "level": 2,
     "options": ["read", "update", "delete", "create"]
   },
   {
     "name": "users",
     "label": "Usuarios",
     "parent": "ADMIN",
+    "level": 1,
+    "options": ["read", "update", "delete", "create"]
+  },
+  {
+    "name": "requests",
+    "label": "Permisos",
+    "parent": "EMPLOYEE",
     "level": 1,
     "options": ["read", "update", "delete", "create"]
   }

@@ -119,18 +119,22 @@ export class AdminLayoutComponent implements OnInit, OnDestroy {
   }
 
   calculateMenu(menu: MenuItem[], permissions: PermissionItem[]) {
+
     const parents = permissions.filter(p => p.level === 1);
     let bandera = false;
     parents.forEach(p => {
       const childrens = permissions.filter(mp => mp.parent === p.name);
       const parentEquivalent: MenuItem = menu.filter(m => m.state === p.name)[0];
-      // if (childrens.length > 0) {
-      //   parentEquivalent.children = [];
-      //   childrens.forEach(c => {
-      //     const childmenu: ChildrenItems = menu.filter(mc => mc.state === c.name)[0];
-      //     parentEquivalent.children.push(childmenu);
-      //   });
-      // }
+      if (childrens.length > 0) {
+        parentEquivalent.children = [];
+        childrens.forEach(c => {
+          const childmenu: ChildrenItems = menu.filter(mc => mc.state === c.name)[0];
+
+          if (childmenu) {
+            parentEquivalent.children.push(childmenu);
+          }
+        });
+      }
       if (bandera === false) {
         if (parentEquivalent.state !== '/admin') {
           this.router.navigate(['admin/' + parentEquivalent.state]);
@@ -139,40 +143,6 @@ export class AdminLayoutComponent implements OnInit, OnDestroy {
         this.loading = false;
       }
       this.menuItems.push(parentEquivalent);
-    });
-    this.menuItems.push({
-      state: 'payroll',
-      name: 'Planilla',
-      type: 'sub',
-      icon: 'badge',
-      iconType: 'icon',
-      order: 3,
-      children: [
-        {
-          state: 'payroll',
-          name:"Planilla General",
-          type:'link',
-          icon: 'local_atm',
-          iconType: 'icon',
-          order: 1
-        },
-        {
-          state: 'employees',
-          name:"Empleados",
-          type:'link',
-          icon: 'engineering',
-          iconType: 'icon',
-          order: 1
-        },
-        {
-          state: 'employee-transactions',
-          name:"Transacciones",
-          type:'link',
-          icon: 'record_voice_over',
-          iconType: 'icon',
-          order: 1
-        }
-      ]
     });
 
   }

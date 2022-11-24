@@ -280,11 +280,43 @@
     "order": 16
   },
   {
+    "state": "PAYROLLS",
+    "name": "Planilla",
+    "type": "sub",
+    "icon": "badge",
+    "iconType": "icon",
+    "order": 17
+  },
+  {
+    "state": "payroll",
+    "name": "Planilla General",
+    "type": "link",
+    "icon": "local_atm",
+    "iconType": "icon",
+    "order": 1
+  },
+  {
+    "state": "employees",
+    "name": "Empleados",
+    "type": "link",
+    "icon": "engineering",
+    "iconType": "icon",
+    "order": 2
+  },
+  {
+    "state": "employee-transactions",
+    "name": "Transacciones",
+    "type": "link",
+    "icon": "record_voice_over",
+    "iconType": "icon",
+    "order": 3
+  },
+  {
     "state": "users",
     "name": "Usuarios",
     "type": "link",
     "icon": "people",
     "iconType": "icon",
-    "order": 17
+    "order": 18
   }
 ]
