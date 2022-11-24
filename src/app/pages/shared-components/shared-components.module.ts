@@ -52,6 +52,7 @@ import { SimplebarAngularModule } from 'simplebar-angular';
 
 /* FILE ----------------------*/
 import { MaterialFileInputModule } from 'ngx-material-file-input';
+import { ImageCropperModule } from 'ngx-image-cropper';
 
 /* COMPONENTS ----------------------*/
 import { NewCellarComponent } from './new-cellar/new-cellar.component';
@@ -62,12 +63,14 @@ import { getSpanishPaginatorIntl } from './spanish-paginator-intl';
 import { LoaderComponent } from './loader/loader.component';
 import { UserComponent } from './user/user.component';
 
+
 import {
   MatMomentDateModule,
   MAT_MOMENT_DATE_ADAPTER_OPTIONS,
   MomentDateAdapter,
 } from '@angular/material-moment-adapter';
 import 'moment/locale/es';
+import { ConfirmationComponent } from './confirmation/confirmation.component';
 // Tambien hay que instalar MOMENT JS
 export const MY_DATE_FORMATS = {
   parse: {
@@ -88,23 +91,26 @@ export const MY_DATE_FORMATS = {
     UpdateNotificationsComponent,
     LoaderComponent,
     UserComponent,
+    ConfirmationComponent,
   ],
   imports: [
     MatDividerModule,
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
-
+    
     // visibilty
     FlexLayoutModule,
     CoreModule,
     ToastaModule.forRoot(),
     SimplebarAngularModule,
-
+    
     // files
     MaterialFileInputModule,
-
+    ImageCropperModule,
+    
     // material
+    MatStepperModule,
     MatBadgeModule,
     MatTableModule,
     MatButtonModule,
@@ -149,6 +155,7 @@ export const MY_DATE_FORMATS = {
 
     // files
     MaterialFileInputModule,
+    ImageCropperModule,
 
     // material
     MatBadgeModule,
@@ -183,6 +190,7 @@ export const MY_DATE_FORMATS = {
     MatMomentDateModule,
     MatDividerModule,
     MatSlideToggleModule,
+    MatStepperModule,
     // components
     NewCellarComponent,
     ConfirmationDialogComponent,

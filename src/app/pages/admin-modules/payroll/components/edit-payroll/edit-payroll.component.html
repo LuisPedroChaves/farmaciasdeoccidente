@@ -1,0 +1,128 @@
+<div fxLayout="column wrap" style="height: 100%;">
+
+    <div fxLayout="row wrap" class="payrollheader" fxLayoutAlign="start start">
+        <button mat-icon-button (click)="back()">
+            <mat-icon>arrow_back</mat-icon>
+        </button> &nbsp;&nbsp; 
+        <div fxLayout="column wrap" fxFlex>
+            <div fxLayout="row wrap">
+
+                <div class="input-padding" fxFlex>
+                    <mat-form-field color="primary" fxFlex appearance="fill">
+                        <mat-label>Descripción de la planilla</mat-label>
+                        <input matInput [(ngModel)]="payrollName">
+                    </mat-form-field>
+                </div>
+            </div>
+            <div fxLayout="row wrap" fxLayoutAlign="end center">
+                <button (click)="deletePayroll();" mat-button color="warn"><mat-icon>delete</mat-icon>Eliminar Planilla</button>
+            </div>
+        </div>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <div fxLayout="column wrap" fxLayoutAlign="start center">
+            <button mat-flat-button class="big-button" (click)="generatePayroll()" color="primary">GUARDAR CAMBIOS</button>
+            <button mat-button class="print-button" [matMenuTriggerFor]="menu">
+                <mat-icon>print</mat-icon>
+                Impresión &nbsp; ⯆
+            </button>
+            <mat-menu #menu="matMenu">
+                <button mat-menu-item (click)="printPayroll()"><mat-icon class="material-icons-outlined">date_range</mat-icon> Hoja de Pago Mensual</button>
+                <button mat-menu-item (click)="printReceipts()"><mat-icon class="material-icons-outlined">contact_page</mat-icon> Recibos de Pago</button>
+                <button mat-menu-item (click)="printIGSS()"><mat-icon class="material-icons-outlined">print</mat-icon> Planilla del IGSS</button>
+            </mat-menu>
+           
+        </div>
+    </div>
+    
+    <div fxFlex class="payroll-space" >
+        
+
+
+        <table  class="employees-table"  role="table">
+            <thead  role="rowgroup">
+                <tr role="row" class="header-row">
+                    <td class="cell-h">Código</td>
+                    <td class="cell-h min">Nombre</td>
+                    <td class="cell-h min">Puesto</td>
+                    <td class="cell-h min">Sub Total</td>
+                    <td class="cell-h min hide-cell list" *ngIf="bonusExpand">Incentivo</td>
+                    <td class="cell-h min hide-cell list" *ngIf="bonusExpand">Horas Extras</td>
+                    <td class="cell-h min hide-cell list" *ngIf="bonusExpand">Asueto y 7mo día</td>
+                    <td class="cell-h min hide-cell" *ngIf="bonusExpand">Por Puesto</td>
+                    <td class="cell-h min hide-cell" *ngIf="bonusExpand">Otros</td>
+                    <td class="cell-h min list bonus" [ngClass]="{'canExpand': !bonusExpand, 'expanded': bonusExpand}">
+                        <button mat-icon-button class="expand-bonus" (click)="bonusExpand = !bonusExpand"><mat-icon>{{ !bonusExpand ? 'chevron_right' : 'chevron_left'}}</mat-icon></button>
+                        Bonificaciones
+                    </td>
+                    <td class="cell-h min hide-cell list" *ngIf="igssExpand">Nit</td>
+                    <td class="cell-h min hide-cell" *ngIf="igssExpand">Afiliación</td>
+                    <td class="cell-h min hide-cell" *ngIf="igssExpand">Sub Total</td>
+                    <td class="cell-h min hide-cell" *ngIf="igssExpand">Igss (4.83%)</td>
+                    <td class="cell-h min list igss" [ngClass]="{'canExpand': !igssExpand, 'expanded': igssExpand}">
+                        <button mat-icon-button class="expand-igss" (click)="igssExpand = !igssExpand"><mat-icon>{{ !igssExpand ? 'chevron_right' : 'chevron_left'}}</mat-icon></button>
+                        IGSS
+                    </td>
+                    <td class="cell-h min hide-cell list" *ngIf="discountsExpand">Cobros por producto</td>
+                    <td class="cell-h min hide-cell" *ngIf="discountsExpand">Prestamos</td>
+                    <td class="cell-h min hide-cell" *ngIf="discountsExpand">Suspenciones/Faltas</td>
+                    <td class="cell-h min list discounts" [ngClass]="{'canExpand': !discountsExpand, 'expanded': discountsExpand}">
+                        <button mat-icon-button class="expand-discounts" (click)="discountsExpand = !discountsExpand"><mat-icon>{{ !discountsExpand ? 'chevron_right' : 'chevron_left'}}</mat-icon></button>
+                        Descuentos
+                    </td>
+                    <td class="cell-h min list">Total</td>
+                    <td class="cell-h list">Opciones</td>
+                </tr>
+            </thead>
+            <tbody role="rowgroup">
+                <tr role="row" class="body-row" *ngFor="let p of payrollEmployees; let i = index">
+                    <td class="cell list">{{p._employeeJob._employee.code}}</td>
+                    <td class="cell min name" fxLayoutAlign="start center">
+                        <img [src]="p._employeeJob._employee.photo ? (p._employeeJob._employee.photo | file : 'employees') : 'assets/images/avatars/00M.jpg'" class="avatar" alt=""> &nbsp; &nbsp;
+                        {{p._employeeJob._employee.name}} {{p._employeeJob._employee.lastName}}
+                    </td>
+                    <td class="cell min">{{p._employeeJob._job.name}}</td>
+                    <td class="cell min">Q. {{p._employeeJob.initialSalary}}</td>
+                    <td class="cell min hide-cell list" *ngIf="bonusExpand">
+                        Q. <input type="number" class="cell-input" [(ngModel)]="p.incentiveBonus">
+                    </td>
+                    <td class="cell min hide-cell list" *ngIf="bonusExpand">
+                        Q. <input type="number" class="cell-input" [(ngModel)]="p.extraHours">
+                    </td>
+                    <td class="cell min hide-cell list" *ngIf="bonusExpand">
+                        Q. <input type="number" class="cell-input" [(ngModel)]="p.holiday">
+                    </td>
+                    <td class="cell min hide-cell list" *ngIf="bonusExpand">
+                        Q. <input type="number" class="cell-input" [(ngModel)]="p.jobBonus">
+                    </td>
+                    <td class="cell min hide-cell list" *ngIf="bonusExpand">
+                        Q. <input type="number" class="cell-input" [(ngModel)]="p.otherBonus">
+                    </td>
+                    <td class="cell min list bonus" [ngClass]="{'canExpand': !bonusExpand, 'expanded': bonusExpand}">
+                        Q. {{ (p.extraHours + p.holiday + p.incentiveBonus + p.jobBonus + p.otherBonus ) | number : '.2'}}
+                    </td>
+                    <td class="cell min hide-cell list" *ngIf="igssExpand">{{ p._employeeJob._employee.igssNumber }}</td>
+                    <td class="cell min hide-cell" *ngIf="igssExpand">{{ p._employeeJob._employee.nit }}</td>
+                    <td class="cell min hide-cell" *ngIf="igssExpand">Q. 0.00</td>
+                    <td class="cell min hide-cell" *ngIf="igssExpand">Q. {{(p.igss) | number : '.2'}}</td>
+                    <td class="cell min list igss" [ngClass]="{'canExpand': !igssExpand, 'expanded': igssExpand}">Q. {{(p.igss) | number : '.2'}}</td>
+                    <td class="cell min hide-cell list" *ngIf="discountsExpand">
+                        Q. <input type="number" class="cell-input" [(ngModel)]="p.productCharges">
+                    </td>
+                    <td class="cell min hide-cell" *ngIf="discountsExpand">
+                        Q. <input type="number" class="cell-input" [(ngModel)]="p.credits">
+                    </td>
+                    <td class="cell min hide-cell" *ngIf="discountsExpand">
+                        Q. <input type="number" class="cell-input" [(ngModel)]="p.foults">
+                    </td>
+                    <td class="cell min list discounts" [ngClass]="{'canExpand': !discountsExpand, 'expanded': discountsExpand}">Q. {{ (p.productCharges + p.credits + p.foults) | number : '.2' }}</td>
+                    <td class="cell min list"><b>Q. {{ ((p._employeeJob.initialSalary) + (p.extraHours + p.holiday + p.incentiveBonus + p.jobBonus + p.otherBonus) - (p.igss) - (p.productCharges + p.credits + p.foults)) | number : '.2' }}</b></td>
+
+                    <td class="cell list">
+                        <button mat-icon-button (click)="printReceipt(p)"><mat-icon class="material-icons-outlined">print</mat-icon></button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+    </div>
+</div>

@@ -1,0 +1,100 @@
+<mat-sidenav-container class="employees-list">
+
+    <mat-sidenav-content>
+        <button (click)="newPayroll()" mat-fab color="primary" class="fab mat-elevation-z10">
+            <mat-icon>add</mat-icon>
+            <span class="extended-fab-button__text">Planilla</span>
+        </button>
+        <header fxLayout="row wrap" class="header" fxLayoutAlign="start center">
+            <h4 fxLayoutAlign="start center" class="module-title ma-0 product-font">
+                <mat-icon class="iconHeader">local_atm</mat-icon> &nbsp;&nbsp; <span class="product-font">Planilla</span>
+            </h4>
+            <span fxFlex></span>
+            <button mat-icon-button (click)="filter()">
+                <mat-icon>filter_list</mat-icon>
+            </button>
+        </header>
+
+        <div data-simplebar class="list">
+            <div *ngIf="payrolls !== undefined">
+                <div *ngIf="payrolls.length > 0" fxLayout="row wrap" class="padding-15">
+                    
+                    <div *ngFor="let p of payrolls" class="payroll" fxFlex="50" fxFlex.gt-lg="20" fxFlex.gt-md="33">
+                        <mat-card fxLayout="column wrap" (click)="openPayroll(p)" matRipple class="paycard" fxLayoutAlign="center center">
+                            <div class="iconpay">
+                                <mat-icon>request_quote</mat-icon>
+                            </div>
+                            <div >{{p.description}}</div>
+                            <div class="text-muted">Fecha de creación: {{p.date | date: 'dd/MM/yyyy'}}</div>
+                        </mat-card>
+                    </div>
+    
+    
+                </div>
+                <div *ngIf="payrolls.length === 0"  fxLayout="column wrap" class="loader" fxLayoutAlign="center center">
+                    No hay planillas generadas
+                </div>
+            </div>
+    
+            <div *ngIf="payrolls === undefined" fxLayout="column wrap" class="loader" fxLayoutAlign="center center">
+                <mat-progress-spinner mode="indeterminate" diameter="40" color="primary"></mat-progress-spinner>
+            </div>
+        </div>
+    </mat-sidenav-content>
+    <mat-sidenav [opened]="sideopen" position="end" disableClose="true" #sidemenu class="sidenavpayroll" [mode]="'over'">
+        <div class="barheader" fxLayout="row wrap" fxLayoutAlign="start center">
+            <button mat-icon-button (click)="newPayroll()"><mat-icon>close</mat-icon></button> &nbsp;
+            <span class="newtitle">Nueva Planilla</span>
+
+
+        </div>
+
+        <!-- <div id="payrollcomponent" *ngIf="sideopen === true">
+            <app-new-payroll [smallScreen]="smallScreen" [cellars]="cellars"></app-new-payroll>
+        </div> -->
+    </mat-sidenav>
+</mat-sidenav-container>
+
+
+<!-- <div class="module">
+    <button (click)="newPayroll()" mat-fab color="primary" class="fab mat-elevation-z10">
+        <mat-icon>add</mat-icon>
+        <span class="extended-fab-button__text">Planilla</span>
+    </button>
+    <header fxLayout="row wrap" class="header" fxLayoutAlign="start center">
+        <h4 fxLayoutAlign="start center" class="module-title ma-0 product-font">
+            <mat-icon class="iconHeader">local_atm</mat-icon> &nbsp;&nbsp; <span class="product-font">Planilla</span>
+        </h4>
+        <span fxFlex></span>
+        <button mat-icon-button (click)="filter()">
+            <mat-icon>filter_list</mat-icon>
+        </button>
+    </header>
+
+
+    <div data-simplebar class="list">
+        <div *ngIf="payrolls !== undefined">
+            <div *ngIf="payrolls.length > 0" fxLayout="row wrap" class="padding-15">
+                
+                <div *ngFor="let p of payrolls" class="payroll" fxFlex="50" fxFlex.gt-lg="20" fxFlex.gt-md="33">
+                    <mat-card fxLayout="column wrap" class="paycard" fxLayoutAlign="center center">
+                        <div class="iconpay">
+                            <mat-icon>request_quote</mat-icon>
+                        </div>
+                        <div >Planilla del mes</div>
+                        <div class="text-muted">Fecha de creación: 10/10/2022</div>
+                    </mat-card>
+                </div>
+
+
+            </div>
+            <div *ngIf="payrolls.length === 0"  fxLayout="column wrap" class="loader" fxLayoutAlign="center center">
+                No hay planillas generadas
+            </div>
+        </div>
+
+        <div *ngIf="payrolls === undefined" fxLayout="column wrap" class="loader" fxLayoutAlign="center center">
+            <mat-progress-spinner mode="indeterminate" diameter="40" color="primary"></mat-progress-spinner>
+        </div>
+    </div>
+</div> -->

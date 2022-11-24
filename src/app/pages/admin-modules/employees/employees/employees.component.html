@@ -1,299 +1,111 @@
-<div id="wrapper" class="background" style="height: 100%" data-simplebar>
+<mat-sidenav-container class="employees-list">
+    <mat-sidenav-content>
 
-    <div fxLayout="row wrap">
-        <div fxFlex>
-            <div fxLayout="row wrap" class="ca-header-padding" fxLayoutAlign="start center">
-                <h4 fxLayoutAlign="start center" class="module-title product-font">
-                    <mat-icon class="iconHeader">work</mat-icon> <span class="product-font">Empleados</span>
-                </h4>
+        <button (click)="newEmployee()" mat-fab color="primary" class="fab mat-elevation-z10">
+            <mat-icon>add</mat-icon>
+            <span class="extended-fab-button__text">Empleado</span>
+        </button>
+        
+        <header fxLayout="row wrap" class="header" fxLayoutAlign="start center">
+            <h4 fxLayoutAlign="start center" class="module-title ma-0 product-font">
+                <mat-icon class="iconHeader">engineering</mat-icon> &nbsp;&nbsp; <span class="product-font">Empleados</span>
+            </h4>
+            <span fxFlex></span>
+            <button mat-stroked-button color="primary" (click)="openJobs()">
+                <mat-icon>work</mat-icon> Puestos
+            </button> &nbsp;&nbsp;
+            <button mat-stroked-button color="primary" (click)="openDepartments()">
+                <mat-icon>group</mat-icon> Departamentos
+            </button> &nbsp;&nbsp;
+            <mat-form-field *ngIf="cellars !== undefined" appearance="outline" floatLabel="always" class="findinput">
+                <mat-label>Sucursales</mat-label>
+                <mat-select multiple [(ngModel)]="selectedCellars" (ngModelChange)="loadEmployees()">
+                    <mat-option *ngFor="let c of cellars" [value]="c._id">{{ c.name }}</mat-option>
+                </mat-select>
+            </mat-form-field> &nbsp; &nbsp;
+            <mat-form-field appearance="outline" floatLabel="always" class="findinput">
+                <mat-label>Buscar Empleado</mat-label>
+                <mat-icon class="text-muted" matPrefix>search</mat-icon>
+                <input matInput type="text" [(ngModel)]="searchtext">
+            </mat-form-field>
+        </header>
+
+        <div data-simplebar class="list">
+            <div *ngIf="employees !== undefined" >
+                <div *ngIf="employees.length > 0" fxLayout="row wrap" class="padding-15">
+                    <div *ngFor="let e of (employees | filter: searchtext : ['name', 'dpi'])" fxFlex.gt-lg="20" fxFlex.gt-md="25" fxFlex.gt-sm="33" fxFlex.gt-xs="50" fxFlex="100" class="usercard user">
+                        <mat-card matRipple class="cursor-pointer user-card mat-elevation-z2" (click)="selectEmployee(e)" fxLayout="row wrap" fxLayoutAlign="start center">
+                            <div fxFlex="60px">
+                                <img [src]="e.photo === null ? 'assets/images/avatars/00M.jpg' : (e.photo | file : 'employees' )" alt="" class="avataruser">
+                            </div>
+                            <div fxFlex fxLayout="column wrap" class="ellipsis-text">
+                                <h4 class="ma-0 product-font">{{e.name}} {{e.lastName}}</h4>
+                                <span class="text-muted">{{e.document}}</span>
+                            </div>
+                        </mat-card>
+                    </div>
+                </div>
+                <div *ngIf="employees.length === 0"  fxLayout="column wrap" class="loader" fxLayoutAlign="center center">
+                    No hay empleados
+                </div>
+            </div>
+        
+        
+            <div *ngIf="employees === undefined" fxLayout="column wrap" class="loader" fxLayoutAlign="center center">
+                <mat-progress-spinner mode="indeterminate" diameter="40" color="primary"></mat-progress-spinner>
+            </div>
+        
+        </div>
+    </mat-sidenav-content>
+    <mat-sidenav [opened]="sideopen" position="end" disableClose="true" #sidemenu [ngStyle]="{ width: panel === 'Puestos' ? '350px' : '100%' }" [mode]="'over'">
+
+        <div *ngIf="panel === 'Puestos'">
+
+            <header fxLayout="row wrap" class="jobs-header" fxLayoutAlign="start center">
+                <button mat-icon-button (click)="sideopen = false">
+                    <mat-icon>close</mat-icon>
+                </button> &nbsp; &nbsp;
+                <h4 class="ma-0 title">{{panel}}</h4>
                 <span fxFlex></span>
-                <button color="primary" (click)="newEmployee()" mat-raised-button class="info-row">
-                    <mat-icon>person_add</mat-icon> Nuevo Empleado
-                </button> &nbsp;&nbsp;
-                <button class="info-row" color="primary" (click)="newJob()" mat-raised-button>
-                    <mat-icon>work</mat-icon> Nuevo Puesto
+                <button mat-flat-button (click)="addJob()" color="primary">
+                    <mat-icon>add</mat-icon> Agregar
                 </button>
-            </div>
-        </div>
-    </div>
-    <div fxLayout="row wrap" style="padding: 10px" *ngIf="employeeGroup !== undefined" class="employee-group">
-        <div fxFlex="100" fxLayout="row wrap" *ngIf="employeeGroup.length > 0" class="employee-group">
-            <div fxFlex="100" *ngFor="let group of employeeGroup">
-                <mat-card fxFlex="100" style="padding: 0; margin-bottom: 20px">
-                    <mat-card-header fxLayoutAlign="start center" class="group-title">
-                        <mat-card-title style="margin:0">{{ group.name }}</mat-card-title>
-                        <span fxFlex></span>
-                    </mat-card-header>
-                    <mat-divider></mat-divider>
-                    <mat-card-content class="card-content">
+            </header>
+            <div *ngIf="jobs !== undefined" class="jobs-list" data-simplebar>
+                <div *ngIf="jobs.length > 0" fxLayout="column wrap">
+                    <mat-card *ngFor="let j of jobs" fxLayout="row wrap" class="jobcard mat-elevation-z2">
+                        <div fxFlex>
+                            <div>{{j.name}}</div>
+                            <div class="text-muted">{{ getDepartment(j._jobDepartment) }}</div>
 
-                        <table mat-table [dataSource]="group.employees" multiTemplateDataRows>
+                        </div>
+                        <button mat-icon-button [matMenuTriggerFor]="menu">
+                            <mat-icon>more_vert</mat-icon>
+                        </button>
+                        <mat-menu #menu="matMenu">
+                            <button mat-menu-item (click)="editJob(j)"><mat-icon class="material-icons-outlined">create</mat-icon>Editar</button>
+                            <button mat-menu-item (click)="deleteJob(j)"><mat-icon class="material-icons-outlined">delete</mat-icon>Eliminar</button>
+                        </mat-menu>
+                    </mat-card>
 
-                            <ng-container matColumnDef="avatar">
-                                <th mat-header-cell *matHeaderCellDef style="width: 60px;"></th>
-                                <td mat-cell *matCellDef="let element" style="width: 60px;">
-                                    <mat-icon>
-                                        <svg style="width:24px;height:24px" viewBox="0 0 24 24">
-                                            <path fill="currentColor" d="M12,3A4,4 0 0,1 16,7A4,4 0 0,1 12,11A4,4 0 0,1 8,7A4,4 0 0,1 12,3M16,13.54C16,14.6 15.72,17.07 13.81,19.83L13,15L13.94,13.12C13.32,13.05 12.67,13 12,13C11.33,13 10.68,13.05 10.06,13.12L11,15L10.19,19.83C8.28,17.07 8,14.6 8,13.54C5.61,14.24 4,15.5 4,17V21H10L11.09,21H12.91L14,21H20V17C20,15.5 18.4,14.24 16,13.54Z" />
-                                        </svg>
-                                    </mat-icon>
-                                </td>
-                            </ng-container>
-                            <ng-container matColumnDef="name">
-                                <th mat-header-cell *matHeaderCellDef> Nombre </th>
-                                <td mat-cell *matCellDef="let element">
-                                    element.name}}
-                                </td>
-                            </ng-container>
-
-                            <ng-container matColumnDef="_job">
-                                <th mat-header-cell *matHeaderCellDef> Puesto </th>
-                                <td mat-cell *matCellDef="let element">
-                                    element._job.name}}
-                                </td>
-                            </ng-container>
-
-
-                            <ng-container matColumnDef="salary">
-                                <th mat-header-cell *matHeaderCellDef> Salario </th>
-                                <td mat-cell *matCellDef="let element">
-                                    Q. element.salary | roundDigit: 2}}
-                                </td>
-                            </ng-container>
-
-                            <ng-container matColumnDef="dpi">
-                                <th mat-header-cell *matHeaderCellDef> DPI </th>
-                                <td mat-cell *matCellDef="let element">
-                                    element.dpi}}
-                                </td>
-                            </ng-container>
-
-                            <ng-container matColumnDef="birthDate">
-                                <th mat-header-cell *matHeaderCellDef> Edad </th>
-                                <td mat-cell *matCellDef="let element">
-                                    element.birthDate | dateAgo }} años &nbsp;
-                                    <small class="mat-text-muted">(element.birthDate | momentDate: 'DD/MM/YYYY'}})</small>
-                                </td>
-                            </ng-container>
-
-                            <!-- Expanded Content Column - The detail row is made up of this one column that spans across all columns -->
-                            <ng-container matColumnDef="expandedDetail">
-                                <td mat-cell *matCellDef="let element" [attr.colspan]="columnsToDisplay.length">
-                                    <div class="example-element-detail" [@detailExpand]="element == expandedElement ? 'expanded' : 'collapsed'">
-                                        <div *ngIf="element.editing !== true" class="example-element-description">
-                                            <div class="header" fxLayoutAlign="start center" fxLayout="row wrap">
-                                                <h2 style="margin:0"> element.name }}</h2>
-                                                <span fxFlex></span>
-                                                <button mat-icon-button>
-                                                <mat-icon class="material-icons-outlined">create</mat-icon>
-                                            </button>
-                                                <button mat-icon-button>
-                                                <mat-icon class="material-icons-outlined">delete</mat-icon>
-                                            </button>
-                                            </div>
-                                            <div class="info-row" fxLayoutAlign="start center" fxLayout="row wrap">
-                                                <div fxFlex="50px">
-                                                    <mat-icon class="material-icons-outlined grayicon">
-                                                        <svg style="width:24px;height:24px" viewBox="0 0 24 24">
-                                                        <path fill="currentColor" [attr.d]="element.gender === 'Masculino' ? 'M12,2A2,2 0 0,1 14,4A2,2 0 0,1 12,6A2,2 0 0,1 10,4A2,2 0 0,1 12,2M10.5,7H13.5A2,2 0 0,1 15.5,9V14.5H14V22H10V14.5H8.5V9A2,2 0 0,1 10.5,7Z' : 'M12,2A2,2 0 0,1 14,4A2,2 0 0,1 12,6A2,2 0 0,1 10,4A2,2 0 0,1 12,2M10.5,22V16H7.5L10.09,8.41C10.34,7.59 11.1,7 12,7C12.9,7 13.66,7.59 13.91,8.41L16.5,16H13.5V22H10.5Z'" />
-                                                    </svg>
-                                                    </mat-icon>
-                                                </div>
-                                                <div fxFlex>
-                                                    <b>Género:</b> &nbsp; &nbsp; element.gender }}
-                                                </div>
-                                            </div>
-                                            <div class="info-row" fxLayoutAlign="start center" fxLayout="row wrap">
-                                                <div fxFlex="50px">
-                                                    <mat-icon class="material-icons-outlined grayicon">
-                                                        <svg style="width:24px;height:24px" viewBox="0 0 24 24">
-                                                        <path fill="currentColor" d="M22,3H2C0.91,3.04 0.04,3.91 0,5V19C0.04,20.09 0.91,20.96 2,21H22C23.09,20.96 23.96,20.09 24,19V5C23.96,3.91 23.09,3.04 22,3M22,19H2V5H22V19M14,17V15.75C14,14.09 10.66,13.25 9,13.25C7.34,13.25 4,14.09 4,15.75V17H14M9,7A2.5,2.5 0 0,0 6.5,9.5A2.5,2.5 0 0,0 9,12A2.5,2.5 0 0,0 11.5,9.5A2.5,2.5 0 0,0 9,7M14,7V8H20V7H14M14,9V10H20V9H14M14,11V12H18V11H14" />
-                                                    </svg>
-                                                    </mat-icon>
-                                                </div>
-                                                <div fxFlex>
-                                                    <b>Número de DPI:</b> &nbsp; &nbsp; element.dpi }}
-                                                </div>
-                                            </div>
-                                            <div class="info-row" fxLayoutAlign="start center" fxLayout="row wrap">
-                                                <div fxFlex="50px">
-                                                    <mat-icon class="material-icons-outlined grayicon">
-                                                        date_range
-                                                    </mat-icon>
-                                                </div>
-                                                <div fxFlex>
-                                                    <b>Fecha de Nacimiento:</b> &nbsp; &nbsp; element.birthDate | momentDate: 'DD/MM/YYYY' }} <small class="mat-text-muted">( element.birthDate | dateAgo }} años)</small>
-                                                </div>
-                                            </div>
-                                            <div class="info-row" fxLayoutAlign="start center" fxLayout="row wrap">
-                                                <div fxFlex="50px">
-                                                    <mat-icon class="material-icons-outlined grayicon">
-                                                        phone
-                                                    </mat-icon>
-                                                </div>
-                                                <div fxFlex>
-                                                    <b>Número de Teléfono:</b> &nbsp; &nbsp; element.phone }}
-                                                </div>
-                                            </div>
-                                            <div class="info-row" fxLayoutAlign="start center" fxLayout="row wrap">
-                                                <div fxFlex="50px">
-                                                    <mat-icon class="material-icons-outlined grayicon">
-                                                        location_on
-                                                    </mat-icon>
-                                                </div>
-                                                <div fxFlex>
-                                                    <b>Dirección Domiciliar:</b> &nbsp; &nbsp; element.address }}
-                                                </div>
-                                            </div>
-                                            <div class="info-row" fxLayoutAlign="start center" fxLayout="row wrap">
-                                                <div fxFlex="50px">
-                                                    <mat-icon class="material-icons-outlined grayicon">
-                                                        work_outlined
-                                                    </mat-icon>
-                                                </div>
-                                                <div fxFlex>
-                                                    <b>Puesto de trabajo:</b> &nbsp; &nbsp; element._job.name }} <small class="mat-text-muted"><b> element.salary | roundDigit: 2 }})</b></small>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div *ngIf="element.editing === true" class="example-element-description">
-                                            <div class="header" fxLayoutAlign="start center" fxLayout="row wrap">
-
-                                                <mat-form-field fxFlex>
-                                                    <mat-label>Nombre</mat-label>
-                                                    <input matInput type="text">
-                                                </mat-form-field>
-                                                <button mat-raised-button color="primary">
-                                                GUARDAR
-                                            </button> &nbsp;&nbsp;
-                                                <button mat-button>
-                                                CANCELAR
-                                            </button>
-                                            </div>
-                                            <div class="info-row" fxLayoutAlign="start center" fxLayout="row wrap">
-                                                <div fxFlex="50px">
-                                                    <mat-icon class="material-icons-outlined grayicon">
-                                                        <svg style="width:24px;height:24px" viewBox="0 0 24 24">
-                                                        <path fill="currentColor" [attr.d]="editingEmployee.gender === 'Masculino' ? 'M12,2A2,2 0 0,1 14,4A2,2 0 0,1 12,6A2,2 0 0,1 10,4A2,2 0 0,1 12,2M10.5,7H13.5A2,2 0 0,1 15.5,9V14.5H14V22H10V14.5H8.5V9A2,2 0 0,1 10.5,7Z' : 'M12,2A2,2 0 0,1 14,4A2,2 0 0,1 12,6A2,2 0 0,1 10,4A2,2 0 0,1 12,2M10.5,22V16H7.5L10.09,8.41C10.34,7.59 11.1,7 12,7C12.9,7 13.66,7.59 13.91,8.41L16.5,16H13.5V22H10.5Z'" />
-                                                    </svg>
-                                                    </mat-icon>
-                                                </div>
-                                                <div fxFlex>
-                                                    <b>Género:</b> &nbsp; &nbsp;
-                                                    <mat-radio-group aria-label="Select an option" color="primary">
-                                                        <mat-radio-button class="radio" value="Masculino">Masculino</mat-radio-button>
-                                                        <mat-radio-button class="radio" value="Femenino">Femenino</mat-radio-button>
-                                                    </mat-radio-group>
-                                                </div>
-                                            </div>
-                                            <div class="info-row" fxLayoutAlign="start center" fxLayout="row wrap">
-                                                <div fxFlex="50px">
-                                                    <mat-icon class="material-icons-outlined grayicon">
-                                                        <svg style="width:24px;height:24px" viewBox="0 0 24 24">
-                                                        <path fill="currentColor" d="M22,3H2C0.91,3.04 0.04,3.91 0,5V19C0.04,20.09 0.91,20.96 2,21H22C23.09,20.96 23.96,20.09 24,19V5C23.96,3.91 23.09,3.04 22,3M22,19H2V5H22V19M14,17V15.75C14,14.09 10.66,13.25 9,13.25C7.34,13.25 4,14.09 4,15.75V17H14M9,7A2.5,2.5 0 0,0 6.5,9.5A2.5,2.5 0 0,0 9,12A2.5,2.5 0 0,0 11.5,9.5A2.5,2.5 0 0,0 9,7M14,7V8H20V7H14M14,9V10H20V9H14M14,11V12H18V11H14" />
-                                                    </svg>
-                                                    </mat-icon>
-                                                </div>
-                                                <div fxFlex>
-                                                    <b>Número de DPI:</b> &nbsp; &nbsp;
-                                                    <mat-form-field color="primary" class="width-all">
-                                                        <mat-label>DPI</mat-label>
-                                                        <input type="text" matInput placeholder="Ingrese el número de DPI">
-                                                    </mat-form-field>
-                                                </div>
-                                            </div>
-                                            <div class="info-row" fxLayoutAlign="start center" fxLayout="row wrap">
-                                                <div fxFlex="50px">
-                                                    <mat-icon class="material-icons-outlined grayicon">
-                                                        date_range
-                                                    </mat-icon>
-                                                </div>
-                                                <div fxFlex>
-                                                    <b>Fecha de Nacimiento:</b> &nbsp; &nbsp;
-                                                    <mat-form-field color="primary" class="width-all">
-                                                        <mat-label>Fecha de Nacimiento</mat-label>
-                                                        <input matInput>
-                                                        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-                                                        <mat-datepicker #picker></mat-datepicker>
-                                                    </mat-form-field>
-                                                </div>
-                                            </div>
-                                            <div class="info-row" fxLayoutAlign="start center" fxLayout="row wrap">
-                                                <div fxFlex="50px">
-                                                    <mat-icon class="material-icons-outlined grayicon">
-                                                        phone
-                                                    </mat-icon>
-                                                </div>
-                                                <div fxFlex>
-                                                    <b>Número de Teléfono:</b> &nbsp; &nbsp;
-                                                    <mat-form-field color="primary" class="width-all">
-                                                        <mat-label>Teléfono</mat-label>
-                                                        <input type="text" matInput placeholder="Ingrese el número de teléfono">
-                                                    </mat-form-field>
-                                                </div>
-                                            </div>
-                                            <div class="info-row" fxLayoutAlign="start center" fxLayout="row wrap">
-                                                <div fxFlex="50px">
-                                                    <mat-icon class="material-icons-outlined grayicon">
-                                                        location_on
-                                                    </mat-icon>
-                                                </div>
-                                                <div fxFlex>
-                                                    <b>Dirección Domiciliar:</b> &nbsp; &nbsp;
-                                                    <mat-form-field color="primary" class="width-all">
-                                                        <mat-label>Dirección</mat-label>
-                                                        <input type="text" matInput placeholder="Ingrese la Dirección">
-                                                    </mat-form-field>
-                                                </div>
-                                            </div>
-                                            <div class="info-row" fxLayoutAlign="start center" fxLayout="row wrap">
-                                                <div fxFlex="50px">
-                                                    <mat-icon class="material-icons-outlined grayicon">
-                                                        work_outlined
-                                                    </mat-icon>
-                                                </div>
-                                                <div fxFlex>
-                                                    <b>Puesto de trabajo:</b> &nbsp; &nbsp;
-                                                    <mat-form-field color="primary" class="width-all">
-                                                        <mat-label>Puesto de Trabajo</mat-label>
-                                                        <mat-select>
-                                                            <mat-option *ngFor="let j of jobs" [value]="j">
-                                                                {{ j.name }}
-                                                            </mat-option>
-                                                        </mat-select>
-                                                    </mat-form-field>
-                                                    <mat-form-field color="primary" class="width-all">
-                                                        <mat-label>Salario</mat-label>
-                                                        <span matPrefix><b>Q.</b></span>
-                                                        <input type="text" matInput placeholder="Ingrese el salario">
-                                                    </mat-form-field>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </td>
-                            </ng-container>
-
-                            <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
-                            <tr mat-row *matRowDef="let element; columns: columnsToDisplay;" class="example-element-row" [class.example-expanded-row]="expandedElement === element" (click)="expandedElement = expandedElement === element ? null : element; element.editing = false ">
-                            </tr>
-                            <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="example-detail-row"></tr>
-                        </table>
-                    </mat-card-content>
-                </mat-card>
+                </div>
+                <div *ngIf="jobs.length === 0" class="jobs-list" fxLayout="column wrap" fxLayoutAlign="center center">
+                    No hay puestos de trabajo agregados
+                </div>
             </div>
         </div>
 
-        <div fxFlex="100" fxLayout="column" fxLayoutAlign="center center" *ngIf="employeeGroup.length <= 0" class="allspace">
-            <span>
-                <mat-icon>
-                        <svg style="width:24px;height:24px" viewBox="0 0 24 24">
-                                <path fill="currentColor" d="M16.36 12.76C18.31 13.42 20 14.5 20 16V21H4V16C4 14.5 5.69 13.42 7.65 12.76L8.27 14L8.5 14.5C7 14.96 5.9 15.62 5.9 16V19.1H10.12L11 14.03L10.06 12.15C10.68 12.08 11.33 12.03 12 12.03C12.67 12.03 13.32 12.08 13.94 12.15L13 14.03L13.88 19.1H18.1V16C18.1 15.62 17 14.96 15.5 14.5L15.73 14L16.36 12.76M12 5C10.9 5 10 5.9 10 7C10 8.1 10.9 9 12 9C13.1 9 14 8.1 14 7C14 5.9 13.1 5 12 5M12 11C9.79 11 8 9.21 8 7C8 4.79 9.79 3 12 3C14.21 3 16 4.79 16 7C16 9.21 14.21 11 12 11Z" />
-                            </svg>
-                </mat-icon>
-            </span>
-            <span>No hay ningún empleado agregado</span>
+        <div *ngIf="panel !== 'Puestos'">
+            <header fxLayout="row wrap" class="jobs-header" fxLayoutAlign="start center">
+                <button mat-icon-button (click)="sideopen = false">
+                    <mat-icon>close</mat-icon>
+                </button> &nbsp; &nbsp;
+                <h4 class="ma-0 title">{{panel}}</h4>
+            </header>
+            <div *ngIf="sideopen === true" fxLayout="row wrap" class="new-employee">
+                <app-new-employee *ngIf="panel === 'Nuevo Empleado'" (closebar)="closebar($event)" [jobs]="jobs" [cellars]="cellars" [banks]="banks" [smallScreen]="smallScreen" class="new-employee"></app-new-employee>
+                <app-edit-employee *ngIf="panel === 'Editar Empleado'" [employee]="selectedEmployee" (closebar)="closebar($event)" [jobs]="jobs" [cellars]="cellars" [banks]="banks" [smallScreen]="smallScreen" class="new-employee"></app-edit-employee>
+            </div>
         </div>
-
-    </div>
-</div>
+    </mat-sidenav>
+</mat-sidenav-container>

@@ -1,0 +1,139 @@
+<header class="header" fxLayout="row wrap" fxLayoutAlign="start center">
+    <h2 class="product-font ma-0">Agregar Puesto</h2>
+    <span fxFlex></span>
+    <button mat-icon-button (click)="dialogRef.close()">
+        <mat-icon>close</mat-icon>
+    </button>
+</header>
+<form [formGroup]="form" class="space" data-simplebar>
+
+    <div fxLayout="row wrap" >
+        <div fxFlex="100" class="section">
+            <mat-form-field color="primary" appearance="outline" class="all">
+                <mat-label>Puesto</mat-label>
+                <mat-select formControlName="_job">
+                    <mat-option *ngFor="let j of jobs" [value]="j._id">{{ j.name }}</mat-option>
+                </mat-select>
+            </mat-form-field>
+        </div>
+    </div>
+
+
+
+    <div fxLayout="row wrap" >
+        <div fxFlex="100" class="section">
+            <mat-form-field color="primary" appearance="outline" class="all">
+                <mat-label>Salario Inicial</mat-label>
+                <input matInput type="text" formControlName="initialSalary">
+            </mat-form-field>
+        </div>
+    </div>
+    <div fxLayout="row wrap" >
+        <div fxFlex="50" class="section">
+            <mat-form-field color="primary" appearance="outline" class="all">
+                <mat-label>Salario Por Hora</mat-label>
+                <input matInput type="text" formControlName="salaryPerHour">
+            </mat-form-field>
+        </div>
+        <div fxFlex="50" class="section">
+            <mat-form-field color="primary" appearance="outline" class="all">
+                <mat-label>Horas mensuales</mat-label>
+                <input matInput type="text" formControlName="monthlyHours">
+            </mat-form-field>
+        </div>
+    </div>
+
+
+
+    <div fxLayout="row wrap" >
+        <div fxFlex="50" class="section">
+            <mat-form-field color="primary" appearance="outline" class="all">
+                <mat-label>Tarifa de Hora Extra</mat-label>
+                <input matInput type="text" formControlName="salaryExtraHours">
+            </mat-form-field>
+        </div>
+        <div fxFlex="50" class="section">
+            <mat-form-field color="primary" appearance="outline" class="all">
+                <mat-label>Bono Extra</mat-label>
+                <input matInput type="text" formControlName="bonus">
+            </mat-form-field>
+        </div>
+    </div>
+
+
+
+    <div fxLayout="row wrap"  fxLayoutAlign="start center">
+        <div fxFlex="50" class="section">
+            <mat-form-field class="all" appearance="outline">
+                <mat-label>Fecha de Inicio de labores</mat-label>
+                <input matInput [matDatepicker]="picker" formControlName="startDate">
+                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                <mat-datepicker #picker></mat-datepicker>
+            </mat-form-field>
+        </div>
+        <div fxFlex="50" class="section">
+            <mat-form-field class="all" appearance="outline">
+                <mat-label>Fecha de Final de labores</mat-label>
+                <input matInput [matDatepicker]="picker2" formControlName="endDate">
+                <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+                <mat-datepicker #picker2></mat-datepicker>
+            </mat-form-field>
+        </div>
+    </div>
+
+    <div fxLayout="row wrap"  fxLayoutAlign="start center">
+        <div fxFlex="50" class="section">
+            <mat-slide-toggle formControlName="lawBonus">Bono de Ley</mat-slide-toggle>
+        </div>
+        <div fxFlex="50" class="section">
+            <mat-form-field color="primary" appearance="outline" class="all">
+                <mat-label>Jornada</mat-label>
+                <input matInput type="text" formControlName="workingDay">
+            </mat-form-field>
+        </div>
+    </div>
+
+
+    <div fxLayout="row wrap" >
+        <div fxFlex="50" class="section">
+            <mat-form-field color="primary" appearance="outline" class="all">
+                <mat-label>Tipo de contrato</mat-label>
+                <input matInput type="text" formControlName="contractType">
+            </mat-form-field>
+        </div>
+        <div fxFlex="50" class="section">
+            <mat-form-field  class="all" color="primary" appearance="outline">
+                <mat-label>Contrato</mat-label>
+                <ngx-mat-file-input formControlName="agreement" placeholder="Seleccione el archivo" ></ngx-mat-file-input>
+                <mat-icon matSuffix>folder</mat-icon>
+                <mat-hint *ngIf="form.controls.agreement.value !== null">Este puesto ya tiene un contrato adjunto</mat-hint>
+            </mat-form-field>
+        
+        </div>
+    </div>
+
+    <div fxLayout="row wrap" >
+        <div fxFlex="50" class="section">
+            <mat-form-field color="primary" appearance="outline" class="all">
+                <mat-label>Tipo de pago</mat-label>
+                <mat-select formControlName="paymentType">
+                    <mat-option value="cheque">Cheque</mat-option>
+                    <mat-option value="cuenta">Cuenta</mat-option>
+                    <mat-option value="efectivo">Efectivo</mat-option>
+                </mat-select>
+            </mat-form-field>
+        </div>
+        <div fxFlex="50" class="section">
+            <mat-form-field color="primary" appearance="outline" class="all">
+                <mat-label>Lugar de trabajo</mat-label>
+                <input matInput type="text" formControlName="workPlace">
+            </mat-form-field>
+        </div>
+    </div>
+
+</form>
+<div class="footer" fxLayout="row wrap">
+    <button mat-button (click)="dialogRef.close()">Cancelar</button>
+     <span fxFlex></span>
+    <button mat-flat-button color="primary" (click)="addJob()">Agregar Puesto</button>
+</div>

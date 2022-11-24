@@ -66,6 +66,9 @@ export class SigninComponent implements OnInit, OnDestroy {
           case 'SELLER':
             this.router.navigate(['/seller']);
             break;
+          case 'EMPLOYEE':
+            this.router.navigate(['/employee']);
+            break;
         }
       }
     });

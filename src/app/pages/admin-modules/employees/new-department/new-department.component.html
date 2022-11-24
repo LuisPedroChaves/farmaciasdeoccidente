@@ -1,0 +1,19 @@
+<header class="header" fxLayout="row wrap" fxLayoutAlign="start center">
+    <h2 class="product-font ma-0">Nuevo departamento</h2>
+    <span fxFlex></span>
+    <button mat-icon-button (click)="dialogRef.close()">
+        <mat-icon>close</mat-icon>
+    </button>
+</header>
+<form [formGroup]="form" class="space" data-simplebar>
+    <mat-form-field class="all" color="primary" appearance="outline">
+        <mat-label>Nombre</mat-label>
+        <input matInput formControlName="name">
+    </mat-form-field>
+</form>
+<div class="footer" fxLayout="row wrap">
+    <button mat-button (click)="dialogRef.close()">Cancelar</button>
+     <span fxFlex></span>
+    <button mat-flat-button color="primary" *ngIf="data.role === 'new'" (click)="saveDepartment()">Guardar</button>
+    <button mat-flat-button color="primary" *ngIf="data.role === 'edit'" (click)="editDepartment()">Guardar</button>
+</div>

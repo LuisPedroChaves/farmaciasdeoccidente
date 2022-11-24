@@ -242,6 +242,10 @@ table {
   text-align: center;
   justify-content: center;
 }
+.mat-cell.left {
+  text-align: left !important;
+  justify-content: center;
+}
 
 mat-chip {
   // max-width: 200px;
@@ -389,4 +393,10 @@ mat-chip {
 
 .cursor-pointer {
   cursor: pointer;
+}
+
+
+.findinput {
+  .mat-form-field-wrapper { padding-bottom: 0 !important; }
+  .mat-form-field-infix { padding: 8px 0 8px 0 !important; }
 }

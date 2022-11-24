@@ -71,3 +71,34 @@
 .offLine {
     background-color: red !important;
 }
+
+
+
+.menu-button {
+    transition: 300ms ease-in-out;
+    transform: rotate(0deg);
+}
+
+.menu-button.rotated {
+    transform: rotate(180deg);
+}
+
+.submenu {
+    overflow-y: hidden;
+    transition: 300ms ease-in-out;
+    height: 0;
+    mat-icon {
+        color: #045195(0, 89, 255);
+    }
+}
+
+.submenu.expanded {
+    overflow: hidden;
+    max-height: 500px;
+    height: max-content;
+    display: block;
+}
+
+.linkopen {
+    background-color: rgba(0, 0, 0, 0.05);
+}

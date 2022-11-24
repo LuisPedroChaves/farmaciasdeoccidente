@@ -1,53 +1,358 @@
 [
-    { "name": "quotes", "label": "Cotizaciones", "parent": "PHARMA", "level": 1, "options": ["read", "update", "delete", "create"] },
-    { "name": "ORDER", "label": "Ordenes", "parent": "PHARMA", "level": 1, "options": ["read", "update", "delete", "create"] },
-    { "name": "orders", "label": "Ordenes", "parent": "ORDER", "level": 2, "options": ["read", "update", "delete", "create"] },
-    { "name": "dispatches", "label": "Despachos", "parent": "ORDER", "level": 2, "options": ["read", "create"] },
-    { "name": "deliveries", "label": "Rutas y Entregas", "parent": "ORDER", "level": 2, "options": ["read", "update", "delete", "create"] },
-    { "name": "customersRoutes", "label": "Clientes", "parent": "PHARMA", "level": 1, "options": ["read", "update", "delete", "create"] },
-    { "name": "internalOrders", "label": "Pedidos a bodegas", "parent": "PHARMA", "level": 1, "options": ["read", "update", "delete", "create"] },
-    { "name": "transfers", "label": "Traslados", "parent": "PHARMA", "level": 1, "options": ["read", "update", "delete", "create"] },
-    { "name": "sales", "label": "Ventas", "parent": "PHARMA", "level": 1, "options": ["read", "update", "delete", "create"] },
-    { "name": "customers", "label": "Catálogo de clientes", "parent": "PHARMA", "level": 1, "options": ["read", "update", "delete", "create"] },
-    { "name": "checkStock", "label": "Consultar existencias", "parent": "PHARMA", "level": 1, "options": ["read", "update", "delete", "create"] },
-    { "name": "tempStorage", "label": "Inventario", "parent": "PHARMA", "level": 1, "options": ["read", "update", "delete", "create"] },
+  {
+    "name": "quotes",
+    "label": "Cotizaciones",
+    "parent": "PHARMA",
+    "level": 1,
+    "options": ["read", "update", "delete", "create"]
+  },
+  {
+    "name": "ORDER",
+    "label": "Ordenes",
+    "parent": "PHARMA",
+    "level": 1,
+    "options": ["read", "update", "delete", "create"]
+  },
+  {
+    "name": "orders",
+    "label": "Ordenes",
+    "parent": "ORDER",
+    "level": 2,
+    "options": ["read", "update", "delete", "create"]
+  },
+  {
+    "name": "dispatches",
+    "label": "Despachos",
+    "parent": "ORDER",
+    "level": 2,
+    "options": ["read", "create"]
+  },
+  {
+    "name": "deliveries",
+    "label": "Rutas y Entregas",
+    "parent": "ORDER",
+    "level": 2,
+    "options": ["read", "update", "delete", "create"]
+  },
+  {
+    "name": "customersRoutes",
+    "label": "Clientes",
+    "parent": "PHARMA",
+    "level": 1,
+    "options": ["read", "update", "delete", "create"]
+  },
+  {
+    "name": "internalOrders",
+    "label": "Pedidos a bodegas",
+    "parent": "PHARMA",
+    "level": 1,
+    "options": ["read", "update", "delete", "create"]
+  },
+  {
+    "name": "transfers",
+    "label": "Traslados",
+    "parent": "PHARMA",
+    "level": 1,
+    "options": ["read", "update", "delete", "create"]
+  },
+  {
+    "name": "sales",
+    "label": "Ventas",
+    "parent": "PHARMA",
+    "level": 1,
+    "options": ["read", "update", "delete", "create"]
+  },
+  {
+    "name": "customers",
+    "label": "Catálogo de clientes",
+    "parent": "PHARMA",
+    "level": 1,
+    "options": ["read", "update", "delete", "create"]
+  },
+  {
+    "name": "checkStock",
+    "label": "Consultar existencias",
+    "parent": "PHARMA",
+    "level": 1,
+    "options": ["read", "update", "delete", "create"]
+  },
+  {
+    "name": "tempStorage",
+    "label": "Inventario",
+    "parent": "PHARMA",
+    "level": 1,
+    "options": ["read", "update", "delete", "create"]
+  },
 
-    { "name": "STORAGE", "label": "Inventario", "parent": "PHARMA", "level": 1, "options": ["read", "update", "delete", "create"] },
-    { "name": "storage", "label": "Inventario", "parent": "STORAGE", "level": 2, "options": ["read", "update", "delete", "create"] },
-    { "name": "storage/storageclosing", "label": "Cierre", "parent": "STORAGE", "level": 2, "options": ["read", "update", "delete", "create"] },
-    { "name": "storage/storagehistory", "label": "Historial", "parent": "STORAGE", "level": 2, "options": ["read", "update", "delete", "create"] },
+  {
+    "name": "STORAGE",
+    "label": "Inventario",
+    "parent": "PHARMA",
+    "level": 1,
+    "options": ["read", "update", "delete", "create"]
+  },
+  {
+    "name": "storage",
+    "label": "Inventario",
+    "parent": "STORAGE",
+    "level": 2,
+    "options": ["read", "update", "delete", "create"]
+  },
+  {
+    "name": "storage/storageclosing",
+    "label": "Cierre",
+    "parent": "STORAGE",
+    "level": 2,
+    "options": ["read", "update", "delete", "create"]
+  },
+  {
+    "name": "storage/storagehistory",
+    "label": "Historial",
+    "parent": "STORAGE",
+    "level": 2,
+    "options": ["read", "update", "delete", "create"]
+  },
 
-    { "name": "pharmaStatistics", "label": "Estadísticas", "parent": "PHARMA", "level": 1, "options": ["read", "update", "delete", "create"] },
-    { "name": "purchases", "label": "Compras", "parent": "PHARMA", "level": 1, "options": ["read", "update", "delete", "create"] },
+  {
+    "name": "pharmaStatistics",
+    "label": "Estadísticas",
+    "parent": "PHARMA",
+    "level": 1,
+    "options": ["read", "update", "delete", "create"]
+  },
+  {
+    "name": "purchases",
+    "label": "Compras",
+    "parent": "PHARMA",
+    "level": 1,
+    "options": ["read", "update", "delete", "create"]
+  },
 
-    { "name": "/admin", "label": "Sucursales", "parent": "ADMIN", "level": 1, "options": ["read", "update", "delete", "create"] },
-    { "name": "adminCheckStock", "label": "Consultar existencias", "parent": "ADMIN", "level": 1, "options": [] },
-    { "name": "adminDeliveries", "label": "Rutas y entregas", "parent": "ADMIN", "level": 1, "options": ["read", "update", "delete", "create"] },
-    { "name": "adminOrders", "label": "Ordenes", "parent": "ADMIN", "level": 1, "options": ["read", "update", "delete", "create"] },
-    { "name": "receivables", "label": "Cuentas por cobrar", "parent": "ADMIN", "level": 1, "options": ["read", "update", "delete", "create"] },
+  {
+    "name": "/admin",
+    "label": "Sucursales",
+    "parent": "ADMIN",
+    "level": 1,
+    "options": ["read", "update", "delete", "create"]
+  },
+  {
+    "name": "adminCheckStock",
+    "label": "Consultar existencias",
+    "parent": "ADMIN",
+    "level": 1,
+    "options": []
+  },
+  {
+    "name": "adminDeliveries",
+    "label": "Rutas y entregas",
+    "parent": "ADMIN",
+    "level": 1,
+    "options": ["read", "update", "delete", "create"]
+  },
+  {
+    "name": "adminOrders",
+    "label": "Ordenes",
+    "parent": "ADMIN",
+    "level": 1,
+    "options": ["read", "update", "delete", "create"]
+  },
+  {
+    "name": "receivables",
+    "label": "Cuentas por cobrar",
+    "parent": "ADMIN",
+    "level": 1,
+    "options": ["read", "update", "delete", "create"]
+  },
 
-    { "name": "accountsPayable", "label": "Cuentas por pagar", "parent": "ADMIN", "level": 1, "options": ["read", "update", "delete", "create"] },
-    { "name": "accountsPyabaleProviders", "label": "Proveedores", "parent": "accountsPayable", "level": 2, "options": ["read", "update", "delete", "create"] },
-    { "name": "accountsPyabaleCashRequisitions", "label": "Requisiciones", "parent": "accountsPayable", "level": 2, "options": ["read", "update", "delete", "create"] },
-    { "name": "accountsPyabaleDocuments", "label": "Documentos", "parent": "accountsPayable", "level": 2, "options": ["read", "update", "delete", "create"] },
-    { "name": "accountsPyabaleBanks", "label": "Bancos", "parent": "accountsPayable", "level": 2, "options": ["read", "update", "delete", "create"] },
-    { "name": "accountsPyabaleChecks", "label": "Cheques", "parent": "accountsPayable", "level": 2, "options": ["read", "update", "delete", "create"] },
-    { "name": "accountsPyabaleCheckDeliveries", "label": "Entrega de cheques", "parent": "accountsPayable", "level": 2, "options": ["read", "update"] },
-    { "name": "accountsPyabaleReports", "label": "Reportes", "parent": "accountsPayable", "level": 2, "options": ["read"] },
+  {
+    "name": "accountsPayable",
+    "label": "Cuentas por pagar",
+    "parent": "ADMIN",
+    "level": 1,
+    "options": ["read", "update", "delete", "create"]
+  },
+  {
+    "name": "accountsPyabaleProviders",
+    "label": "Proveedores",
+    "parent": "accountsPayable",
+    "level": 2,
+    "options": ["read", "update", "delete", "create"]
+  },
+  {
+    "name": "accountsPyabaleCashRequisitions",
+    "label": "Requisiciones",
+    "parent": "accountsPayable",
+    "level": 2,
+    "options": ["read", "update", "delete", "create"]
+  },
+  {
+    "name": "accountsPyabaleDocuments",
+    "label": "Documentos",
+    "parent": "accountsPayable",
+    "level": 2,
+    "options": ["read", "update", "delete", "create"]
+  },
+  {
+    "name": "accountsPyabaleBanks",
+    "label": "Bancos",
+    "parent": "accountsPayable",
+    "level": 2,
+    "options": ["read", "update", "delete", "create"]
+  },
+  {
+    "name": "accountsPyabaleChecks",
+    "label": "Cheques",
+    "parent": "accountsPayable",
+    "level": 2,
+    "options": ["read", "update", "delete", "create"]
+  },
+  {
+    "name": "accountsPyabaleCheckDeliveries",
+    "label": "Entrega de cheques",
+    "parent": "accountsPayable",
+    "level": 2,
+    "options": ["read", "update"]
+  },
+  {
+    "name": "accountsPyabaleReports",
+    "label": "Reportes",
+    "parent": "accountsPayable",
+    "level": 2,
+    "options": ["read"]
+  },
 
-    { "name": "cash", "label": "Cajas", "parent": "ADMIN", "level": 1, "options": ["read", "update", "delete", "create"] },
-    { "name": "cashAdmin", "label": "Administración", "parent": "cash", "level": 2, "options": ["read", "update", "delete", "create"] },
-    { "name": "cashMyAdmin", "label": "Cajas Asignadas", "parent": "cash", "level": 2, "options": ["read", "update", "delete", "create"] },
-    { "name": "cashIndependentBox", "label": "Caja Independiente", "parent": "cash", "level": 2, "options": ["read", "update", "delete", "create"] },
-    { "name": "cashAccountingBox", "label": "Caja Contable", "parent": "cash", "level": 2, "options": ["read", "update", "delete", "create"] },
+  {
+    "name": "cash",
+    "label": "Cajas",
+    "parent": "ADMIN",
+    "level": 1,
+    "options": ["read", "update", "delete", "create"]
+  },
+  {
+    "name": "cashAdmin",
+    "label": "Administración",
+    "parent": "cash",
+    "level": 2,
+    "options": ["read", "update", "delete", "create"]
+  },
+  {
+    "name": "cashMyAdmin",
+    "label": "Cajas Asignadas",
+    "parent": "cash",
+    "level": 2,
+    "options": ["read", "update", "delete", "create"]
+  },
+  {
+    "name": "cashIndependentBox",
+    "label": "Caja Independiente",
+    "parent": "cash",
+    "level": 2,
+    "options": ["read", "update", "delete", "create"]
+  },
+  {
+    "name": "cashAccountingBox",
+    "label": "Caja Contable",
+    "parent": "cash",
+    "level": 2,
+    "options": ["read", "update", "delete", "create"]
+  },
 
-    { "name": "uploads", "label": "Carga de archivos", "parent": "ADMIN", "level": 1, "options": ["read", "update", "delete", "create"] },
-    { "name": "statistics", "label": "Estadísticas", "parent": "ADMIN", "level": 1, "options": ["read", "update", "delete", "create"] },
-    { "name": "tempStatistics", "label": "Estadísticas Temp.", "parent": "ADMIN", "level": 1, "options": ["read", "update", "delete", "create"] },
-    { "name": "adminSellersReport", "label": "Reporte de Ventas", "parent": "ADMIN", "level": 1, "options": [] },
-    { "name": "adminProducts", "label": "Catálogo de productos", "parent": "ADMIN", "level": 1, "options": ["read", "update", "delete", "create"] },
-    { "name": "brands", "label": "Laboratorios", "parent": "ADMIN", "level": 1, "options": ["read", "update", "delete", "create"] },
-    { "name": "providers", "label": "Proveedores", "parent": "ADMIN", "level": 1, "options": ["read", "update", "delete", "create"] },
-    { "name": "tickets", "label": "Tickets", "parent": "ADMIN", "level": 1, "options": ["read", "update", "delete", "create"] },
-    { "name": "users", "label": "Usuarios", "parent": "ADMIN", "level": 1, "options": ["read", "update", "delete", "create"] }
+  {
+    "name": "uploads",
+    "label": "Carga de archivos",
+    "parent": "ADMIN",
+    "level": 1,
+    "options": ["read", "update", "delete", "create"]
+  },
+  {
+    "name": "statistics",
+    "label": "Estadísticas",
+    "parent": "ADMIN",
+    "level": 1,
+    "options": ["read", "update", "delete", "create"]
+  },
+  {
+    "name": "tempStatistics",
+    "label": "Estadísticas Temp.",
+    "parent": "ADMIN",
+    "level": 1,
+    "options": ["read", "update", "delete", "create"]
+  },
+  {
+    "name": "adminSellersReport",
+    "label": "Reporte de Ventas",
+    "parent": "ADMIN",
+    "level": 1,
+    "options": []
+  },
+  {
+    "name": "adminProducts",
+    "label": "Catálogo de productos",
+    "parent": "ADMIN",
+    "level": 1,
+    "options": ["read", "update", "delete", "create"]
+  },
+  {
+    "name": "brands",
+    "label": "Laboratorios",
+    "parent": "ADMIN",
+    "level": 1,
+    "options": ["read", "update", "delete", "create"]
+  },
+  {
+    "name": "providers",
+    "label": "Proveedores",
+    "parent": "ADMIN",
+    "level": 1,
+    "options": ["read", "update", "delete", "create"]
+  },
+  {
+    "name": "tickets",
+    "label": "Tickets",
+    "parent": "ADMIN",
+    "level": 1,
+    "options": ["read", "update", "delete", "create"]
+  },
+  {
+    "name": "PAYROLLS",
+    "label": "Planilla",
+    "parent": "ADMIN",
+    "level": 1,
+    "options": ["read", "update", "delete", "create"]
+  },
+  {
+    "name": "payroll",
+    "label": "Planilla General",
+    "parent": "PAYROLLS",
+    "level": 2,
+    "options": ["read", "update", "delete", "create"]
+  },
+  {
+    "name": "employees",
+    "label": "Empleados",
+    "parent": "PAYROLLS",
+    "level": 2,
+    "options": ["read", "update", "delete", "create"]
+  },
+  {
+    "name": "employee-transactions",
+    "label": "Transacciones",
+    "parent": "PAYROLLS",
+    "level": 2,
+    "options": ["read", "update", "delete", "create"]
+  },
+  {
+    "name": "users",
+    "label": "Usuarios",
+    "parent": "ADMIN",
+    "level": 1,
+    "options": ["read", "update", "delete", "create"]
+  },
+  {
+    "name": "requests",
+    "label": "Permisos",
+    "parent": "EMPLOYEE",
+    "level": 1,
+    "options": ["read", "update", "delete", "create"]
+  }
 ]

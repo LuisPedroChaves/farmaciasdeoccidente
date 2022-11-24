@@ -1,0 +1,65 @@
+<header fxLayout="row wrap" class="header" fxLayoutAlign="start center">
+    <h4 fxLayoutAlign="start center" class="module-title ma-0 product-font">
+        <mat-icon class="iconHeader">contact_support</mat-icon> &nbsp;&nbsp; <span class="product-font">Solicitudes</span>
+    </h4>
+    <span fxFlex></span>
+</header>
+
+<div fxLayout="row wrap" >
+    <div class="tabcontent" *ngIf="loading === true" fxLayout="column wrap" fxLayoutAlign="center center">
+        <mat-progress-spinner mode="indeterminate" diameter="40" color="primary"></mat-progress-spinner>
+    </div>
+    <div class="tabcontent" *ngIf="loading === false" data-simplebar>
+        <button [matMenuTriggerFor]="menu" mat-fab color="primary" class="fab mat-elevation-z10">
+            <mat-icon>add</mat-icon>
+            <span class="extended-fab-button__text">Solicitud</span>
+        </button>
+
+        <mat-menu #menu="matMenu">
+            <button mat-menu-item (click)="newRequest('citaIGSS')">Cita del IGSS</button>
+            <button mat-menu-item (click)="newRequest('permiso')">Permiso</button>
+            <button mat-menu-item (click)="newRequest('diadescanso')">Cambio de Día de Descanso</button>
+            <button mat-menu-item (click)="newRequest('horasExtra')">Ingreso de Horas Extras</button>
+            <button mat-menu-item (click)="newRequest('asueto')">Asueto y 7mo día</button>
+        </mat-menu>
+
+        <table mat-table [dataSource]="dataSource">
+
+
+            <!-- Date Column -->
+            <ng-container matColumnDef="date">
+                <th mat-header-cell *matHeaderCellDef> Fecha </th>
+                <td mat-cell class="left" *matCellDef="let element"> {{element.date | date : 'dd/MM/yyyy'}} </td>
+            </ng-container>
+
+            <!-- Transaction type Column -->
+            <ng-container matColumnDef="transactionType">
+                <th mat-header-cell *matHeaderCellDef> Tipo </th>
+                <td mat-cell class="left" *matCellDef="let element"> {{element.transactionType === 'rising' ? 'Aumento' : 'Permiso'}} </td>
+            </ng-container>
+
+          
+
+
+
+            <ng-container matColumnDef="approved">
+                <th mat-header-cell *matHeaderCellDef> Estado </th>
+                <td mat-cell class="left" *matCellDef="let element">
+                    <mat-chip-list selectable="false">
+                        <mat-chip [color]="element.approved === true ? 'accent' : 'primary'" selected>{{element.approved === true ? 'APROBADO' : 'NO APROBADO'}}</mat-chip>
+                    </mat-chip-list>
+                     </td>
+            </ng-container>
+
+              <!-- Hours Column -->
+              <ng-container matColumnDef="details">
+                <th mat-header-cell *matHeaderCellDef> Detalles </th>
+                <td mat-cell class="left" *matCellDef="let element"> {{element.details}} </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+        </table>
+
+    </div>
+</div>

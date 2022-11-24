@@ -1,0 +1,41 @@
+$blue: #045195;
+.stepper {  width: 100%; }
+
+.space { height: calc(100vh - 285px); }
+.footer { padding: 15px; }
+
+.avatar-space { position: relative; width: 100%; max-width: 100px;  }
+.avater-image { border-radius: 100%; width: 100%; max-width: 100px; }
+.change-button { background-color: $blue; color: white !important; position: absolute; bottom: 0px; right: 0px; }
+
+.all { width: 100%; }
+.formsection { padding: 0px 5px; }
+.addedjob { padding: 15px; margin: 10px; }
+.jobtitle { font-size: 16px; font-weight: 600; }
+.relative { margin-bottom: 10px; padding: 15px; }
+.relativeslist { padding: 10px; padding-top: 30px; }
+.cv-space {
+    padding: 15px 5px;
+    margin-top: 20px;
+    border: 1px dashed rgba($color: #000000, $alpha: 0.5);
+    border-radius: 10px;
+    background-color: rgba($color: #000000, $alpha: 0.05);
+    width: 100%;
+    mat-icon { font-size: 26px; margin-bottom: 10px ; }
+    button { background-color: rgba(0, 0, 0, 0.1); }
+}
+.cv-space.uploaded {
+    border: 1px solid rgba($color: #000000, $alpha: 0.5);
+}
+.display-none { display: none; }
+.download { color: blue !important; text-decoration: underline; cursor: pointer; }
+
+.loadding {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-color: rgba($color: #000000, $alpha: 0.25);
+
+}

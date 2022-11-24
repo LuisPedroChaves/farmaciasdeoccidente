@@ -48,6 +48,21 @@ export class ApiConfigService {
   public API_UPLOAD = this.API_URL + '/upload';
   public API_READ = this.API_URL + '/readFIle';
 
+  // Employees
+  public API_JOBS = this.API_URL + '/job';
+  public API_DEPARTMENT = this.API_URL + '/jobDepartment';
+  public API_EMPLOYEES = this.API_URL + '/employee';
+  public API_VACATIONS = this.API_URL + '/vacation';
+  public API_EMPLOYEE_USER = this.API_URL + '/employee/user';
+  public API_EMPLOYEES_JOBS = this.API_URL + '/employeeJob';
+  public API_COUNTRY = 'assets/data/guatemala.json';
+  public API_DISCOUNTS = this.API_URL + '/discount';
+  public API_RISINGS = this.API_URL + '/rising';
+
+  //payroll
+  public API_PAYROLL = this.API_URL + '/payroll';
+  public API_PAYROLL_NEW = this.API_URL + '/payroll/details';
+
   // Product
   public API_PRODUCT = this.API_URL + '/product';
 

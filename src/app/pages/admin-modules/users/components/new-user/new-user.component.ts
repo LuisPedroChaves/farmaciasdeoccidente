@@ -10,6 +10,7 @@ import { ControlEvent } from '../../../../../core/models/ControlEvent';
 import { UserItem } from 'src/app/core/models/User';
 import { RoleItem } from 'src/app/core/models/Role';
 import { CellarItem } from '../../../../../core/models/Cellar';
+import { EmployeeItem } from 'src/app/core/models/Employee';
 
 @Component({
   selector: 'app-new-user',
@@ -20,6 +21,7 @@ export class NewUserComponent implements OnInit, AfterContentInit, OnDestroy {
   // screen ------
   @Input() smallScreen: boolean;
   @Input() roles: RoleItem[];
+  @Input() employees: EmployeeItem[] = [];
   visible = false;
   cu = 5;
   loading = false;
@@ -46,6 +48,7 @@ export class NewUserComponent implements OnInit, AfterContentInit, OnDestroy {
     email: new FormControl(''),
     _role: new FormControl(null, [Validators.required]),
     _cellar: new FormControl(null),
+    _employee: new FormControl(null),
   });
   // HOOK FUNCTIONS //////////////////////////////////////////////////////////////////////////////
   constructor(
@@ -60,6 +63,7 @@ export class NewUserComponent implements OnInit, AfterContentInit, OnDestroy {
     this.cellarsSubscription = this.cellarService.readData().subscribe(data => {
       this.cellars = data;
     });
+
   }
 
   ngAfterContentInit() {
@@ -79,6 +83,13 @@ export class NewUserComponent implements OnInit, AfterContentInit, OnDestroy {
 
   createUser() {
     if (this.form.invalid) { return; }
+    const role = this.roles.findIndex(r => r._id === this.form.controls._role.value);
+    if (role > -1) {
+      if (this.roles[role].type === 'EMPLOYEE' && this.form.controls._employee.value === null) {
+        this.toasty.error('Para el rol de tipo Empleado debe asignar un empleado de la lista');
+        return;
+      }
+    }
     this.loading = true;
     const newUser: UserItem = this.form.value;
     newUser._id = null;

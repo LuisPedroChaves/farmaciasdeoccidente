@@ -55,6 +55,7 @@ export class AdminLayoutComponent implements OnInit, OnDestroy {
     // tslint:disable-next-line: deprecation
     this.mediaMatcher.addListener(mql => zone.run(() => {
       this.mediaMatcher = matchMedia(`(max-width: ${SMALL_WIDTH_BREAKPOINT}px)`);
+      this.store.dispatch(actions.setSmallScreen({ small: this.mediaMatcher.matches }));
     }));
     if (this.mediaMatcher.matches) {
       this.collapse = false;
@@ -118,6 +119,7 @@ export class AdminLayoutComponent implements OnInit, OnDestroy {
   }
 
   calculateMenu(menu: MenuItem[], permissions: PermissionItem[]) {
+
     const parents = permissions.filter(p => p.level === 1);
     let bandera = false;
     parents.forEach(p => {
@@ -127,7 +129,10 @@ export class AdminLayoutComponent implements OnInit, OnDestroy {
         parentEquivalent.children = [];
         childrens.forEach(c => {
           const childmenu: ChildrenItems = menu.filter(mc => mc.state === c.name)[0];
-          parentEquivalent.children.push(childmenu);
+
+          if (childmenu) {
+            parentEquivalent.children.push(childmenu);
+          }
         });
       }
       if (bandera === false) {
@@ -139,6 +144,7 @@ export class AdminLayoutComponent implements OnInit, OnDestroy {
       }
       this.menuItems.push(parentEquivalent);
     });
+
   }
 
 

@@ -33,10 +33,42 @@
         <mat-sidenav id="sidebar-panel" [mode]="this.mediaMatcher.matches ? 'over' : 'side'" [(opened)]="collapse" (open)="sidePanelOpened = true" (close)="sidePanelOpened = false" #sidemenu [ngStyle]="{ width: '250px' }" style="margin-top: 0; padding-top: 0 !important;">
             <ngx-simplebar style="height: 100%;">
                 <mat-nav-list style="padding-top: 0;">
-                    <mat-list-item *ngFor="let m of menuItems" [routerLink]="m.state" class="menu-items">
-                        <mat-icon color="accent" mat-list-icon class="material-icons-outlined">{{ m.icon }}</mat-icon>
-                        <h4 mat-line>{{ m.name }}</h4>
-                    </mat-list-item>
+                    <div *ngFor="let m of menuItems" [ngClass]="{'linkopen':m.open}">
+
+                        <mat-list-item *ngIf="m.type === 'link'" [routerLink]="m.state" class="menu-items">
+                            <svg *ngIf="m.iconType === 'svg'" style="width:24px;height:24px" mat-list-icon viewBox="0 0 24 24">
+                                <path fill="currentColor" [attr.d]="c.icon" />
+                            </svg>
+                            <mat-icon *ngIf="m.iconType === 'icon'" color="accent" mat-list-icon class="material-icons-outlined">{{ m.icon }}</mat-icon>
+                            <h4 mat-line>{{ m.name }}</h4>
+                        </mat-list-item>
+
+
+                        <mat-list-item *ngIf="m.type === 'sub'" class="menu-items"  (click)="m.open = !m.open">
+                            <svg *ngIf="m.iconType === 'svg'" style="width:24px;height:24px" mat-list-icon viewBox="0 0 24 24">
+                                <path fill="currentColor" [attr.d]="m.icon" />
+                            </svg>
+                            <mat-icon *ngIf="m.iconType === 'icon'" color="accent" mat-list-icon class="material-icons-outlined">{{ m.icon }}</mat-icon>
+                            <h4 mat-line>{{ m.name }}</h4>
+                            <span fxFlex></span>
+                            <mat-icon *ngIf="m.children" class="menu-button" color="accent" [ngClass]="{'rotated' : m.open}">
+                                expand_more
+                            </mat-icon>
+                        </mat-list-item>
+
+
+                        <div *ngIf="m.children" id="{{m.state}}" class="submenu" [ngClass]="{'expanded' : m.open}">
+                            <mat-list-item *ngFor="let c of m.children" [routerLink]="c.state" style="padding-left: 15px;" class="menu-items">
+                                <svg *ngIf="c.iconType === 'svg'" style="width:24px;height:24px" mat-list-icon viewBox="0 0 24 24">
+                                    <path fill="#404040" [attr.d]="c.icon" />
+                                </svg>
+                                <mat-icon *ngIf="c.icon && c.iconType === 'icon'" class="material-icons-outlined" color="accent" mat-list-icon>{{ c.icon }}
+                                </mat-icon>
+                                <h4 mat-line>{{ c.name }}</h4>
+                                <span fxFlex></span>
+                            </mat-list-item>
+                        </div>
+                    </div>
                 </mat-nav-list>
             </ngx-simplebar>
         </mat-sidenav>

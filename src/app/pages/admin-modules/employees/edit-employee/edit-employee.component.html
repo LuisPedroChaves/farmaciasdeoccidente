@@ -1,0 +1,566 @@
+<mat-horizontal-stepper #stepper  class="stepper">
+    <!-- PASO 1 ////////////////////////// -->
+    <mat-step>
+        <ng-template matStepLabel>Información General</ng-template>
+        <form [formGroup]="form1" class="space" data-simplebar>
+            <br><br><br><br>
+            <div class="container-form">
+                <div fxLayout="row wrap">
+                    <div fxFlex="125px">
+                        <div class="avatar-space">
+                            <img [src]="imagePreview !== undefined ? imagePreview : 'assets/images/avatars/00M.jpg'" class="avater-image" alt="">
+                            <button (click)="uploadAvatar()" mat-icon-button class="change-button mat-elevation-z2"><mat-icon>create</mat-icon></button>
+                        </div>
+
+                        <div class="cv-space" [ngClass]="{'uploaded': form1.controls.cv.value !== null}" fxLayout="column wrap" fxLayoutAlign="center center">
+                            <div fxLayout="row wrap">
+                                <span>Curriculum</span>
+                                <mat-icon *ngIf="form1.controls.cv.value !== null" (click)="removeCV()">close</mat-icon>
+                            </div>
+                            <mat-icon class="material-icons-outlined">contact_page</mat-icon>
+                            <input #fileInput type="file" (change)="cvChangeEvent($event)" class="display-none"/>
+                            <button mat-button (click)="form1.controls.cv.value !== null ? downloadCV() : fileInput.click()">
+                                <mat-icon>{{form1.controls.cv.value !== null ? 'get_app':'upload'}}</mat-icon>{{ form1.controls.cv.value === null ? 'Cargar' : 'Descargar' }}
+                            </button>
+                        </div>
+                        
+                    </div>
+                    <div fxFlex>
+    
+                        <div fxLayout="row wrap">
+                            <div fxFlex="50" class="formsection">
+                                <mat-form-field class="all" color="primary" appearance="outline">
+                                    <mat-label>Nombres</mat-label>
+                                    <input matInput formControlName="name">
+                                </mat-form-field>
+                            </div>
+                            <div fxFlex="50" class="formsection">
+                                <mat-form-field class="all" color="primary" appearance="outline">
+                                    <mat-label>Apellidos</mat-label>
+                                    <input matInput formControlName="lastName">
+                                </mat-form-field>
+                            </div>
+                        </div>
+
+                        <div fxLayout="row wrap" fxLayoutAlign="start center">
+                            <div fxFlex="50" class="formsection">
+                                <mat-form-field class="all" appearance="outline">
+                                    <mat-label>Fecha de Nacimiento</mat-label>
+                                    <input matInput [matDatepicker]="picker" formControlName="birth">
+                                    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                                    <mat-datepicker #picker></mat-datepicker>
+                                </mat-form-field>
+                            </div>
+                            <div fxFlex="50" class="formsection">
+                                <mat-radio-group aria-label="Select an option" formControlName="gender">
+                                    <mat-radio-button value="M">Masculino</mat-radio-button> &nbsp; &nbsp;
+                                    <mat-radio-button value="F">Femenino</mat-radio-button>
+                                </mat-radio-group>
+                            </div>
+                        </div>
+
+                        <br>
+
+
+                        <div fxLayout="row wrap">
+                            <div fxFlex="50" class="formsection">
+                                <mat-form-field class="all" color="primary" appearance="outline">
+                                    <mat-label>Tipo de documento</mat-label>
+                                    <mat-select formControlName="docType">
+                                        <mat-option *ngFor="let o of ['DPI']" [value]="o">{{ o }}</mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                            </div>
+                            <div fxFlex="50" class="formsection">
+                                <mat-form-field class="all" color="primary" appearance="outline">
+                                    <mat-label>No. de Documento</mat-label>
+                                    <input matInput formControlName="document">
+                                </mat-form-field>
+                            </div>
+                        </div>
+                        <div fxLayout="row wrap">
+                            <div fxFlex="50" class="formsection">
+                                <mat-form-field class="all" color="primary" appearance="outline">
+                                    <mat-label>Código</mat-label>
+                                    <input matInput formControlName="code">
+                                </mat-form-field>
+                            </div>
+                            <div fxFlex="50" class="formsection">
+                                <mat-form-field class="all" color="primary" appearance="outline">
+                                    <mat-label>NIT</mat-label>
+                                    <input matInput formControlName="nit">
+                                </mat-form-field>
+                            </div>
+                        </div>
+                        <div fxLayout="row wrap">
+                            <div fxFlex="50" class="formsection">
+                                <mat-form-field class="all" color="primary" appearance="outline">
+                                    <mat-label>Estado Civil</mat-label>
+                                    <mat-select formControlName="maritalStatus">
+                                        <mat-option value="SOLTERO">Soltero</mat-option>
+                                        <mat-option value="CASADO">Casado</mat-option>
+                                        <mat-option value="UNION">Unión Libre</mat-option>
+                                        <mat-option value="VIUDO">Viudo</mat-option>
+                                        <mat-option value="DIVORCIADO">Divorciado</mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                            </div>
+                            <div fxFlex="50" class="formsection">
+                                <mat-form-field class="all" color="primary" appearance="outline">
+                                    <mat-label>E-Mail</mat-label>
+                                    <input matInput formControlName="email">
+                                </mat-form-field>
+                            </div>
+                        </div>
+
+
+                        <br>
+
+
+                        <div fxLayout="row wrap">
+                            <div fxFlex="50" class="formsection">
+                                <mat-form-field class="all" color="primary" appearance="outline">
+                                    <mat-label>Dirección</mat-label>
+                                    <input matInput formControlName="address">
+                                </mat-form-field>
+                            </div>
+                            <div fxFlex="50" class="formsection">
+                                <mat-form-field class="all" color="primary" appearance="outline">
+                                    <mat-label>Nacionalidad</mat-label>
+                                    <input matInput formControlName="nationality">
+                                </mat-form-field>
+                            </div>
+                        </div>
+                        <div fxLayout="row wrap" *ngIf="this.departments !== undefined">
+                            <div fxFlex="50" class="formsection">
+                                <mat-form-field class="all" color="primary" appearance="outline">
+                                    <mat-label>Departamento</mat-label>
+                                    <mat-select formControlName="department" (selectionChange)="getMun()">
+                                        <mat-option *ngFor="let d of departments" [value]="d.name">{{ d.name }}</mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                            </div>
+                            <div fxFlex="50" class="formsection">
+                                <mat-form-field class="all" color="primary" appearance="outline">
+                                    <mat-label>Municipios</mat-label>
+                                    <mat-select formControlName="city">
+                                        <mat-option *ngFor="let m of muns" [value]="m">{{m}}</mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                            </div>
+                        </div>
+
+                        <div fxLayout="row wrap" *ngIf="this.departments !== undefined">
+                            <div fxFlex="50" class="formsection">
+                                <mat-form-field class="all" color="primary" appearance="outline">
+                                    <mat-label>Pueblo de Origen </mat-label>
+                                    <mat-select formControlName="village">
+                                        <mat-option value="Maya">Maya</mat-option>
+                                        <mat-option value="Garifuna">Garifuna</mat-option>
+                                        <mat-option value="Xinca">Xinca</mat-option>
+                                        <mat-option value="Ladino">Ladino</mat-option>
+                                        <mat-option value="Otro">Otro</mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                            </div>
+                            <div fxFlex="50" class="formsection">
+                                <mat-form-field class="all" color="primary" appearance="outline">
+                                    <mat-label>Comunidad Linguistica</mat-label>
+                                    <mat-select formControlName="linguisticCommunity">
+                                        <mat-option value="Español">Español</mat-option>
+                                        <mat-option value="Achi">Achi</mat-option>
+                                        <mat-option value="Akateko">Akateko</mat-option>
+                                        <mat-option value="Awakateko">Awakateko</mat-option>
+                                        <mat-option value="Chalchiteko">Chalchiteko</mat-option>
+                                        <mat-option value="Ch'orti'">Ch'orti'</mat-option>
+                                        <mat-option value="Chuj">Chuj</mat-option>
+                                        <mat-option value="Garífuna">Garífuna</mat-option>
+                                        <mat-option value="Itza">Itza</mat-option>
+                                        <mat-option value="Ixil">Ixil</mat-option>
+                                        <mat-option value="Kaqchikel">Kaqchikel</mat-option>
+                                        <mat-option value="K'iche'">K'iche'</mat-option>
+                                        <mat-option value="Mam">Mam</mat-option>
+                                        <mat-option value="Mopan">Mopan</mat-option>
+                                        <mat-option value="Popti">Popti</mat-option>
+                                        <mat-option value="Poqomam">Poqomam</mat-option>
+                                        <mat-option value="Poqomchi'">Poqomchi'</mat-option>
+                                        <mat-option value="Q'anjobal'">Q'anjobal'</mat-option>
+                                        <mat-option value="Q'eqchi">Q'eqchi</mat-option>
+                                        <mat-option value="Sacapulteko">Sacapulteko</mat-option>
+                                        <mat-option value="Sipakapense">Sipakapense</mat-option>
+                                        <mat-option value="Tektiteko">Tektiteko</mat-option>
+                                        <mat-option value="Tz'utujil">Tz'utujil</mat-option>
+                                        <mat-option value="Uspanteko">Uspanteko</mat-option>
+                                        <mat-option value="Xinka">Xinka</mat-option>
+                                        <mat-option value="Otro">Otro</mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+        <div class="footer" fxLayout="row wrap">
+            <span fxFlex></span>
+            <button mat-button matStepperNext >Siguiente</button>
+        </div>
+    </mat-step>
+
+
+
+
+    <!-- PASO 2 ////////////////////////// -->
+    <mat-step>
+        <ng-template matStepLabel>Información Laboral</ng-template>
+        <div class="space" data-simplebar>
+            <div fxLayout="row wrap" >
+                <form [formGroup]="form2" fxFlex.gt-sm="65" fxFlex="100">
+                    <br><br>
+                    <div >
+                        <div fxLayout="row wrap">
+                            <div fxFlex="50" class="formsection">
+                                <mat-form-field class="all" color="primary" appearance="outline">
+                                    <mat-label>Profesión</mat-label>
+                                    <input matInput formControlName="profession">
+                                </mat-form-field>
+                            </div>
+                            <div fxFlex="50" class="formsection">
+                                <mat-form-field class="all" color="primary" appearance="outline">
+                                    <mat-label>Nivel Académico</mat-label>
+                                    <input matInput formControlName="academicLavel">
+                                </mat-form-field>
+                            </div>
+                        </div>
+                        <div fxLayout="row wrap">
+                            <div fxFlex="50" class="formsection">
+                                <mat-form-field *ngIf="banks !== undefined" class="all" color="primary" appearance="outline">
+                                    <mat-label>Banco</mat-label>
+                                    <mat-select formControlName="_bank">
+                                        <mat-option *ngFor="let b of banks" [value]="b._id">{{b.name }}</mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                            </div>
+                            <div fxFlex="50" class="formsection">
+                                <mat-form-field class="all" color="primary" appearance="outline">
+                                    <mat-label>Cuenta de banco</mat-label>
+                                    <input matInput formControlName="bankAccount">
+                                </mat-form-field>
+                            </div>
+                        </div>
+                        <div fxLayout="row wrap">
+                            <div fxFlex="50" class="formsection">
+                                <mat-slide-toggle formControlName="igss">IGSS</mat-slide-toggle> &nbsp; &nbsp;
+                                <mat-slide-toggle formControlName="benefits">Beneficios</mat-slide-toggle>
+                            </div>
+                            <div fxFlex="50" class="formsection">
+                                <mat-form-field class="all" color="primary" appearance="outline">
+                                    <mat-label>Número de afiliación al IGSS</mat-label>
+                                    <input matInput formControlName="igssNumber">
+                                </mat-form-field>
+                            </div>
+                           
+        
+                        </div>
+        
+                        <div fxLayout="row wrap">
+                            <div fxFlex="50" class="formsection">
+                                <mat-form-field *ngIf="cellars !== undefined" class="all" color="primary" appearance="outline">
+                                    <mat-label>Sucursal</mat-label>
+                                    <mat-select formControlName="_cellar">
+                                        <mat-option *ngFor="let c of cellars" [value]="c._id">{{c.name }}</mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                            </div>
+                            <div fxFlex="50" class="formsection">
+                                <mat-form-field class="all" color="primary" appearance="outline">
+                                    <mat-label>Sucursal IGSS</mat-label>
+                                    <mat-select formControlName="_cellarIGSS">
+                                        <mat-option *ngFor="let c of cellars" [value]="c._id">{{c.name }}</mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                            </div>
+                        </div>
+        
+                        <div fxLayout="row wrap">
+                            <div fxFlex="100" class="formsection">
+                                <mat-form-field class="all" color="primary" appearance="outline">
+                                    <mat-label>Detalles</mat-label>
+                                    <textarea matInput formControlName="details"></textarea>
+                                </mat-form-field>
+                            </div>
+                        </div>
+        
+                        <div fxLayout="row wrap">
+                            <div fxFlex="50" class="formsection">
+                                <mat-form-field class="all" color="primary" appearance="outline">
+                                    <mat-label>Discapacidad</mat-label>
+                                    <input matInput formControlName="disability">
+                                </mat-form-field>
+                            </div>
+                            <div fxFlex="50" class="formsection">
+                                <mat-form-field class="all" color="primary" appearance="outline">
+                                    <mat-label>Permiso Extranjero</mat-label>
+                                    <input matInput formControlName="foreignPermit">
+                                </mat-form-field>
+                            </div>
+                        </div>
+        
+                        
+                    </div>
+                    <div fxLayout="row wrap">
+                        <div fxFlex="25" class="uploadspace">
+                            <mat-form-field  class="all" color="primary" appearance="outline">
+                                <mat-label>Contrato de Ley</mat-label>
+                                <ngx-mat-file-input formControlName="contractLaw" placeholder="Seleccione el archivo" ></ngx-mat-file-input>
+                                <mat-icon matSuffix>folder</mat-icon>
+                                <mat-hint *ngIf="form2.controls.contractLaw.value !== null">
+                                    Este empleado ya tiene un contrato adjunto &nbsp;
+                                    <a class="download" *ngIf="form2.controls.contractLaw.value !== null" (click)="downloadContract('contractLaw', form2.controls.contractLaw.value)">Descargar</a></mat-hint>
+                            </mat-form-field>
+                            
+                        </div>
+                        <div fxFlex="25" class="uploadspace">
+                            <mat-form-field  class="all" color="primary" appearance="outline">
+                                <mat-label>Contrato Interno</mat-label>
+                                <ngx-mat-file-input formControlName="internalContract" placeholder="Seleccione el archivo" ></ngx-mat-file-input>
+                                <mat-icon matSuffix>folder</mat-icon>
+                                <mat-hint *ngIf="form2.controls.internalContract.value !== null">
+                                    Este empleado ya tiene un contrato adjunto &nbsp;
+                                    <a class="download" *ngIf="form2.controls.internalContract.value !== null" (click)="downloadContract('internalContract', form2.controls.internalContract.value)">Descargar</a>
+                                </mat-hint>
+                            </mat-form-field>
+                            
+                        </div>
+                        <div fxFlex="25" class="uploadspace">
+                            <mat-form-field  class="all" color="primary" appearance="outline">
+                                <mat-label>Contrato de Confidencialidad</mat-label>
+                                <ngx-mat-file-input formControlName="confidentialityContract" placeholder="Seleccione el archivo" ></ngx-mat-file-input>
+                                <mat-icon matSuffix>folder</mat-icon>
+                                <mat-hint *ngIf="form2.controls.confidentialityContract.value !== null">
+                                    Este empleado ya tiene un contrato adjunto &nbsp;
+                                    <a class="download" *ngIf="form2.controls.confidentialityContract.value !== null" (click)="downloadContract('confidentialityContract', form2.controls.confidentialityContract.value)">Descargar</a>
+                                </mat-hint>
+                            </mat-form-field>
+                        </div>
+                        <div fxFlex="25" class="uploadspace">
+                            <mat-form-field  class="all" color="primary" appearance="outline">
+                                <mat-label>Contrato de ascenso</mat-label>
+                                <ngx-mat-file-input formControlName="newContract" placeholder="Seleccione el archivo" ></ngx-mat-file-input>
+                                <mat-icon matSuffix>folder</mat-icon>
+                                <mat-hint *ngIf="form2.controls.newContract.value !== null">
+                                    Este empleado ya tiene un contrato adjunto &nbsp;
+                                    <a class="download" *ngIf="form2.controls.newContract.value !== null" (click)="downloadContract('newContract', form2.controls.newContract.value)">Descargar</a>
+                                </mat-hint>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                </form>
+                <div fxFlex.gt-sm="33" fxFlex="100" style="padding: 0px 10px;">
+                    <br><br>
+                    <div fxLayout="row wrap">
+
+                        <h2>Vacaciones</h2>
+                    </div>
+                    <div fxLayout="row wrap">
+                        <div fxFlex>
+                            <form [formGroup]="formVacations" fxLayout="column wrap">
+                                <div fxLayout="row wrap">
+                                    <div fxFlex="100" style="padding: 0 5px;">
+                                        <mat-form-field class="all" appearance="outline">
+                                            <mat-label>Rango de fechas</mat-label>
+                                            <mat-date-range-input [rangePicker]="pickerRange">
+                                              <input matStartDate formControlName="start" placeholder="Start date">
+                                              <input matEndDate formControlName="end" placeholder="End date">
+                                            </mat-date-range-input>
+                                            <mat-datepicker-toggle matSuffix [for]="pickerRange"></mat-datepicker-toggle>
+                                            <mat-date-range-picker #pickerRange></mat-date-range-picker>
+                                          
+                                            
+                                        </mat-form-field>
+                                    </div>
+                                   
+                                </div>
+
+                                <div fxLayout="row wrap">
+                                    <div fxFlex="50" style="padding: 0 5px;">
+                                        <mat-form-field color="primary" class="all" appearance="outline">
+                                            <mat-label>Detalles</mat-label>
+                                            <textarea matInput formControlName="details"></textarea>
+                                        </mat-form-field>
+                                    </div>
+                                    <div fxFlex="50" style="padding: 0 5px;">
+                                        <mat-form-field  class="all" color="primary" appearance="outline">
+                                            <mat-label>Constancia</mat-label>
+                                            <ngx-mat-file-input formControlName="constancy" placeholder="Seleccione el archivo" ></ngx-mat-file-input>
+                                            <mat-icon matSuffix>folder</mat-icon>
+                                        </mat-form-field>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                        <div>
+
+                            <button mat-flat-button color="primary" (click)="addVacations()">Agregar</button>
+                        </div>
+                    </div>
+
+                    <div fxLayout="row wrap">
+                        <mat-list class="all">
+                            <mat-list-item *ngFor="let v of vacations">
+                                <div mat-line>{{v.start | date : 'dd/MM/yyyy'}} - {{ v.end | date : 'dd/MM/yyyy' }}</div>
+                                <div mat-line> {{v.details}} </div>
+                                <button mat-icon-button (click)="removeVacations(v)">
+                                    <mat-icon mat-list-icon>delete</mat-icon>
+                                </button>
+                              </mat-list-item>
+                        </mat-list>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="footer" fxLayout="row wrap">
+            <button mat-button matStepperPrevious>Atrás</button>
+            <span fxFlex></span>
+            <button mat-button matStepperNext>Siguiente</button>
+        </div>
+    </mat-step>
+
+
+
+
+    <!-- PASO 3 ////////////////////////// -->
+    <mat-step>
+        <ng-template matStepLabel>Puestos de Trabajo</ng-template>
+        <div class="space" data-simplebar>
+            <br><br>
+            <div fxLayout="row wrap" fxLayoutAlign="center center">
+                <button mat-flat-button color="primary" (click)="addJob()">
+                    <mat-icon>add</mat-icon> Agregar Puesto
+                </button>
+            </div>
+
+            <br>
+            <div fxLayout="row wrap" fxLayoutAlign="center center">
+
+                <mat-card *ngFor="let ej of employeeJobs" fxFlex="100" fxLayout="row wrap" class="addedjob mat-elevation-z2">
+                    <div fxFlex fxLayout="column wrap" >
+                        <div class="jobtitle">{{ej._job.name}}</div>
+                        <div class="text-muted">{{ ej.startDate | date : 'dd/MM/yyyy' }}</div>
+                    </div>
+                    <div fxFlex="nogrow">Q. {{ej.initialSalary | number : '.2'}}</div>
+                    <button mat-icon-button [matMenuTriggerFor]="menu"><mat-icon>more_vert</mat-icon></button>
+                    <mat-menu #menu="matMenu">
+                        <button mat-menu-item (click)="editJob(ej)"><mat-icon class="material-icons-outlined">create</mat-icon>Editar Puesto</button>
+                        <button mat-menu-item (click)="deleteJob(ej)"><mat-icon class="material-icons-outlined">delete</mat-icon>Eliminar Puesto</button>
+                    </mat-menu>
+                </mat-card>
+            </div>
+        </div>
+        <div class="footer" fxLayout="row wrap">
+            <button mat-button matStepperPrevious>Atrás</button>
+            <span fxFlex></span>
+            <button mat-button matStepperNext>Siguiente</button>
+        </div>
+    </mat-step>
+
+
+
+
+    <!-- PASO 4 ////////////////////////// -->
+    <mat-step>
+        <ng-template matStepLabel>Información Familiar</ng-template>
+        <div class="space" data-simplebar>
+            <div fxLayout="row wrap">
+
+                <div fxFlex="60">
+                    <form [formGroup]="form3" fxLayout="row wrap">
+                        <div fxFlex="100">
+                            <h2>Información de los familiares</h2>
+                        </div>
+                        <div fxFlex="100">
+                            <mat-form-field color="primary" class="all" appearance="outline">
+                                <mat-label>Nombre</mat-label>
+                                <input matInput formControlName="name" placeholder="Ingrese el nombre del familiar">
+                            </mat-form-field>
+                        </div>
+                        <div fxFlex="100">
+                            <mat-form-field color="primary" class="all" appearance="outline">
+                                <mat-label>Relación</mat-label>
+                                <mat-select formControlName="type" placeholder="Ingrese el tipo de relación familiar">
+                                    <mat-option value="partner">Pareja</mat-option>
+                                    <mat-option value="children">Hijo</mat-option>
+                                    <mat-option value="momFather">Mom Father</mat-option>
+                                    <mat-option value="other">Otro</mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+                        <div fxFlex="50">
+                            <mat-form-field class="all" appearance="outline">
+                                <mat-label>Fecha de Nacimiento</mat-label>
+                                <input matInput [matDatepicker]="picker4" formControlName="birth">
+                                <mat-datepicker-toggle matSuffix [for]="picker4"></mat-datepicker-toggle>
+                                <mat-datepicker #picker4></mat-datepicker>
+                            </mat-form-field>
+                        </div>
+                        <div fxFlex="50">
+                            <mat-form-field class="all" appearance="outline">
+                                <mat-label>Número de teléfono</mat-label>
+                                <input matInput formControlName="phone">
+                            </mat-form-field>
+                        </div>
+                        <div fxFlex="100" fxLayout="row wrap">
+                            <span fxFlex></span>
+                            <button color="primary" (click)="addFamiliar()" mat-flat-button>Agregar</button>
+                        </div>
+                    </form>
+
+
+                    <br><br><br>
+                    <div>
+                        <h3>Contacto de emergencia</h3>
+                        <div fxLayout="row wrap">
+                            <div fxFlex>
+                                <mat-form-field class="all" color="primary" appearance="outline">
+                                    <mat-label>Nombre del Contacto</mat-label>
+                                    <input matInput [(ngModel)]="emergencyContact.name">
+                                </mat-form-field>
+                            </div>
+                            <div fxFlex>
+                                <mat-form-field class="all" color="primary" appearance="outline">
+                                    <mat-label>Teléfono</mat-label>
+                                    <input matInput [(ngModel)]="emergencyContact.phone">
+                                </mat-form-field>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div fxFlex="40" class="relativeslist">
+    
+    
+                    <mat-card *ngFor="let r of family; let i = index" class="relative" fxLayout="row wrap" fxLayoutAlign="start center">
+                        <div fxFlex fxLayout="column wrap">
+                            <div class="jobtitle">{{r.name}}</div>
+                            <div class="text-muted">{{r.type}}</div>
+
+                        </div>
+                        <button mat-icon-button (click)="remove(i)"><mat-icon>delete</mat-icon></button>
+                    </mat-card>
+                </div>
+            </div>
+        </div>
+        <div class="footer" fxLayout="row wrap">
+            <button mat-button matStepperPrevious>Atrás</button>
+            <span fxFlex></span>
+            <button mat-stroked-button color="warn" (click)="deleteEmployee()">Eliminar Empleado</button> &nbsp;&nbsp;
+            <button mat-flat-button color="primary" (click)="saveEmployee()">Guardar Empleado</button>
+        </div>
+    </mat-step>
+
+
+
+</mat-horizontal-stepper>
+
+<div class="loadding" *ngIf="loading" fxLayout="column wrap" fxLayoutAlign="center center">
+    <mat-progress-spinner mode="indeterminate" diameter="40" color="primary"></mat-progress-spinner>
+</div>

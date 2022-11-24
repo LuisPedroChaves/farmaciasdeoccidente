@@ -133,6 +133,10 @@ const routes: Routes = [
         path: 'purchases', loadChildren: () => import('./pages/modules/purchases/purchases.module').then(m => m.PurchasesModule),
         canActivate: [CheckTokenGuard]
       },
+      {
+        path: 'requests', loadChildren: () => import('./pages/modules/requests/requests.module').then(m => m.RequestsModule),
+        canActivate: [CheckTokenGuard]
+      },
     ],
   },
   {
@@ -202,12 +206,21 @@ const routes: Routes = [
           ),
         canActivate: [CheckTokenGuard],
       },
-      // {
-      //   // tslint:disable-next-line: max-line-length
-      //   path: 'employees', pathMatch:
-      // 'full', loadChildren: () => import('./pages/modules/employees/employees.module').then(m => m.EmployeesModule),
-      //   canActivate: [CheckTokenGuard]
-      // },
+      {
+        // tslint:disable-next-line: max-line-length
+        path: 'employees', pathMatch:
+      'full', loadChildren: () => import('./pages/admin-modules/employees/employees.module').then(m => m.EmployeesModule),
+        canActivate: [CheckTokenGuard]
+      },
+      {
+        path: 'payroll', loadChildren: () => import('./pages/admin-modules/payroll/payroll.module').then(m => m.PayrollModule),
+        canActivate: [CheckTokenGuard]
+      },
+      {
+        path: 'employee-transactions', pathMatch:
+      'full', loadChildren: () => import('./pages/admin-modules/employee-transactions/employee-transactions.module').then(m => m.EmployeeTransactionsModule),
+        canActivate: [CheckTokenGuard]
+      },
       {
         path: 'receivables',
         pathMatch: 'full',
