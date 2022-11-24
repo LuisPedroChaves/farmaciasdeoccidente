@@ -1,281 +1,290 @@
-[{
-        "state": "quotes",
-        "name": "Cotizaciones",
-        "type": "link",
-        "icon": "request_quote",
-        "iconType": "icon",
-        "order": 1
-    },
-    {
-        "state": "ORDER",
-        "name": "Ordenes",
-        "type": "sub",
-        "icon": "receipt_long",
-        "iconType": "icon",
-        "order": 2
-    },
-    {
-        "state": "orders",
-        "name": "Crear orden",
-        "type": "link",
-        "icon": "history_edu",
-        "iconType": "icon",
-        "order": 1
-    },
-    {
-        "state": "dispatches",
-        "name": "Despachos",
-        "type": "link",
-        "icon": "list_alt",
-        "iconType": "icon",
-        "order": 2
-    },
-    {
-        "state": "deliveries",
-        "name": "Rutas y Entregas",
-        "type": "link",
-        "icon": "electric_moped",
-        "iconType": "icon",
-        "order": 3
-    },
-    {
-        "state": "customersRoutes",
-        "name": "Clientes",
-        "type": "link",
-        "icon": "person_pin_circle",
-        "iconType": "icon",
-        "order": 3
-    },
-    {
-        "state": "internalOrders",
-        "name": "Pedidos",
-        "type": "link",
-        "icon": "send",
-        "iconType": "icon",
-        "order": 4
-    },
-    {
-        "state": "transfers",
-        "name": "Traslados",
-        "type": "link",
-        "icon": "moped",
-        "iconType": "icon",
-        "order": 5
-    },
-    {
-        "state": "sales",
-        "name": "Ventas",
-        "type": "link",
-        "icon": "point_of_sale",
-        "iconType": "icon",
-        "order": 6
-    },
-    {
-        "state": "customers",
-        "name": "Clientes",
-        "type": "link",
-        "icon": "person_search",
-        "iconType": "icon",
-        "order": 7
-    },
-    {
-        "state": "checkStock",
-        "name": "Consultar existencias",
-        "type": "link",
-        "icon": "checklist",
-        "iconType": "icon",
-        "order": 8
-    },
-    {
-        "state": "tempStorage",
-        "name": "Inventario Temp.",
-        "type": "link",
-        "icon": "inventory",
-        "iconType": "icon",
-        "order": 9
-    },
-    {
-        "state": "pharmaStatistics",
-        "name": "Estadísticas",
-        "type": "link",
-        "icon": "trending_up",
-        "iconType": "icon",
-        "order": 10
-    },
-    {
-        "state": "STORAGE",
-        "name": "Inventario",
-        "type": "sub",
-        "icon": "inventory",
-        "iconType": "icon",
-        "order": 11
-    },
-    {
-        "state": "storage",
-        "name": "Inventario",
-        "type": "link",
-        "icon": "inventory",
-        "iconType": "icon",
-        "order": 1
-    },
-    {
-        "state": "storage/storageclosing",
-        "name": "Cierre",
-        "type": "link",
-        "icon": "inventory",
-        "iconType": "icon",
-        "order": 2
-    },
-    {
-        "state": "storage/storagehistory",
-        "name": "Historial",
-        "type": "link",
-        "icon": "inventory",
-        "iconType": "icon",
-        "order": 3
-    },
-    {
-        "state": "purchases",
-        "name": "Compras",
-        "type": "link",
-        "icon": "shopping_basket",
-        "iconType": "icon",
-        "order": 12
-    },
-    {
-        "state": "/admin",
-        "name": "Sucursales",
-        "type": "link",
-        "icon": "store",
-        "iconType": "icon",
-        "order": 1
-    },
-    {
-        "state": "payroll",
-        "name": "Planilla",
-        "type": "link",
-        "icon": "M20,6C20.58,6 21.05,6.2 21.42,6.59C21.8,7 22,7.45 22,8V19C22,19.55 21.8,20 21.42,20.41C21.05,20.8 20.58,21 20,21H4C3.42,21 2.95,20.8 2.58,20.41C2.2,20 2,19.55 2,19V8C2,7.45 2.2,7 2.58,6.59C2.95,6.2 3.42,6 4,6H8V4C8,3.42 8.2,2.95 8.58,2.58C8.95,2.2 9.42,2 10,2H14C14.58,2 15.05,2.2 15.42,2.58C15.8,2.95 16,3.42 16,4V6H20M4,8V19H20V8H4M14,6V4H10V6H14M12,9A2.25,2.25 0 0,1 14.25,11.25C14.25,12.5 13.24,13.5 12,13.5A2.25,2.25 0 0,1 9.75,11.25C9.75,10 10.76,9 12,9M16.5,18H7.5V16.88C7.5,15.63 9.5,14.63 12,14.63C14.5,14.63 16.5,15.63 16.5,16.88V18Z",
-        "iconType": "svg",
-        "order": 1
-    },
-    {
-        "state": "adminCheckStock",
-        "name": "Consultar existencias",
-        "type": "link",
-        "icon": "checklist",
-        "iconType": "icon",
-        "order": 2
-    },
-    {
-        "state": "adminDeliveries",
-        "name": "Rutas y entregas",
-        "type": "link",
-        "icon": "electric_moped",
-        "iconType": "icon",
-        "order": 3
-    },
-    {
-        "state": "adminOrders",
-        "name": "Ordenes",
-        "type": "link",
-        "icon": "receipt_long",
-        "iconType": "icon",
-        "order": 4
-    },
-    {
-        "state": "receivables",
-        "name": "Cuentas por cobrar",
-        "type": "link",
-        "icon": "request_quote",
-        "iconType": "icon",
-        "order": 5
-    },
-    {
-        "state": "accountsPayable",
-        "name": "Cuentas por pagar",
-        "type": "link",
-        "icon": "credit_score",
-        "iconType": "icon",
-        "order": 6
-    },
-    {
-        "state": "cash",
-        "name": "Cajas",
-        "type": "link",
-        "icon": "point_of_sale",
-        "iconType": "icon",
-        "order": 7
-    },
-    {
-        "state": "uploads",
-        "name": "Carga de archivos",
-        "type": "link",
-        "icon": "upload_file",
-        "iconType": "icon",
-        "order": 8
-    },
-    {
-        "state": "statistics",
-        "name": "Estadísticas",
-        "type": "link",
-        "icon": "trending_up",
-        "iconType": "icon",
-        "order": 9
-    },
-    {
-        "state": "tempStatistics",
-        "name": "Estadísticas Temp.",
-        "type": "link",
-        "icon": "trending_up",
-        "iconType": "icon",
-        "order": 10
-    },
-    {
-        "state": "adminSellersReport",
-        "name": "Reporte de Ventas",
-        "type": "link",
-        "icon": "sell",
-        "iconType": "icon",
-        "order": 11
-    },
-    {
-        "state": "adminProducts",
-        "name": "Catálogo de productos",
-        "type": "link",
-        "icon": "category",
-        "iconType": "icon",
-        "order": 12
-    },
-    {
-        "state": "brands",
-        "name": "Laboratorios",
-        "type": "link",
-        "icon": "science",
-        "iconType": "icon",
-        "order": 13
-    },
-    {
-        "state": "providers",
-        "name": "Proveedores",
-        "type": "link",
-        "icon": "business",
-        "iconType": "icon",
-        "order": 14
-    },
-    {
-        "state": "users",
-        "name": "Usuarios",
-        "type": "link",
-        "icon": "people",
-        "iconType": "icon",
-        "order": 15
-    },
-    {
-        "state": "requests",
-        "name": "Solicitudes",
-        "type": "link",
-        "icon": "contact_support",
-        "iconType": "icon",
-        "order": 15
-    }
+[
+  {
+    "state": "quotes",
+    "name": "Cotizaciones",
+    "type": "link",
+    "icon": "request_quote",
+    "iconType": "icon",
+    "order": 1
+  },
+  {
+    "state": "ORDER",
+    "name": "Ordenes",
+    "type": "sub",
+    "icon": "receipt_long",
+    "iconType": "icon",
+    "order": 2
+  },
+  {
+    "state": "orders",
+    "name": "Crear orden",
+    "type": "link",
+    "icon": "history_edu",
+    "iconType": "icon",
+    "order": 1
+  },
+  {
+    "state": "dispatches",
+    "name": "Despachos",
+    "type": "link",
+    "icon": "list_alt",
+    "iconType": "icon",
+    "order": 2
+  },
+  {
+    "state": "deliveries",
+    "name": "Rutas y Entregas",
+    "type": "link",
+    "icon": "electric_moped",
+    "iconType": "icon",
+    "order": 3
+  },
+  {
+    "state": "customersRoutes",
+    "name": "Clientes",
+    "type": "link",
+    "icon": "person_pin_circle",
+    "iconType": "icon",
+    "order": 3
+  },
+  {
+    "state": "internalOrders",
+    "name": "Pedidos",
+    "type": "link",
+    "icon": "send",
+    "iconType": "icon",
+    "order": 4
+  },
+  {
+    "state": "transfers",
+    "name": "Traslados",
+    "type": "link",
+    "icon": "moped",
+    "iconType": "icon",
+    "order": 5
+  },
+  {
+    "state": "sales",
+    "name": "Ventas",
+    "type": "link",
+    "icon": "point_of_sale",
+    "iconType": "icon",
+    "order": 6
+  },
+  {
+    "state": "customers",
+    "name": "Clientes",
+    "type": "link",
+    "icon": "person_search",
+    "iconType": "icon",
+    "order": 7
+  },
+  {
+    "state": "checkStock",
+    "name": "Consultar existencias",
+    "type": "link",
+    "icon": "checklist",
+    "iconType": "icon",
+    "order": 8
+  },
+  {
+    "state": "tempStorage",
+    "name": "Inventario Temp.",
+    "type": "link",
+    "icon": "inventory",
+    "iconType": "icon",
+    "order": 9
+  },
+  {
+    "state": "pharmaStatistics",
+    "name": "Estadísticas",
+    "type": "link",
+    "icon": "trending_up",
+    "iconType": "icon",
+    "order": 10
+  },
+  {
+    "state": "STORAGE",
+    "name": "Inventario",
+    "type": "sub",
+    "icon": "inventory",
+    "iconType": "icon",
+    "order": 11
+  },
+  {
+    "state": "storage",
+    "name": "Inventario",
+    "type": "link",
+    "icon": "inventory",
+    "iconType": "icon",
+    "order": 1
+  },
+  {
+    "state": "storage/storageclosing",
+    "name": "Cierre",
+    "type": "link",
+    "icon": "inventory",
+    "iconType": "icon",
+    "order": 2
+  },
+  {
+    "state": "storage/storagehistory",
+    "name": "Historial",
+    "type": "link",
+    "icon": "inventory",
+    "iconType": "icon",
+    "order": 3
+  },
+  {
+    "state": "purchases",
+    "name": "Compras",
+    "type": "link",
+    "icon": "shopping_basket",
+    "iconType": "icon",
+    "order": 12
+  },
+  {
+    "state": "/admin",
+    "name": "Sucursales",
+    "type": "link",
+    "icon": "store",
+    "iconType": "icon",
+    "order": 1
+  },
+  {
+    "state": "payroll",
+    "name": "Planilla",
+    "type": "link",
+    "icon": "M20,6C20.58,6 21.05,6.2 21.42,6.59C21.8,7 22,7.45 22,8V19C22,19.55 21.8,20 21.42,20.41C21.05,20.8 20.58,21 20,21H4C3.42,21 2.95,20.8 2.58,20.41C2.2,20 2,19.55 2,19V8C2,7.45 2.2,7 2.58,6.59C2.95,6.2 3.42,6 4,6H8V4C8,3.42 8.2,2.95 8.58,2.58C8.95,2.2 9.42,2 10,2H14C14.58,2 15.05,2.2 15.42,2.58C15.8,2.95 16,3.42 16,4V6H20M4,8V19H20V8H4M14,6V4H10V6H14M12,9A2.25,2.25 0 0,1 14.25,11.25C14.25,12.5 13.24,13.5 12,13.5A2.25,2.25 0 0,1 9.75,11.25C9.75,10 10.76,9 12,9M16.5,18H7.5V16.88C7.5,15.63 9.5,14.63 12,14.63C14.5,14.63 16.5,15.63 16.5,16.88V18Z",
+    "iconType": "svg",
+    "order": 1
+  },
+  {
+    "state": "adminCheckStock",
+    "name": "Consultar existencias",
+    "type": "link",
+    "icon": "checklist",
+    "iconType": "icon",
+    "order": 2
+  },
+  {
+    "state": "adminDeliveries",
+    "name": "Rutas y entregas",
+    "type": "link",
+    "icon": "electric_moped",
+    "iconType": "icon",
+    "order": 3
+  },
+  {
+    "state": "adminOrders",
+    "name": "Ordenes",
+    "type": "link",
+    "icon": "receipt_long",
+    "iconType": "icon",
+    "order": 4
+  },
+  {
+    "state": "receivables",
+    "name": "Cuentas por cobrar",
+    "type": "link",
+    "icon": "request_quote",
+    "iconType": "icon",
+    "order": 5
+  },
+  {
+    "state": "accountsPayable",
+    "name": "Cuentas por pagar",
+    "type": "link",
+    "icon": "credit_score",
+    "iconType": "icon",
+    "order": 6
+  },
+  {
+    "state": "cash",
+    "name": "Cajas",
+    "type": "link",
+    "icon": "point_of_sale",
+    "iconType": "icon",
+    "order": 7
+  },
+  {
+    "state": "uploads",
+    "name": "Carga de archivos",
+    "type": "link",
+    "icon": "upload_file",
+    "iconType": "icon",
+    "order": 8
+  },
+  {
+    "state": "statistics",
+    "name": "Estadísticas",
+    "type": "link",
+    "icon": "trending_up",
+    "iconType": "icon",
+    "order": 9
+  },
+  {
+    "state": "tempStatistics",
+    "name": "Estadísticas Temp.",
+    "type": "link",
+    "icon": "trending_up",
+    "iconType": "icon",
+    "order": 10
+  },
+  {
+    "state": "adminSellersReport",
+    "name": "Reporte de Ventas",
+    "type": "link",
+    "icon": "sell",
+    "iconType": "icon",
+    "order": 11
+  },
+  {
+    "state": "adminProducts",
+    "name": "Catálogo de productos",
+    "type": "link",
+    "icon": "category",
+    "iconType": "icon",
+    "order": 12
+  },
+  {
+    "state": "brands",
+    "name": "Laboratorios",
+    "type": "link",
+    "icon": "science",
+    "iconType": "icon",
+    "order": 13
+  },
+  {
+    "state": "providers",
+    "name": "Proveedores",
+    "type": "link",
+    "icon": "business",
+    "iconType": "icon",
+    "order": 14
+  },
+  {
+    "state": "tickets",
+    "name": "Tickets",
+    "type": "link",
+    "icon": "print",
+    "iconType": "icon",
+    "order": 15
+  },
+  {
+    "state": "requests",
+    "name": "Solicitudes",
+    "type": "link",
+    "icon": "contact_support",
+    "iconType": "icon",
+    "order": 16
+  },
+  {
+    "state": "users",
+    "name": "Usuarios",
+    "type": "link",
+    "icon": "people",
+    "iconType": "icon",
+    "order": 17
+  }
 ]

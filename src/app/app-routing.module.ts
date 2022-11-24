@@ -290,6 +290,15 @@ const routes: Routes = [
         path: 'adminSellersReport', pathMatch: 'full',  loadChildren: () => import('./pages/admin-modules/seller-report/seller-report.module').then(m => m.SellerReportModule),
         canActivate: [CheckTokenGuard]
       },
+      {
+        path: 'tickets',
+        pathMatch: 'full',
+        loadChildren: () =>
+          import('./pages/admin-modules/tickets/tickets.module').then(
+            (m) => m.TicketsModule
+          ),
+        canActivate: [CheckTokenGuard],
+      },
     ]
   },
   {

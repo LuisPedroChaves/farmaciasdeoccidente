@@ -16,6 +16,7 @@ import { ProviderItem } from 'src/app/core/models/Provider';
 import { ConfigService } from 'src/app/core/services/config/config.service';
 import { ProviderService } from 'src/app/core/services/httpServices/provider.service';
 import { EventBusService } from 'src/app/core/services/internal/event-bus.service';
+import { XlsxService } from 'src/app/core/services/internal/XlsxService.service';
 import { AppState } from 'src/app/store/app.reducer';
 import { EditProviderComponent } from '../edit-provider/edit-provider.component';
 import { NewProviderComponent } from '../new-provider/new-provider.component';
@@ -56,7 +57,8 @@ export class ProvidersComponent implements OnInit, AfterContentInit, OnDestroy {
     public eventBus: EventBusService,
     public config: ConfigService,
     public dialog: MatDialog,
-    public providerService: ProviderService
+    public providerService: ProviderService,
+    private xlsxService: XlsxService
   ) {}
 
   ngOnInit(): void {
@@ -117,5 +119,38 @@ export class ProvidersComponent implements OnInit, AfterContentInit, OnDestroy {
   applyFilter(event: Event): void {
     const filterValue = (event.target as HTMLInputElement).value;
     this.dataSource.filter = filterValue.trim().toLowerCase();
+  }
+
+
+  downloadXlsx(): void {
+
+    const body = [
+      ['Catálogo de Proveedores'],
+      ['Código','Nombre', 'Cheque a nombre de', 'Dirección', 'Nit', 'Teléfono', 'Email']
+    ];
+
+    const ArrayToPrint: any[] = [];
+
+    this.providers.forEach(item => {
+      const row: any[] = [];
+
+      row.push(item['code']);
+      row.push(item['name']);
+      row.push(item['checkName']);
+      row.push(item['address']);
+      row.push(item['nit']);
+      row.push(item['phone']);
+      row.push(item['email']);
+
+      ArrayToPrint.push(row);
+    });
+
+    ArrayToPrint.forEach((row) => body.push(row));
+
+    this.xlsxService.downloadSinglePage(
+      body,
+      'Catálogo de Proveedores',
+      'Catálogo de Proveedores'
+    );
   }
 }

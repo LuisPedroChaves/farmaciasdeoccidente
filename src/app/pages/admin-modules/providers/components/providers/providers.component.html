@@ -7,6 +7,10 @@
         <div>
             <header class="module-header" [ngClass]="{'padding-25': !smallScreen, 'padding-15': smallScreen }" fxLayoutAlign="start center" fxLayout="row wrap">
                 <h1 class="product-font ma-0 module-title">Proveedores</h1>
+                <span fxFlex ></span>
+                <button mat-mini-fab color="primary" (click)="downloadXlsx()" matTooltip="Descargar en Excel">
+                  <mat-icon>get_app</mat-icon>
+                </button>
             </header>
             <mat-divider></mat-divider>
 

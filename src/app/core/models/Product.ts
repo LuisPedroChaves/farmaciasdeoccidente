@@ -19,6 +19,7 @@ export interface ProductItem {
   lastUpdate?: string;
   exempt: boolean;
   discontinued: boolean;
+  ticket?: ProductTicketItem;
   deleted?: boolean;
   index?: number
 }
@@ -52,4 +53,10 @@ export interface ProductPresentationsItem {
   distributor_newPrice?: number;// SIRVE EN EL MODULO DE ACTUALIZAR PRECIOS
   retail_newPrice?: number;// SIRVE EN EL MODULO DE ACTUALIZAR PRECIOS
   cf_newPrice?: number;// SIRVE EN EL MODULO DE ACTUALIZAR PRECIOS
+}
+
+export interface ProductTicketItem {
+  providerCode: string,
+  loteCode: string,
+  date: Date
 }

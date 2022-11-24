@@ -130,4 +130,31 @@ export class ProductService {
       `${this.apiConfigService.API_PRODUCT}/discontinued/${product._id}`
     );
   }
+
+  uploadFileTickets(file: File) {
+    return new Promise((resolve, reject) => {
+      const formData = new FormData();
+      const xhr = new XMLHttpRequest();
+
+      formData.append('archivo', file, file.name);
+
+      xhr.onreadystatechange = () => {
+        if (xhr.readyState === 4) {
+
+          if (xhr.status === 200) {
+            console.log('Archivo Subido');
+            resolve(JSON.parse(xhr.response));
+          } else {
+            console.log('Fallo la subida');
+            reject(xhr.response);
+          }
+        }
+      };
+
+      const url = this.apiConfigService.API_PRODUCT + '/xlsx/ticket';
+
+      xhr.open('POST', url, true);
+      xhr.send(formData);
+    });
+  }
 }
