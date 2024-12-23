@@ -1,6 +1,7 @@
 {
     "editor.bracketPairColorization.enabled": true,
     "editor.guides.bracketPairs": true,
-    "appService.defaultWebAppToDeploy": "/subscriptions/56fe1ae5-f66a-4d7d-ab34-b3986dd85bc3/AppServices/subscriptions/56fe1ae5-f66a-4d7d-ab34-b3986dd85bc3/resourceGroups/Applitech/providers/Microsoft.Web/sites/farmaciasdeoccidente",
-    "appService.deploySubpath": "dist/farmaciasdeoccidente"
+    "appService.deploySubpath": "dist/farmaciasdeoccidente",
+    "appService.showBuildDuringDeployPrompt": false,
+    "appService.defaultWebAppToDeploy": "/subscriptions/56fe1ae5-f66a-4d7d-ab34-b3986dd85bc3/resourceGroups/Farmacias-de-Occidente/providers/Microsoft.Web/sites/farmaciasdeoccidente"
 }
