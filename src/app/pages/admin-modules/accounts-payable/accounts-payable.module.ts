@@ -38,10 +38,15 @@ import { NewBankAccountComponent } from './components/new-bank-account/new-bank-
 import { EditBankAccountComponent } from './components/edit-bank-account/edit-bank-account.component';
 import { NewBankFlowComponent } from './components/new-bank-flow/new-bank-flow.component';
 import { CheckEffects } from 'src/app/store/effects/check.effects';
-import { AccountsPayableReducer, CheckReducer, BankReducer } from 'src/app/store/reducers';
+import {
+  AccountsPayableReducer,
+  CheckReducer,
+  BankReducer,
+} from 'src/app/store/reducers';
 import { AccountsPayableEffects } from 'src/app/store/effects/accounts-payable.effects';
 import { CashRequisitionsComponent } from './pages/cash-requisitions/cash-requisitions.component';
 import { TableCashFlowsComponent } from './components/table-cash-flows/table-cash-flows.component';
+import { ReportChecksComponent } from './components/report-checks/report-checks.component';
 
 @NgModule({
   declarations: [
@@ -71,7 +76,7 @@ import { TableCashFlowsComponent } from './components/table-cash-flows/table-cas
     NewBankFlowComponent,
     CashRequisitionsComponent,
     TableCashFlowsComponent,
-
+    ReportChecksComponent,
   ],
   imports: [
     CommonModule,
@@ -79,15 +84,16 @@ import { TableCashFlowsComponent } from './components/table-cash-flows/table-cas
     StoreModule.forFeature('check', CheckReducer),
     StoreModule.forFeature('bank', BankReducer),
     StoreModule.forFeature('accountsPayable', AccountsPayableReducer),
-    EffectsModule.forFeature([BankEffects, CheckEffects, AccountsPayableEffects]),
+    EffectsModule.forFeature([
+      BankEffects,
+      CheckEffects,
+      AccountsPayableEffects,
+    ]),
     SharedComponentsModule,
     InputsModule,
     ComponentsModule,
-    CoreModule
+    CoreModule,
   ],
-  providers: [
-    FilterPipe,
-    TimeFormatPipe
-  ]
+  providers: [FilterPipe, TimeFormatPipe],
 })
-export class AccountsPayableModule { }
+export class AccountsPayableModule {}
