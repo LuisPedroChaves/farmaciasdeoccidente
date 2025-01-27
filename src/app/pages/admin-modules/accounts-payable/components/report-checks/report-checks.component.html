@@ -38,12 +38,12 @@
 
     <ng-container matColumnDef="date">
       <th mat-header-cell *matHeaderCellDef> Fecha de Emisión </th>
-      <td mat-cell *matCellDef="let element"> {{element.date | date: 'dd/MM/yyyy'}} </td>
+      <td mat-cell *matCellDef="let element"> {{element.created | date: 'dd/MM/yyyy'}} </td>
     </ng-container>
 
     <ng-container matColumnDef="paymentDate">
       <th mat-header-cell *matHeaderCellDef> Fecha de Cobro </th>
-      <td mat-cell *matCellDef="let element"> {{element.paymentDate | date: 'dd/MM/yyyy'}} </td>
+      <td mat-cell *matCellDef="let element"> {{element.date | date: 'dd/MM/yyyy'}} </td>
     </ng-container>
 
     <ng-container matColumnDef="no">
@@ -68,7 +68,7 @@
     </ng-container>
 
     <ng-container matColumnDef="state">
-      <th mat-header-cell *matHeaderCellDef> Estate </th>
+      <th mat-header-cell *matHeaderCellDef> Estado </th>
       <td mat-cell *matCellDef="let element">
         {{ element.state }}
       </td>
