@@ -99,16 +99,16 @@ export class ReportChecksComponent implements OnInit {
     const ArrayToPrint: any[] = [];
 
     this.checks.forEach((item) => {
-      const DATE = item.date
-        ? this.timeFormat.transform(String(item.date), 'DD/MM/YYYY hh:mm', 'es')
-        : '';
-
-      const PAYMENT_DATE = item.paymentDate
+      const DATE = item.created
         ? this.timeFormat.transform(
-            String(item.paymentDate),
+            String(item.created),
             'DD/MM/YYYY hh:mm',
             'es'
           )
+        : '';
+
+      const PAYMENT_DATE = item.date
+        ? this.timeFormat.transform(String(item.date), 'DD/MM/YYYY hh:mm', 'es')
         : '';
 
       const row: any[] = [
