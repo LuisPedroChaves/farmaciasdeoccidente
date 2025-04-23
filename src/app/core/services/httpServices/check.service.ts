@@ -103,7 +103,7 @@ export class CheckService implements IDataService<CheckItem[]> {
   print(check: CheckItem) {
     const body = [];
 
-    body.push({ text: '\n' });
+    // body.push({ text: '\n' });
     body.push({
       layout: 'noBorders',
       table: {
