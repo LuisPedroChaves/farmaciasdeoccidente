@@ -25,6 +25,11 @@
       "dest": "/$1"
     },
     {
+      "src": "/(.*\\.json)",
+      "headers": { "Content-Type": "application/json" },
+      "dest": "/$1"
+    },
+    {
       "src": "/(.*\\.(png|jpg|jpeg|gif|svg|ico|woff|woff2|ttf|eot))",
       "dest": "/$1"
     },
