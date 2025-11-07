@@ -3,14 +3,16 @@
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
-    "start": "ng serve",
-    "build": "NODE_OPTIONS=--openssl-legacy-provider ng build --configuration=production",
+    "start": "NODE_OPTIONS=--openssl-legacy-provider ng serve",
+    "build": "NODE_OPTIONS=--openssl-legacy-provider ng build",
+    "build:prod": "NODE_OPTIONS=--openssl-legacy-provider ng build --prod --output-path=dist/farmaciasdeoccidente",
+    "vercel-build": "NODE_OPTIONS=--openssl-legacy-provider ng build --prod --output-path=dist/farmaciasdeoccidente",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e"
   },
   "engines": {
-    "node": "18.x"
+    "node": "16.x"
   },
   "private": true,
   "dependencies": {

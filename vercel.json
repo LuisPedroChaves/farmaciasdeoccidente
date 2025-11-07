@@ -1,16 +1,36 @@
 {
   "version": 2,
-  "buildCommand": "npm run build -- --configuration=production",
+  "buildCommand": "npm run vercel-build",
   "outputDirectory": "dist/farmaciasdeoccidente",
-  "rewrites": [
+  "framework": null,
+  "devCommand": "npm start",
+  "builds": [
     {
-      "source": "/(.*)",
-      "destination": "/index.html"
+      "src": "package.json",
+      "use": "@vercel/static-build",
+      "config": {
+        "distDir": "dist/farmaciasdeoccidente"
+      }
     }
   ],
-  "build": {
-    "env": {
-      "NODE_OPTIONS": "--openssl-legacy-provider"
+  "routes": [
+    {
+      "src": "/(.*\\.js)",
+      "headers": { "Content-Type": "application/javascript" },
+      "dest": "/$1"
+    },
+    {
+      "src": "/(.*\\.css)",
+      "headers": { "Content-Type": "text/css" },
+      "dest": "/$1"
+    },
+    {
+      "src": "/(.*\\.(png|jpg|jpeg|gif|svg|ico|woff|woff2|ttf|eot))",
+      "dest": "/$1"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "/index.html"
     }
-  }
+  ]
 }
