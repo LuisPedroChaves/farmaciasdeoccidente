@@ -138,7 +138,7 @@ export class IndexComponent implements OnInit {
     const parentElement = parent.qrcElement.nativeElement.querySelector('canvas');
     const generatedImage = parentElement.toDataURL('image/png');
     const ticket: ITicket = {
-      providerCode: this.selectedProvider.code,
+      providerCode: String(this.selectedProvider.code),
       productCode: this.codeProduct,
       productName: this.nameProduct,
       lote: this.lote,
