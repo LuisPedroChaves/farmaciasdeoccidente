@@ -1,6 +1,6 @@
 export interface ProviderItem {
   _id: string,
-  code?: string,
+  code?: string | number,
   name: string,
 	checkName: string,
   address: string,

@@ -11,7 +11,7 @@ export interface CheckItem {
     city: string,
     date: Date,
     name: string,
-    code?: string,
+    code?: string | number,
     nit?: string,
     amount: number,
     note: string,

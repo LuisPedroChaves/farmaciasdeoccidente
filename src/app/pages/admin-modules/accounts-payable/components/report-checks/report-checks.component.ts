@@ -70,7 +70,11 @@ export class ReportChecksComponent implements OnInit {
         this.type.value
       )
       .subscribe((data) => {
-        this.checks = data;
+        this.checks = data.map((item: CheckItem) => ({
+          ...item,
+          code: item.accountsPayables?.[0]?._provider?.code,
+          nit: item.accountsPayables?.[0]?._provider?.nit,
+        }));
         this.dataSource = new MatTableDataSource<CheckItem>(this.checks);
         this.dataSource.paginator = this.paginator;
         this.loading = false;
