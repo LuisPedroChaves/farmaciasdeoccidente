@@ -60,6 +60,20 @@
       </td>
     </ng-container>
 
+    <ng-container matColumnDef="code">
+      <th mat-header-cell *matHeaderCellDef> Código </th>
+      <td mat-cell *matCellDef="let element">
+        {{ element.code }}
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="nit">
+      <th mat-header-cell *matHeaderCellDef> NIT </th>
+      <td mat-cell *matCellDef="let element">
+        {{ element.nit }}
+      </td>
+    </ng-container>
+
     <ng-container matColumnDef="amount">
       <th mat-header-cell *matHeaderCellDef> Monto (Q.) </th>
       <td mat-cell *matCellDef="let element">

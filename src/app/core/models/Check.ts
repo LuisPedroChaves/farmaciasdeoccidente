@@ -11,6 +11,8 @@ export interface CheckItem {
     city: string,
     date: Date,
     name: string,
+    code?: string,
+    nit?: string,
     amount: number,
     note: string,
     receipt?: ICheckReceipt,

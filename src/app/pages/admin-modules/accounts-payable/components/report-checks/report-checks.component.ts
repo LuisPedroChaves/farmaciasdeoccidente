@@ -28,7 +28,7 @@ export class ReportChecksComponent implements OnInit {
   type = new FormControl('date');
   checks: CheckItem[] = [];
   dataSource = new MatTableDataSource();
-  columns = ['date', 'paymentDate', 'no', 'name', 'amount', 'state'];
+  columns = ['date', 'paymentDate', 'no', 'name', 'code', 'nit', 'amount', 'state'];
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
   constructor(
@@ -91,6 +91,8 @@ export class ReportChecksComponent implements OnInit {
         'Fecha de cobro',
         'No. Cheque',
         'Proveedor',
+        'Código',
+        'NIT',
         'Monto',
         'Estado',
       ],
@@ -116,6 +118,8 @@ export class ReportChecksComponent implements OnInit {
         PAYMENT_DATE,
         item.no,
         item.name,
+        item.code || '',
+        item.nit || '',
         item.amount.toFixed(2),
         item.state,
       ];
