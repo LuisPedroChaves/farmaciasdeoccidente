@@ -198,7 +198,7 @@ The application uses Socket.IO for real-time updates. The socket configuration c
 
 ### Node.js Version
 
-The project requires **Node.js 20.x** as specified in package.json engines.
+The project requires **Node.js 24.x** as specified in package.json engines.
 
 ### Build Considerations
 
