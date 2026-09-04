@@ -2,6 +2,19 @@
   padding: 0 24px;
 }
 
+.documents-content {
+  max-height: 60vh;
+  overflow-y: auto;
+}
+
 table {
   width: 100%;
+  border-collapse: collapse;
+
+  thead th {
+    position: sticky;
+    top: 0;
+    background: #fff;
+    z-index: 1;
+  }
 }
