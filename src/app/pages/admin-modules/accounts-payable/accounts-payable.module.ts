@@ -48,6 +48,7 @@ import { CashRequisitionsComponent } from './pages/cash-requisitions/cash-requis
 import { TableCashFlowsComponent } from './components/table-cash-flows/table-cash-flows.component';
 import { ReportChecksComponent } from './components/report-checks/report-checks.component';
 import { ReportChecksDocumentsComponent } from './components/report-checks-documents/report-checks-documents.component';
+import { ReportDuplicatesComponent } from './components/report-duplicates/report-duplicates.component';
 
 @NgModule({
   declarations: [
@@ -79,6 +80,7 @@ import { ReportChecksDocumentsComponent } from './components/report-checks-docum
     TableCashFlowsComponent,
     ReportChecksComponent,
     ReportChecksDocumentsComponent,
+    ReportDuplicatesComponent,
   ],
   imports: [
     CommonModule,
