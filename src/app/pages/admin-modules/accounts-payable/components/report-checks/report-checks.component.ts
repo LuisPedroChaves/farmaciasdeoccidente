@@ -105,6 +105,14 @@ export class ReportChecksComponent implements OnInit {
     return `${prefix}${account.noBill}`;
   }
 
+  documentLabelWithAmount(account: {
+    docType: string;
+    noBill: string;
+    total: number;
+  }): string {
+    return `${this.documentLabel(account)} - Q${account.total.toFixed(2)}`;
+  }
+
   downloadXlsx(): void {
     if (this.checks.length === 0) {
       this.toastyService.error('No hay información en la tabla para exportar');
@@ -143,7 +151,7 @@ export class ReportChecksComponent implements OnInit {
         : '';
 
       const documents = (item.accountsPayables || [])
-        .map((account) => this.documentLabel(account))
+        .map((account) => this.documentLabelWithAmount(account))
         .join(', ');
 
       const row: any[] = [

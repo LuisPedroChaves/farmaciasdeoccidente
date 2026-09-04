@@ -1,6 +1,9 @@
 <header class="header" fxLayout="row wrap" fxLayoutAlign="center center">
     <h2 class="product-font">Documentos asociados al cheque {{ data.check.no }}</h2>
 </header>
+<div class="search" fxLayout="row wrap" fxLayoutAlign="center center" *ngIf="accountsPayables.length">
+    <app-filter placeholder="Buscar por documento, fecha o monto" (send)="applyFilter($event)"></app-filter>
+</div>
 <mat-card-content class="documents-content">
     <table>
         <thead>
@@ -11,15 +14,16 @@
             </tr>
         </thead>
         <tbody>
-            <tr *ngFor="let account of data.check.accountsPayables">
-                <td>
-                    {{ (account.docType === 'ABONO' || account.docType === 'CREDITO' || account.docType === 'CREDITO_TEMP') ? 'N' : 'F' }}{{ account.noBill }}
-                </td>
+            <tr *ngFor="let account of filteredAccountsPayables">
+                <td>{{ documentLabel(account) }}</td>
                 <td>{{ account.date | date: 'dd/MM/yyyy' }}</td>
                 <td align="right">Q{{ account.total | number: '.2' }}</td>
             </tr>
-            <tr *ngIf="!data.check.accountsPayables?.length">
+            <tr *ngIf="!accountsPayables.length">
                 <td colspan="3">No hay documentos asociados a este cheque</td>
+            </tr>
+            <tr *ngIf="accountsPayables.length && !filteredAccountsPayables.length">
+                <td colspan="3">No se encontraron documentos que coincidan con la búsqueda</td>
             </tr>
         </tbody>
     </table>
