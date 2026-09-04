@@ -88,14 +88,16 @@ export class AccountsPayableService implements IDataService<AccountsPayableItem[
       );
   }
 
-  getReportDuplicates(startDate?, endDate?, _provider?: string): Observable<any> {
-    let params = new HttpParams();
+  getReportDuplicates(page: number, size: number, startDate?, endDate?, _provider?: string): Observable<any> {
+    let params = new HttpParams()
+      .set('page', page.toString())
+      .set('size', size.toString());
     if (startDate) params = params.set('startDate', startDate.toString());
     if (endDate) params = params.set('endDate', endDate.toString());
     if (_provider) params = params.set('_provider', _provider);
 
     return this.http.get(`${this.apiConfigService.API_ACCOUNTS_PAYABLE}/report/duplicates`, { params })
-      .pipe(map((resp: any) => resp.duplicates));
+      .pipe(map((resp: any) => ({ duplicates: resp.duplicates, total: resp.total })));
   }
 
   getTempCredits(): Observable<any> {

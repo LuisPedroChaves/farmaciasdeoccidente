@@ -1,7 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
-import { MatPaginator } from '@angular/material/paginator';
-import { MatTableDataSource } from '@angular/material/table';
+import { MatPaginator, PageEvent } from '@angular/material/paginator';
 
 import { debounceTime } from 'rxjs/operators';
 import { AccountsPayableDuplicateItem } from 'src/app/core/models/AccountsPayable';
@@ -22,8 +21,10 @@ export class ReportDuplicatesComponent implements OnInit {
     end: new FormControl('')
   });
   duplicates: AccountsPayableDuplicateItem[] = [];
-  dataSource = new MatTableDataSource<AccountsPayableDuplicateItem>();
-  columns = ['provider', 'noBill', 'count'];
+  total = 0;
+  pageIndex = 0;
+  pageSize = 10;
+  columns = ['provider', 'noBill', 'count', 'lastDate'];
   expandedElement: AccountsPayableDuplicateItem | null = null;
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
@@ -38,6 +39,7 @@ export class ReportDuplicatesComponent implements OnInit {
       )
       .subscribe(range => {
         if ((range.start && range.end) || (!range.start && !range.end)) {
+          this.pageIndex = 0;
           this.search();
         }
       });
@@ -46,6 +48,13 @@ export class ReportDuplicatesComponent implements OnInit {
 
   getProvider(provider: ProviderItem): void {
     this.selectedProvider = provider;
+    this.pageIndex = 0;
+    this.search();
+  }
+
+  onPage(event: PageEvent): void {
+    this.pageIndex = event.pageIndex;
+    this.pageSize = event.pageSize;
     this.search();
   }
 
@@ -79,14 +88,15 @@ export class ReportDuplicatesComponent implements OnInit {
     this.loading = true;
     this.expandedElement = null;
     this.accountsPayableService.getReportDuplicates(
+      this.pageIndex,
+      this.pageSize,
       this.range.controls['start'].value,
       this.range.controls['end'].value,
       this.selectedProvider?._id
     )
       .subscribe(data => {
-        this.duplicates = data;
-        this.dataSource = new MatTableDataSource<AccountsPayableDuplicateItem>(this.duplicates);
-        this.dataSource.paginator = this.paginator;
+        this.duplicates = data.duplicates;
+        this.total = data.total;
         this.loading = false;
       });
   }

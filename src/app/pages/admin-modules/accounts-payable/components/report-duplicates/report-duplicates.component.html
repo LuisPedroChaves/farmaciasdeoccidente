@@ -30,7 +30,7 @@
 </header>
 <ngx-simplebar class="content">
     <mat-progress-bar *ngIf="loading" mode="indeterminate" color="warn"></mat-progress-bar>
-    <table mat-table [dataSource]="dataSource" multiTemplateDataRows>
+    <table mat-table [dataSource]="duplicates" multiTemplateDataRows>
 
         <ng-container matColumnDef="provider">
             <th mat-header-cell *matHeaderCellDef> Proveedor </th>
@@ -55,6 +55,13 @@
                         warning
                     </mat-icon>
                 </span>
+            </td>
+        </ng-container>
+
+        <ng-container matColumnDef="lastDate">
+            <th mat-header-cell *matHeaderCellDef> Última fecha </th>
+            <td mat-cell *matCellDef="let element">
+                {{ element.lastDate | date: 'dd/MM/yyyy' }}
             </td>
         </ng-container>
 
@@ -91,9 +98,10 @@
         <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="detail-row"></tr>
         <!-- Fila mostrada cuando no hay datos coincidentes. -->
         <tr class="mat-row" *matNoDataRow>
-            <td class="mat-cell" colspan="3">No se encontraron documentos duplicados</td>
+            <td class="mat-cell" [attr.colspan]="columns.length">No se encontraron documentos duplicados</td>
         </tr>
     </table>
 </ngx-simplebar>
-<mat-paginator [pageSizeOptions]="[10, 50, 100]" showFirstLastButtons>
+<mat-paginator [length]="total" [pageIndex]="pageIndex" [pageSize]="pageSize" [pageSizeOptions]="[10, 50, 100]"
+    [disabled]="loading" showFirstLastButtons (page)="onPage($event)">
 </mat-paginator>

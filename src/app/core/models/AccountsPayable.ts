@@ -58,5 +58,6 @@ export interface AccountsPayableDuplicateItem {
   serie: string,
   noBill: string,
   count: number,
+  lastDate: Date,
   documents: AccountsPayableDuplicateDocumentItem[],
 }
