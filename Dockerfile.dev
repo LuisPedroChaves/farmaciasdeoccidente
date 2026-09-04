@@ -1,0 +1,12 @@
+FROM node:24-alpine
+
+WORKDIR /app
+
+# El lockfile es v1 (npm 6): se usa install en lugar de ci
+COPY package*.json .npmrc ./
+RUN npm install --legacy-peer-deps
+
+EXPOSE 4200
+
+# Usa el script start (incluye NODE_OPTIONS=--openssl-legacy-provider)
+CMD ["npm", "start", "--", "--host", "0.0.0.0", "--port", "4200", "--disable-host-check"]

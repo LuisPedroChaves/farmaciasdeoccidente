@@ -1,0 +1,26 @@
+<header class="header" fxLayout="row wrap" fxLayoutAlign="center center">
+    <h2 class="product-font">Documentos asociados al cheque {{ data.check.no }}</h2>
+</header>
+<mat-card-content>
+    <table>
+        <tr>
+            <th align="left">Documento</th>
+            <th align="left">Fecha</th>
+            <th align="right">Monto</th>
+        </tr>
+        <tr *ngFor="let account of data.check.accountsPayables">
+            <td>
+                {{ (account.docType === 'ABONO' || account.docType === 'CREDITO' || account.docType === 'CREDITO_TEMP') ? 'N' : 'F' }}{{ account.noBill }}
+            </td>
+            <td>{{ account.date | date: 'dd/MM/yyyy' }}</td>
+            <td align="right">Q{{ account.total | number: '.2' }}</td>
+        </tr>
+        <tr *ngIf="!data.check.accountsPayables?.length">
+            <td colspan="3">No hay documentos asociados a este cheque</td>
+        </tr>
+    </table>
+</mat-card-content>
+<div fxLayout="row wrap" class="options">
+    <span fxFlex></span>
+    <button mat-stroked-button color="primary" (click)="dialogRef.close()">Cerrar</button>
+</div>

@@ -47,6 +47,7 @@ import { AccountsPayableEffects } from 'src/app/store/effects/accounts-payable.e
 import { CashRequisitionsComponent } from './pages/cash-requisitions/cash-requisitions.component';
 import { TableCashFlowsComponent } from './components/table-cash-flows/table-cash-flows.component';
 import { ReportChecksComponent } from './components/report-checks/report-checks.component';
+import { ReportChecksDocumentsComponent } from './components/report-checks-documents/report-checks-documents.component';
 
 @NgModule({
   declarations: [
@@ -77,6 +78,7 @@ import { ReportChecksComponent } from './components/report-checks/report-checks.
     CashRequisitionsComponent,
     TableCashFlowsComponent,
     ReportChecksComponent,
+    ReportChecksDocumentsComponent,
   ],
   imports: [
     CommonModule,

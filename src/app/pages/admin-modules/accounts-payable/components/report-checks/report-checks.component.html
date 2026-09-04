@@ -88,6 +88,16 @@
       </td>
     </ng-container>
 
+    <ng-container matColumnDef="documents">
+      <th mat-header-cell *matHeaderCellDef> Documentos </th>
+      <td mat-cell *matCellDef="let element">
+        <button mat-button color="primary" (click)="openDocuments(element)"
+          [disabled]="!element.accountsPayables?.length">
+          {{ element.accountsPayables?.length || 0 }} documento{{ element.accountsPayables?.length === 1 ? '' : 's' }}
+        </button>
+      </td>
+    </ng-container>
+
     <tr mat-header-row *matHeaderRowDef="columns;  sticky: true"></tr>
     <tr mat-row *matRowDef="let row; columns: columns;"></tr>
     <!-- Fila mostrada cuando no hay datos coincidentes. -->

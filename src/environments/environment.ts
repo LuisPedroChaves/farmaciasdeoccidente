@@ -9,7 +9,7 @@ export const environment = {
   mobile: false,
 
   /* API Services Config */
-  // root: 'http://localhost:3000',
+  // root: 'http://localhost:3031',
   root: 'https://farmacias-backend-old.applitech.com.gt',
 
   /* Version Config */

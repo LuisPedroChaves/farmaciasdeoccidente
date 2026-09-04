@@ -5,6 +5,7 @@ import {
   ViewChild,
 } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { debounceTime } from 'rxjs/operators';
@@ -13,6 +14,7 @@ import { CheckService } from 'src/app/core/services/httpServices/check.service';
 import { ToastyService } from 'src/app/core/services/internal/toasty.service';
 import { XlsxService } from 'src/app/core/services/internal/XlsxService.service';
 import { TimeFormatPipe } from 'src/app/core/shared/pipes/timePipes/time-format.pipe';
+import { ReportChecksDocumentsComponent } from '../report-checks-documents/report-checks-documents.component';
 
 @Component({
   selector: 'app-report-checks',
@@ -28,14 +30,15 @@ export class ReportChecksComponent implements OnInit {
   type = new FormControl('date');
   checks: CheckItem[] = [];
   dataSource = new MatTableDataSource();
-  columns = ['date', 'paymentDate', 'no', 'name', 'code', 'nit', 'amount', 'state'];
+  columns = ['date', 'paymentDate', 'no', 'name', 'code', 'nit', 'amount', 'state', 'documents'];
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
   constructor(
     private checkService: CheckService,
     private toastyService: ToastyService,
     private timeFormat: TimeFormatPipe,
-    private xlsxService: XlsxService
+    private xlsxService: XlsxService,
+    private dialog: MatDialog
   ) {}
 
   ngOnInit(): void {
@@ -81,6 +84,27 @@ export class ReportChecksComponent implements OnInit {
       });
   }
 
+  openDocuments(check: CheckItem): void {
+    this.dialog.open(ReportChecksDocumentsComponent, {
+      width: '450px',
+      data: { check },
+      panelClass: ['farmacia-dialog', 'farmacia'],
+    });
+  }
+
+  documentLabel(account: {
+    docType: string;
+    noBill: string;
+  }): string {
+    const prefix =
+      account.docType === 'ABONO' ||
+      account.docType === 'CREDITO' ||
+      account.docType === 'CREDITO_TEMP'
+        ? 'N'
+        : 'F';
+    return `${prefix}${account.noBill}`;
+  }
+
   downloadXlsx(): void {
     if (this.checks.length === 0) {
       this.toastyService.error('No hay información en la tabla para exportar');
@@ -99,6 +123,7 @@ export class ReportChecksComponent implements OnInit {
         'NIT',
         'Monto',
         'Estado',
+        'Documentos',
       ],
     ];
 
@@ -117,6 +142,10 @@ export class ReportChecksComponent implements OnInit {
         ? this.timeFormat.transform(String(item.date), 'DD/MM/YYYY hh:mm', 'es')
         : '';
 
+      const documents = (item.accountsPayables || [])
+        .map((account) => this.documentLabel(account))
+        .join(', ');
+
       const row: any[] = [
         DATE,
         PAYMENT_DATE,
@@ -126,6 +155,7 @@ export class ReportChecksComponent implements OnInit {
         item.nit || '',
         item.amount.toFixed(2),
         item.state,
+        documents,
       ];
       ArrayToPrint.push(row);
     });
