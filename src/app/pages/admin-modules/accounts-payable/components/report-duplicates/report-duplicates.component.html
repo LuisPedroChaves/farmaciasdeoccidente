@@ -24,6 +24,9 @@
                 <button mat-fab color="warn" (click)="search()" matTooltip="Buscar">
                     <mat-icon>search</mat-icon>
                 </button>
+                <button mat-fab color="warn" (click)="downloadXlsx()" [disabled]="exporting" matTooltip="Descargar Excel">
+                    <mat-icon>get_app</mat-icon>
+                </button>
             </div>
         </div>
     </div>
