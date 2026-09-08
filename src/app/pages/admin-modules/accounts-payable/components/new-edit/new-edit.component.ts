@@ -370,6 +370,9 @@ export class NewEditComponent implements OnInit, AfterContentInit, OnDestroy, On
           } else {
             this.saveSuccess();
           }
+        }, err => {
+          this.loading = false;
+          this.toastyService.error('Error al guardar', this.getErrorMessage(err));
         })
     } else {
       // Nueva
@@ -487,8 +490,24 @@ export class NewEditComponent implements OnInit, AfterContentInit, OnDestroy, On
               this.saveSuccess();
             }
           }
+        }, err => {
+          this.loading = false;
+          this.toastyService.error('Error al guardar', this.getErrorMessage(err));
         })
     }
+  }
+
+  private getErrorMessage(err: any): string {
+    const ERROR_BODY = err?.error;
+    if (typeof ERROR_BODY === 'string') {
+      try {
+        const PARSED = JSON.parse(ERROR_BODY);
+        return PARSED.mensaje || PARSED.errors?.message || 'Ocurrió un error al guardar el documento';
+      } catch {
+        return 'Ocurrió un error al guardar el documento';
+      }
+    }
+    return ERROR_BODY?.mensaje || ERROR_BODY?.errors?.message || 'Ocurrió un error al guardar el documento';
   }
 
   saveCheck(total: number, accountPayable: AccountsPayableItem): void {
