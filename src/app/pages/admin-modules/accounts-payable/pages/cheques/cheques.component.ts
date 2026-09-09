@@ -121,6 +121,7 @@ export class ChequesComponent implements OnInit, OnDestroy {
         this.checksToday = this.filter.transform(this.checksTodayTemp, text, CHECK_FILTER_FIELDS);
         this.checksHistory = this.filter.transform(this.checksHistoryTemp, text, CHECK_FILTER_FIELDS);
         CHECK_STATES.forEach(state => invalidatePagedList(this.lists[state], true));
+        this.loadCounts();
         this.loadActiveTab();
       });
 
@@ -182,7 +183,7 @@ export class ChequesComponent implements OnInit, OnDestroy {
   }
 
   private loadCounts(): void {
-    this.checkService.getStateCounts()
+    this.checkService.getStateCounts(this.search || undefined)
       .subscribe(counts => this.counts = counts);
   }
 

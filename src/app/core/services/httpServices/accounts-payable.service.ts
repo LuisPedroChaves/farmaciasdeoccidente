@@ -119,8 +119,12 @@ export class AccountsPayableService implements IDataService<AccountsPayableItem[
       );
   }
 
-  getUnpaidsCounts(): Observable<AccountsPayableCounts> {
-    return this.http.get(`${this.apiConfigService.API_ACCOUNTS_PAYABLE}/unpaids/counts`)
+  /** Conteos por pestaña. Con `search` devuelve los totales filtrados, iguales al `total` de cada página. */
+  getUnpaidsCounts(search?: string): Observable<AccountsPayableCounts> {
+    let params = new HttpParams();
+    if (search) { params = params.set('search', search); }
+
+    return this.http.get(`${this.apiConfigService.API_ACCOUNTS_PAYABLE}/unpaids/counts`, { params })
       .pipe(
         map((resp: any) => ({
           withholdings: 0,

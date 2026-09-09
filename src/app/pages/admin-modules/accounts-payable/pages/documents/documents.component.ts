@@ -84,6 +84,7 @@ export class DocumentsComponent implements OnInit, OnDestroy {
         this.search = text;
         this.filterHistory = text;
         TAB_ORDER.forEach(tab => invalidatePagedList(this.tabs[tab], true));
+        this.loadCounts();
         this.loadActiveTab();
       });
 
@@ -131,7 +132,7 @@ export class DocumentsComponent implements OnInit, OnDestroy {
   }
 
   private loadCounts(): void {
-    this.accountsPayableService.getUnpaidsCounts()
+    this.accountsPayableService.getUnpaidsCounts(this.search || undefined)
       .subscribe(counts => this.counts = counts);
   }
 

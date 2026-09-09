@@ -73,9 +73,13 @@ export class CheckService implements IDataService<CheckItem[]> {
       .pipe(map((resp: any) => ({ checks: resp.checks || [], total: resp.total || 0 })));
   }
 
-  getStateCounts(): Observable<CheckStateCounts> {
+  /** Conteos por estado. Con `search` devuelve los totales filtrados, iguales al `total` de cada página. */
+  getStateCounts(search?: string): Observable<CheckStateCounts> {
+    let params = new HttpParams();
+    if (search) { params = params.set('search', search); }
+
     return this.http
-      .get(`${this.apiConfigService.API_CHECK}/state/counts`)
+      .get(`${this.apiConfigService.API_CHECK}/state/counts`, { params })
       .pipe(map((resp: any) => resp.counts || {}));
   }
   /* #endregion */
