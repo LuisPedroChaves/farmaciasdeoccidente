@@ -1,24 +1,34 @@
-import { AfterContentInit, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { MatDrawer } from '@angular/material/sidenav';
+import { PageEvent } from '@angular/material/paginator';
 import { Store } from '@ngrx/store';
 
-import { Subscription } from 'rxjs';
-import { debounceTime, filter } from 'rxjs/operators';
+import { Subject, Subscription } from 'rxjs';
+import { debounceTime, distinctUntilChanged, filter } from 'rxjs/operators';
 
 import { AccountsPayableItem } from 'src/app/core/models/AccountsPayable';
 import { CheckItem } from 'src/app/core/models/Check';
-import { CheckService } from 'src/app/core/services/httpServices/check.service';
+import { CheckService, CheckStateCounts } from 'src/app/core/services/httpServices/check.service';
 import { READ_CHECKS_TODAY } from 'src/app/store/actions';
 import { CheckStore } from 'src/app/store/reducers';
 import { FilterPipe } from '../../../../../core/shared/pipes/filterPipes/filter.pipe';
+import { applyPageEvent, createPagedList, invalidatePagedList, PagedList } from '../../paged-list';
+
+/** Estados que se listan paginados desde el servidor, en el orden de las pestañas. */
+export const CHECK_STATES = ['CREADO', 'ACTUALIZADO', 'INTERBANCO', 'ESPERA', 'AUTORIZADO'] as const;
+export type CheckState = typeof CHECK_STATES[number];
+
+/** Índice de pestaña -> estado. La pestaña 1 es "Del día" (store) y la última "Historial". */
+const TAB_STATES: (CheckState | null)[] = ['CREADO', null, 'ACTUALIZADO', 'INTERBANCO', 'ESPERA', 'AUTORIZADO', null];
+const CHECK_FILTER_FIELDS = ['no', 'date', 'name', 'amount', 'note'];
 
 @Component({
   selector: 'app-cheques',
   templateUrl: './cheques.component.html',
   styleUrls: ['./cheques.component.scss']
 })
-export class ChequesComponent implements OnInit, AfterContentInit, OnDestroy {
+export class ChequesComponent implements OnInit, OnDestroy {
 
   /* #region  Header */
   @ViewChild('drawer') drawer: MatDrawer;
@@ -55,20 +65,28 @@ export class ChequesComponent implements OnInit, AfterContentInit, OnDestroy {
   };
   /* #endregion */
   loading = false;
-  checkSubscription: Subscription;
+
+  /* #region  Listados por estado (paginados en el servidor) */
+  lists: Record<CheckState, PagedList<CheckItem>> = {
+    CREADO: createPagedList<CheckItem>(),
+    ACTUALIZADO: createPagedList<CheckItem>(),
+    INTERBANCO: createPagedList<CheckItem>(),
+    ESPERA: createPagedList<CheckItem>(),
+    AUTORIZADO: createPagedList<CheckItem>(),
+  };
+  counts: CheckStateCounts = {};
+  selectedIndex = 0;
+  search = '';
+  private searchSubject = new Subject<string>();
+  private searchSubscription: Subscription;
+  private refreshSubscription: Subscription;
+  /* #endregion */
+
+  /* #region  Del día (store) */
   checkStoreSubscription: Subscription;
-  checksCreated: CheckItem[] = [];
-  checksCreatedTemp: CheckItem[] = [];
   checksToday: CheckItem[] = [];
   checksTodayTemp: CheckItem[] = [];
-  checksUpdated: CheckItem[] = [];
-  checksUpdatedTemp: CheckItem[] = [];
-  checksInter: CheckItem[] = [];
-  checksInterTemp: CheckItem[] = [];
-  checksWait: CheckItem[] = [];
-  checksWaitTemp: CheckItem[] = [];
-  checksAuth: CheckItem[] = [];
-  checksAuthTemp: CheckItem[] = [];
+  /* #endregion */
 
   /* #region  Historial */
   checksHistory: CheckItem[] = [];
@@ -82,7 +100,6 @@ export class ChequesComponent implements OnInit, AfterContentInit, OnDestroy {
   sessionSubscription: Subscription;
   permissions: string[] = [];
 
-
   constructor(
     private checkService: CheckService,
     private filter: FilterPipe,
@@ -90,27 +107,26 @@ export class ChequesComponent implements OnInit, AfterContentInit, OnDestroy {
   ) { }
 
   ngOnInit(): void {
-    this.loading = true;
-
     this.checkStoreSubscription = this.store.select('check')
       .subscribe(state => {
         this.checksTodayTemp = [...state.checksToday]
-        this.checksToday = [...state.checksToday]
+        this.checksToday = this.filter.transform(this.checksTodayTemp, this.search, CHECK_FILTER_FIELDS);
       })
 
-    this.checkSubscription = this.checkService.readData().subscribe((data) => {
-      this.checksCreatedTemp = data.filter(d => d.state === "CREADO");
-      this.checksCreated = this.checksCreatedTemp;
-      this.checksUpdatedTemp = data.filter(d => d.state === "ACTUALIZADO");
-      this.checksUpdated = this.checksUpdatedTemp;
-      this.checksInterTemp = data.filter(d => d.state === "INTERBANCO");
-      this.checksInter = this.checksInterTemp;
-      this.checksWaitTemp = data.filter(d => d.state === "ESPERA");
-      this.checksWait = this.checksWaitTemp;
-      this.checksAuthTemp = data.filter(d => d.state === "AUTORIZADO");
-      this.checksAuth = this.checksAuthTemp;
-      this.loading = false
-    });
+    this.searchSubscription = this.searchSubject
+      .pipe(debounceTime(400), distinctUntilChanged())
+      .subscribe(text => {
+        this.search = text;
+        // Listas pequeñas (hoy e historial) se filtran en memoria; las de estado van al backend.
+        this.checksToday = this.filter.transform(this.checksTodayTemp, text, CHECK_FILTER_FIELDS);
+        this.checksHistory = this.filter.transform(this.checksHistoryTemp, text, CHECK_FILTER_FIELDS);
+        CHECK_STATES.forEach(state => invalidatePagedList(this.lists[state], true));
+        this.loadActiveTab();
+      });
+
+    // Las tarjetas llaman a checkService.loadData() al actualizar o anular un cheque.
+    this.refreshSubscription = this.checkService.onRefresh()
+      .subscribe(() => this.reload());
 
     this.range.valueChanges
       .pipe(
@@ -130,25 +146,77 @@ export class ChequesComponent implements OnInit, AfterContentInit, OnDestroy {
     });
 
     this.store.dispatch(READ_CHECKS_TODAY())
-  }
-
-  ngAfterContentInit(): void {
-    this.checkService.loadData();
+    this.loadCounts();
+    this.loadActiveTab();
   }
 
   ngOnDestroy(): void {
-    this.checkSubscription?.unsubscribe();
+    this.checkStoreSubscription?.unsubscribe();
     this.sessionSubscription?.unsubscribe();
+    this.searchSubscription?.unsubscribe();
+    this.refreshSubscription?.unsubscribe();
   }
 
+  /* #region  Carga */
+  onTabChange(index: number): void {
+    this.selectedIndex = index;
+    this.loadActiveTab();
+  }
+
+  onPage(state: CheckState, event: PageEvent): void {
+    applyPageEvent(this.lists[state], event);
+    this.loadState(state);
+  }
+
+  reload(): void {
+    CHECK_STATES.forEach(state => invalidatePagedList(this.lists[state], false));
+    this.loadCounts();
+    this.loadActiveTab();
+  }
+
+  private loadActiveTab(): void {
+    const state = TAB_STATES[this.selectedIndex];
+    if (state && !this.lists[state].loaded) {
+      this.loadState(state);
+    }
+  }
+
+  private loadCounts(): void {
+    this.checkService.getStateCounts()
+      .subscribe(counts => this.counts = counts);
+  }
+
+  private loadState(state: CheckState): void {
+    const list = this.lists[state];
+    list.loading = true;
+    this.loading = true;
+    this.checkService.getStatePaged(state, list.pageIndex, list.pageSize, this.search || undefined)
+      .subscribe(
+        resp => {
+          list.data = resp.checks;
+          list.total = resp.total;
+          list.loaded = true;
+          list.loading = false;
+          this.loading = false;
+        },
+        () => {
+          list.loading = false;
+          this.loading = false;
+        }
+      );
+  }
+
+  label(state: CheckState, text: string): string {
+    return `${text} (${this.counts[state] || 0})`;
+  }
+
+  trackById(index: number, check: CheckItem): string {
+    return check._id;
+  }
+  /* #endregion */
+
   applyFilter(text: string): void {
-    this.checksToday = this.filter.transform(this.checksTodayTemp, text, ['no', 'date', 'name', 'amount', 'note']);
-    this.checksCreated = this.filter.transform(this.checksCreatedTemp, text, ['no', 'date', 'name', 'amount', 'note']);
-    this.checksUpdated = this.filter.transform(this.checksUpdatedTemp, text, ['no', 'date', 'name', 'amount', 'note']);
-    this.checksInter = this.filter.transform(this.checksInterTemp, text, ['no', 'date', 'name', 'amount', 'note']);
-    this.checksWait = this.filter.transform(this.checksWaitTemp, text, ['no', 'date', 'name', 'amount', 'note']);
-    this.checksAuth = this.filter.transform(this.checksAuthTemp, text, ['no', 'date', 'name', 'amount', 'note']);
-    this.checksHistory = this.filter.transform(this.checksHistoryTemp, text, ['no', 'date', 'name', 'amount', 'note']);
+    this.searchSubject.next(text);
   }
 
   newDocument(type: string): void {
@@ -166,13 +234,22 @@ export class ChequesComponent implements OnInit, AfterContentInit, OnDestroy {
   getVoided(_id: string): void {
     this.checksTodayTemp = this.checksTodayTemp.filter(c => c._id !== _id);
     this.checksToday = this.checksToday.filter(c => c._id !== _id);
+    CHECK_STATES.forEach(state => {
+      const list = this.lists[state];
+      const before = list.data.length;
+      list.data = list.data.filter(c => c._id !== _id);
+      if (list.data.length !== before) {
+        list.total = Math.max(0, list.total - 1);
+      }
+    });
   }
 
   getHistory(startDate, endDate): void {
     this.loading = true;
     this.checkService.getHistory(startDate, endDate)
       .subscribe(data => {
-        this.checksHistory = data;
+        this.checksHistoryTemp = data;
+        this.checksHistory = this.filter.transform(this.checksHistoryTemp, this.search, CHECK_FILTER_FIELDS);
         this.loading = false;
       })
   }

@@ -1,15 +1,22 @@
-import { Component, Input, OnInit, AfterContentInit, OnDestroy, OnChanges, SimpleChanges, ViewChild, Output, EventEmitter } from '@angular/core';
+import { Component, Input, OnInit, OnDestroy, OnChanges, SimpleChanges, ViewChild, Output, EventEmitter } from '@angular/core';
 import { MatDrawer } from '@angular/material/sidenav';
 import { MatChip } from '@angular/material/chips';
+import { PageEvent } from '@angular/material/paginator';
+import { FormControl, FormGroup } from '@angular/forms';
 
-import { Subscription } from 'rxjs';
+import { Subject, Subscription } from 'rxjs';
+import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 
 import { ProviderItem } from '../../../../../core/models/Provider';
-import { AccountsPayableService } from '../../../../../core/services/httpServices/accounts-payable.service';
+import {
+  AccountsPayablePagedParams,
+  AccountsPayableService,
+  EMPTY_PROVIDER_TOTALS,
+  ProviderTotals,
+} from '../../../../../core/services/httpServices/accounts-payable.service';
 import { AccountsPayableItem } from '../../../../../core/models/AccountsPayable';
 import { ToastyService } from '../../../../../core/services/internal/toasty.service';
-import { FormControl, FormGroup } from '@angular/forms';
-import { debounceTime } from 'rxjs/operators';
+import { applyPageEvent, createPagedList, invalidatePagedList, PagedList } from '../../paged-list';
 
 interface totalSelection {
   facturas: {
@@ -27,12 +34,17 @@ interface totalSelection {
   total: number
 }
 
+type PendingFilter = 'ALL' | 'WITHHOLDINGS' | 'EXPIRED';
+type ProviderTab = 'PENDING' | 'PROCESS';
+
+const TAB_ORDER: ProviderTab[] = ['PENDING', 'PROCESS'];
+
 @Component({
   selector: 'app-provider-account',
   templateUrl: './provider-account.component.html',
   styleUrls: ['./provider-account.component.scss']
 })
-export class ProviderAccountComponent implements OnInit, AfterContentInit, OnDestroy, OnChanges {
+export class ProviderAccountComponent implements OnInit, OnDestroy, OnChanges {
 
   @Input()
   provider: ProviderItem;
@@ -46,29 +58,33 @@ export class ProviderAccountComponent implements OnInit, AfterContentInit, OnDes
   all: MatChip;
 
   loading = false;
-  accountsPayableSubscription: Subscription;
-  accountsPayables: AccountsPayableItem[];
+  totals: ProviderTotals = { ...EMPTY_PROVIDER_TOTALS };
 
-  /* #region  Pendientes */
-  accountsPayablePend: AccountsPayableItem[];
-  accountsPayablePendTEMP: AccountsPayableItem[]; // Sirve para filtros
+  /* #region  Pendientes (paginado en el servidor) */
+  pending = createPagedList<AccountsPayableItem>();
+  pendingFilter: PendingFilter = 'ALL';
   selectedPend: AccountsPayableItem[] = [];
-  filterPend = '';
+  totalsSelection: totalSelection = this.emptyTotalsSelection();
   /* #endregion */
 
-  /* #region  En Proceso */
-  accountsPayableProcess: AccountsPayableItem[];
-  filterProcess = '';
+  /* #region  En Proceso (paginado en el servidor) */
+  process = createPagedList<AccountsPayableItem>();
   /* #endregion */
 
-/* #region  Historial */
+  /* #region  Historial (rango de fechas, se pagina en memoria) */
   accountsPayablesHistory: AccountsPayableItem[];
   filterHistory = '';
   range = new FormGroup({
     start: new FormControl(),
     end: new FormControl()
   });
-/* #endregion */
+  /* #endregion */
+
+  selectedIndex = 0;
+  private search: Record<ProviderTab, string> = { PENDING: '', PROCESS: '' };
+  private searchSubject = new Subject<{ tab: ProviderTab, text: string }>();
+  private searchSubscription: Subscription;
+  private refreshSubscription: Subscription;
 
   constructor(
     private accountsPayableService: AccountsPayableService,
@@ -77,56 +93,129 @@ export class ProviderAccountComponent implements OnInit, AfterContentInit, OnDes
 
   ngOnInit(): void {
     this.range.valueChanges
-    .pipe(
-      debounceTime(500),
-    )
-    .subscribe(range => {
-      if (range.start && range.end) {
-        this.getHistory(range.start._d, range.end._d);
-      }
-    });
-  }
+      .pipe(
+        debounceTime(500),
+      )
+      .subscribe(range => {
+        if (range.start && range.end) {
+          this.getHistory(range.start._d, range.end._d);
+        }
+      });
 
-  ngAfterContentInit(): void {
-    this.accountsPayableService.loadData();
+    this.searchSubscription = this.searchSubject
+      .pipe(
+        debounceTime(400),
+        distinctUntilChanged((a, b) => a.tab === b.tab && a.text === b.text),
+      )
+      .subscribe(({ tab, text }) => {
+        this.search[tab] = text;
+        invalidatePagedList(this.listOf(tab), true);
+        this.loadTab(tab);
+      });
+
+    // Pagos, retenciones y anulaciones hechas desde otros componentes.
+    this.refreshSubscription = this.accountsPayableService.onRefresh()
+      .subscribe(() => this.reload());
   }
 
   ngOnDestroy(): void {
-    this.accountsPayableSubscription?.unsubscribe();
+    this.searchSubscription?.unsubscribe();
+    this.refreshSubscription?.unsubscribe();
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (changes.provider) {
-      const PROVIDER: ProviderItem = changes.provider.currentValue;
-
-      if (this.accountsPayables) {
-        this.fillDataSources(PROVIDER);
-      } else {
-        this.loading = true;
-        this.accountsPayableSubscription = this.accountsPayableService.readData().subscribe((data) => {
-          console.log('SUBSCRIPTION');
-          this.accountsPayables = data;
-          this.fillDataSources(PROVIDER);
-          this.loading = false
-        });
-      }
+    if (changes.provider && changes.provider.currentValue) {
+      this.pendingFilter = 'ALL';
+      this.search = { PENDING: '', PROCESS: '' };
+      this.pending = createPagedList<AccountsPayableItem>();
+      this.process = createPagedList<AccountsPayableItem>();
+      this.accountsPayablesHistory = undefined;
+      this.selectedPend = [];
+      this.totalsSelection = this.emptyTotalsSelection();
+      this.reload();
     }
   }
 
-  fillDataSources(provider: ProviderItem): void {
-    this.accountsPayablePendTEMP = this.accountsPayables.filter(ap => (ap._provider._id === provider._id) && (!ap.balance.find(b => b.credit === 'CHEQUE')))
-    this.accountsPayablePend = this.accountsPayablePendTEMP;
-    this.selectedPend = [];
-    this.accountsPayableProcess = this.accountsPayables.filter(ap => (ap._provider._id === provider._id) && (ap.balance.find(b => b.credit === 'CHEQUE')))
-    this.all.selected = true; // Marcamos el filtro TODOS como mat-chip selected
+  /* #region  Carga */
+  reload(): void {
+    if (!this.provider) {
+      return;
+    }
+    this.loadTotals();
+    TAB_ORDER.forEach(tab => invalidatePagedList(this.listOf(tab), false));
+    this.loadActiveTab();
+    if (this.all) {
+      this.all.selected = this.pendingFilter === 'ALL'; // Marcamos el filtro TODOS como mat-chip selected
+    }
   }
 
+  onTabChange(index: number): void {
+    this.selectedIndex = index;
+    this.loadActiveTab();
+  }
+
+  onPage(tab: ProviderTab, event: PageEvent): void {
+    applyPageEvent(this.listOf(tab), event);
+    this.loadTab(tab);
+  }
+
+  private listOf(tab: ProviderTab): PagedList<AccountsPayableItem> {
+    return tab === 'PENDING' ? this.pending : this.process;
+  }
+
+  private loadActiveTab(): void {
+    const tab = TAB_ORDER[this.selectedIndex];
+    if (tab && !this.listOf(tab).loaded) {
+      this.loadTab(tab);
+    }
+  }
+
+  private loadTotals(): void {
+    this.accountsPayableService.getProviderTotals(this.provider._id)
+      .subscribe(totals => this.totals = totals);
+  }
+
+  private loadTab(tab: ProviderTab): void {
+    const list = this.listOf(tab);
+    const params: AccountsPayablePagedParams = {
+      page: list.pageIndex,
+      size: list.pageSize,
+      _provider: this.provider._id,
+      pending: tab === 'PENDING',
+      search: this.search[tab] || undefined,
+    };
+    if (tab === 'PENDING' && this.pendingFilter === 'WITHHOLDINGS') {
+      params.withholdings = true;
+    }
+    if (tab === 'PENDING' && this.pendingFilter === 'EXPIRED') {
+      params.expired = true;
+    }
+
+    list.loading = true;
+    this.loading = true;
+    this.accountsPayableService.getUnpaidsPaged(params)
+      .subscribe(
+        resp => {
+          list.data = resp.accountsPayables;
+          list.total = resp.total;
+          list.loaded = true;
+          list.loading = false;
+          this.loading = false;
+        },
+        () => {
+          list.loading = false;
+          this.loading = false;
+        }
+      );
+  }
+  /* #endregion */
+
   applyFilterPend(filter: string) {
-    this.filterPend = filter
+    this.searchSubject.next({ tab: 'PENDING', text: filter });
   }
 
   applyFilterProcess(filter: string) {
-    this.filterProcess = filter;
+    this.searchSubject.next({ tab: 'PROCESS', text: filter });
   }
 
   applyFilterHistory(filter: string) {
@@ -145,50 +234,44 @@ export class ProviderAccountComponent implements OnInit, AfterContentInit, OnDes
   /* #region  Selected */
   getSelected(accountsPayables: AccountsPayableItem[]) {
     this.selectedPend = accountsPayables;
+    // Se calcula una sola vez por cambio de selección, no en cada ciclo de detección de cambios.
+    this.totalsSelection = this.calculateTotalsSelection();
   }
 
-  // Calcular totales seleccionados
   getTotalsSelection(): totalSelection {
-    let totals: totalSelection = {
-      facturas: {
-        total: this.selectedPend.filter(s => s.docType !== 'ABONO' && s.docType !== 'CREDITO' && s.docType !== 'CREDITO_TEMP').length,
-        amount: this.selectedPend.reduce((sum, item) => {
-          if (item.docType !== 'ABONO' && item.docType !== 'CREDITO' && item.docType !== 'CREDITO_TEMP') {
-            return sum + (item.total - item.balance.reduce((sum, item) => sum += item.amount, 0))
-          } else {
-            return sum + 0;
-          }
-        }, 0)
-      },
-      abonos: {
-        total: this.selectedPend.filter(s => s.docType === 'ABONO').length,
-        amount: this.selectedPend.reduce((sum, item) => {
-          if (item.docType === 'ABONO') {
-            return sum + item.total
-          } else {
-            return sum + 0;
-          }
-        }, 0)
-      },
-      creditos: {
-        total: this.selectedPend.filter(s => s.docType === 'CREDITO' || s.docType === 'CREDITO_TEMP').length,
-        amount: this.selectedPend.reduce((sum, item) => {
-          if (item.docType === 'CREDITO' || item.docType === 'CREDITO_TEMP') {
-            return sum + item.total
-          } else {
-            return sum + 0;
-          }
-        }, 0)
-      },
-      total: this.selectedPend.reduce((sum, item) => {
-        if (item.docType !== 'ABONO' && item.docType !== 'CREDITO' && item.docType !== 'CREDITO_TEMP') {
-          return sum + (item.total - item.balance.reduce((sum, item) => sum += item.amount, 0))
-        } else {
-          return sum - item.total;
-        }
-      }, 0)
-    }
+    return this.totalsSelection;
+  }
+
+  private calculateTotalsSelection(): totalSelection {
+    const isBill = (item: AccountsPayableItem) => item.docType !== 'ABONO' && item.docType !== 'CREDITO' && item.docType !== 'CREDITO_TEMP';
+    const pendingAmount = (item: AccountsPayableItem) => item.total - item.balance.reduce((sum, b) => sum += b.amount, 0);
+
+    const totals: totalSelection = this.emptyTotalsSelection();
+    this.selectedPend.forEach(item => {
+      if (isBill(item)) {
+        totals.facturas.total++;
+        totals.facturas.amount += pendingAmount(item);
+        totals.total += pendingAmount(item);
+      } else if (item.docType === 'ABONO') {
+        totals.abonos.total++;
+        totals.abonos.amount += item.total;
+        totals.total -= item.total;
+      } else {
+        totals.creditos.total++;
+        totals.creditos.amount += item.total;
+        totals.total -= item.total;
+      }
+    });
     return totals;
+  }
+
+  private emptyTotalsSelection(): totalSelection {
+    return {
+      facturas: { total: 0, amount: 0 },
+      abonos: { total: 0, amount: 0 },
+      creditos: { total: 0, amount: 0 },
+      total: 0,
+    };
   }
   /* #endregion */
 
@@ -208,7 +291,7 @@ export class ProviderAccountComponent implements OnInit, AfterContentInit, OnDes
       return;
     }
 
-    if (this.getTotalsSelection().total <= 0) {
+    if (this.totalsSelection.total <= 0) {
       this.toastyService.error('Monto incorrecto', 'El total a pagar debe ser mayor a cero')
       return
     }
@@ -219,102 +302,63 @@ export class ProviderAccountComponent implements OnInit, AfterContentInit, OnDes
   closePay(amount: number) {
     this.provider.balance -= amount;
     this.drawer.opened = false
+    // El componente de pago llama a accountsPayableService.loadData(), que dispara reload().
   }
   /* #endregion */
 
   /* #region  Chips */
   getTotalWithholdings(): number {
-    return this.accountsPayablePendTEMP ? this.accountsPayablePendTEMP.reduce((sum, a) => {
-      if ((a._provider.iva && a.emptyWithholdingIVA) || (a._provider.isr && a.emptyWithholdingISR)) {
-        sum++
-      } else {
-        sum += 0;
-      }
-      return sum;
-    }, 0) : 0;
+    return this.totals.withholdings;
   }
 
   getTotalExpired(): number {
-    return this.accountsPayablePendTEMP ? this.accountsPayablePendTEMP.reduce((sum, a) => {
-      if (a.expirationCredit && new Date(a.expirationCredit) < new Date()) {
-        sum++;
-      } else {
-        sum += 0;
-      }
-      return sum;
-    }, 0) : 0;
+    return this.totals.expired;
   }
 
   getAll(chip: MatChip) {
-    chip.selected = true;
-    this.accountsPayablePend = this.accountsPayablePendTEMP;
+    this.setPendingFilter(chip, 'ALL');
   }
 
   getWithholdings(chip: MatChip): void {
-    chip.selected = true;
-    this.accountsPayablePend = this.accountsPayablePendTEMP.filter(a => (a._provider.iva && a.emptyWithholdingIVA) || (a._provider.isr && a.emptyWithholdingISR));
+    this.setPendingFilter(chip, 'WITHHOLDINGS');
   }
 
   getExpired(chip: MatChip): void {
-    chip.selected = true;
-    this.accountsPayablePend = this.accountsPayablePendTEMP.filter(a => (a.expirationCredit && new Date(a.expirationCredit) < new Date()));
+    this.setPendingFilter(chip, 'EXPIRED');
   }
 
+  private setPendingFilter(chip: MatChip, filter: PendingFilter): void {
+    chip.selected = true;
+    if (this.pendingFilter === filter) {
+      return;
+    }
+    this.pendingFilter = filter;
+    invalidatePagedList(this.pending, true);
+    this.loadTab('PENDING');
+  }
   /* #endregion */
 
   /* #region  Cards */
   getTotalBills(): number {
-    return this.accountsPayables ? this.accountsPayables.filter(ap => (ap._provider._id === this.provider._id)).reduce((sum, item) => {
-      if (item.docType !== 'ABONO' && item.docType !== 'CREDITO' && item.docType !== 'CREDITO_TEMP') {
-        return sum + (item.total - item.balance.reduce((sum, item) => {
-          if (item.credit !== 'CHEQUE') {
-            return sum + item.amount
-          } else {
-            return sum + 0;
-          }
-        }, 0));
-      } else {
-        return sum + 0;
-      }
-    }, 0) : 0;
+    return this.totals.bills;
   }
 
   getTotalAbono(): number {
-    return this.accountsPayables ? this.accountsPayables.filter(ap => (ap._provider._id === this.provider._id)).reduce((sum, item) => {
-      if (item.docType === 'ABONO') {
-        return sum + item.total;
-      } else {
-        return sum + 0;
-      }
-    }, 0) : 0;
+    return this.totals.credits;
   }
 
   getTotalCredito(): number {
-    return this.accountsPayables ? this.accountsPayables.filter(ap => (ap._provider._id === this.provider._id)).reduce((sum, item) => {
-      if (item.docType === 'CREDITO' || item.docType === 'CREDITO_TEMP') {
-        return sum + item.total;
-      } else {
-        return sum + 0;
-      }
-    }, 0) : 0;
+    return this.totals.creditNotes;
   }
   /* #endregion */
 
   /* #region  Tabs */
   getTotalPending(): string {
-    if (this.accountsPayablePendTEMP) {
-      return `Pendientes (${this.accountsPayablePendTEMP.length})`
-    } else {
-      return 'Pendientes (0)'
-    }
+    return `Pendientes (${this.totals.pending})`
   }
 
   getTotalProcess(): string {
-    if (this.accountsPayableProcess) {
-      return `En proceso (${this.accountsPayableProcess.length})`
-    } else {
-      return 'En proceso (0)'
-    }
+    return `En proceso (${this.totals.inProcess})`
   }
   /* #endregion */
 

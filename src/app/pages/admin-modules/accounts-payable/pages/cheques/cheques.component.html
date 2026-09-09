@@ -13,7 +13,7 @@
     </mat-drawer>
     <ngx-simplebar class="my-layout">
         <header>
-            <app-filter (send)="applyFilter($event)"></app-filter>
+            <app-filter (send)="applyFilter($event)" placeholder="Número, nombre o nota"></app-filter>
             <span fxFlex></span>
             <button mat-fab *ngIf="permissions && permissions.includes('create')" color="warn" [matMenuTriggerFor]="payablesMenu" matTooltip="Nuevo documento">
         <mat-icon>add</mat-icon>
@@ -31,65 +31,75 @@
         </header>
         <mat-progress-bar *ngIf="loading" mode="indeterminate" color="warn"></mat-progress-bar>
         <app-no-found *ngIf="permissions && !permissions.includes('read')" text="Acceso Denegado" subtitle="Actualmente no cuenta con permisos para acceder a este apartado"></app-no-found>
-        <mat-tab-group mat-align-tabs="center" *ngIf="permissions && permissions.includes('read')">
-            <mat-tab [label]="'Sin fecha (' + checksCreated.length + ')'">
+        <mat-tab-group mat-align-tabs="center" *ngIf="permissions && permissions.includes('read')" [selectedIndex]="selectedIndex" (selectedIndexChange)="onTabChange($event)">
+            <mat-tab [label]="label('CREADO', 'Sin fecha')">
                 <ngx-simplebar class="content">
-                    <app-no-found *ngIf="!checksCreated || checksCreated.length === 0" text="No se encontraron cheques" subtitle="Actualmente no hay cheques con fecha pendiente"></app-no-found>
+                    <app-no-found *ngIf="!lists.CREADO.loading && lists.CREADO.data.length === 0" text="No se encontraron cheques" subtitle="Actualmente no hay cheques con fecha pendiente"></app-no-found>
                     <div fxLayout="row wrap" fxLayoutGap="15px grid" class="grid">
-                        <div fxFlex.gt-lg="20" fxFlex.gt-md="33" fxFlex.gt-sm="50" fxFlex.lt-md="100" *ngFor="let check of checksCreated; let i = index">
+                        <div fxFlex.gt-lg="20" fxFlex.gt-md="33" fxFlex.gt-sm="50" fxFlex.lt-md="100" *ngFor="let check of lists.CREADO.data; let i = index; trackBy: trackById">
                             <app-check (sendId)="getVoided($event)" [i]="i" [check]="check" [permissions]="permissions"></app-check>
                         </div>
                     </div>
+                    <mat-paginator [length]="lists.CREADO.total" [pageIndex]="lists.CREADO.pageIndex" [pageSize]="lists.CREADO.pageSize" [pageSizeOptions]="[10, 50, 100]" [disabled]="lists.CREADO.loading" showFirstLastButtons (page)="onPage('CREADO', $event)">
+                    </mat-paginator>
                 </ngx-simplebar>
             </mat-tab>
             <mat-tab [label]="'Del día (' + checksToday.length + ')'">
                 <ngx-simplebar class="content">
                     <app-no-found *ngIf="!checksToday || checksToday.length === 0" text="No se encontraron cheques" subtitle="Actualmente no hay cheques para el día de hoy"></app-no-found>
                     <div fxLayout="row wrap" fxLayoutGap="15px grid" class="grid">
-                        <div fxFlex.gt-lg="20" fxFlex.gt-md="33" fxFlex.gt-sm="50" fxFlex.lt-md="100" *ngFor="let check of checksToday; let i = index">
+                        <div fxFlex.gt-lg="20" fxFlex.gt-md="33" fxFlex.gt-sm="50" fxFlex.lt-md="100" *ngFor="let check of checksToday; let i = index; trackBy: trackById">
                             <app-check (sendId)="getVoided($event)" [i]="i" [check]="check" [permissions]="permissions"></app-check>
                         </div>
                     </div>
                 </ngx-simplebar>
             </mat-tab>
-            <mat-tab [label]="'Girados (' + checksUpdated.length + ')'">
+            <mat-tab [label]="label('ACTUALIZADO', 'Girados')">
                 <ngx-simplebar class="content">
-                    <app-no-found *ngIf="!checksUpdated || checksUpdated.length === 0" text="No se encontraron cheques" subtitle="Actualmente no hay cheques girados"></app-no-found>
+                    <app-no-found *ngIf="!lists.ACTUALIZADO.loading && lists.ACTUALIZADO.data.length === 0" text="No se encontraron cheques" subtitle="Actualmente no hay cheques girados"></app-no-found>
                     <div fxLayout="row wrap" fxLayoutGap="15px grid" class="grid">
-                        <div fxFlex.gt-lg="20" fxFlex.gt-md="33" fxFlex.gt-sm="50" fxFlex.lt-md="100" *ngFor="let check of checksUpdated; let i = index">
+                        <div fxFlex.gt-lg="20" fxFlex.gt-md="33" fxFlex.gt-sm="50" fxFlex.lt-md="100" *ngFor="let check of lists.ACTUALIZADO.data; let i = index; trackBy: trackById">
                             <app-check (sendId)="getVoided($event)" [i]="i" [check]="check" [permissions]="permissions"></app-check>
                         </div>
                     </div>
+                    <mat-paginator [length]="lists.ACTUALIZADO.total" [pageIndex]="lists.ACTUALIZADO.pageIndex" [pageSize]="lists.ACTUALIZADO.pageSize" [pageSizeOptions]="[10, 50, 100]" [disabled]="lists.ACTUALIZADO.loading" showFirstLastButtons (page)="onPage('ACTUALIZADO', $event)">
+                    </mat-paginator>
                 </ngx-simplebar>
             </mat-tab>
-            <mat-tab [label]="'Interbanco (' + checksInter.length + ')'">
+            <mat-tab [label]="label('INTERBANCO', 'Interbanco')">
                 <ngx-simplebar class="content">
-                    <app-no-found *ngIf="!checksInter || checksInter.length === 0" text="No se encontraron cheques" subtitle="Actualmente no hay cheques aprobados por Interbanco"></app-no-found>
+                    <app-no-found *ngIf="!lists.INTERBANCO.loading && lists.INTERBANCO.data.length === 0" text="No se encontraron cheques" subtitle="Actualmente no hay cheques aprobados por Interbanco"></app-no-found>
                     <div fxLayout="row wrap" fxLayoutGap="15px grid" class="grid">
-                        <div fxFlex.gt-lg="20" fxFlex.gt-md="33" fxFlex.gt-sm="50" fxFlex.lt-md="100" *ngFor="let check of checksInter; let i = index">
+                        <div fxFlex.gt-lg="20" fxFlex.gt-md="33" fxFlex.gt-sm="50" fxFlex.lt-md="100" *ngFor="let check of lists.INTERBANCO.data; let i = index; trackBy: trackById">
                             <app-check (sendId)="getVoided($event)" [i]="i" [check]="check" [permissions]="permissions"></app-check>
                         </div>
                     </div>
+                    <mat-paginator [length]="lists.INTERBANCO.total" [pageIndex]="lists.INTERBANCO.pageIndex" [pageSize]="lists.INTERBANCO.pageSize" [pageSizeOptions]="[10, 50, 100]" [disabled]="lists.INTERBANCO.loading" showFirstLastButtons (page)="onPage('INTERBANCO', $event)">
+                    </mat-paginator>
                 </ngx-simplebar>
             </mat-tab>
-            <mat-tab [label]="'En Espera (' + checksWait.length + ')'">
+            <mat-tab [label]="label('ESPERA', 'En Espera')">
                 <ngx-simplebar class="content">
-                    <app-no-found *ngIf="!checksWait || checksWait.length === 0" text="No se encontraron cheques" subtitle="Actualmente no hay cheques en espera"></app-no-found>
+                    <app-no-found *ngIf="!lists.ESPERA.loading && lists.ESPERA.data.length === 0" text="No se encontraron cheques" subtitle="Actualmente no hay cheques en espera"></app-no-found>
                     <div fxLayout="row wrap" fxLayoutGap="15px grid" class="grid">
-                        <div fxFlex.gt-lg="20" fxFlex.gt-md="33" fxFlex.gt-sm="50" fxFlex.lt-md="100" *ngFor="let check of checksWait; let i = index">
+                        <div fxFlex.gt-lg="20" fxFlex.gt-md="33" fxFlex.gt-sm="50" fxFlex.lt-md="100" *ngFor="let check of lists.ESPERA.data; let i = index; trackBy: trackById">
                             <app-check (sendId)="getVoided($event)" [i]="i" [check]="check" [permissions]="permissions"></app-check>
                         </div>
                     </div>
+                    <mat-paginator [length]="lists.ESPERA.total" [pageIndex]="lists.ESPERA.pageIndex" [pageSize]="lists.ESPERA.pageSize" [pageSizeOptions]="[10, 50, 100]" [disabled]="lists.ESPERA.loading" showFirstLastButtons (page)="onPage('ESPERA', $event)">
+                    </mat-paginator>
                 </ngx-simplebar>
             </mat-tab>
-            <mat-tab [label]="'Autorizados (' + checksAuth.length + ')'">
+            <mat-tab [label]="label('AUTORIZADO', 'Autorizados')">
                 <ngx-simplebar class="content">
-                    <app-no-found *ngIf="!checksAuth || checksAuth.length === 0" text="No se encontraron cheques" subtitle="Actualmente no hay cheques autorizados"></app-no-found>
+                    <app-no-found *ngIf="!lists.AUTORIZADO.loading && lists.AUTORIZADO.data.length === 0" text="No se encontraron cheques" subtitle="Actualmente no hay cheques autorizados"></app-no-found>
                     <div fxLayout="row wrap" fxLayoutGap="15px grid" class="grid">
-                        <div fxFlex.gt-lg="20" fxFlex.gt-md="33" fxFlex.gt-sm="50" fxFlex.lt-md="100" *ngFor="let check of checksAuth; let i = index">
+                        <div fxFlex.gt-lg="20" fxFlex.gt-md="33" fxFlex.gt-sm="50" fxFlex.lt-md="100" *ngFor="let check of lists.AUTORIZADO.data; let i = index; trackBy: trackById">
                             <app-check (sendId)="getVoided($event)" [i]="i" [check]="check" [permissions]="permissions"></app-check>
                         </div>
                     </div>
+                    <mat-paginator [length]="lists.AUTORIZADO.total" [pageIndex]="lists.AUTORIZADO.pageIndex" [pageSize]="lists.AUTORIZADO.pageSize" [pageSizeOptions]="[10, 50, 100]" [disabled]="lists.AUTORIZADO.loading" showFirstLastButtons (page)="onPage('AUTORIZADO', $event)">
+                    </mat-paginator>
                 </ngx-simplebar>
             </mat-tab>
             <mat-tab label="Historial">
@@ -111,7 +121,7 @@
                     </div>
                     <app-no-found *ngIf="!checksHistory || checksHistory.length === 0" text="No se encontraron cheques" subtitle="Por favor ingrese un rango de fechas para consultar en su historial"></app-no-found>
                     <div fxLayout="row wrap" fxLayoutGap="15px grid" class="grid">
-                        <div fxFlex.gt-lg="20" fxFlex.gt-md="33" fxFlex.gt-sm="50" fxFlex.lt-md="100" *ngFor="let check of checksHistory; let i = index">
+                        <div fxFlex.gt-lg="20" fxFlex.gt-md="33" fxFlex.gt-sm="50" fxFlex.lt-md="100" *ngFor="let check of checksHistory; let i = index; trackBy: trackById">
                             <app-check (sendId)="getVoided($event)" [i]="i" [check]="check" [permissions]="permissions"></app-check>
                         </div>
                     </div>

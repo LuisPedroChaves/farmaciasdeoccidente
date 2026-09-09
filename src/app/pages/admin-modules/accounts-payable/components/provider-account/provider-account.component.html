@@ -102,28 +102,28 @@
                 </div>
             </header>
             <mat-progress-bar *ngIf="loading" mode="indeterminate" color="warn"></mat-progress-bar>
-            <mat-tab-group mat-align-tabs="center">
+            <mat-tab-group mat-align-tabs="center" [selectedIndex]="selectedIndex" (selectedIndexChange)="onTabChange($event)">
                 <mat-tab [label]="getTotalPending()">
                     <ngx-simplebar class="table">
                         <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px" class="header2">
-                            <app-filter (send)="applyFilterPend($event)"></app-filter>
+                            <app-filter (send)="applyFilterPend($event)" placeholder="Serie o número"></app-filter>
                             <mat-chip-list selectable="true">
-                                <mat-chip #all="matChip" (click)="getAll(all)" color="accent">Todos ({{accountsPayablePendTEMP ? accountsPayablePendTEMP.length : 0}})</mat-chip>
+                                <mat-chip #all="matChip" (click)="getAll(all)" color="accent">Todos ({{ totals.pending }})</mat-chip>
                                 <mat-chip #withHolding="matChip" (click)="getWithholdings(withHolding)" color="accent">Retenciones pendientes ({{getTotalWithholdings()}})</mat-chip>
                                 <mat-chip #expired="matChip" (click)="getExpired(expired)" color="accent">Vencidos ({{ getTotalExpired() }})</mat-chip>
                             </mat-chip-list>
                             <span fxFlex></span>
                             <button mat-raised-button (click)="newPay()" color="accent">Ingresar Pago</button>
                         </div>
-                        <app-table-accounts-payable (sendSelected)="getSelected($event)" (sendAccountsPayable)="sendAccountsPayable.emit($event)" [accountsPayable]="accountsPayablePend" [filter]="filterPend" [addSelection]="true" [showProvider]="false"></app-table-accounts-payable>
+                        <app-table-accounts-payable (sendSelected)="getSelected($event)" (sendAccountsPayable)="sendAccountsPayable.emit($event)" [accountsPayable]="pending.data" [addSelection]="true" [showProvider]="false" [serverSide]="true" [total]="pending.total" [pageIndex]="pending.pageIndex" [pageSize]="pending.pageSize" [loading]="pending.loading" (page)="onPage('PENDING', $event)"></app-table-accounts-payable>
                     </ngx-simplebar>
                 </mat-tab>
                 <mat-tab [label]="getTotalProcess()">
                     <ngx-simplebar class="table">
                         <div fxLayout="row" fxLayoutAlign="space-between center" class="header2">
-                            <app-filter (send)="applyFilterProcess($event)"></app-filter>
+                            <app-filter (send)="applyFilterProcess($event)" placeholder="Serie o número"></app-filter>
                         </div>
-                        <app-table-accounts-payable (sendAccountsPayable)="sendAccountsPayable.emit($event)" [accountsPayable]="accountsPayableProcess" [filter]="filterProcess" [addSelection]="false" [showProvider]="false"></app-table-accounts-payable>
+                        <app-table-accounts-payable (sendAccountsPayable)="sendAccountsPayable.emit($event)" [accountsPayable]="process.data" [addSelection]="false" [showProvider]="false" [serverSide]="true" [total]="process.total" [pageIndex]="process.pageIndex" [pageSize]="process.pageSize" [loading]="process.loading" (page)="onPage('PROCESS', $event)"></app-table-accounts-payable>
                     </ngx-simplebar>
                 </mat-tab>
                 <mat-tab label="Historial">

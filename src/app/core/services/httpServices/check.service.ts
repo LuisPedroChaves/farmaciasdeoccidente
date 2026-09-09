@@ -11,12 +11,23 @@ import { ApiConfigService } from '../config/api-config.service';
 import { PrintService } from '../internal/print.service';
 import { NumberToWordsPipe } from '../../shared/pipes/formatPipes/number-to-words.pipe';
 
+export interface CheckPaged {
+  checks: CheckItem[];
+  total: number;
+}
+
+export type CheckStateCounts = Record<string, number>;
+
 @Injectable({
   providedIn: 'root',
 })
 export class CheckService implements IDataService<CheckItem[]> {
-  public checkList: CheckItem[];
-  checkSubject = new Subject<CheckItem[]>();
+  /**
+   * Notificador de cambios. Antes `loadData()` descargaba todos los cheques
+   * activos (2k cheques con sus documentos); ahora la página de cheques se
+   * pagina por estado en el servidor y `loadData()` solo avisa que recargue.
+   */
+  private refreshSubject = new Subject<void>();
 
   constructor(
     public http: HttpClient,
@@ -25,38 +36,49 @@ export class CheckService implements IDataService<CheckItem[]> {
     private numberToWords: NumberToWordsPipe
   ) {}
 
+  /* #region  IDataService (compatibilidad) */
   loadData(): void {
-    this.http
-      .get(`${this.apiConfigService.API_CHECK}/state`)
-      .pipe(
-        map((response: any) => {
-          this.checkList = response.checks;
-          this.checkSubject.next(this.checkList);
-        })
-      )
-      .subscribe();
+    this.refreshSubject.next();
   }
 
   getData(): void {
-    if (this.checkList === undefined) {
-      this.loadData();
-    } else {
-      this.checkSubject.next(this.checkList);
-    }
+    this.refreshSubject.next();
   }
 
+  /** @deprecated Usar `onRefresh()` y `getStatePaged()`. */
   readData(): Observable<CheckItem[]> {
-    return this.checkSubject.asObservable();
+    return new Subject<CheckItem[]>().asObservable();
   }
 
   setData(): void {}
 
-  invalidateData(): void {
-    if (this.checkList === undefined) {
-    } else {
-      delete this.checkList;
-    }
+  invalidateData(): void {}
+  /* #endregion */
+
+  /** Se emite cada vez que otro componente crea, actualiza o anula un cheque. */
+  onRefresh(): Observable<void> {
+    return this.refreshSubject.asObservable();
   }
+
+  /* #region  Listado paginado por estado */
+  getStatePaged(state: string, page: number, size: number, search?: string): Observable<CheckPaged> {
+    let params = new HttpParams()
+      .set('state', state)
+      .set('page', page.toString())
+      .set('size', size.toString());
+    if (search) { params = params.set('search', search); }
+
+    return this.http
+      .get(`${this.apiConfigService.API_CHECK}/state/paged`, { params })
+      .pipe(map((resp: any) => ({ checks: resp.checks || [], total: resp.total || 0 })));
+  }
+
+  getStateCounts(): Observable<CheckStateCounts> {
+    return this.http
+      .get(`${this.apiConfigService.API_CHECK}/state/counts`)
+      .pipe(map((resp: any) => resp.counts || {}));
+  }
+  /* #endregion */
 
   getToday(): Observable<any> {
     return this.http

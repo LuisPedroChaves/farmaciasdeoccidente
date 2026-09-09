@@ -1,6 +1,9 @@
-import { Component, Input, OnInit, OnChanges, SimpleChanges, Output, EventEmitter } from '@angular/core';
+import { Component, Input, OnInit, OnChanges, SimpleChanges, Output, EventEmitter, ViewChild, AfterViewInit, OnDestroy } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
+import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { SelectionModel } from '@angular/cdk/collections';
+
+import { Subscription } from 'rxjs';
 
 import { AccountsPayableItem } from 'src/app/core/models/AccountsPayable';
 
@@ -9,7 +12,7 @@ import { AccountsPayableItem } from 'src/app/core/models/AccountsPayable';
   templateUrl: './table-accounts-payable.component.html',
   styleUrls: ['./table-accounts-payable.component.scss']
 })
-export class TableAccountsPayableComponent implements OnInit, OnChanges {
+export class TableAccountsPayableComponent implements OnInit, OnChanges, AfterViewInit, OnDestroy {
 
   @Input()
   accountsPayable: AccountsPayableItem[];
@@ -19,13 +22,34 @@ export class TableAccountsPayableComponent implements OnInit, OnChanges {
   addSelection = false;
   @Input()
   showProvider = true;
+
+  /* #region  Paginación en el servidor */
+  /** `true`: el padre pagina contra el backend y la tabla solo muestra la página recibida. */
+  @Input()
+  serverSide = false;
+  @Input()
+  total = 0;
+  @Input()
+  pageIndex = 0;
+  @Input()
+  pageSize = 50;
+  @Input()
+  loading = false;
+  @Output()
+  page = new EventEmitter<PageEvent>();
+  /* #endregion */
+
   @Output()
   sendSelected = new EventEmitter();
   @Output()
   sendAccountsPayable = new EventEmitter();
 
-  dataSource = new MatTableDataSource([]);
+  @ViewChild('clientPaginator') clientPaginator: MatPaginator;
+
+  pageSizeOptions = [10, 50, 100];
+  dataSource = new MatTableDataSource<AccountsPayableItem>([]);
   selection = new SelectionModel<AccountsPayableItem>(true, []);
+  selectionSubscription: Subscription;
   columns = [
     'state',
     'date',
@@ -55,21 +79,47 @@ export class TableAccountsPayableComponent implements OnInit, OnChanges {
     }
   }
 
+  ngAfterViewInit(): void {
+    this.attachClientPaginator();
+  }
+
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.accountsPayable) {
-      this.dataSource = new MatTableDataSource<AccountsPayableItem>(changes.accountsPayable.currentValue);
+      this.dataSource = new MatTableDataSource<AccountsPayableItem>(changes.accountsPayable.currentValue || []);
+      this.attachClientPaginator();
       if (this.addSelection) {
-        this.selection = new SelectionModel<AccountsPayableItem>(true, []);
-        this.selection.changed // Observable para obtener los ultimos cambios de la seccion en la tabla
-          .subscribe(next => this.sendSelected.emit(this.selection.selected));
+        this.resetSelection();
       }
     }
-    if (changes.filter) {
+    if (changes.filter && !this.serverSide) {
+      // En modo servidor el padre envía la búsqueda al backend; aquí no se filtra en memoria.
       this.dataSource.filter = changes.filter.currentValue;
       if (this.dataSource.paginator) {
         this.dataSource.paginator.firstPage();
       }
     }
+  }
+
+  ngOnDestroy(): void {
+    this.selectionSubscription?.unsubscribe();
+  }
+
+  private attachClientPaginator(): void {
+    if (!this.serverSide && this.clientPaginator) {
+      this.dataSource.paginator = this.clientPaginator;
+    }
+  }
+
+  private resetSelection(): void {
+    this.selectionSubscription?.unsubscribe();
+    this.selection = new SelectionModel<AccountsPayableItem>(true, []);
+    this.sendSelected.emit([]);
+    this.selectionSubscription = this.selection.changed // Observable para obtener los ultimos cambios de la seccion en la tabla
+      .subscribe(() => this.sendSelected.emit(this.selection.selected));
+  }
+
+  onPage(event: PageEvent): void {
+    this.page.emit(event);
   }
 
   /* #region  Gets */
@@ -79,6 +129,10 @@ export class TableAccountsPayableComponent implements OnInit, OnChanges {
 
   getExpired(expirationCredit: Date): boolean {
     return new Date(expirationCredit) < new Date()
+  }
+
+  trackById(index: number, item: AccountsPayableItem): string {
+    return item._id;
   }
   /* #endregion */
 

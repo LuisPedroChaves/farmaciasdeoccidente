@@ -8,52 +8,137 @@ import { IDataService } from '../config/i-data-service';
 import { AccountsPayableItem } from '../../models/AccountsPayable';
 import { ApiConfigService } from '../config/api-config.service';
 
+/* #region  Contratos de los endpoints paginados */
+export interface AccountsPayablePagedParams {
+  page: number;
+  size: number;
+  type?: 'PRODUCTOS' | 'GASTOS';
+  docType?: string;
+  _provider?: string;
+  withholdings?: boolean;
+  pending?: boolean;
+  expired?: boolean;
+  search?: string;
+}
+
+export interface AccountsPayablePaged {
+  accountsPayables: AccountsPayableItem[];
+  total: number;
+}
+
+export interface AccountsPayableCounts {
+  withholdings: number;
+  products: number;
+  expenses: number;
+  tempCredits: number;
+}
+
+export interface ProviderTotals {
+  bills: number;
+  credits: number;
+  creditNotes: number;
+  pending: number;
+  inProcess: number;
+  withholdings: number;
+  expired: number;
+}
+
+export const EMPTY_PROVIDER_TOTALS: ProviderTotals = {
+  bills: 0,
+  credits: 0,
+  creditNotes: 0,
+  pending: 0,
+  inProcess: 0,
+  withholdings: 0,
+  expired: 0,
+};
+/* #endregion */
+
 @Injectable({
   providedIn: 'root'
 })
 export class AccountsPayableService implements IDataService<AccountsPayableItem[]> {
 
-  public accountsPayableList: AccountsPayableItem[];
-  accountsPayableSubject = new Subject<AccountsPayableItem[]>();
+  /**
+   * Notificador de cambios. Antes `loadData()` descargaba la lista completa de
+   * pendientes (30k documentos) y la repartía por un Subject; ahora los listados
+   * se paginan en el servidor, así que `loadData()` solo avisa a las vistas
+   * abiertas para que recarguen su página actual.
+   */
+  private refreshSubject = new Subject<void>();
 
   constructor(
     public http: HttpClient,
     public apiConfigService: ApiConfigService
   ) { }
 
+  /* #region  IDataService (compatibilidad) */
   loadData(): void {
-    this.http
-      .get(`${this.apiConfigService.API_ACCOUNTS_PAYABLE}/unpaids`)
-      .pipe(
-        map((response: any) => {
-
-          this.accountsPayableList = response.accountsPayables;
-          this.accountsPayableSubject.next(this.accountsPayableList);
-        })
-      )
-      .subscribe();
+    this.refreshSubject.next();
   }
 
   getData(): void {
-    if (this.accountsPayableList === undefined) {
-      this.loadData();
-    } else {
-      this.accountsPayableSubject.next(this.accountsPayableList);
-    }
+    this.refreshSubject.next();
   }
 
+  /** @deprecated Usar `onRefresh()` y los métodos paginados. */
   readData(): Observable<AccountsPayableItem[]> {
-    return this.accountsPayableSubject.asObservable();
+    return new Subject<AccountsPayableItem[]>().asObservable();
   }
 
   setData(): void { }
 
-  invalidateData(): void {
-    if (this.accountsPayableList === undefined) {
-    } else {
-      delete this.accountsPayableList;
-    }
+  invalidateData(): void { }
+  /* #endregion */
+
+  /** Se emite cada vez que otro componente crea, edita, paga o anula un documento. */
+  onRefresh(): Observable<void> {
+    return this.refreshSubject.asObservable();
   }
+
+  /* #region  Listados paginados */
+  getUnpaidsPaged(params: AccountsPayablePagedParams): Observable<AccountsPayablePaged> {
+    let httpParams = new HttpParams()
+      .set('page', params.page.toString())
+      .set('size', params.size.toString());
+
+    if (params.type) { httpParams = httpParams.set('type', params.type); }
+    if (params.docType) { httpParams = httpParams.set('docType', params.docType); }
+    if (params._provider) { httpParams = httpParams.set('_provider', params._provider); }
+    if (params.withholdings) { httpParams = httpParams.set('withholdings', 'true'); }
+    if (params.expired) { httpParams = httpParams.set('expired', 'true'); }
+    if (params.pending !== undefined) { httpParams = httpParams.set('pending', String(params.pending)); }
+    if (params.search) { httpParams = httpParams.set('search', params.search); }
+
+    return this.http.get(`${this.apiConfigService.API_ACCOUNTS_PAYABLE}/unpaids/paged`, { params: httpParams })
+      .pipe(
+        map((resp: any) => ({
+          accountsPayables: resp.accountsPayables || [],
+          total: resp.total || 0,
+        }))
+      );
+  }
+
+  getUnpaidsCounts(): Observable<AccountsPayableCounts> {
+    return this.http.get(`${this.apiConfigService.API_ACCOUNTS_PAYABLE}/unpaids/counts`)
+      .pipe(
+        map((resp: any) => ({
+          withholdings: 0,
+          products: 0,
+          expenses: 0,
+          tempCredits: 0,
+          ...(resp.counts || {}),
+        }))
+      );
+  }
+
+  getProviderTotals(_provider: string): Observable<ProviderTotals> {
+    return this.http.get(`${this.apiConfigService.API_ACCOUNTS_PAYABLE}/provider/${_provider}/totals`)
+      .pipe(
+        map((resp: any) => ({ ...EMPTY_PROVIDER_TOTALS, ...(resp.totals || {}) }))
+      );
+  }
+  /* #endregion */
 
   getReportExpenses(startDate, endDate): Observable<any> {
     return this.http.get(`${this.apiConfigService.API_ACCOUNTS_PAYABLE}/expenses`, {

@@ -1,4 +1,4 @@
-<table mat-table [dataSource]="dataSource">
+<table mat-table [dataSource]="dataSource" [trackBy]="trackById">
     <ng-container *ngIf="addSelection" matColumnDef="select">
         <th mat-header-cell *matHeaderCellDef>
             <mat-checkbox (change)="$event ? masterToggle() : null" [checked]="selection.hasValue() && isAllSelected()" [indeterminate]="selection.hasValue() && !isAllSelected()" [aria-label]="checkboxLabel()">
@@ -118,3 +118,9 @@
         <td class="mat-cell" colspan="14">No hay datos que coincidan con algún filtro o busqueda</td>
     </tr>
 </table>
+<!-- Paginación en el servidor: el padre carga cada página contra el backend. -->
+<mat-paginator *ngIf="serverSide" [length]="total" [pageIndex]="pageIndex" [pageSize]="pageSize" [pageSizeOptions]="pageSizeOptions" [disabled]="loading" showFirstLastButtons (page)="onPage($event)">
+</mat-paginator>
+<!-- Paginación en memoria: para historial y reportes que reciben el arreglo completo. -->
+<mat-paginator *ngIf="!serverSide" #clientPaginator [pageSize]="pageSize" [pageSizeOptions]="pageSizeOptions" showFirstLastButtons>
+</mat-paginator>

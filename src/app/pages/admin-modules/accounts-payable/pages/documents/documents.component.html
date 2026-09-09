@@ -13,7 +13,7 @@
         <app-accounts-payable *ngIf="drawerComponent === 'CUENTA'" (return)="reset()" (sendEdit)="editDocument($event)" [accountsPayable]="accountsPayable" [permissions]="permissions"></app-accounts-payable>
     </mat-drawer>
     <header>
-        <app-filter (send)="applyFilter($event)"></app-filter>
+        <app-filter (send)="applyFilter($event)" placeholder="Serie, número, proveedor o NIT"></app-filter>
         <span fxFlex></span>
         <button mat-fab *ngIf="permissions && permissions.includes('create')" color="warn" [matMenuTriggerFor]="payablesMenu" matTooltip="Nuevo documento">
       <mat-icon>add</mat-icon>
@@ -31,25 +31,25 @@
     </header>
     <mat-progress-bar *ngIf="loading" mode="indeterminate" color="warn"></mat-progress-bar>
     <app-no-found *ngIf="permissions && !permissions.includes('read')" text="Acceso Denegado" subtitle="Actualmente no cuenta con permisos para acceder a este apartado"></app-no-found>
-    <mat-tab-group mat-align-tabs="center" *ngIf="permissions && permissions.includes('read')">
-        <mat-tab [label]=" 'Retenciones pendientes (' + accountsPayablesReten.length  + ')'   ">
+    <mat-tab-group mat-align-tabs="center" *ngIf="permissions && permissions.includes('read')" [selectedIndex]="selectedIndex" (selectedIndexChange)="onTabChange($event)">
+        <mat-tab [label]="labelReten()">
             <ngx-simplebar class="content">
-                <app-table-accounts-payable (sendAccountsPayable)="getAccountPayable($event)" [accountsPayable]="accountsPayablesReten" [filter]="filterReten" [addSelection]="false"></app-table-accounts-payable>
+                <app-table-accounts-payable (sendAccountsPayable)="getAccountPayable($event)" [accountsPayable]="tabs.RETEN.data" [addSelection]="false" [serverSide]="true" [total]="tabs.RETEN.total" [pageIndex]="tabs.RETEN.pageIndex" [pageSize]="tabs.RETEN.pageSize" [loading]="tabs.RETEN.loading" (page)="onPage('RETEN', $event)"></app-table-accounts-payable>
             </ngx-simplebar>
         </mat-tab>
-        <mat-tab [label]=" 'Notas de crédito temporales (' + accountsPayablesTemp.length  + ')'   ">
+        <mat-tab [label]="labelTemp()">
             <ngx-simplebar class="content">
-                <app-table-accounts-payable (sendAccountsPayable)="getAccountPayable($event)" [accountsPayable]="accountsPayablesTemp" [filter]="filterTemp" [addSelection]="false"></app-table-accounts-payable>
+                <app-table-accounts-payable (sendAccountsPayable)="getAccountPayable($event)" [accountsPayable]="tabs.TEMP.data" [addSelection]="false" [serverSide]="true" [total]="tabs.TEMP.total" [pageIndex]="tabs.TEMP.pageIndex" [pageSize]="tabs.TEMP.pageSize" [loading]="tabs.TEMP.loading" (page)="onPage('TEMP', $event)"></app-table-accounts-payable>
             </ngx-simplebar>
         </mat-tab>
-        <mat-tab [label]=" 'Pagos a proveedores (' + accountsPayablesProd.length  + ')'   ">
+        <mat-tab [label]="labelProd()">
             <ngx-simplebar class="content">
-                <app-table-accounts-payable (sendAccountsPayable)="getAccountPayable($event)" [accountsPayable]="accountsPayablesProd" [filter]="filterProd" [addSelection]="false"></app-table-accounts-payable>
+                <app-table-accounts-payable (sendAccountsPayable)="getAccountPayable($event)" [accountsPayable]="tabs.PROD.data" [addSelection]="false" [serverSide]="true" [total]="tabs.PROD.total" [pageIndex]="tabs.PROD.pageIndex" [pageSize]="tabs.PROD.pageSize" [loading]="tabs.PROD.loading" (page)="onPage('PROD', $event)"></app-table-accounts-payable>
             </ngx-simplebar>
         </mat-tab>
-        <mat-tab [label]=" 'Gastos internos (' + accountsPayablesGast.length  + ')'   ">
+        <mat-tab [label]="labelGast()">
             <ngx-simplebar class="content">
-                <app-table-accounts-payable (sendAccountsPayable)="getAccountPayable($event)" [accountsPayable]="accountsPayablesGast" [filter]="filterGast" [addSelection]="false"></app-table-accounts-payable>
+                <app-table-accounts-payable (sendAccountsPayable)="getAccountPayable($event)" [accountsPayable]="tabs.GAST.data" [addSelection]="false" [serverSide]="true" [total]="tabs.GAST.total" [pageIndex]="tabs.GAST.pageIndex" [pageSize]="tabs.GAST.pageSize" [loading]="tabs.GAST.loading" (page)="onPage('GAST', $event)"></app-table-accounts-payable>
             </ngx-simplebar>
         </mat-tab>
         <mat-tab label="Historial">
