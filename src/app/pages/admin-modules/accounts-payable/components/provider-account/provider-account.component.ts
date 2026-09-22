@@ -63,6 +63,9 @@ export class ProviderAccountComponent implements OnInit, OnDestroy, OnChanges {
   /* #region  Pendientes (paginado en el servidor) */
   pending = createPagedList<AccountsPayableItem>();
   pendingFilter: PendingFilter = 'ALL';
+  /** Selección por _id, independiente de la página cargada, para que sobreviva a la paginación. */
+  private selectedPendMap = new Map<string, AccountsPayableItem>();
+  selectedIds = new Set<string>();
   selectedPend: AccountsPayableItem[] = [];
   totalsSelection: totalSelection = this.emptyTotalsSelection();
   /* #endregion */
@@ -130,8 +133,7 @@ export class ProviderAccountComponent implements OnInit, OnDestroy, OnChanges {
       this.pending = createPagedList<AccountsPayableItem>();
       this.process = createPagedList<AccountsPayableItem>();
       this.accountsPayablesHistory = undefined;
-      this.selectedPend = [];
-      this.totalsSelection = this.emptyTotalsSelection();
+      this.clearSelection();
       this.reload();
     }
   }
@@ -141,6 +143,8 @@ export class ProviderAccountComponent implements OnInit, OnDestroy, OnChanges {
     if (!this.provider) {
       return;
     }
+    // Los documentos seleccionados pueden ya no existir tras un pago u otra actualización; se limpia por seguridad.
+    this.clearSelection();
     this.loadTotals();
     TAB_ORDER.forEach(tab => invalidatePagedList(this.listOf(tab), false));
     this.loadActiveTab();
@@ -232,10 +236,38 @@ export class ProviderAccountComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   /* #region  Selected */
-  getSelected(accountsPayables: AccountsPayableItem[]) {
-    this.selectedPend = accountsPayables;
+  /** Alterna una fila individual. La selección se guarda por _id, así que sobrevive al cambio de página. */
+  onRowToggled(item: AccountsPayableItem): void {
+    if (this.selectedPendMap.has(item._id)) {
+      this.selectedPendMap.delete(item._id);
+    } else {
+      this.selectedPendMap.set(item._id, item);
+    }
+    this.syncSelection();
+  }
+
+  /** Selecciona/deselecciona todas las filas de la página actual recibida desde la tabla. */
+  onPageToggled(event: { rows: AccountsPayableItem[], select: boolean }): void {
+    event.rows.forEach(row => {
+      if (event.select) {
+        this.selectedPendMap.set(row._id, row);
+      } else {
+        this.selectedPendMap.delete(row._id);
+      }
+    });
+    this.syncSelection();
+  }
+
+  private syncSelection(): void {
+    this.selectedIds = new Set(this.selectedPendMap.keys());
+    this.selectedPend = Array.from(this.selectedPendMap.values());
     // Se calcula una sola vez por cambio de selección, no en cada ciclo de detección de cambios.
     this.totalsSelection = this.calculateTotalsSelection();
+  }
+
+  private clearSelection(): void {
+    this.selectedPendMap = new Map<string, AccountsPayableItem>();
+    this.syncSelection();
   }
 
   getTotalsSelection(): totalSelection {

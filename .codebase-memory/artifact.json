@@ -1,0 +1,11 @@
+{
+    "schema_version": 2,
+    "commit": "7819f27b7b90f2bb607de2c9705d0cdc8420f922",
+    "indexed_at": "2026-09-22T19:19:53Z",
+    "project": "Users-luispedrochaves-Developer-Farmacias-de-Occidente-farmaciasdeoccidente",
+    "nodes": 4244,
+    "edges": 11251,
+    "original_size": 21299200,
+    "compressed_size": 2627695,
+    "compression_level": 3
+}

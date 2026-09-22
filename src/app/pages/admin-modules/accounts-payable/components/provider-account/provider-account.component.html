@@ -115,7 +115,7 @@
                             <span fxFlex></span>
                             <button mat-raised-button (click)="newPay()" color="accent">Ingresar Pago</button>
                         </div>
-                        <app-table-accounts-payable (sendSelected)="getSelected($event)" (sendAccountsPayable)="sendAccountsPayable.emit($event)" [accountsPayable]="pending.data" [addSelection]="true" [showProvider]="false" [serverSide]="true" [total]="pending.total" [pageIndex]="pending.pageIndex" [pageSize]="pending.pageSize" [loading]="pending.loading" (page)="onPage('PENDING', $event)"></app-table-accounts-payable>
+                        <app-table-accounts-payable (rowToggled)="onRowToggled($event)" (pageToggled)="onPageToggled($event)" (sendAccountsPayable)="sendAccountsPayable.emit($event)" [accountsPayable]="pending.data" [selectedIds]="selectedIds" [addSelection]="true" [showProvider]="false" [serverSide]="true" [total]="pending.total" [pageIndex]="pending.pageIndex" [pageSize]="pending.pageSize" [loading]="pending.loading" (page)="onPage('PENDING', $event)"></app-table-accounts-payable>
                     </ngx-simplebar>
                 </mat-tab>
                 <mat-tab [label]="getTotalProcess()">

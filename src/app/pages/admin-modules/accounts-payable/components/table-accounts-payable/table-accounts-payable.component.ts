@@ -1,9 +1,6 @@
-import { Component, Input, OnInit, OnChanges, SimpleChanges, Output, EventEmitter, ViewChild, AfterViewInit, OnDestroy } from '@angular/core';
+import { Component, Input, OnInit, OnChanges, SimpleChanges, Output, EventEmitter, ViewChild, AfterViewInit } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
-import { SelectionModel } from '@angular/cdk/collections';
-
-import { Subscription } from 'rxjs';
 
 import { AccountsPayableItem } from 'src/app/core/models/AccountsPayable';
 
@@ -12,7 +9,7 @@ import { AccountsPayableItem } from 'src/app/core/models/AccountsPayable';
   templateUrl: './table-accounts-payable.component.html',
   styleUrls: ['./table-accounts-payable.component.scss']
 })
-export class TableAccountsPayableComponent implements OnInit, OnChanges, AfterViewInit, OnDestroy {
+export class TableAccountsPayableComponent implements OnInit, OnChanges, AfterViewInit {
 
   @Input()
   accountsPayable: AccountsPayableItem[];
@@ -22,6 +19,9 @@ export class TableAccountsPayableComponent implements OnInit, OnChanges, AfterVi
   addSelection = false;
   @Input()
   showProvider = true;
+  /** IDs seleccionados, mantenidos por el padre para que la selección sobreviva al cambio de página. */
+  @Input()
+  selectedIds: Set<string> = new Set();
 
   /* #region  Paginación en el servidor */
   /** `true`: el padre pagina contra el backend y la tabla solo muestra la página recibida. */
@@ -39,8 +39,12 @@ export class TableAccountsPayableComponent implements OnInit, OnChanges, AfterVi
   page = new EventEmitter<PageEvent>();
   /* #endregion */
 
+  /** Una fila cambió su estado de selección. */
   @Output()
-  sendSelected = new EventEmitter();
+  rowToggled = new EventEmitter<AccountsPayableItem>();
+  /** Se activó/desactivó "seleccionar todos" para las filas de la página actual. */
+  @Output()
+  pageToggled = new EventEmitter<{ rows: AccountsPayableItem[], select: boolean }>();
   @Output()
   sendAccountsPayable = new EventEmitter();
 
@@ -48,8 +52,6 @@ export class TableAccountsPayableComponent implements OnInit, OnChanges, AfterVi
 
   pageSizeOptions = [10, 50, 100];
   dataSource = new MatTableDataSource<AccountsPayableItem>([]);
-  selection = new SelectionModel<AccountsPayableItem>(true, []);
-  selectionSubscription: Subscription;
   columns = [
     'state',
     'date',
@@ -87,9 +89,6 @@ export class TableAccountsPayableComponent implements OnInit, OnChanges, AfterVi
     if (changes.accountsPayable) {
       this.dataSource = new MatTableDataSource<AccountsPayableItem>(changes.accountsPayable.currentValue || []);
       this.attachClientPaginator();
-      if (this.addSelection) {
-        this.resetSelection();
-      }
     }
     if (changes.filter && !this.serverSide) {
       // En modo servidor el padre envía la búsqueda al backend; aquí no se filtra en memoria.
@@ -100,22 +99,10 @@ export class TableAccountsPayableComponent implements OnInit, OnChanges, AfterVi
     }
   }
 
-  ngOnDestroy(): void {
-    this.selectionSubscription?.unsubscribe();
-  }
-
   private attachClientPaginator(): void {
     if (!this.serverSide && this.clientPaginator) {
       this.dataSource.paginator = this.clientPaginator;
     }
-  }
-
-  private resetSelection(): void {
-    this.selectionSubscription?.unsubscribe();
-    this.selection = new SelectionModel<AccountsPayableItem>(true, []);
-    this.sendSelected.emit([]);
-    this.selectionSubscription = this.selection.changed // Observable para obtener los ultimos cambios de la seccion en la tabla
-      .subscribe(() => this.sendSelected.emit(this.selection.selected));
   }
 
   onPage(event: PageEvent): void {
@@ -137,22 +124,29 @@ export class TableAccountsPayableComponent implements OnInit, OnChanges, AfterVi
   /* #endregion */
 
   /* #region  SELECTION TABLE */
+  /** La selección vive en el padre (por _id) para sobrevivir al cambio de página. */
 
-  /** Si el número de elementos seleccionados coincide con el número total de filas. */
-  isAllSelected() {
-    const numSelected = this.selection.selected.length;
-    const numRows = this.dataSource.data.length;
-    return numSelected === numRows;
+  isSelected(row: AccountsPayableItem): boolean {
+    return this.selectedIds?.has(row._id) ?? false;
   }
 
-  /** Selecciona todas las filas si no están todas seleccionadas; en caso contrario, borra la selección. */
-  masterToggle() {
-    if (this.isAllSelected()) {
-      this.selection.clear();
-      return;
-    }
+  /** Si alguna fila de la página actual está seleccionada. */
+  hasSelection(): boolean {
+    return this.dataSource.data.some(row => this.isSelected(row));
+  }
 
-    this.selection.select(...this.dataSource.data);
+  /** Si todas las filas de la página actual están seleccionadas. */
+  isAllSelected(): boolean {
+    return this.dataSource.data.length > 0 && this.dataSource.data.every(row => this.isSelected(row));
+  }
+
+  /** Selecciona/deselecciona todas las filas de la página actual. */
+  masterToggle(): void {
+    this.pageToggled.emit({ rows: this.dataSource.data, select: !this.isAllSelected() });
+  }
+
+  toggleRow(row: AccountsPayableItem): void {
+    this.rowToggled.emit(row);
   }
 
   /** The label for the checkbox on the passed row */
@@ -160,7 +154,7 @@ export class TableAccountsPayableComponent implements OnInit, OnChanges, AfterVi
     if (!row) {
       return `${this.isAllSelected() ? 'deselect' : 'select'} all`;
     }
-    return `${this.selection.isSelected(row) ? 'deselect' : 'select'} row ${row.total + 1}`;
+    return `${this.isSelected(row) ? 'deselect' : 'select'} row ${row.total + 1}`;
   }
   /* #endregion */
 
