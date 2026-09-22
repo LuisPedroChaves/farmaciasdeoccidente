@@ -1,12 +1,11 @@
 {
     "schema_version": 2,
-    "commit": "58049d61840bcb54ce17e9eae1b3d705844fcf50",
-    "indexed_at": "2026-09-22T19:23:48Z",
+    "commit": "c7c4cde4b01b8ab24be51c4a57f90f229b26a832",
+    "indexed_at": "2026-09-22T19:30:20Z",
     "project": "Users-luispedrochaves-Developer-Farmacias-de-Occidente-farmaciasdeoccidente",
     "nodes": 4244,
-    "edges": 11261,
-    "original_size": 21299200,
-    "compressed_size": 2628937,
-    "compression_level": 3,
-    "reconcile_basis": "git-clean-head"
+    "edges": 11264,
+    "original_size": 21364736,
+    "compressed_size": 2632506,
+    "compression_level": 3
 }

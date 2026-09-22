@@ -5,6 +5,7 @@ import { Store } from '@ngrx/store';
 
 import { CheckItem } from 'src/app/core/models/Check';
 import { CheckService } from 'src/app/core/services/httpServices/check.service';
+import { AccountsPayableService } from 'src/app/core/services/httpServices/accounts-payable.service';
 import { ToastyService } from 'src/app/core/services/internal/toasty.service';
 import { ConfirmationDialogComponent } from 'src/app/pages/shared-components/confirmation-dialog/confirmation-dialog.component';
 import { READ_CHECKS_TODAY } from 'src/app/store/actions';
@@ -36,6 +37,7 @@ export class CheckComponent implements OnInit {
   constructor(
     private store: Store<CheckStore>,
     public checkService: CheckService,
+    private accountsPayableService: AccountsPayableService,
     private toastyService: ToastyService,
     private dialog: MatDialog
   ) { }
@@ -156,6 +158,8 @@ export class CheckComponent implements OnInit {
             this.toastyService.success('Cheque anulado exitosamente')
             this.sendId.emit(check._id)
             this.checkService.loadData();
+            // Los documentos ligados a este cheque vuelven a pendiente en el backend; se avisa a Cuentas por pagar para que refresque.
+            this.accountsPayableService.loadData();
             this.store.dispatch(READ_CHECKS_TODAY())
           })
       }
